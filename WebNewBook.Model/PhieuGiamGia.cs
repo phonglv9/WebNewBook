@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace WebNewBook.Model
 {
+    [Table("PhieuGiamGia")]
     public class PhieuGiamGia
     {
         [Key]

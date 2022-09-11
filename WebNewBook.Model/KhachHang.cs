@@ -27,6 +27,6 @@ namespace WebNewBook.Model
         [Range(0, 1)]
         public int TrangThai { get; set; }
         public virtual ICollection<HoaDon>? HoaDons { get; set; }
-        public virtual ICollection<PhieuTra>? PhieuTras { get; set; }
+        public virtual ICollection<PhieuGiamGia>? PhieuGiamGias { get; set; }
     }
 }
