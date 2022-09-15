@@ -8,19 +8,17 @@ using System.Threading.Tasks;
 
 namespace WebNewBook.Model
 {
-    [Table("PhieuGiamGia")]
-    public class PhieuGiamGia
+    [Table("PhieuGiamGiaSP")]
+    public class PhieuGiamGiaSP
     {
         [Key]
-        public string ID_PhieuGiamGia { get; set; }
-        [ForeignKey("KhachHang")]
-        public string MaKhachHang { get; set; }
+        public string ID_PhieuGiamGiaSP { get; set; }
         public string TenPhieu { get; set; }
         public double GiaTri { get; set; }
-        public int SoLuong { get; set; }
-        public double HoaDonChoPhep { get; set; }
+        public double SPChoPhep { get; set; }
         public int TheLoai { get; set; }
+        public DateTime NgayBatDau { get; set; }
         public DateTime NgayHetHan { get; set; }
-        public virtual KhachHang KhachHang { get; set; }
+        public virtual ICollection<SanPham>? SanPhams { get; set; }
     }
 }

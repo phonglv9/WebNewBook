@@ -24,6 +24,7 @@ namespace WebNewBook.Model
         [MinLength(5)]
         [MaxLength(20)]
         public string MatKhau { get; set; }
+        public int DiemTichLuy { get; set; }
         [Range(0, 1)]
         public int TrangThai { get; set; }
         public virtual ICollection<HoaDon>? HoaDons { get; set; }

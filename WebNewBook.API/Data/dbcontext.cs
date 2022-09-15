@@ -31,6 +31,7 @@ namespace WebNewBook.API.Data
         public DbSet<TacGia> TacGias { get; set; }
         public DbSet<TheLoai> TheLoais { get; set; }
         public DbSet<PhieuGiamGia> PhieuGiamGias { get; set; }
+        public DbSet<PhieuGiamGiaSP> PhieuGiamGiaSPs { get; set; }
         public DbSet<PhieuNhap> PhieuNhaps { get; set; }
         public DbSet<PhieuTra> PhieuTras { get; set; }
         public DbSet<SanPham> SanPhams { get; set; }
