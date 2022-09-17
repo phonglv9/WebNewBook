@@ -27,7 +27,7 @@ namespace WebNewBook.Model
         public string? MoTa { get; set; }
         [Range(0, 1)]
         public int TrangThai { get; set; }
-        public virtual NhaXuatBan NhaXuatBan { get; set; }
+        public virtual NhaXuatBan? NhaXuatBan { get; set; }
         public virtual ICollection<SachCT>? SachCTs { get; set; }
         public virtual ICollection<PhieuNhap>? PhieuNhaps { get; set; }
     }

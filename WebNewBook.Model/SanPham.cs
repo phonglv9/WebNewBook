@@ -21,6 +21,6 @@ namespace WebNewBook.Model
         public int TrangThai { get; set; }
         public virtual PhieuGiamGiaSP? PhieuGiamGiaSP { get; set; }
         public virtual ICollection<HoaDonCT>? HoaDonCTs { get; set; }
-        public virtual ICollection<SanPhamCT> SanPhamCTs { get; set; }
+        public virtual ICollection<SanPhamCT>? SanPhamCTs { get; set; }
     }
 }

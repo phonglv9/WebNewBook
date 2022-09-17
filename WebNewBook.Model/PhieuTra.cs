@@ -21,7 +21,7 @@ namespace WebNewBook.Model
         public int TheLoai { get; set; }
         public string? MoTa { get; set; }
         public int TrangThai { get; set; }
-        public virtual HoaDon HoaDon { get; set; }
-        public virtual HoaDonCT HoaDonCT { get; set; }
+        public virtual HoaDon? HoaDon { get; set; }
+        public virtual HoaDonCT? HoaDonCT { get; set; }
     }
 }

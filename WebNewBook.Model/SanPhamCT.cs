@@ -19,7 +19,7 @@ namespace WebNewBook.Model
         public string MaPhieuNhap { get; set; }
         public int SoLuong { get; set; }
         public int TrangThai { get; set; }
-        public virtual SanPham SanPham { get; set; }
-        public virtual PhieuNhap PhieuNhap { get; set; }
+        public virtual SanPham? SanPham { get; set; }
+        public virtual PhieuNhap? PhieuNhap { get; set; }
     }
 }

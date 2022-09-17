@@ -20,7 +20,7 @@ namespace WebNewBook.Model
         public double TongTien { get; set; }
         [Range(0, 2)]
         public int TrangThai { get; set; }
-        public virtual KhachHang KhachHang { get; set; }
+        public virtual KhachHang? KhachHang { get; set; }
         public virtual ICollection<HoaDonCT>? HoaDonCTs { get; set; }
         public virtual ICollection<PhieuTra>? PhieuTras { get; set; }
 

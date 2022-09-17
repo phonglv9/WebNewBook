@@ -16,7 +16,7 @@ namespace WebNewBook.Model
         [ForeignKey("DanhMucSach")]
         public string MaDanhMuc { get; set; }
         public string TenTL { get; set; }
-        public virtual DanhMucSach DanhMucSach { get; set; }
+        public virtual DanhMucSach? DanhMucSach { get; set; }
         public virtual ICollection<SachCT>? SachCTs { get; set; }
     }
 }

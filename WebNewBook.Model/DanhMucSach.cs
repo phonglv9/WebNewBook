@@ -14,6 +14,6 @@ namespace WebNewBook.Model
         [Key]
         public string ID_DanhMuc { get; set; }
         public string TenDanhMuc { get; set; }
-        public virtual ICollection<TheLoai> TheLoais { get; set; }
+        public virtual ICollection<TheLoai>? TheLoais { get; set; }
     }
 }

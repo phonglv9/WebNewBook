@@ -23,8 +23,8 @@ namespace WebNewBook.Model
         public int SoLuongNhap { get; set; }
         public int SoLuongKho { get; set; }
         public DateTime NgayNhap { get; set; }
-        public virtual NhaCungCap NhaCungCap { get; set; }
-        public virtual NhanVien NhanVien { get; set; }
-        public virtual Sach Sach { get; set; }
+        public virtual NhaCungCap? NhaCungCap { get; set; }
+        public virtual NhanVien? NhanVien { get; set; }
+        public virtual Sach? Sach { get; set; }
     }
 }

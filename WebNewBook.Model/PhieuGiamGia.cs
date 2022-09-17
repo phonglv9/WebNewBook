@@ -21,6 +21,6 @@ namespace WebNewBook.Model
         public double HoaDonChoPhep { get; set; }
         public int TheLoai { get; set; }
         public DateTime NgayHetHan { get; set; }
-        public virtual KhachHang KhachHang { get; set; }
+        public virtual KhachHang? KhachHang { get; set; }
     }
 }

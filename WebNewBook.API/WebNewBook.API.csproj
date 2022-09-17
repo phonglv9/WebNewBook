@@ -24,4 +24,9 @@
     <ProjectReference Include="..\WebNewBook.Model\WebNewBook.Model.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repository\IService\" />
+    <Folder Include="Repository\Service\" />
+  </ItemGroup>
+
 </Project>
