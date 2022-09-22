@@ -37,6 +37,5 @@ namespace WebNewBook.API.Data
         public DbSet<SanPham> SanPhams { get; set; }
         public DbSet<SanPhamCT> SanPhamCTs { get; set; }
         public DbSet<DanhMucSach> DanhMucSachs { get; set; }
-        public DbSet<NhaCungCap> NhaCungCaps { get; set; }
     }
 }

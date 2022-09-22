@@ -19,8 +19,11 @@ namespace WebNewBook.Model
         public string MaTheLoai { get; set; }
         [ForeignKey("TacGia")]
         public string MaTacGia { get; set; }
+        public int SoLuong { get; set; }
+        public int SoLuongKho { get; set; }
         public virtual Sach? Sach { get; set; }
         public virtual TheLoai? TheLoai { get; set; }
         public virtual TacGia? TacGia { get; set; }
+        public virtual ICollection<PhieuNhap>? PhieuNhaps { get; set; }
     }
 }
