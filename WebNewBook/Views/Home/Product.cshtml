@@ -1,0 +1,362 @@
+﻿@{
+    ViewBag.Title = "Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using WebNewBook.API.ModelsAPI
+@model List<HomeVM>
+
+
+
+<!-- BREADCRUMB -->
+		<div id="breadcrumb" class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+					<div class="col-md-12">
+						<ul class="breadcrumb-tree">
+							<li><a href="#">Home</a></li>
+							<li><a href="#">Book</a></li>							
+						</ul>
+					</div>
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /BREADCRUMB -->
+
+<!-- SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				
+				<!-- row -->
+				<div class="row">
+					<!-- ASIDE -->
+					<div id="aside" class="col-md-3">
+						<!-- aside Widget -->
+						<div class="aside">
+							<h3 class="aside-title">Danh mục</h3>
+							<div class="checkbox-filter">
+
+								<div class="input-checkbox">
+									<input type="checkbox" id="category-1">
+									<label for="category-1">
+										<span></span>
+										Sách Kỹ Năng Sống
+										<small>(16)</small>
+									</label>
+								</div>
+
+								<div class="input-checkbox">
+									<input type="checkbox" id="category-2">
+									<label for="category-2">
+										<span></span>
+										Sách Kỹ Năng Sống
+										<small>(740)</small>
+									</label>
+								</div>
+
+								<div class="input-checkbox">
+									<input type="checkbox" id="category-3">
+									<label for="category-3">
+										<span></span>
+										Sách Kỹ Năng Sống
+										<small>(1450)</small>
+									</label>
+								</div>
+
+								<div class="input-checkbox">
+									<input type="checkbox" id="category-4">
+									<label for="category-4">
+										<span></span>
+										Sách Kỹ Năng Sống
+										<small>(578)</small>
+									</label>
+								</div>
+
+								<div class="input-checkbox">
+									<input type="checkbox" id="category-5">
+									<label for="category-5">
+										<span></span>
+										Sách Kỹ Năng Sống
+										<small>(120)</small>
+									</label>
+								</div>
+
+								<div class="input-checkbox">
+									<input type="checkbox" id="category-6">
+									<label for="category-6">
+										<span></span>
+										Sách Kỹ Năng Sống
+										<small>(740)</small>
+									</label>
+								</div>
+							</div>
+						</div>
+						<!-- /aside Widget -->
+
+						<!-- aside Widget -->
+						<div class="aside">
+							<h3 class="aside-title">Giá</h3>
+							<div class="price-filter">
+								<div id="price-slider"></div>
+								<div class="input-number price-min">
+									<input id="price-min" type="number">
+									<span class="qty-up">+</span>
+									<span class="qty-down">-</span>
+								</div>
+								<span>-</span>
+								<div class="input-number price-max">
+									<input id="price-max" type="number">
+									<span class="qty-up">+</span>
+									<span class="qty-down">-</span>
+								</div>
+							</div>
+						</div>
+						<!-- /aside Widget -->
+
+						<!-- aside Widget -->
+						<div class="aside">
+							<h3 class="aside-title">Nhà cung cấp</h3>
+							<div class="checkbox-filter">
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-1">
+									<label for="brand-1">
+										<span></span>
+										Kim đồng
+										<small>(578)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-2">
+									<label for="brand-2">
+										<span></span>
+										Kim đồng
+										<small>(125)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-3">
+									<label for="brand-3">
+										<span></span>
+										Kim đồng
+										<small>(755)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-4">
+									<label for="brand-4">
+										<span></span>
+										Kim đồng
+										<small>(578)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-5">
+									<label for="brand-5">
+										<span></span>
+										Kim đồng
+										<small>(125)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-6">
+									<label for="brand-6">
+										<span></span>
+										Kim đồng
+										<small>(755)</small>
+									</label>
+								</div>
+							</div>
+						</div>
+						<!-- /aside Widget -->
+						<!-- aside Widget -->
+						<div class="aside">
+							<h3 class="aside-title">Tác giả</h3>
+							<div class="checkbox-filter">
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-1">
+									<label for="brand-1">
+										<span></span>
+										Kim đồng
+										<small>(578)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-2">
+									<label for="brand-2">
+										<span></span>
+										Kim đồng
+										<small>(125)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-3">
+									<label for="brand-3">
+										<span></span>
+										Kim đồng
+										<small>(755)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-4">
+									<label for="brand-4">
+										<span></span>
+										Kim đồng
+										<small>(578)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-5">
+									<label for="brand-5">
+										<span></span>
+										Kim đồng
+										<small>(125)</small>
+									</label>
+								</div>
+								<div class="input-checkbox">
+									<input type="checkbox" id="brand-6">
+									<label for="brand-6">
+										<span></span>
+										Kim đồng
+										<small>(755)</small>
+									</label>
+								</div>
+							</div>
+						</div>
+
+						<!-- aside Widget -->
+						<div class="aside">
+							<h3 class="aside-title">Sách được mua nhiều nhất</h3>
+							<div class="product-widget">
+								<div class="product-img">
+									<img src="./img/product01.png" alt="">
+								</div>
+								<div class="product-body">
+									<p class="product-category">Category</p>
+									<h3 class="product-name"><a href="#">product name goes here</a></h3>
+									<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+								</div>
+							</div>
+
+							<div class="product-widget">
+								<div class="product-img">
+									<img src="./img/product02.png" alt="">
+								</div>
+								<div class="product-body">
+									<p class="product-category">Category</p>
+									<h3 class="product-name"><a href="#">product name goes here</a></h3>
+									<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+								</div>
+							</div>
+
+							<div class="product-widget">
+								<div class="product-img">
+									<img src="./img/product03.png" alt="">
+								</div>
+								<div class="product-body">
+									<p class="product-category">Category</p>
+									<h3 class="product-name"><a href="#">product name goes here</a></h3>
+									<h4 class="product-price">$980.00 <del class="product-old-price">$990.00</del></h4>
+								</div>
+							</div>
+						</div>
+						<!-- /aside Widget -->
+					</div>
+					<!-- /ASIDE -->
+
+					<!-- STORE -->
+					<div id="store" class="col-md-9">
+						<!-- store top filter -->
+						<div class="store-filter clearfix">
+							<div class="store-sort">
+								<label>
+									Sắp xếp theo:
+									<select class="input-select">
+										<option value="0">Giá cao nhất</option>
+										<option value="1">Giá thấp nhẩt</option>
+										<option value="1">Bán nhiều nhất</option>
+
+									</select>
+								</label>
+
+								<label>
+									Hiển thị:
+									<select class="input-select">
+										<option value="0">20</option>
+										<option value="1">50</option>
+									</select>
+								</label>
+							</div>
+							<ul class="store-grid">
+								Tìm thấy (123) sản phẩm
+							</ul>
+						</div>
+						<!-- /store top filter -->
+						@if(@ViewBag.TextSearch != null){
+						<h4> 
+							@ViewBag.TextSearch
+					
+						</h4>
+				
+							}
+						<!-- store products -->
+						<s class="row">
+							<!-- product -->
+							@foreach( var item in Model)
+							{
+
+							
+							<div class="col-md-4 col-xs-6">
+								<div class="product">
+									<div class="product-img">
+										<img src="~/img/product01.png" alt="">
+										<div class="product-label">
+											<span class="sale">-30%</span>
+											<span class="new">NEW</span>
+										</div>
+									</div>
+									<div class="product-body">
+										<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+										<h3 class="product-name"><a href="#">@item.sanPhams.TenSanPham</a></h3>
+										<h4 class="product-price">@item.sanPhams.GiaBan <del class="product-old-price">$990.00</del></h4>
+									
+										<div class="product-btns">
+										
+											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
+										</div>
+									</div>
+									<div class="add-to-cart">
+										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+									</div>
+								</div>
+							</div>
+							<!-- /product -->
+							}
+
+							
+						</s>
+						<!-- /store products -->
+
+						<!-- store bottom filter -->
+						<div class="store-filter clearfix">
+							<span class="store-qty">Hiển thị 20-100 sản phẩm</span>
+							<ul class="store-pagination">
+								<li class="active">1</li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+							</ul>
+						</div>
+						<!-- /store bottom filter -->
+					</div>
+					<!-- /STORE -->
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->
