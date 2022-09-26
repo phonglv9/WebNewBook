@@ -1,60 +1,43 @@
-﻿	<!-- SECTION -->
+﻿@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@using WebNewBook.API.ModelsAPI
+@model List<HomeVM>
+
+<!-- SECTION -->
 		<div class="section">
 		
+
 			<!-- container -->
 			<div class="container">
-				<h3 class="title">Thể loại</h3>
+				
+				<h3 class="title">
+					Thể loại </h3>
 				<!-- row -->
 				<div class="row">
 					<!-- shop -->
+					@foreach (var item in Model){			
 					<div class="col-md-4 col-xs-6">
 						<div class="shop">
 							<div class="shop-img">
 								<img src="./img/shop01.png">
 							</div>
 							<div class="shop-body">
-								<h3>Sách<br>Kinh tế</h3>
+								<h3>@item.theLoai.TenTL<br></h3>
 								<a href="#" class="cta-btn">Mua ngay <i class="fa fa-arrow-circle-right"></i></a>
 							</div>
 						</div>
 					</div>
+						}
 					<!-- /shop -->
-
-					<!-- shop -->
-					<div class="col-md-4 col-xs-6">
-						<div class="shop">
-							<div class="shop-img">
-								<img src="./img/shop03.png" alt="">
-							</div>
-							<div class="shop-body">
-								<h3>Sách<br>Kỹ năng sống</h3>
-								<a href="#" class="cta-btn">Mua ngay <i class="fa fa-arrow-circle-right"></i></a>
-							</div>
-						</div>
-					</div>
-					<!-- /shop -->
-
-					<!-- shop -->
-					<div class="col-md-4 col-xs-6">
-						<div class="shop">
-							<div class="shop-img">
-								<img src="./img/shop02.png" alt="">
-							</div>
-							<div class="shop-body">
-								<h3>Sách<br>Truyện tranh</h3>
-								<a href="#" class="cta-btn">Mua ngay<i class="fa fa-arrow-circle-right"></i></a>
-							</div>
-						</div>
-					</div>
-					<!-- /shop -->
+					
 				</div>
 				<!-- /row -->
 			</div>
 			<!-- /container -->
 		</div>
 		<!-- /SECTION -->
-
-
 		<div class="section">
 			<!-- container -->
 			<div class="container">
@@ -81,16 +64,20 @@
 								<div class="products-tabs">
 									<!-- tab -->
 									<div id="tab1" class="tab-pane fade in active">
+											
 										<div class="products-slick" data-nav="#slick-nav-1">
 											<!-- product -->
+											@foreach (var item in Model)
+											{		
+										
 											<div class="product">
 												<div class="product-img">
-													<img src="./img/product01.png" alt="">
+													<img src="./img/product01.png"  alt="">
 												</div>
 												<div class="product-body">
-													<p class="product-category">Category</p>
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"> 90.000 <del class="product-old-price"> 150.00</del></h4>
+													<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+													<h3 class="product-name"><a href="#">@item.sanPhams.TenSanPham</a></h3>
+													<h4 class="product-price"> @item.sanPhams.GiaBan <del class="product-old-price"> @item.sanPhams.GiaBan</del></h4>
 												
 													<div class="product-btns">
 													
@@ -101,84 +88,11 @@
 													<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
 												</div>
 											</div>
-											<!-- product -->
-											<div class="product">
-												<div class="product-img">
-													<img src="./img/product01.png" alt="">
-												</div>
-												<div class="product-body">
-													<p class="product-category">Category</p>
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-												
-													<div class="product-btns">
-													
-														<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
-													</div>
-												</div>
-												<div class="add-to-cart">
-													<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-												</div>
-											</div>
-											<!-- product -->
-											<div class="product">
-												<div class="product-img">
-													<img src="./img/product01.png" alt="">
-												</div>
-												<div class="product-body">
-													<p class="product-category">Category</p>
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-												
-													<div class="product-btns">
-													
-														<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
-													</div>
-												</div>
-												<div class="add-to-cart">
-													<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-												</div>
-											</div>
-											<!-- product -->
-											<div class="product">
-												<div class="product-img">
-													<img src="./img/product01.png" alt="">
-												</div>
-												<div class="product-body">
-													<p class="product-category">Category</p>
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-												
-													<div class="product-btns">
-													
-														<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
-													</div>
-												</div>
-												<div class="add-to-cart">
-													<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-												</div>
-											</div>
-											<!-- product -->
-											<div class="product">
-												<div class="product-img">
-													<img src="./img/product01.png" alt="">
-												</div>
-												<div class="product-body">
-													<p class="product-category">Category</p>
-													<h3 class="product-name"><a href="#">product name goes here</a></h3>
-													<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-												
-													<div class="product-btns">
-													
-														<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
-													</div>
-												</div>
-												<div class="add-to-cart">
-													<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-												</div>
-											</div>
-											<!-- /product -->
+											}
+											
+											<!-- product /-->
 										</div>
+										
 										<div id="slick-nav-1" class="products-slick-nav"></div>
 									</div>
 									<!-- /tab -->
@@ -330,6 +244,80 @@
 			<!-- /container -->
 		</div>
 		<!-- /SECTION -->
+				<!-- /SECTION -->
+		<div class="section">
+			<!-- container -->
+			<div class="container">
+				<!-- row -->
+				<div class="row">
+		
+					<!-- section title -->
+					<div class="col-md-12">
+						<div class="section-title">
+							<h3 class="title">Sách văn học</h3>
+							<div class="section-nav">
+								<ul class="section-tab-nav tab-nav">
+									<li class="active"><a data-toggle="tab" href="#tab1">Xem tất cả</a></li>
+		
+								</ul>
+							</div>
+						</div>
+					</div>
+					<!-- /section title -->
+
+						<!-- Products tab & slick -->
+						<div class="col-md-12">
+							<div class="row">
+								<div class="products-tabs">
+									<!-- tab -->
+									<div id="tab1" class="tab-pane fade in active">
+											
+										<div class="products-slick" data-nav="#slick-nav-3">
+											<!-- product -->
+											@foreach (var item in Model.Where(c=>c.danhMucSach.TenDanhMuc.Contains("Sách văn học")))
+											{														
+											<div class="product">
+												<div class="product-img">
+													<img src="./img/product01.png" alt="">
+												</div>
+												<div class="product-body">
+													<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+													<h3 class="product-name"><a href="#">@item.sanPhams.TenSanPham</a></h3>
+													<h4 class="product-price"> @item.sanPhams.GiaBan <del class="product-old-price"> @item.sanPhams.GiaBan</del></h4>
+												
+													<div class="product-btns">
+													
+														<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
+													</div>
+												</div>
+												<div class="add-to-cart">
+													<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+												</div>
+											</div>
+											}
+											
+											<!-- product /-->
+										</div>
+										
+										<div id="slick-nav-3" class="products-slick-nav"></div>
+									</div>
+									<!-- /tab -->
+								</div>
+							</div>
+						</div>
+						<!-- /Products tab & slick -->
+
+				</div>
+				<!-- /row -->
+			</div>
+			<!-- /container -->
+		</div>
+		<!-- /SECTION -->
+
+		
+
+
+
 		<!-- SECTION -->
 		<div class="section">
 			<!-- container -->
@@ -340,11 +328,11 @@
 						<div class="section-title">
 							<h4 class="title">Top selling</h4>
 							<div class="section-nav">
-								<div id="slick-nav-3" class="products-slick-nav"></div>
+								<div id="slick-nav-4" class="products-slick-nav"></div>
 							</div>
 						</div>
 		
-						<div class="products-widget-slick" data-nav="#slick-nav-3">
+						<div class="products-widget-slick" data-nav="#slick-nav-4">
 							<div>
 								<!-- product widget -->
 								<div class="product-widget">

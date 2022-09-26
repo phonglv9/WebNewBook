@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
@@ -12,18 +13,18 @@
 		<link href="https://fonts.googleapis.com/css?family=Montserrat:400,500,700" rel="stylesheet">
 
 
-		<link type="text/css" rel="stylesheet" href="~/css/bootstrap.min.css"/>
+		<link type="text/css" rel="stylesheet" href="~/css/bootstrap.min.css" asp-append-version="true" />
 
-		<link type="text/css" rel="stylesheet" href="~/css/slick.css"/>
-		<link type="text/css" rel="stylesheet" href="~/css/slick-theme.css"/>
-
-	
-		<link type="text/css" rel="stylesheet" href="~/css/nouislider.min.css"/>
-
-		<link rel="stylesheet" href="~/css/font-awesome.min.css">
+		<link type="text/css" rel="stylesheet" href="~/css/slick.css"asp-append-version="true" />
+		<link type="text/css" rel="stylesheet" href="~/css/slick-theme.css"asp-append-version="true" />
 
 	
-		<link type="text/css" rel="stylesheet" href="~/css/style.css"/>
+		<link type="text/css" rel="stylesheet" href="~/css/nouislider.min.css"asp-append-version="true" />
+
+		<link rel="stylesheet" href="~/css/font-awesome.min.css" asp-append-version="true" >
+
+	
+		<link type="text/css" rel="stylesheet" href="~/css/style.css"asp-append-version="true" />
 	
 	
 
@@ -68,14 +69,12 @@
 						<!-- SEARCH BAR -->
 						<div class="col-md-6">
 							<div class="header-search">
-								<form>
-									<select class="input-select">
-										<option value="0">Tất cả sách</option>
-										<option value="1">Category 01</option>
-										<option value="1">Category 02</option>
+								<form asp-controller="Home" asp-action="Product" method="get">
+									<select class="input-select" asp-items="@(new SelectList(@Model,"ID_DanhMuc","TenDanhMuc"))" name="iddanhmuc">
+										<option value="Tất cả sách">Tất cả sách</option>
 									</select>
-									<input class="input" placeholder="Search here">
-									<button class="search-btn" asp-controller="Home" asp-action="Store">Search</button>
+									<input class="input" name="search" placeholder="Nhập từ khóa để tìm kiếm">
+									<button class="search-btn" type="submit" >Tìm kiếm</button>
 								</form>
 							</div>
 						</div>
@@ -180,15 +179,13 @@
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
 						<li class="active"><a href="#">Trang chủ</a></li>
-						<li><a href="#">Sách bán chạy</a></li>
-						<li><a href="#">Sách quản lý kinh doanh</a></li>
-						<li><a href="#">Sách kinh tế</a></li>
-						<li><a href="#">Sách bán chạy</a></li>
-						<li><a href="#">Sách quản lý kinh doanh</a></li>
-						<li><a href="#">Sách kinh tế</a></li>
-						<li><a href="#">Sách bán chạy</a></li>
-						<li><a href="#">Sách quản lý kinh doanh</a></li>
-						<li><a href="#">Sách kinh tế</a></li>
+						@foreach (var item in ViewBag.TheLoai)
+					{
+						
+					
+						<li><a href="#">@item.TenTL</a></li>
+					}
+						
 					</ul>
 					<!-- /NAV -->
 				</div>

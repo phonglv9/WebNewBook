@@ -6,4 +6,17 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Admin\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WebNewBook.API\WebNewBook.API.csproj" />
+    <ProjectReference Include="..\WebNewBook.Model\WebNewBook.Model.csproj" />
+  </ItemGroup>
+
 </Project>
