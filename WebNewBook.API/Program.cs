@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using WebNewBook.API.Data;
+using WebNewBook.API.Repository.IService;
+using WebNewBook.API.Repository.Service;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,6 +12,9 @@ builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Sou
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddScoped<INhanVienService, NhanVienService>();
+builder.Services.AddScoped<IPhieuNhapService, PhieuNhapService>();
+builder.Services.AddScoped<ISanPhamService, SanPhamService>();
 
 var app = builder.Build();
 
