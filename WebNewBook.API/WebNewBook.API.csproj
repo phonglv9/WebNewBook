@@ -15,6 +15,15 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="Repository\IService\INhanVienService.cs" />
+    <Compile Include="Repository\IService\IPhieuNhapService.cs" />
+    <Compile Include="Repository\IService\ISanPhamService.cs" />
+    <Compile Include="Repository\Service\NhanVienService.cs" />
+    <Compile Include="Repository\Service\PhieuNhapService.cs" />
+    <Compile Include="Repository\Service\SanPhamService.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Abstractions" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="6.0.8" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="6.0.8">
@@ -32,5 +41,4 @@
   <ItemGroup>
     <ProjectReference Include="..\WebNewBook.Model\WebNewBook.Model.csproj" />
   </ItemGroup>
-
 </Project>
