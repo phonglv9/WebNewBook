@@ -29,7 +29,7 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddSanPhamAsync(SanPham sp, IEnumerable<string> Sachs)
+        public async Task<ActionResult> AddSanPhamAsync(SanPham sp, [FromRoute]IEnumerable<string> Sachs)
         {
             try
             {
