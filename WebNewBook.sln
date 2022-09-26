@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNewBook", "WebNewBook\WebNewBook.csproj", "{FA42699E-CCCE-454D-9896-055E916F8B95}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebNewBook", "WebNewBook\WebNewBook.csproj", "{FA42699E-CCCE-454D-9896-055E916F8B95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNewBook.API", "WebNewBook.API\WebNewBook.API.csproj", "{2AFC55C5-C81D-40F0-961E-66CAEEC45A9A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebNewBook.API", "WebNewBook.API\WebNewBook.API.csproj", "{2AFC55C5-C81D-40F0-961E-66CAEEC45A9A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebNewBook.Model", "WebNewBook.Model\WebNewBook.Model.csproj", "{3D3EA2AE-F991-4FF2-8D93-5125AA4F91A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebNewBook.Model", "WebNewBook.Model\WebNewBook.Model.csproj", "{3D3EA2AE-F991-4FF2-8D93-5125AA4F91A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
