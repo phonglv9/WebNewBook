@@ -1,0 +1,66 @@
+﻿@using WebNewBook.Model
+
+
+
+
+<!-- SECTION -->
+@model List<ViewHoadon>
+  
+
+
+    <div class="container">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Tables</h1>
+        <p class="mb-4">
+            DataTables is a third party plugin that is used to generate the demo table below.
+            For more information about DataTables, please visit the <a target="_blank"
+                                                                   href="https://datatables.net">official DataTables documentation</a>.
+        </p>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+            </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    
+                        <thead>
+                            <tr>
+                                <th>Tên khách hàng</th>
+                                <th>Tổng tiền </th>
+                                <th>Tên sản phẩm</th>
+                                <th>Ngày mua</th>
+                                <th>số lượng</th>
+
+                            </tr>
+                        </thead>
+                    @foreach (var a in Model)
+                    {
+                        <tbody>
+                            <tr>
+                                <td>@a.KhachHang.HoVaTen</td>
+                                <td>@a.hoaDon.TongTien</td>
+                                <td>@a.sanPham.TenSanPham</td>
+                                <td>@a.hoaDon.NgayMua</td>
+                                <td>@a.hoaDonCT.SoLuong</td>
+
+                            </tr>
+
+
+                        </tbody>
+                    }
+                    
+                </table>
+                @*@Html.PagedListPager(Model, page => Url.Action("Index", new { page }))*@
+              
+            </div>
+        </div>
+           
+        </div>
+
+    </div>
+
+	

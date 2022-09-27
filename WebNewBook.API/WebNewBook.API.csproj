@@ -25,8 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repository\IService\" />
-    <Folder Include="Repository\Service\" />
+    <Folder Include="Repository\Service\NewFolder\" />
   </ItemGroup>
 
 </Project>
