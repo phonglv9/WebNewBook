@@ -60,7 +60,7 @@
 						<div class="col-md-3">
 							<div class="header-logo">
 								<a href="#" class="logo">
-									<img src="./img/logo.png" width="130px" alt="">
+									<img src="~/img/logo.png" width="130px" alt="">
 								</a>
 							</div>
 						</div>
@@ -70,10 +70,13 @@
 						<div class="col-md-6">
 							<div class="header-search">
 								<form asp-controller="Home" asp-action="Product" method="get">
-									<select class="input-select" asp-items="@(new SelectList(@Model,"ID_DanhMuc","TenDanhMuc"))" name="iddanhmuc">
+								@if (ViewBag.DanhMuc != null)
+								{
+									<select class="input-select" asp-items="@(new SelectList((ViewBag.DanhMuc),"ID_DanhMuc","TenDanhMuc"))" name="iddanhmuc">
 										<option value="Tất cả sách">Tất cả sách</option>
 									</select>
-									<input class="input" name="search" placeholder="Nhập từ khóa để tìm kiếm">
+								}
+								<input class="input" name="search" placeholder="Nhập từ khóa để tìm kiếm">
 									<button class="search-btn" type="submit" >Tìm kiếm</button>
 								</form>
 							</div>
@@ -178,12 +181,14 @@
 				<div id="responsive-nav">
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
-						<li class="active"><a href="#">Trang chủ</a></li>
-						@foreach (var item in ViewBag.TheLoai)
+						<li class="active"><a href="/Home">Trang chủ</a></li>
+						<li class="active"><a href="@Url.Action("ProductDetail","Home")">Trang chủ admin</a></li>
+					@if(ViewBag.DanhMuc!= null)
+					@foreach (var item in ViewBag.DanhMuc)
 					{
-						
-					
-						<li><a href="#">@item.TenTL</a></li>
+
+						var idDM = item.ID_DanhMuc;
+						<li><a href="@Url.Action("Product", "Home", new { iddanhmuc = idDM})">@item.TenDanhMuc</a></li>
 					}
 						
 					</ul>
