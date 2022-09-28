@@ -1,0 +1,93 @@
+﻿@using WebNewBook.Model
+@model List<DanhMucSach>
+<!-- FOOTER -->
+<footer id="footer">
+	<!-- top footer -->
+	<div class="section">
+		<!-- container -->
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<div class="col-md-3 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-title">VỀ CHÚNG TÔI</h3>
+
+						<ul class="footer-links">
+							<li><a href="#"><i class="fa fa-map-marker"></i>322/95 Mỹ Đình, Nam Từ Liêm, Hà Nội</a></li>
+							<li><a href="#"><i class="fa fa-phone"></i>0332579815</a></li>
+							<li><a href="#"><i class="fa fa-envelope-o"></i>newshop2299@gmail.com</a></li>
+						</ul>
+					</div>
+				</div>
+
+				<div class="col-md-3 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-title">Danh mục</h3>
+						<ul class="footer-links">
+							@if (Model != null)
+								@foreach (var item in Model)
+								{
+
+									<li><a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})">@item.TenDanhMuc</a></li>
+
+								}
+						</ul>
+					</div>
+				</div>
+
+				<div class="clearfix visible-xs"></div>
+
+				<div class="col-md-3 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-title">Tài khoản của tôi</h3>
+						<ul class="footer-links">
+							<li><a href="#">Đăng nhập/Tạo mới tài khoản</a></li>
+							<li><a href="#">Thay đổi địa chỉ khách hàng</a></li>
+							<li><a href="#">Chi tiết tài khoản</a></li>
+							<li><a href="#">Lịch sử mua hàng</a></li>
+
+						</ul>
+					</div>
+				</div>
+
+
+
+				<div class="col-md-3 col-xs-6">
+					<div class="footer">
+						<h3 class="footer-title">HỖ TRỢ</h3>
+						<ul class="footer-links">
+							<li><a href="#">Chính sách đổi - trả - hoàn tiền</a></li>
+							<li><a href="#">Chính sách bảo hành - bồi hoàn</a></li>
+							<li><a href="#">Chính sách khách sỉ</a></li>
+							<li><a href="#">Phương thức thanh toán và xuất HĐ</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /top footer -->
+	<!-- bottom footer -->
+	<div id="bottom-footer" class="section">
+		<div class="container">
+			<!-- row -->
+			<div class="row">
+				<div class="col-md-12 text-center">
+					<ul class="footer-payments">
+					</ul>
+					<span class="copyright">
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+						Copyright &copy;<script>document.write(new Date().getFullYear());</script><i class="fa fa-heart-o" aria-hidden="true"></i> by UDPM_30
+						<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+					</span>
+				</div>
+			</div>
+			<!-- /row -->
+		</div>
+		<!-- /container -->
+	</div>
+	<!-- /bottom footer -->
+</footer>
+<!-- /FOOTER -->

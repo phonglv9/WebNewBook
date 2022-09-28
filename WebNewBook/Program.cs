@@ -1,8 +1,11 @@
 using WebNewBook.Models;
+using WebNewBook.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddTransient<IHeaderService,HeaderService>();
 
 var app = builder.Build();
 
