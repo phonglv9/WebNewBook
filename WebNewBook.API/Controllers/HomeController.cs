@@ -41,7 +41,8 @@ namespace WebNewBook.API.Controllers
         {
             return await _homeService.GetDanhMucs();
 
-        }    
+        }
+
 
 
     }

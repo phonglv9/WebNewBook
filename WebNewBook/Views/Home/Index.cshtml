@@ -17,19 +17,23 @@
 				<!-- row -->
 				<div class="row">
 					<!-- shop -->
-					@foreach (var item in Model){			
-					<div class="col-md-4 col-xs-6">
+			@if (ViewBag.TheLoai != null)
+			@foreach (var item in ViewBag.TheLoai)
+			{
+				<div class="col-md-4 col-xs-6">
 						<div class="shop">
 							<div class="shop-img">
 								<img src="./img/shop01.png">
 							</div>
 							<div class="shop-body">
-								<h3>@item.theLoai.TenTL<br></h3>
+								<h3>@item.TenTL<br></h3>
 								<a href="#" class="cta-btn">Mua ngay <i class="fa fa-arrow-circle-right"></i></a>
 							</div>
 						</div>
 					</div>
-						}
+						
+			
+			}
 					<!-- /shop -->
 					
 				</div>

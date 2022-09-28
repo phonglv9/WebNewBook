@@ -30,8 +30,8 @@ namespace WebNewBook.Controllers
             {
                 string jsonData = response.Content.ReadAsStringAsync().Result;
                 modelHome = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
-                //ViewBag.DanhMuc = modelHome.Select(c => c.danhMucSach).ToList();
-                //ViewBag.TheLoai = modelHome.Select(c => c.theLoai).ToList();
+                
+    
             };
             //TheLoai
             List<TheLoai> theLoais = new List<TheLoai>();
@@ -40,46 +40,27 @@ namespace WebNewBook.Controllers
             {
                 string jsonData = responseTL.Content.ReadAsStringAsync().Result;
                 theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
-                //ViewBag.DanhMuc = modelHome.Select(c => c.danhMucSach).ToList();
+
                 ViewBag.TheLoai = theLoais.ToList();
             };
-            //DanhMuc
-            List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
-            HttpResponseMessage responseDM = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
-            if (responseDM.IsSuccessStatusCode)
-            {
-                string jsonData = responseDM.Content.ReadAsStringAsync().Result;
-                danhMucSaches = JsonConvert.DeserializeObject<List<DanhMucSach>>(jsonData);
-                ViewBag.DanhMuc = danhMucSaches.ToList();
 
-            };
 
             return View(modelHome);
         }
         public async Task<IActionResult> Product(string search, string iddanhmuc)
         {
 
-            //TheLoai
-            List<TheLoai> theLoais = new List<TheLoai>();
-            HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;
+            //DanhMuc
+            List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
+            HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
             if (responseTL.IsSuccessStatusCode)
             {
                 string jsonData = responseTL.Content.ReadAsStringAsync().Result;
-                theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
-                //ViewBag.DanhMuc = modelHome.Select(c => c.danhMucSach).ToList();
-                ViewBag.TheLoai = theLoais.ToList();
-            };
-            //DanhMuc
-            List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
-            HttpResponseMessage responseDM = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
-            if (responseDM.IsSuccessStatusCode)
-            {
-                string jsonData = responseDM.Content.ReadAsStringAsync().Result;
                 danhMucSaches = JsonConvert.DeserializeObject<List<DanhMucSach>>(jsonData);
-                ViewBag.DanhMuc = danhMucSaches.ToList();
 
+                ViewBag.DanhMuc = danhMucSaches.ToList();
             };
-            
+
             //SanPham
 
             List<HomeVM> productStore = new List<HomeVM>();
