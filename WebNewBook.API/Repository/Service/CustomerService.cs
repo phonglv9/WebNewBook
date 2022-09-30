@@ -16,6 +16,8 @@ namespace WebNewBook.API.Repository.Service
 
         public async Task AddKhachHangAsync(KhachHang khachHang)
         {
+            khachHang.ID_KhachHang = Guid.NewGuid().ToString();
+            khachHang.TrangThai = 1;
             _dbcontext.Add(khachHang);
             await _dbcontext.SaveChangesAsync();
         }
@@ -33,12 +35,12 @@ namespace WebNewBook.API.Repository.Service
 
         public async Task<KhachHang?> GetKhachHangByIdAsync(string id)
         {
-            return await _dbcontext.KhachHangs.FirstOrDefaultAsync(c => c.ID_KhachHang == id) ?? null;
+            return await _dbcontext.KhachHangs.FirstOrDefaultAsync(c => c.ID_KhachHang == id && c.TrangThai==1) ?? null;
         }
 
         public async Task<IEnumerable<KhachHang>> GetKhachHangsAsync()
         {
-            return await _dbcontext.KhachHangs.ToListAsync();
+            return await _dbcontext.KhachHangs.Where(c=>c.TrangThai==1).ToListAsync();
         }
 
         public async Task UpdateKhachHangAsync(KhachHang khachHang)
