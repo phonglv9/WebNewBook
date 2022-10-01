@@ -16,7 +16,7 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<KhachHang>> GetNhanVienAsync()
+        public async Task<IEnumerable<KhachHang>> GetKkachHangAsync()
         {
             var custmer = await _customerService.GetKhachHangsAsync();
             return custmer;
@@ -30,7 +30,7 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddNhanVienAsync(KhachHang khachHang)
+        public async Task<ActionResult> AddKhachHangAsync(KhachHang khachHang)
         {
             try
             {
@@ -44,7 +44,7 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateNhanVienAsync(KhachHang khachHang)
+        public async Task<ActionResult> UpdateKhachHangAsync(KhachHang khachHang)
         {
             try
             {
@@ -57,8 +57,8 @@ namespace WebNewBook.API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeleteNhanVienAsync(string id)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> DeleteKhachHangAsync(string id)
         {
             try
             {
