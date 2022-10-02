@@ -10,9 +10,9 @@
     <div class="container " style="background-color: rgb(255, 255, 255);">
         <div class="py-3">
             <h6>
-                <form action="" class="row">
+                <form action="" class="row" >
                     <div class="col-5 mb-3">
-                        <input type="email" class="form-control" placeholder="Số điện thoại, Họ và tên,...">
+                        <input asp-action="Index" type="text" name="search" class="form-control" placeholder="Số điện thoại, Họ và tên,...">
                     </div>
                     <div class="col-5 mb-3">
                         <select class="form-select" aria-label="Default select example">
@@ -116,23 +116,26 @@
                                 <td>@x.NgaySinh.ToString("d/M/yyyy")</td>
                                 <td>@x.DiemTichLuy</td>
                                 <td>
-                                    <button data-bs-toggle="modal" data-bs-target="#updateCustomer" class="btn border bg-primary"><i class="fa-solid fa-pen"></i></button>
+                                    <button data-bs-toggle="modal" data-bs-target="#updateCustomer_@x.ID_KhachHang" class="btn border bg-primary"><i class="fa-solid fa-pen"></i></button>
                                 </td>
                                 <td>
-                                    <button class="btn border bg-danger"> <a style="color : white" asp-action="Delete"  asp-route-Id="@x.ID_KhachHang" > Delete</a> </button>
+                                    <button class="btn border bg-danger"> <a style="color : white" asp-action="Delete" asp-route-Id="@x.ID_KhachHang"> Delete</a> </button>
                                 </td>
 
-
-                                <div class="modal fade" id="updateCustomer" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                
+                                <div class="modal fade" id="updateCustomer_@x.ID_KhachHang" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
                                                 <h5 class="modal-title" id="staticBackdropLabel">Sửa thông tin khách hàng</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
-
+                                             <form asp-action="Update" >
                                             <div class="modal-body">
                                                 <input asp-for="ID_KhachHang" value="@x.ID_KhachHang" type="hidden">
+                                                <input asp-for="DiemTichLuy" value="@x.DiemTichLuy" type="hidden">
+                                                <input asp-for="MatKhau" value="@x.MatKhau" type="hidden">
+                                                <input asp-for="TrangThai" value="@x.TrangThai" type="hidden">
                                                 <div class="mb-3 row">
                                                     <label for="" class="col-sm-2 col-form-label">Họ tên</label>
                                                     <div class="col-sm-10">
@@ -160,14 +163,18 @@
                                                 <div class="mb-3 row">
                                                     <label for="" class="col-sm-2 col-form-label">Ngày sinh</label>
                                                     <div class="col-sm-10">
-                                                        <input asp-for="NgaySinh" value="@x.NgaySinh" type="date" class="form-control">
+                                                        <input asp-for="NgaySinh" value="@x.NgaySinh" type="text" class="form-control">
                                                     </div>
                                                 </div>
 
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Sửa tài khoản</button>
+                                                  
+                                                          <button type="submit" class="btn btn-primary">Sửa tài khoản</button>
+                                                   
+                                             
                                             </div>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

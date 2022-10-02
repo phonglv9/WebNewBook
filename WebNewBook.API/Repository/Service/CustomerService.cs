@@ -35,12 +35,14 @@ namespace WebNewBook.API.Repository.Service
 
         public async Task<KhachHang?> GetKhachHangByIdAsync(string id)
         {
-            return await _dbcontext.KhachHangs.FirstOrDefaultAsync(c => c.ID_KhachHang == id && c.TrangThai==1) ?? null;
+            return await _dbcontext.KhachHangs.FirstOrDefaultAsync(c => c.ID_KhachHang == id) ?? null;
         }
 
-        public async Task<IEnumerable<KhachHang>> GetKhachHangsAsync()
+        public async Task<IEnumerable<KhachHang>> GetKhachHangsAsync(string search)
         {
-            return await _dbcontext.KhachHangs.Where(c=>c.TrangThai==1).ToListAsync();
+            var model= await _dbcontext.KhachHangs.Where(c => c.TrangThai == 1 &&((!string.IsNullOrEmpty(search)? c.HoVaTen.ToLower().Contains(search) :true) || (!string.IsNullOrEmpty(search) ? c.Email.ToLower().Contains(search) : true) || (!string.IsNullOrEmpty(search) ? c.SDT.ToLower().Contains(search) : true)
+                                                                              )).ToListAsync();
+            return model;
         }
 
         public async Task UpdateKhachHangAsync(KhachHang khachHang)
