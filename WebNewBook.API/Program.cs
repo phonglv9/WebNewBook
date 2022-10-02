@@ -18,7 +18,7 @@ builder.Services.AddControllers(options =>
         ReferenceHandler = ReferenceHandler.Preserve,
     }));
 });
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-98PG69Q\\SQLEXPRESS;Initial Catalog=WebNewBook;User ID=cuonglvph13705;Password=123;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer(@"Data Source=LVP-09\LVP09;Initial Catalog=WebNewBook;User ID=LVP09;Password=Ph@16158;"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
