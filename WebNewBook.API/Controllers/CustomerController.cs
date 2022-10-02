@@ -16,9 +16,9 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<KhachHang>> GetKkachHangAsync()
+        public async Task<IEnumerable<KhachHang>> GetKkachHangAsync(string? search)
         {
-            var custmer = await _customerService.GetKhachHangsAsync();
+            var custmer = await _customerService.GetKhachHangsAsync(search);
             return custmer;
         }
 

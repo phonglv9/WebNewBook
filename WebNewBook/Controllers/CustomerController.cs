@@ -17,17 +17,17 @@ namespace WebNewBook.Controllers
 
 
         }
-        List<KhachHang> _GetKhachHang;
-        public async Task<IActionResult> Index()
+    
+        public async Task<IActionResult> Index(string search)
         {
-            _GetKhachHang = new List<KhachHang>();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Customer").Result;
+            List<KhachHang> GetKhachHang = new List<KhachHang>();
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Customer?search=" + search ).Result;
             if (response.IsSuccessStatusCode)
             {
                 string jsondata = response.Content.ReadAsStringAsync().Result;
-                 _GetKhachHang= JsonConvert.DeserializeObject<List<KhachHang>>(jsondata);
+                 GetKhachHang= JsonConvert.DeserializeObject<List<KhachHang>>(jsondata);
             }
-            ViewBag.lstKhachHang = _GetKhachHang;   
+            ViewBag.lstKhachHang = GetKhachHang;   
             return View();
         }
         public  async Task<IActionResult> Add(KhachHang khachang)
@@ -46,11 +46,23 @@ namespace WebNewBook.Controllers
             return RedirectToAction("Index");
         }
         
+        public async Task<IActionResult> Update(KhachHang khachHang)
+        {
+            StringContent content = new StringContent(JsonConvert.SerializeObject(khachHang), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/Customer", content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string apiResponse= await response.Content.ReadAsStringAsync();
+                khachHang = JsonConvert.DeserializeObject<KhachHang>(apiResponse);  
+            }
+           return RedirectToAction("Index");
+        }
+
         public async Task<IActionResult> Delete(string Id)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(Id));
             List<KhachHang> khachHangs = new List<KhachHang>();
-            HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/Customer",content).Result;
+            HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/Customer/"+Id,null).Result;
             if (response.IsSuccessStatusCode)
             {
                 string jsondata = response.Content.ReadAsStringAsync().Result;
