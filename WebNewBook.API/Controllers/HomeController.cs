@@ -24,10 +24,10 @@ namespace WebNewBook.API.Controllers
             return  await _homeService.GetHomVM();
 
         }
-        [HttpGet("HomeProduct")]
-        public async Task<List<HomeVM>> GetProuctHomes()
+        [HttpGet]
+        public async Task<List<HomeVM>> GetProuctHomes(string? search, string? iddanhmuc)
         {
-            return await _homeService.GetProductHome();
+            return await _homeService.GetProductHome(search,iddanhmuc);
 
         }
         [HttpGet("TheLoai")]

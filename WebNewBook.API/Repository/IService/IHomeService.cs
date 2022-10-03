@@ -7,7 +7,7 @@ namespace WebNewBook.API.Repository.IService
     public interface IHomeService
     {
         Task<List<HomeVM>> GetHomVM();
-        Task<List<HomeVM>> GetProductHome();
+        Task<List<HomeVM>> GetProductHome(string? search, string? iddanhmuc);
         Task<List<TheLoai>> GetTheLoais();
         Task<List<DanhMucSach>> GetDanhMucs();
 

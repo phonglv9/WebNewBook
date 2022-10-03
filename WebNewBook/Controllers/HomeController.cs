@@ -64,42 +64,43 @@ namespace WebNewBook.Controllers
             //SanPham
 
             List<HomeVM> productStore = new List<HomeVM>();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/HomeProduct").Result;
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/home?search="+search+"&iddanhmuc="+iddanhmuc).Result;
             if (response.IsSuccessStatusCode)
             {
                 string jsonData = response.Content.ReadAsStringAsync().Result;
                 productStore = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
             };
-            #region Tìm kiếm           
-            if (!String.IsNullOrEmpty(search)  && !(iddanhmuc == "Tất cả sách"))
-            {
-                productStore = productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc && c.sanPhams.TenSanPham.StartsWith(search)).ToList();
-                    if (productStore.Count == 0)
-                    {
-                       ViewBag.TextSearch = $"Không tìm thấy kết quả {search} trong danh mục"  ;
-                    }
-                    return View(productStore);              
+            
+            //#region Tìm kiếm           
+            //if (!String.IsNullOrEmpty(search)  && !(iddanhmuc == "Tất cả sách"))
+            //{
+            //    productStore = productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc && c.sanPhams.TenSanPham.StartsWith(search)).ToList();
+            //        if (productStore.Count == 0)
+            //        {
+            //           ViewBag.TextSearch = $"Không tìm thấy kết quả {search} trong danh mục"  ;
+            //        }
+            //        return View(productStore);              
                 
-            }
+            //}
            
-            if (!String.IsNullOrEmpty(search))
-              {
-                productStore = productStore.Where(c => c.sanPhams.TenSanPham.StartsWith(search)).ToList();
-                    if (productStore.Count == 0)
-                    {
-                        ViewBag.TextSearch = "Không tìm thấy kết quả " + search;
-                    }
-                    return View(productStore);
+            //if (!String.IsNullOrEmpty(search))
+            //  {
+            //    productStore = productStore.Where(c => c.sanPhams.TenSanPham.StartsWith(search)).ToList();
+            //        if (productStore.Count == 0)
+            //        {
+            //            ViewBag.TextSearch = "Không tìm thấy kết quả " + search;
+            //        }
+            //        return View(productStore);
 
-              }
+            //  }
                       
-            if (iddanhmuc != "Tất cả sách")
-            {
-                productStore = productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc).ToList();
-                return View(productStore);
+            //if (iddanhmuc != "Tất cả sách")
+            //{
+            //    productStore = productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc).ToList();
+            //    return View(productStore);
 
-            }
-            #endregion
+            //}
+            //#endregion
 
             #region FillterOderby
 
