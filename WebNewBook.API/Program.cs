@@ -19,7 +19,7 @@ builder.Services.AddControllers(options =>
     }));
 });
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer(@"Data Source=LVP-09\LVP09;Initial Catalog=WebNewBook;User ID=LVP09;Password=Ph@16158;"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-98PG69Q\\SQLEXPRESS;Initial Catalog=WebNewBook;Persist Security Info=True;User ID=cuonglvph13705;Password=123"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
