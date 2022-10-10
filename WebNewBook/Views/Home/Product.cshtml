@@ -1,9 +1,10 @@
-﻿@{
+﻿@model PaginatedList<WebNewBook.API.ModelsAPI.HomeVM>
+@{
     ViewBag.Title = "Product";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using WebNewBook.API.ModelsAPI
-@model List<HomeVM>
+
+
 
 
 
@@ -43,13 +44,13 @@
 								@foreach (var item in ViewBag.DanhMuc)
 								{					
 									<div class="input-checkbox">
-									<input type="checkbox" id="category-1">
+								
 									<label for="category-1">
-										<span></span>
-										 @item.TenDanhMuc
+										<a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})">@item.TenDanhMuc</a>
+										
 									<small>10</small>
 									</label>
-								</div>
+									</div>
 								}
 								</div>
 						
@@ -78,56 +79,22 @@
 
 						<!-- aside Widget -->
 						<div class="aside">
-							<h3 class="aside-title">Nhà cung cấp</h3>
+							<h3 class="aside-title">Thể loại</h3>
 							<div class="checkbox-filter">
+								@if (ViewBag.TheLoai != null)
+							@foreach (var item in ViewBag.TheLoai)
+							{
+							
+						
 								<div class="input-checkbox">
-									<input type="checkbox" id="brand-1">
+									
 									<label for="brand-1">
-										<span></span>
-										Kim đồng
+									<a href="@Url.Action("Product", "Home", new { idtheloai = item.ID_TheLoai})">@item.TenTL</a>
+										
 										<small>(578)</small>
 									</label>
 								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-2">
-									<label for="brand-2">
-										<span></span>
-										Kim đồng
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-3">
-									<label for="brand-3">
-										<span></span>
-										Kim đồng
-										<small>(755)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-4">
-									<label for="brand-4">
-										<span></span>
-										Kim đồng
-										<small>(578)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-5">
-									<label for="brand-5">
-										<span></span>
-										Kim đồng
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-6">
-									<label for="brand-6">
-										<span></span>
-										Kim đồng
-										<small>(755)</small>
-									</label>
-								</div>
+								}
 							</div>
 						</div>
 						<!-- /aside Widget -->
@@ -135,54 +102,19 @@
 						<div class="aside">
 							<h3 class="aside-title">Tác giả</h3>
 							<div class="checkbox-filter">
+							@if (ViewBag.TacGia != null)
+							@foreach (var item in ViewBag.TacGia)
+							{
+							
+						
 								<div class="input-checkbox">
-									<input type="checkbox" id="brand-1">
-									<label for="brand-1">
-										<span></span>
-										Kim đồng
-										<small>(578)</small>
-									</label>
+											
+								<label for="brand-6">
+										<a href="@Url.Action("Product", "Home", new { idtacgia = item.ID_TacGia})">@item.HoVaTen</a>
+												<small>(755)</small>
+								</label>
 								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-2">
-									<label for="brand-2">
-										<span></span>
-										Kim đồng
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-3">
-									<label for="brand-3">
-										<span></span>
-										Kim đồng
-										<small>(755)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-4">
-									<label for="brand-4">
-										<span></span>
-										Kim đồng
-										<small>(578)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-5">
-									<label for="brand-5">
-										<span></span>
-										Kim đồng
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-6">
-									<label for="brand-6">
-										<span></span>
-										Kim đồng
-										<small>(755)</small>
-									</label>
-								</div>
+							}
 							</div>
 						</div>
 
@@ -264,6 +196,7 @@
 						<!-- store products -->
 						<s class="row">
 							<!-- product -->
+							
 							@foreach( var item in Model)
 							{
 
@@ -298,16 +231,62 @@
 							
 						</s>
 						<!-- /store products -->
-
+				@{
+					var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+					var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+					
+				}
+				
+				
+				
 						<!-- store bottom filter -->
 						<div class="store-filter clearfix">
 							<span class="store-qty">Hiển thị 20-100 sản phẩm</span>
 							<ul class="store-pagination">
-								<li class="active">1</li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+								@if(Model.HasPreviousPage){
+								<li>
+
+									<a asp-action="Product"
+									   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+									   asp-route-pageNumber="@(Model.PageIndex - 1)"
+									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
+									   class="@prevDisabled">
+										<i class="fa fa-angle-left"></i>
+									</a>
+								</li>
+								}
+						@for (var pagex = Model.PageIndex;pagex <= Model.TotalPages  ; pagex++)
+						{
+
+							<li class=" @(@pagex == Model.PageIndex ?"active":"")">
+								@if (pagex != Model.PageIndex)
+								{
+									<a asp-action="Product"
+									   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+									  asp-route-pageNumber="@pagex"
+									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]">
+										@pagex
+									</a>
+								}else{
+									<a>@pagex</a>
+								}
+
+								
+							</li>
+								
+						}
+								@if(Model.HasNextPage){
+								<li>
+							
+									<a asp-action="Product"
+									   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+									   asp-route-pageNumber="@(Model.PageIndex + 1)"
+									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
+									   class="@nextDisabled">
+										<i class="fa fa-angle-right"></i>
+									</a>
+								</li>
+								}
 							</ul>
 						</div>
 						<!-- /store bottom filter -->

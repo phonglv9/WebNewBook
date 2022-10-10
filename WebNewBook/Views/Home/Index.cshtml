@@ -2,8 +2,7 @@
     ViewBag.Title = "Home Page";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using WebNewBook.API.ModelsAPI
-@model List<HomeVM>
+@model IEnumerable<WebNewBook.API.ModelsAPI.HomeVM>
 
 <!-- SECTION -->
 		<div class="section">
@@ -248,7 +247,8 @@
 			<!-- /container -->
 		</div>
 		<!-- /SECTION -->
-				<!-- /SECTION -->
+		@if ( ViewBag.DanhMuc != null)
+		@foreach(var itemDM in ViewBag.DanhMuc){
 		<div class="section">
 			<!-- container -->
 			<div class="container">
@@ -258,7 +258,7 @@
 					<!-- section title -->
 					<div class="col-md-12">
 						<div class="section-title">
-							<h3 class="title">Sách văn học</h3>
+							<h3 class="title">@itemDM.TenDanhMuc</h3>
 							<div class="section-nav">
 								<ul class="section-tab-nav tab-nav">
 									<li class="active"><a data-toggle="tab" href="#tab1">Xem tất cả</a></li>
@@ -278,7 +278,7 @@
 											
 										<div class="products-slick" data-nav="#slick-nav-3">
 											<!-- product -->
-											@foreach (var item in Model)
+											@foreach (var item in Model.Where(c=>c.danhMucSach.ID_DanhMuc == itemDM.ID_DanhMuc))
 											{														
 											<div class="product">
 												<div class="product-img">
@@ -317,6 +317,7 @@
 			<!-- /container -->
 		</div>
 		<!-- /SECTION -->
+	}
 
 		
 
