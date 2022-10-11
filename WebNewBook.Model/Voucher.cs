@@ -11,7 +11,7 @@ namespace WebNewBook.Model
     public class Voucher
     {
         [Key]
-        [Required]
+     
         public string Id { get; set; }
         public DateTime Createdate { get; set; }
         public string TenPhatHanh { get; set; }
@@ -19,7 +19,7 @@ namespace WebNewBook.Model
         public DateTime EndDate { get; set; }
         public double MenhGia { get; set; }
         public double MenhGiaDieuKien { get; set; }
-        public string GhiChu { get; set; }
+        public string GhiChu { get; set; } = String.Empty;
         public int TrangThai { get; set; }
         [ForeignKey("NhanVien")]
         public string MaNhanVien { get; set; }
