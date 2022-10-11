@@ -12,28 +12,28 @@ namespace WebNewBook.API.Controllers
     [ApiController]
     public class VouCherController : ControllerBase
     {
-        private readonly IVoucher _voucher;
+        private readonly IVoucherService _voucher;
 
-        public VouCherController(IVoucher voucher)
+        public VouCherController(IVoucherService voucher)
         {
             _voucher = voucher;
         }
         [HttpGet]
-        public async Task<IEnumerable<VoucherCT>> GetVoucherAsync()
+        public async Task<IEnumerable<Voucher>> GetVoucherAsync()
         {
             var voucher = await _voucher.GetVouCherAsync();
             return voucher;
         }
 
         [HttpGet("{id}")]
-        public async Task<VoucherCT?> GetVoucherByIdAsync(string id)
+        public async Task<Voucher?> GetVoucherByIdAsync(string id)
         {
             var voucher = await _voucher.GetVouCherByIdAsync(id);
             return voucher;
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddVoucherAsync(VoucherCT phieuGiamGia)
+        public async Task<ActionResult> AddVoucherAsync(Voucher phieuGiamGia)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateVoucherAsync(VoucherCT phieuGiamGia)
+        public async Task<ActionResult> UpdateVoucherAsync(Voucher phieuGiamGia)
         {
             try
             {
