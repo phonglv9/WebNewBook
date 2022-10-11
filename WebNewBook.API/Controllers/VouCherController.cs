@@ -33,11 +33,11 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddVoucherAsync(Voucher phieuGiamGia)
+        public async Task<ActionResult> AddVoucherAsync(Voucher voucher)
         {
             try
             {
-                await _voucher.AddVouCherAsync(phieuGiamGia);
+                await _voucher.AddVouCherAsync(voucher);
                 return Ok();
             }
             catch (Exception e)
@@ -47,11 +47,11 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateVoucherAsync(Voucher phieuGiamGia)
+        public async Task<ActionResult> UpdateVoucherAsync(Voucher voucher)
         {
             try
             {
-                await _voucher.UpdateVouCherAsync(phieuGiamGia);
+                await _voucher.UpdateVouCherAsync(voucher);
                 return Ok();
             }
             catch (Exception e)
