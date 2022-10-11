@@ -106,11 +106,11 @@ namespace WebNewBook.Controllers
                 productStore = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
             };
 
-           
+
 
 
             #endregion
-
+           
             ViewData["CurrentSort"] = sortOrder;
             ViewData["CurrentFilter"] = search;
             ViewData["IdDanhMuc"] = iddanhmuc;
@@ -119,7 +119,7 @@ namespace WebNewBook.Controllers
             
             if (pageSize == 0)
             {
-                pageSize = 20;
+                pageSize = 15;
             }
             
             if (search != null)
@@ -130,6 +130,7 @@ namespace WebNewBook.Controllers
             {
                 search = currentFilter;
             }
+            ViewBag.PageSize = pageSize;
             switch (sortOrder)
             {
                 case "Bán chạy nhất":
@@ -181,6 +182,7 @@ namespace WebNewBook.Controllers
             {
                 if (iddanhmuc == "Tất cả sách")
                 {
+                    ViewBag.NumberProduct = productStore.Count();
                     return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
                 }
                 productStore = await productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc).ToListAsync();
@@ -244,7 +246,7 @@ namespace WebNewBook.Controllers
             ViewBag.NumberProduct = productStore.Count();
             return View(await PaginatedList<HomeVM>.CreateAsync( await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
         }
-        public async Task<IActionResult> ProductDetail()
+        public async Task<IActionResult> ProductDetail(string idProduct)
         {
             return View();
         }

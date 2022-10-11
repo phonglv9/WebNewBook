@@ -2,7 +2,22 @@
 @{
 	ViewBag.Title = "Product";
 	Layout = "~/Views/Shared/_Layout.cshtml";
-	 string a;
+	string page20 = "";
+	string page50 = "";
+	if (ViewBag.PageSize != null && ViewBag.PageSize ==20)
+	{
+		page20 = "warning";
+	}else{
+		page20 = "default";
+	}
+	if (ViewBag.PageSize != null && ViewBag.PageSize ==50)
+	{
+		page50 = "warning";
+	}else{
+		page50 = "default";
+	}
+
+
 }
 
 
@@ -170,11 +185,11 @@
 									<br />
 									<br />
 
-							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { sortOrder = "Bán chạy nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]})">Bán chạy nhất</a>
-							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { sortOrder = "Giá cao nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]  })">Giá cao nhất</a>
-							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { sortOrder = "Giá thấp nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"] ,idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"] })">Giá thấp nhẩt</a>
-							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { sortOrder = "A-Z",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"]  })">A-Z</a>
-							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { sortOrder = "Z-A",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"]  })">Z-A</a>
+							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "Bán chạy nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]})">Bán chạy nhất</a>
+							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "Giá cao nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]  })">Giá cao nhất</a>
+							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "Giá thấp nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"] ,idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"] })">Giá thấp nhẩt</a>
+							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "A-Z",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"]  })">A-Z</a>
+							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "Z-A",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"]  })">Z-A</a>
 								
 								@*<a asp-action="Product"
 							   asp-route-currentFilter="@ViewData["CurrentFilter"]"
@@ -214,12 +229,15 @@
 									Hiển thị:
 							<br />
 							<br />
-							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { pageSize= 20 ,sortOrder = @ViewData["CurrentSort"],search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]})">20</a>
-							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { pageSize= 50,sortOrder = @ViewData["CurrentSort"],search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]  })">50</a>
+							<a class="btn btn-@page20" href="@Url.Action("Product", "Home", new { pageSize= 20 ,sortOrder = @ViewData["CurrentSort"],search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]})">20</a>
+							<a class="btn btn-@page50" href="@Url.Action("Product", "Home", new { pageSize= 50,sortOrder = @ViewData["CurrentSort"],search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]  })">50</a>
 									@*<select class="input-select">
 										<option value="0">20</option>
 										<option value="1">50</option>
 									</select>*@
+							
+							
+
 								</label>
 							</div>
 							<ul class="store-grid">
@@ -227,6 +245,7 @@
 
 								@if (@ViewBag.NumberProduct != null)
 								{
+									
 								@ViewBag.NumberProduct
 								}
 								
@@ -236,6 +255,7 @@
 							</ul>
 						</div>
 						<!-- /store top filter -->
+						<div>
 							@if(@ViewBag.TextSearch != null){
 							<h4> 
 								@ViewBag.TextSearch					
@@ -258,9 +278,18 @@
 
 								<h4>@item</h4>
 								}
-									
+
 							}
-				
+							@if (ViewData["CurrentSort"] != null){
+							<a href="@Url.Action("Product", "Home", new {sortOrder = ""})" class="btn btn-warning">@ViewData["CurrentSort"] <i class="fa fa-times-circle" aria-hidden="true"></i> </a>
+					
+							}
+							@*@if (ViewBag.PageSize != null)
+							{
+								<a href="@Url.Action("Product", "Home", new {pageSize = 0})" class="btn btn-warning">@ViewBag.PageSize <i class="fa fa-times-circle" aria-hidden="true"></i> </a>
+							}*@
+							
+						</div>
 						<!-- store products -->
 						<s class="row">
 							<!-- product -->
@@ -309,7 +338,11 @@
 				
 						<!-- store bottom filter -->
 						<div class="store-filter clearfix">
-							<span class="store-qty">Hiển thị 20-100 sản phẩm</span>
+					<span class="store-qty">
+						Hiển thị @if (@ViewBag.PageSize != null)
+						{
+							@ViewBag.PageSize
+						} sản phẩm</span>
 							<ul class="store-pagination">
 								@if(Model.HasPreviousPage){
 								<li>
@@ -326,7 +359,7 @@
 									</a>
 								</li>
 								}
-						@for (var pagex = Model.PageIndex;pagex <= Model.TotalPages  ; pagex++)
+						@for (var pagex = 1;pagex <= Model.TotalPages; pagex++)
 						{
 
 							<li class=" @(@pagex == Model.PageIndex ?"active":"")">
@@ -340,10 +373,11 @@
 							   asp-route-idtheloai="@ViewData["IdTheLoai"]"
 									asp-route-sortOrder="@ViewData["CurrentSort"]"
 									>
+
+
+
+								@pagex 
 										
-
-
-										@pagex
 									</a>
 								}else{
 									<a>@pagex</a>
@@ -351,7 +385,7 @@
 
 								
 							</li>
-								
+							
 						}
 								@if(Model.HasNextPage){
 								<li>
