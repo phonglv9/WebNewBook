@@ -5,38 +5,55 @@ using Microsoft.EntityFrameworkCore;
 
 namespace WebNewBook.API.Repository.Service
 {
-    public class Voucher : IVoucherService
+    public class VoucherService : IVoucherService
     {
         private readonly dbcontext _dbcontext;
 
-        public Voucher(dbcontext dbcontext)
+        public VoucherService(dbcontext dbcontext)
         {
             _dbcontext = dbcontext;
         }
 
-        public Task AddVouCherAsync(Model.Voucher voucher)
+        public async Task AddVouCherAsync(Voucher voucher)
         {
-            throw new NotImplementedException();
+            string a;
+            Random random = new Random();
+            voucher.Id = "MPHVC" + random.Next().ToString();
+            voucher.Createdate = DateTime.Now;
+      
+            voucher.MaNhanVien = "NV01";       
+           voucher.TrangThai = 1;
+            _dbcontext.Add(voucher);
+            await _dbcontext.SaveChangesAsync();
         }
 
-        public Task DeleteVouCherAsync(string id)
+        public async Task DeleteVouCherAsync(string id)
         {
-            throw new NotImplementedException();
+            Voucher? voucher = _dbcontext.Vouchers.FirstOrDefault(c => c.Id == id) ?? null;
+            if (voucher != null)
+            {
+                voucher.TrangThai = 0;
+                 _dbcontext.Vouchers.Update(voucher);
+                await _dbcontext.SaveChangesAsync();
+            }
         }
 
-        public Task<IEnumerable<Model.Voucher>> GetVouCherAsync()
+  
+        public async Task<IEnumerable<Voucher>> GetVouCherAsync()
         {
-            throw new NotImplementedException();
+            return await _dbcontext.Vouchers.ToListAsync();
         }
 
-        public Task<Model.Voucher?> GetVouCherByIdAsync(string id)
+
+        public async Task<Voucher?> GetVouCherByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _dbcontext.Vouchers.FirstOrDefaultAsync(c => c.Id == id) ?? null;
         }
 
-        public Task UpdateVouCherAsync(Model.Voucher voucher)
+        public async Task UpdateVouCherAsync(Voucher voucher)
         {
-            throw new NotImplementedException();
+            _dbcontext.Update(voucher);
+            await _dbcontext.SaveChangesAsync();
         }
     }
 }
