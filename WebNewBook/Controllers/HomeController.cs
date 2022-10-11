@@ -59,7 +59,7 @@ namespace WebNewBook.Controllers
 
             return View(modelHome);
         }
-        public async Task<IActionResult> Product(string search, string currentFilter,string iddanhmuc,string idtheloai, string idtacgia, string sortOrder, int? pageNumber,double priceMin , double priceMax)
+        public async Task<IActionResult> Product(string search, string currentFilter,string iddanhmuc,string idtheloai, string idtacgia, string sortOrder, int? pageNumber, int pageSize,double priceMin , double priceMax)
             {
 
             #region Product
@@ -114,8 +114,14 @@ namespace WebNewBook.Controllers
             ViewData["CurrentSort"] = sortOrder;
             ViewData["CurrentFilter"] = search;
             ViewData["IdDanhMuc"] = iddanhmuc;
-       
-            int pageSize = 3;
+            ViewData["IdTheLoai"] = idtheloai;
+            ViewData["IdTacGia"] = idtacgia;
+            
+            if (pageSize == 0)
+            {
+                pageSize = 20;
+            }
+            
             if (search != null)
             {
                 pageNumber = 1;
@@ -124,7 +130,26 @@ namespace WebNewBook.Controllers
             {
                 search = currentFilter;
             }
-         
+            switch (sortOrder)
+            {
+                case "Bán chạy nhất":
+
+                    break;
+                case "Giá cao nhất":
+                    productStore = await productStore.OrderByDescending(c => c.sanPhams.GiaBan).ToListAsync();
+                    break;
+                case "Giá thấp nhất":
+                    productStore = await productStore.OrderBy(c => c.sanPhams.GiaBan).ToListAsync();
+                    break;
+                case "A-Z":
+                    productStore = await productStore.OrderBy(c => c.sanPhams.TenSanPham).ToListAsync();
+                    break;
+                case "Z-A":
+                    productStore = await productStore.OrderByDescending(c => c.sanPhams.TenSanPham).ToListAsync();
+                    break;
+
+            }
+
 
             #region Tìm kiếm           
             if (!String.IsNullOrEmpty(search) && !(iddanhmuc == "Tất cả sách"))
@@ -134,6 +159,7 @@ namespace WebNewBook.Controllers
                 {
                     ViewBag.TextSearch = $"Không tìm thấy kết quả {search} trong danh mục";
                 }
+                ViewBag.NumberProduct = productStore.Count();
                 return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
 
             }
@@ -141,21 +167,33 @@ namespace WebNewBook.Controllers
             if (!String.IsNullOrEmpty(search))
             {
                 productStore = await productStore.Where(c => c.sanPhams.TenSanPham.Contains(search)).ToListAsync();
-                if (productStore.Count == 0)
+                
+                if (productStore.Count == 0 || productStore == null)
                 {
                     ViewBag.TextSearch = "Không tìm thấy kết quả " + search;
                 }
+                ViewBag.NumberProduct = productStore.Count();
                 return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
 
             }
 
             if (!String.IsNullOrEmpty(iddanhmuc))
             {
-                if (iddanhmuc =="Tất cả sách")
+                if (iddanhmuc == "Tất cả sách")
                 {
                     return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
                 }
                 productStore = await productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc).ToListAsync();
+                if (productStore == null || productStore.Count == 0)
+                {
+                    ViewBag.ProductNull = "Không có sản phẩm";
+
+                }
+                else
+                {
+                    ViewBag.ProductSS = productStore.Select(c=>c.danhMucSach.TenDanhMuc).Distinct();
+                }
+                ViewBag.NumberProduct = productStore.Count();
                 return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
 
             }
@@ -163,39 +201,47 @@ namespace WebNewBook.Controllers
             {
              
                 productStore = await productStore.Where(c => c.theLoai.ID_TheLoai == idtheloai).ToListAsync();
+                if (productStore == null || productStore.Count == 0)
+                {
+                    ViewBag.ProductNull = "Không có sản phẩm";
+
+                }
+                else
+                {
+                    ViewBag.ProductSS =  productStore.Select(c => c.theLoai.TenTL).Distinct();
+                }
+                ViewBag.NumberProduct = productStore.Count();
                 return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+                
 
             }
             if (!String.IsNullOrEmpty(idtacgia))
             {
 
                 productStore = await productStore.Where(c => c.tacGia.ID_TacGia == idtacgia).ToListAsync();
+                if (productStore == null || productStore.Count == 0)
+                {
+                    ViewBag.ProductNull = "Không có sản phẩm";
+
+                }
+                else
+                {
+                    ViewBag.ProductSS =  productStore.Select(c => c.tacGia.HoVaTen).Distinct();
+                }
+                ViewBag.NumberProduct = productStore.Count();
                 return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+                
 
             }
 
-            switch (sortOrder)
-            {
-                //case "nameDesc":
-                //    students = students.OrderByDescending(s => s.LastName);
-                //    break;
-                //case "date":
-                //    students = students.OrderBy(s => s.EnrollmentDate);
-                //    break;
-                //case "dateDesc":
-                //    students = students.OrderByDescending(s => s.EnrollmentDate);
-                //    break;
-                //default:
-                //    students = students.OrderBy(s => s.LastName);
-                //    break;
-            }
+
             #endregion
 
             #region FillterOderby
 
             #endregion
 
-
+            ViewBag.NumberProduct = productStore.Count();
             return View(await PaginatedList<HomeVM>.CreateAsync( await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
         }
         public async Task<IActionResult> ProductDetail()

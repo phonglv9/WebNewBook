@@ -1,7 +1,8 @@
 ﻿@model PaginatedList<WebNewBook.API.ModelsAPI.HomeVM>
 @{
-    ViewBag.Title = "Product";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+	ViewBag.Title = "Product";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+	 string a;
 }
 
 
@@ -165,34 +166,101 @@
 							<div class="store-sort">
 								<label>
 									Sắp xếp theo:
-									<select class="input-select">
-										<option value="0">Giá cao nhất</option>
-										<option value="1">Giá thấp nhẩt</option>
-										<option value="1">Bán nhiều nhất</option>
 
+									<br />
+									<br />
+
+							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { sortOrder = "Bán chạy nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]})">Bán chạy nhất</a>
+							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { sortOrder = "Giá cao nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]  })">Giá cao nhất</a>
+							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { sortOrder = "Giá thấp nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"] ,idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"] })">Giá thấp nhẩt</a>
+							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { sortOrder = "A-Z",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"]  })">A-Z</a>
+							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { sortOrder = "Z-A",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"]  })">Z-A</a>
+								
+								@*<a asp-action="Product"
+							   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+							   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
+							   asp-route-sortOrder="@ViewData["CurrentSort"]"
+										
+								</a>*@
+									@*@using (Html.BeginForm("Product", "Home", FormMethod.Post)){
+									<select class="input-select" name="sortOrder">
+										@if (@ViewData["CurrentSort"] != null)
+									{
+										<option value="@ViewData["CurrentSort"]"> @ViewData["CurrentSort"]</option>
+									}
+																												
+									<option  value="Bán chạy nhất">Bán chạy nhất</option>
+									
+								
+									<option value="Giá cao nhất">Giá cao nhất</option>
+									
+									
+									<option value="Giá thấp nhẩt">Giá thấp nhẩt</option>
+								
+									
+									<option value="A-Z">A-Z</option>
+									
+									
+									<option value="Z-A">Z-A</option>
+									
 									</select>
+									<input class="btn btn-success" type="submit" value="Áp dụng" />
+
+
+									}*@
 								</label>
 
 								<label>
 									Hiển thị:
-									<select class="input-select">
+							<br />
+							<br />
+							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { pageSize= 20 ,sortOrder = @ViewData["CurrentSort"],search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]})">20</a>
+							<a class="btn btn-warning" href="@Url.Action("Product", "Home", new { pageSize= 50,sortOrder = @ViewData["CurrentSort"],search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]  })">50</a>
+									@*<select class="input-select">
 										<option value="0">20</option>
 										<option value="1">50</option>
-									</select>
+									</select>*@
 								</label>
 							</div>
 							<ul class="store-grid">
-								Tìm thấy (123) sản phẩm
+								Tìm thấy (
+
+								@if (@ViewBag.NumberProduct != null)
+								{
+								@ViewBag.NumberProduct
+								}
+								
+								
+								
+								) sản phẩm
 							</ul>
 						</div>
 						<!-- /store top filter -->
-						@if(@ViewBag.TextSearch != null){
-						<h4> 
-							@ViewBag.TextSearch
-					
-						</h4>
-				
+							@if(@ViewBag.TextSearch != null){
+							<h4> 
+								@ViewBag.TextSearch					
+							</h4>
 							}
+
+							@if (@ViewBag.ProductNull != null)
+							{
+
+							<h4>@ViewBag.ProductNull</h4>
+								
+							
+							}
+							@if (@ViewBag.ProductSS != null)
+							{
+								@foreach (var item in ViewBag.ProductSS)
+								{	
+						
+					
+
+								<h4>@item</h4>
+								}
+									
+							}
+				
 						<!-- store products -->
 						<s class="row">
 							<!-- product -->
@@ -245,11 +313,14 @@
 							<ul class="store-pagination">
 								@if(Model.HasPreviousPage){
 								<li>
-
+										
 									<a asp-action="Product"
 									   asp-route-currentFilter="@ViewData["CurrentFilter"]"
 									   asp-route-pageNumber="@(Model.PageIndex - 1)"
 									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
+									   asp-route-idtacgia="@ViewData["IdTacGia"]"
+									   asp-route-idtheloai="@ViewData["IdTheLoai"]"
+										asp-route-sortOrder="@ViewData["CurrentSort"]"
 									   class="@prevDisabled">
 										<i class="fa fa-angle-left"></i>
 									</a>
@@ -264,7 +335,14 @@
 									<a asp-action="Product"
 									   asp-route-currentFilter="@ViewData["CurrentFilter"]"
 									  asp-route-pageNumber="@pagex"
-									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]">
+									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
+							   asp-route-idtacgia="@ViewData["IdTacGia"]"
+							   asp-route-idtheloai="@ViewData["IdTheLoai"]"
+									asp-route-sortOrder="@ViewData["CurrentSort"]"
+									>
+										
+
+
 										@pagex
 									</a>
 								}else{
@@ -281,7 +359,10 @@
 									<a asp-action="Product"
 									   asp-route-currentFilter="@ViewData["CurrentFilter"]"
 									   asp-route-pageNumber="@(Model.PageIndex + 1)"
+							   asp-route-idtacgia="@ViewData["IdTacGia"]"
+							   asp-route-idtheloai="@ViewData["IdTheLoai"]"
 									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
+									 asp-route-sortOrder="@ViewData["CurrentSort"]"
 									   class="@nextDisabled">
 										<i class="fa fa-angle-right"></i>
 									</a>
