@@ -151,6 +151,16 @@ namespace WebNewBook.Controllers
 
             }
 
+            #region Fillter price
+            if (priceMax != 0 || priceMin != 0 )
+            {
+                productStore = await productStore.Where(c => c.sanPhams.GiaBan >= priceMin && c.sanPhams.GiaBan <= priceMax).ToListAsync();
+                ViewBag.NumberProduct = productStore.Count();
+                return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+            }
+           
+            #endregion
+
 
             #region Tìm kiếm           
             if (!String.IsNullOrEmpty(search) && !(iddanhmuc == "Tất cả sách"))
@@ -239,9 +249,6 @@ namespace WebNewBook.Controllers
 
             #endregion
 
-            #region FillterOderby
-
-            #endregion
 
             ViewBag.NumberProduct = productStore.Count();
             return View(await PaginatedList<HomeVM>.CreateAsync( await productStore.ToListAsync(), pageNumber ?? 1, pageSize));

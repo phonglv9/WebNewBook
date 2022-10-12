@@ -126,14 +126,54 @@
 	});
 
 	var priceInputMax = document.getElementById('price-max'),
-			priceInputMin = document.getElementById('price-min');
-
+	priceInputMin = document.getElementById('price-min');
+	var priceMin;
+	var priceMax;
+	/*var search = ""; var currentFilter = ""; var iddanhmuc = ""; var idtheloai = ""; var idtacgia = ""; var sortOrder = ""; var = 1; var pageSize = 2;*/
 	priceInputMax.addEventListener('change', function(){
-		updatePriceSlider($(this).parent() , this.value)
+		updatePriceSlider($(this).parent(), this.value);
+		
+		$.post(
+			 "/Home/Product",
+			{
+				priceMax: this.value,
+
+			})
+		//$.ajax({
+		//	type: "POST",
+		//	url: "/Home/Product",
+		//	data: priceMax,		
+		//	success: function () {
+		//		alert("Thành công");
+				
+
+
+
+		//	}
+		//});
 	});
 
 	priceInputMin.addEventListener('change', function(){
-		updatePriceSlider($(this).parent() , this.value)
+		updatePriceSlider($(this).parent(), this.value);
+		$.post(
+			"/Home/Product",
+			{
+				priceMin: this.value,
+
+			})
+		//$.ajax({
+		//	type: "POST",
+		//	url: "/Home/Product",
+		//	data: priceMin,
+
+		//	success: function () {
+		//		alert("Thành công");
+
+
+
+
+		//	}
+		//});
 	});
 
 	function updatePriceSlider(elem , value) {
@@ -162,6 +202,8 @@
 		priceSlider.noUiSlider.on('update', function( values, handle ) {
 			var value = values[handle];
 			handle ? priceInputMax.value = value : priceInputMin.value = value
+
+
 		});
 	}
 
