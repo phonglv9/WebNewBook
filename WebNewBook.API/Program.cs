@@ -18,12 +18,16 @@ builder.Services.AddControllers(options =>
         ReferenceHandler = ReferenceHandler.Preserve,
     }));
 });
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-98PG69Q\\SQLEXPRESS;Initial Catalog=WebNewBook;User ID=cuonglvph13705;Password=123;Connect Timeout=30;Encrypt=False;TrustServerCertificate=False;ApplicationIntent=ReadWrite;MultiSubnetFailover=False"));
+builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
+
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-KBU829B;Integrated Security=True;Database=WebNewBook"));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<INhanVienService, NhanVienService>();
+builder.Services.AddScoped<ICustomerService, CustomerService>();
+builder.Services.AddScoped<IVoucherService, VoucherService>();
 builder.Services.AddScoped<IPhieuNhapService, PhieuNhapService>();
 builder.Services.AddScoped<ISanPhamService, SanPhamService>();
 builder.Services.AddScoped<IHomeService, HomeService>();

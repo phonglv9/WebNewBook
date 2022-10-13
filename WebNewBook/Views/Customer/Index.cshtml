@@ -1,123 +1,225 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var lstKhachHang = ViewBag.lstKhachHang;
 }
+@using WebNewBook.Model
+@model KhachHang
 
- <div class="container py-3" style="background-color: #f1f1f1;">
-        <h3 style="font-weight: 700;">Danh sách khách hàng</h3>
-        <div class="container " style="background-color: rgb(255, 255, 255);" >   
-         <div  class="py-3" >
-          <h6>
-           <form action="" class="row">
-            <div class="col-5 mb-3" >
-                <input type="email" class="form-control" placeholder="Số điện thoại, Họ và tên,...">        
-              </div>
-              <div class="col-5 mb-3">
-                <select class="form-select" aria-label="Default select example">
-                    <option selected>Chọn trạng thái</option>
-                    <option value="1">Hoạt động</option>
-                    <option value="0">Không hoạt động</option>
-                   
-                  </select>
-              </div>
-              <div class="col-2">
-                <button type="submit"  class="btn btn-secondary">Tìm kiếm</button>
-              </div>
-              <p>10000 thành viên</p>
-              <div class="col-3">
-             <!-- Button trigger modal -->
+<div class="container py-3" style="background-color: #f1f1f1;">
+    <h3 style="font-weight: 700;">Danh sách khách hàng</h3>
+    <div class="container " style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <h6>
+                <form action="" class="row" >
+                    <div class="col-5 mb-3">
+                        <input asp-action="Index" type="text" name="search" class="form-control" placeholder="Số điện thoại, Họ và tên,...">
+                    </div>
+                    <div class="col-5 mb-3">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Chọn trạng thái</option>
+                            <option value="1">Hoạt động</option>
+                            <option value="0">Không hoạt động</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                    </div>
+                    <p> thành viên</p>
+                    <div class="col-3">
+                        <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
-                          <i class="fa-solid fa-address-book"></i> Thêm Khách hàng
+                            <i class="fa-solid fa-address-book"></i> Thêm Khách hàng
                         </button>
                         <!-- Modal -->
                         <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">Thêm tài khoản mới</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Thêm tài khoản mới</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3 row">
+                                            <label for="" class="col-sm-2 col-form-label">Họ tên</label>
+                                            <div class="col-sm-10">
+                                                <input asp-for="HoVaTen" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="" class="col-sm-2 col-form-label">Email</label>
+                                            <div class="col-sm-10">
+                                                <input asp-for="Email" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="" class="col-sm-2 col-form-label">SDT</label>
+                                            <div class="col-sm-10">
+                                                <input asp-for="SDT" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="" class="col-sm-2 col-form-label">Địa chỉ</label>
+                                            <div class="col-sm-10">
+                                                <input asp-for="DiaChi" type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="" class="col-sm-2 col-form-label">Ngày sinh</label>
+                                            <div class="col-sm-10">
+                                                <input asp-for="NgaySinh" type="date" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="mb-3 row">
+                                            <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+                                            <div class="col-sm-10">
+                                                <input asp-for="MatKhau" type="password" class="form-control" id="inputPassword">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" asp-action="Add" class="btn btn-primary">Thêm tài khoản</button>
+                                    </div>
                                 </div>
-                                <div class="modal-body">
-                                    <div class="mb-3 row">
-                                        <label for="" class="col-sm-2 col-form-label">Họ tên</label>
-                                        <div class="col-sm-10">
-                                          <input type="text"  class="form-control" >
-                                        </div>
-                                      </div>
-                                      <div class="mb-3 row">
-                                        <label for="" class="col-sm-2 col-form-label">Email</label>
-                                        <div class="col-sm-10">
-                                          <input type="text"  class="form-control" >
-                                        </div>
-                                      </div>
-                                      <div class="mb-3 row">
-                                        <label for="" class="col-sm-2 col-form-label">SDT</label>
-                                        <div class="col-sm-10">
-                                          <input type="text"  class="form-control" >
-                                        </div>
-                                      </div>
-                                      <div class="mb-3 row">
-                                        <label for="" class="col-sm-2 col-form-label">Địa chỉ</label>
-                                        <div class="col-sm-10">
-                                          <input type="text"  class="form-control" >
-                                        </div>
-                                      </div>
-                                      <div class="mb-3 row">
-                                        <label for="" class="col-sm-2 col-form-label">Ngày sinh</label>
-                                        <div class="col-sm-10">
-                                          <input type="date"  class="form-control" >
-                                        </div>
-                                      </div>
-                                      <div class="mb-3 row">
-                                        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-                                        <div class="col-sm-10">
-                                          <input type="password" class="form-control" id="inputPassword">
-                                        </div>
-                                      </div>
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-primary">Thêm tài khoản</button>
-                                </div>
-                            </div>
                             </div>
                         </div>
-              </div>
-           </form>   
-          </h6>
-         </div>
+                    </div>
+                </form>
+            </h6>
         </div>
-        <br>
-        <div class="container " style="background-color: rgb(255, 255, 255);" >   
-            <div  class="py-3" >
-             <p>
+    </div>
+    <br>
+    <div class="container " style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <p>
                 <table class="table">
                     <thead class="table-secondary">
                         <tr>
-                            <th scope="col">ID</th>
+
                             <th scope="col">Họ và tên</th>
                             <th scope="col">Email</th>
                             <th scope="col">Số điện thoại</th>
                             <th scope="col">Địa chỉ</th>
                             <th scope="col">Ngày Sinh</th>
                             <th scope="col">Điểm tích lũy</th>
-                            <th  colspan="2" style="text-align: center ;">Thao tác</th>
-                          </tr>
+                            <th colspan="2" style="text-align: center ;">Thao tác</th>
+                        </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td><button class="btn border bg-primary"><i class="fa-solid fa-pen"></i></button></td>
-                            <td><button class="btn border bg-danger"><i class="fa-solid fa-trash"></i></button></td>
-                          </tr>
+                        @foreach (var x in lstKhachHang)
+                        {
+                            <tr>
+
+                                <td>@x.HoVaTen</td>
+                                <td>@x.Email</td>
+                                <td>@x.SDT</td>
+                                <td>@x.DiaChi</td>
+                                <td>@x.NgaySinh.ToString("d/M/yyyy")</td>
+                                <td>@x.DiemTichLuy</td>
+                                <td>
+                                    <button data-bs-toggle="modal" data-bs-target="#updateCustomer_@x.ID_KhachHang" class="btn border bg-primary"><i class="fa-solid fa-pen"></i></button>
+                                </td>
+                                <td>
+                                    <button class="btn border bg-danger"> <a style="color : white" asp-action="Delete" asp-route-Id="@x.ID_KhachHang"> Delete</a> </button>
+                                </td>
+
+                                
+                                <div class="modal fade" id="updateCustomer_@x.ID_KhachHang" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Sửa thông tin khách hàng</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                             <form asp-action="Update" >
+                                            <div class="modal-body">
+                                                <input asp-for="ID_KhachHang" value="@x.ID_KhachHang" type="hidden">
+                                                <input asp-for="DiemTichLuy" value="@x.DiemTichLuy" type="hidden">
+                                                <input asp-for="MatKhau" value="@x.MatKhau" type="hidden">
+                                                <input asp-for="TrangThai" value="@x.TrangThai" type="hidden">
+                                                <div class="mb-3 row">
+                                                    <label for="" class="col-sm-2 col-form-label">Họ tên</label>
+                                                    <div class="col-sm-10">
+                                                        <input asp-for="HoVaTen" value="@x.HoVaTen" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="" class="col-sm-2 col-form-label">Email</label>
+                                                    <div class="col-sm-10">
+                                                        <input asp-for="Email" value="@x.Email" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="" class="col-sm-2 col-form-label">SDT</label>
+                                                    <div class="col-sm-10">
+                                                        <input asp-for="SDT" value="@x.SDT" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="" class="col-sm-2 col-form-label">Địa chỉ</label>
+                                                    <div class="col-sm-10">
+                                                        <input asp-for="DiaChi" value="@x.DiaChi" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="" class="col-sm-2 col-form-label">Ngày sinh</label>
+                                                    <div class="col-sm-10">
+                                                        <input asp-for="NgaySinh" value="@x.NgaySinh" type="text" class="form-control">
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                  
+                                                          <button type="submit" class="btn btn-primary">Sửa tài khoản</button>
+                                                   
+                                             
+                                            </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tr>
+
+
+                        }
+
+
                     </tbody>
-                  </table>
-                </p>
-            </div>
-           </div> 
+                </table>
+            </p>
+
+        </div>
     </div>
- 
+</div>
+@*<script>
+    function Add() {
+
+        var name = $("#HoVaTen").val();
+        var email = $("#Email")
+        var sdt = $("#SDT").val();
+        var diachi = $("#DiaChi").val();
+        var ngaysinh = $("#NgaySinh").val();
+        var pass = $("#password").val();
+
+        $.ajax({
+            url: "/Customer/Add",
+
+            data: {
+                HoVaTen: name,
+                Email: email,
+                SDT: sdt,
+                DiaChi: diachi,
+                NgaySinh: ngaysinh,
+                password: image
+            },
+            success: function(res) {
+                if (res != 1) {
+                    alert("Thêm thất bại")
+                }
+                if (res == 1) {
+                    alert("Thêm thành công")
+                }
+            }
+        })
+    }
+</script>*@

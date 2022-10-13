@@ -43,11 +43,13 @@
 							@if (Model != null)
 							{
 
+
 								<select class="input-select" asp-items="@(new SelectList(Model,"ID_DanhMuc","TenDanhMuc"))" name="iddanhmuc">
 									<option value="Tất cả sách">Tất cả sách</option>
+									
 								</select>
 							}
-							<input class="input" name="search" placeholder="Nhập từ khóa để tìm kiếm">
+							<input class="input" name="search" value="@ViewData["CurrentFilter"]" placeholder="Nhập từ khóa để tìm kiếm">
 							<button class="search-btn" type="submit">Tìm kiếm</button>
 						</form>
 					</div>
@@ -148,7 +150,7 @@
 			<!-- NAV -->
 			<ul class="main-nav nav navbar-nav">
 				<li class="active"><a href="/Home">Trang chủ</a></li>
-				<li class="active"><a href="@Url.Action("ProductDetail","Home")">Trang chủ admin</a></li>
+				
 				@if (Model != null)
 					@foreach (var item in Model)
 					{

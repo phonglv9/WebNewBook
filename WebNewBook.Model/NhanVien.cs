@@ -26,5 +26,6 @@ namespace WebNewBook.Model
         public bool Quyen { get; set; }
         public int TrangThai { get; set; }
         public virtual ICollection<PhieuNhap>? PhieuNhaps { get; set; }
+        public virtual ICollection<Voucher>? Vouchers { get; set; }
     }
 }

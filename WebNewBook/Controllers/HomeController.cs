@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Diagnostics;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.Models;
-using WebNewBook.ReadAPI;
+using WebNewBook.ViewModel;
+using X.PagedList;
 
 namespace WebNewBook.Controllers
 {
@@ -43,72 +45,231 @@ namespace WebNewBook.Controllers
 
                 ViewBag.TheLoai = theLoais.ToList();
             };
-
-
-            return View(modelHome);
-        }
-        public async Task<IActionResult> Product(string search, string iddanhmuc)
-        {
-
-            //DanhMuc
+            //danh muc
             List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
-            HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
-            if (responseTL.IsSuccessStatusCode)
+            HttpResponseMessage responseDM = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
+            if (responseDM.IsSuccessStatusCode)
             {
-                string jsonData = responseTL.Content.ReadAsStringAsync().Result;
+                string jsonData = responseDM.Content.ReadAsStringAsync().Result;
                 danhMucSaches = JsonConvert.DeserializeObject<List<DanhMucSach>>(jsonData);
 
                 ViewBag.DanhMuc = danhMucSaches.ToList();
             };
 
+
+            return View(modelHome);
+        }
+
+        public async Task<IActionResult> Product(string search, string currentFilter,string iddanhmuc,string idtheloai, string idtacgia, string sortOrder, int? pageNumber, int pageSize, double priceMin , double priceMax)
+                {
+
+            #region Product
+
+            
+            //DanhMuc
+            List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
+            HttpResponseMessage responseDM = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
+            if (responseDM.IsSuccessStatusCode)
+            {
+                string jsonData = responseDM.Content.ReadAsStringAsync().Result;
+                danhMucSaches = JsonConvert.DeserializeObject<List<DanhMucSach>>(jsonData);
+
+                ViewBag.DanhMuc = await danhMucSaches.ToListAsync();
+            };
+            //TheLoai
+            List<TheLoai> theLoais = new List<TheLoai>();
+            HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;
+            if (responseTL.IsSuccessStatusCode)
+            {
+                string jsonData = responseTL.Content.ReadAsStringAsync().Result;
+                theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
+
+                ViewBag.TheLoai = await theLoais.ToListAsync();
+            };
+            //TacGia
+            List<TacGia> tacGias = new List<TacGia>();
+            HttpResponseMessage responseTG = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TacGia").Result;
+            if (responseTL.IsSuccessStatusCode)
+            {
+                string jsonData = responseTG.Content.ReadAsStringAsync().Result;
+                tacGias = JsonConvert.DeserializeObject<List<TacGia>>(jsonData);
+
+                ViewBag.TacGia = await tacGias.ToListAsync();
+            };
+
             //SanPham
 
             List<HomeVM> productStore = new List<HomeVM>();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/HomeProduct").Result;
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/Product").Result;
             if (response.IsSuccessStatusCode)
             {
                 string jsonData = response.Content.ReadAsStringAsync().Result;
                 productStore = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
             };
-            #region Tìm kiếm           
-            if (!String.IsNullOrEmpty(search)  && !(iddanhmuc == "Tất cả sách"))
-            {
-                productStore = productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc && c.sanPhams.TenSanPham.StartsWith(search)).ToList();
-                    if (productStore.Count == 0)
-                    {
-                       ViewBag.TextSearch = $"Không tìm thấy kết quả {search} trong danh mục"  ;
-                    }
-                    return View(productStore);              
-                
-            }
+
+
+
+
+            #endregion
            
-            if (!String.IsNullOrEmpty(search))
-              {
-                productStore = productStore.Where(c => c.sanPhams.TenSanPham.StartsWith(search)).ToList();
-                    if (productStore.Count == 0)
-                    {
-                        ViewBag.TextSearch = "Không tìm thấy kết quả " + search;
-                    }
-                    return View(productStore);
+            ViewData["CurrentSort"] = sortOrder;
+            ViewData["CurrentFilter"] = search;
+            ViewData["IdDanhMuc"] = iddanhmuc;
+            ViewData["IdTheLoai"] = idtheloai;
+            ViewData["IdTacGia"] = idtacgia;
+           
+           
 
-              }
-                      
-            if (iddanhmuc != "Tất cả sách")
+
+            if (pageSize == 0)
             {
-                productStore = productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc).ToList();
-                return View(productStore);
+                pageSize = 20;
+            }
+            
+            if (search != null)
+            {
+                pageNumber = 1;
+            }
+            else
+            {
+                search = currentFilter;
+            }
+            if (priceMin > priceMax)
+            {
+                priceMax = priceMin;
+            }
+            ViewBag.PriceMax = priceMax;
+            ViewBag.PriceMin = priceMin;
+            ViewData["PageNumber"] = pageNumber;
+            ViewBag.PageSize = pageSize;
+            switch (sortOrder)
+            {
+                case "Bán chạy nhất":
+
+                    break;
+                case "Giá cao nhất":
+                    productStore = await productStore.OrderByDescending(c => c.sanPhams.GiaBan).ToListAsync();
+                    break;
+                case "Giá thấp nhất":
+                    productStore = await productStore.OrderBy(c => c.sanPhams.GiaBan).ToListAsync();
+                    break;
+                case "A-Z":
+                    productStore = await productStore.OrderBy(c => c.sanPhams.TenSanPham).ToListAsync();
+                    break;
+                case "Z-A":
+                    productStore = await productStore.OrderByDescending(c => c.sanPhams.TenSanPham).ToListAsync();
+                    break;
 
             }
+            #region Fillter price
+            if (priceMax != 0 || priceMin != 0)
+            {
+                productStore = await productStore.Where(c => c.sanPhams.GiaBan >= priceMin && c.sanPhams.GiaBan <= priceMax).ToListAsync();
+                ViewBag.NumberProduct = productStore.Count();
+               
+            }
+
             #endregion
 
-            #region FillterOderby
+
+          
+
+            #region Tìm kiếm           
+            if (!String.IsNullOrEmpty(search) && !(iddanhmuc == "Tất cả sách"))
+            {
+
+                productStore = await productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc && c.sanPhams.TenSanPham.Contains(search)).ToListAsync();
+                if (productStore.Count == 0)
+                {
+                    ViewBag.TextSearch = $"Không tìm thấy kết quả {search} trong danh mục";
+                }
+                ViewBag.NumberProduct = productStore.Count();
+                return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+
+            }
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                productStore = await productStore.Where(c => c.sanPhams.TenSanPham.Contains(search)).ToListAsync();
+                
+                if (productStore.Count == 0 || productStore == null)
+                {
+                    ViewBag.TextSearch = "Không tìm thấy kết quả " + search;
+                }
+
+                ViewBag.NumberProduct = productStore.Count();
+
+                return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+
+            }
+
+            if (!String.IsNullOrEmpty(iddanhmuc))
+            {
+                if (iddanhmuc == "Tất cả sách")
+                {
+                    ViewBag.NumberProduct = productStore.Count();
+                    return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+                }
+                productStore = await productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc).ToListAsync();
+                if (productStore == null || productStore.Count == 0)
+                {
+                    ViewBag.ProductNull = "Không có sản phẩm";
+
+                }
+                else
+                {
+                    ViewBag.ProductSS = productStore.Select(c=>c.danhMucSach.TenDanhMuc).Distinct();
+                }
+                ViewBag.NumberProduct = productStore.Count();
+                  
+                return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+
+            }
+            if (!String.IsNullOrEmpty(idtheloai))
+            {
+             
+                productStore = await productStore.Where(c => c.theLoai.ID_TheLoai == idtheloai).ToListAsync();
+                if (productStore == null || productStore.Count == 0)
+                {
+                    ViewBag.ProductNull = "Không có sản phẩm";
+
+                }
+                else
+                {
+                    ViewBag.ProductSS =  productStore.Select(c => c.theLoai.TenTL).Distinct();
+                }
+                ViewBag.NumberProduct = productStore.Count();
+                return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+                
+
+            }
+            if (!String.IsNullOrEmpty(idtacgia))
+            {
+
+                productStore = await productStore.Where(c => c.tacGia.ID_TacGia == idtacgia).ToListAsync();
+                if (productStore == null || productStore.Count == 0)
+                {
+                    ViewBag.ProductNull = "Không có sản phẩm";
+
+                }
+                else
+                {
+                    ViewBag.ProductSS =  productStore.Select(c => c.tacGia.HoVaTen).Distinct();
+                }
+                ViewBag.NumberProduct = productStore.Count();
+                return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+                
+
+            }
+
 
             #endregion
 
 
-            return View(productStore);
+            ViewBag.NumberProduct = productStore.Count();
+            return View(await PaginatedList<HomeVM>.CreateAsync( await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
         }
-        public async Task<IActionResult> ProductDetail()
+        public async Task<IActionResult> ProductDetail(string idProduct)
         {
             return View();
         }

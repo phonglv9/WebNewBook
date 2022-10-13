@@ -114,55 +114,121 @@
 			value = value < 1 ? 1 : value;
 			$input.val(value);
 			$input.change();
-			updatePriceSlider($this , value)
+		
 		})
 
 		up.on('click', function () {
 			var value = parseInt($input.val()) + 1;
 			$input.val(value);
 			$input.change();
-			updatePriceSlider($this , value)
+			
 		})
 	});
 
-	var priceInputMax = document.getElementById('price-max'),
-			priceInputMin = document.getElementById('price-min');
+	let priceInputMax = document.getElementById('price-max');
+	let priceInputMin = document.getElementById('price-min');
 
+	priceInputMax.addEventListener('input', function () {
+		if (priceInputMax.value>999) {
+
+			priceInputMax.value = 999;
+		}
+		if (priceInputMax.value < 1) {
+			priceInputMax.style.borderColor = "red";
+			priceInputMax.value = 1;
+		}
+	})
+	priceInputMin.addEventListener('input', function () {
+		if (priceInputMin.value > 999) {
+			priceInputMin.style.borderColor = "red";
+			priceInputMin.value = 999;
+		}
+		if (priceInputMin.value < 1) {
+
+			priceInputMin.value = 1;
+		}
+	});
+	
 	priceInputMax.addEventListener('change', function(){
-		updatePriceSlider($(this).parent() , this.value)
+		/*updatePriceSlider($(this).parent(), this.value);*/
+		let search = $(this).attr("data-search");
+		let currentFilter = "";
+		let iddanhmuc = $(this).attr("data-iddanhmuc");
+		let idtheloai = $(this).attr("data-idtheloai");
+		let idtacgia = $(this).attr("data-idtacgia");
+		let sortOrder = $(this).attr("data-sortOrder");
+		let pageNumber = $(this).attr("data-pageNumber");
+		let pageSize = $(this).attr("data-pageSize");
+
+		let priceMax = priceInputMax.value;
+		let priceMin = priceInputMin.value;
+	
+
+
+		
+		window.location.href = `https://localhost:7047/Home/Product?search=${search}&currentFilter=${currentFilter}&iddanhmuc=${iddanhmuc}&idtheloai=${idtheloai}&idtacgia=${idtacgia}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&priceMax=${priceMax}&priceMin=${priceMin}`
+		
 	});
 
 	priceInputMin.addEventListener('change', function(){
-		updatePriceSlider($(this).parent() , this.value)
+		/*updatePriceSlider($(this).parent(), this.value);*/
+		let search = $(this).attr("data-search");
+		let currentFilter = "";
+		let iddanhmuc = $(this).attr("data-iddanhmuc");
+		let idtheloai = $(this).attr("data-idtheloai");
+		let idtacgia = $(this).attr("data-idtacgia");
+		let sortOrder = $(this).attr("data-sortOrder");
+		let pageNumber = $(this).attr("data-pageNumber");
+		let pageSize = $(this).attr("data-pageSize");
+
+		let priceMax = priceInputMax.value;
+		let priceMin = priceInputMin.value;
+		window.location.href = `https://localhost:7047/Home/Product?search=${search}&currentFilter=${currentFilter}&iddanhmuc=${iddanhmuc}&idtheloai=${idtheloai}&idtacgia=${idtacgia}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&priceMax=${priceMax}&priceMin=${priceMin}`
+
 	});
 
-	function updatePriceSlider(elem , value) {
-		if ( elem.hasClass('price-min') ) {
-			console.log('min')
-			priceSlider.noUiSlider.set([value, null]);
-		} else if ( elem.hasClass('price-max')) {
-			console.log('max')
-			priceSlider.noUiSlider.set([null, value]);
-		}
-	}
+	//function updatePriceSlider(elem , value) {
+	//	if ( elem.hasClass('price-min') ) {
+	//		console.log('min')
+	//		priceSlider.noUiSlider.set([value, null]);
+	//	} else if ( elem.hasClass('price-max')) {
+	//		console.log('max')
+	//		priceSlider.noUiSlider.set([null, value]);
+	//	}
+	//}
 
-	// Price Slider
-	var priceSlider = document.getElementById('price-slider');
-	if (priceSlider) {
-		noUiSlider.create(priceSlider, {
-			start: [1, 999],
-			connect: true,
-			step: 1,
-			range: {
-				'min': 1,
-				'max': 999
-			}
-		});
+	//// Price Slider
+	//var priceSlider = document.getElementById('price-slider');
+	//if (priceSlider) {
+	//	noUiSlider.create(priceSlider, {
+	//		start: [1, 999],
+	//		connect: true,
+	//		step: 1,
+	//		range: {
+	//			'min': 1,
+	//			'max': 999
+	//		}
+	//	});
+		
+	//	priceSlider.noUiSlider.on('update', function( values, handle ) {
+	//		var value = values[handle];
+	//		handle ? priceInputMax.value = value : priceInputMin.value = value
 
-		priceSlider.noUiSlider.on('update', function( values, handle ) {
-			var value = values[handle];
-			handle ? priceInputMax.value = value : priceInputMin.value = value
-		});
-	}
+
+
+	//	});
+	//	//priceSlider.addEventListener('click', function (values, handle) {
+	//	//	var value = values[handle];
+	//	//	handle ? priceInputMax.value = value : priceInputMin.value = value
+	//	//	window.location.href = `https://localhost:7047/Home/Product?search=${search}&currentFilter=${currentFilter}&iddanhmuc=${iddanhmuc}&idtheloai=${idtheloai}&idtacgia=${idtacgia}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&priceMax=${priceMax}&priceMin=${priceMin}`
+	//	//	alert("xxx")
+
+
+	//	//});
+	
+		
+
+	//}
+
 
 })(jQuery);

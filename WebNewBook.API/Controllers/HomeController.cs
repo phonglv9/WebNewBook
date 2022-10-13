@@ -24,7 +24,7 @@ namespace WebNewBook.API.Controllers
             return  await _homeService.GetHomVM();
 
         }
-        [HttpGet("HomeProduct")]
+        [HttpGet("Product")]
         public async Task<List<HomeVM>> GetProuctHomes()
         {
             return await _homeService.GetProductHome();
@@ -40,6 +40,12 @@ namespace WebNewBook.API.Controllers
         public async Task<List<DanhMucSach>> GetDM()
         {
             return await _homeService.GetDanhMucs();
+
+        }
+        [HttpGet("TacGia")]
+        public async Task<List<TacGia>> GetTG()
+        {
+            return await _homeService.GetTacGias();
 
         }
 

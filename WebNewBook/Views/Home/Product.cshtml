@@ -1,9 +1,43 @@
-﻿@{
-    ViewBag.Title = "Product";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+﻿@model PaginatedList<WebNewBook.API.ModelsAPI.HomeVM>
+@{
+	ViewBag.Title = "Product";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+
+	////Page///
+	string page20 = "";
+	string page50 = "";
+	if (ViewBag.PageSize != null && ViewBag.PageSize ==20)
+	{
+		page20 = "warning";
+	}else{
+		page20 = "default";
+	}
+	if (ViewBag.PageSize != null && ViewBag.PageSize ==50)
+	{
+		page50 = "warning";
+	}else{
+		page50 = "default";
+	}
+	//////////
+
+	////Price/////
+	double priceMax = 0;
+	double priceMin = 0;
+	if (ViewBag.PriceMax != 0 || ViewBag.PriceMin != 0)
+	{
+		priceMax = ViewBag.PriceMax;
+		priceMin = ViewBag.PriceMin;
+	}else
+	{
+		priceMax = 999;
+		priceMin = 1;
+	}
+
+
+
 }
-@using WebNewBook.API.ModelsAPI
-@model List<HomeVM>
+
+
 
 
 
@@ -43,13 +77,13 @@
 								@foreach (var item in ViewBag.DanhMuc)
 								{					
 									<div class="input-checkbox">
-									<input type="checkbox" id="category-1">
+								
 									<label for="category-1">
-										<span></span>
-										 @item.TenDanhMuc
+										<a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})">@item.TenDanhMuc</a>
+										
 									<small>10</small>
 									</label>
-								</div>
+									</div>
 								}
 								</div>
 						
@@ -61,73 +95,40 @@
 							<h3 class="aside-title">Giá</h3>
 							<div class="price-filter">
 								<div id="price-slider"></div>
-								<div class="input-number price-min">
-									<input id="price-min" type="number">
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
+								<div class="input-number price-min" >
+							<input id="price-min" type="number" value="@priceMin" min="1" max="999" data-search="@ViewData["CurrentFilter"]" data-idtheloai="@ViewData["IdTheLoai"]" data-iddanhmuc="@ViewData["IdDanhMuc"]" data-idtacgia="@ViewData["IdTacGia"]" data-sortOrder="@ViewData["CurrentSort"]" data-pageNumber="@ViewData["PageNumber"]" data-pageSize="@ViewBag.PageSize">
+									@*<span class="qty-up">+</span>
+									<span class="qty-down">-</span>*@
 								</div>
 								<span>-</span>
-								<div class="input-number price-max">
-									<input id="price-max" type="number">
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
+							<div class="input-number price-max" >
+							<input id="price-max" type="number" value="@priceMax" min="1" max="999" data-search="@ViewData["CurrentFilter"]" data-idtheloai="@ViewData["IdTheLoai"]" data-iddanhmuc="@ViewData["IdDanhMuc"]" data-idtacgia="@ViewData["IdTacGia"]" data-sortOrder="@ViewData["CurrentSort"]" data-pageNumber="@ViewData["PageNumber"]" data-pageSize="@ViewBag.PageSize">
+									@*<span class="qty-up">+</span>
+									<span class="qty-down">-</span>*@
 								</div>
 							</div>
-						</div>
+							
+						</div> 
 						<!-- /aside Widget -->
 
 						<!-- aside Widget -->
 						<div class="aside">
-							<h3 class="aside-title">Nhà cung cấp</h3>
+							<h3 class="aside-title">Thể loại</h3>
 							<div class="checkbox-filter">
+								@if (ViewBag.TheLoai != null)
+							@foreach (var item in ViewBag.TheLoai)
+							{
+							
+						
 								<div class="input-checkbox">
-									<input type="checkbox" id="brand-1">
+									
 									<label for="brand-1">
-										<span></span>
-										Kim đồng
+									<a href="@Url.Action("Product", "Home", new { idtheloai = item.ID_TheLoai})">@item.TenTL</a>
+										
 										<small>(578)</small>
 									</label>
 								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-2">
-									<label for="brand-2">
-										<span></span>
-										Kim đồng
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-3">
-									<label for="brand-3">
-										<span></span>
-										Kim đồng
-										<small>(755)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-4">
-									<label for="brand-4">
-										<span></span>
-										Kim đồng
-										<small>(578)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-5">
-									<label for="brand-5">
-										<span></span>
-										Kim đồng
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-6">
-									<label for="brand-6">
-										<span></span>
-										Kim đồng
-										<small>(755)</small>
-									</label>
-								</div>
+								}
 							</div>
 						</div>
 						<!-- /aside Widget -->
@@ -135,54 +136,19 @@
 						<div class="aside">
 							<h3 class="aside-title">Tác giả</h3>
 							<div class="checkbox-filter">
+							@if (ViewBag.TacGia != null)
+							@foreach (var item in ViewBag.TacGia)
+							{
+							
+						
 								<div class="input-checkbox">
-									<input type="checkbox" id="brand-1">
-									<label for="brand-1">
-										<span></span>
-										Kim đồng
-										<small>(578)</small>
-									</label>
+											
+								<label for="brand-6">
+										<a href="@Url.Action("Product", "Home", new { idtacgia = item.ID_TacGia})">@item.HoVaTen</a>
+												<small>(755)</small>
+								</label>
 								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-2">
-									<label for="brand-2">
-										<span></span>
-										Kim đồng
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-3">
-									<label for="brand-3">
-										<span></span>
-										Kim đồng
-										<small>(755)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-4">
-									<label for="brand-4">
-										<span></span>
-										Kim đồng
-										<small>(578)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-5">
-									<label for="brand-5">
-										<span></span>
-										Kim đồng
-										<small>(125)</small>
-									</label>
-								</div>
-								<div class="input-checkbox">
-									<input type="checkbox" id="brand-6">
-									<label for="brand-6">
-										<span></span>
-										Kim đồng
-										<small>(755)</small>
-									</label>
-								</div>
+							}
 							</div>
 						</div>
 
@@ -233,37 +199,119 @@
 							<div class="store-sort">
 								<label>
 									Sắp xếp theo:
-									<select class="input-select">
-										<option value="0">Giá cao nhất</option>
-										<option value="1">Giá thấp nhẩt</option>
-										<option value="1">Bán nhiều nhất</option>
 
+									<br />
+									<br />
+
+							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "Bán chạy nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]})">Bán chạy nhất</a>
+							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "Giá cao nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]  })">Giá cao nhất</a>
+							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "Giá thấp nhất",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"] ,idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"] })">Giá thấp nhẩt</a>
+							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "A-Z",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"]  })">A-Z</a>
+							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "Z-A",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"]  })">Z-A</a>
+								
+								@*<a asp-action="Product"
+							   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+							   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
+							   asp-route-sortOrder="@ViewData["CurrentSort"]"
+										
+								</a>*@
+									@*@using (Html.BeginForm("Product", "Home", FormMethod.Post)){
+									<select class="input-select" name="sortOrder">
+										@if (@ViewData["CurrentSort"] != null)
+									{
+										<option value="@ViewData["CurrentSort"]"> @ViewData["CurrentSort"]</option>
+									}
+																												
+									<option  value="Bán chạy nhất">Bán chạy nhất</option>
+									
+								
+									<option value="Giá cao nhất">Giá cao nhất</option>
+									
+									
+									<option value="Giá thấp nhẩt">Giá thấp nhẩt</option>
+								
+									
+									<option value="A-Z">A-Z</option>
+									
+									
+									<option value="Z-A">Z-A</option>
+									
 									</select>
+									<input class="btn btn-success" type="submit" value="Áp dụng" />
+
+
+									}*@
 								</label>
 
 								<label>
 									Hiển thị:
-									<select class="input-select">
+							<br />
+							<br />
+							<a class="btn btn-@page20" href="@Url.Action("Product", "Home", new { pageSize= 20 ,sortOrder = @ViewData["CurrentSort"],search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]})">20</a>
+							<a class="btn btn-@page50" href="@Url.Action("Product", "Home", new { pageSize= 50,sortOrder = @ViewData["CurrentSort"],search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"],idtacgia = @ViewData["IdTacGia"] ,idtheloai = @ViewData["IdTheLoai"]  })">50</a>
+									@*<select class="input-select">
 										<option value="0">20</option>
 										<option value="1">50</option>
-									</select>
+									</select>*@
+							
+							
+
 								</label>
 							</div>
 							<ul class="store-grid">
-								Tìm thấy (123) sản phẩm
+								Tìm thấy (
+
+								@if (@ViewBag.NumberProduct != null)
+								{
+									
+								@ViewBag.NumberProduct
+								}
+								
+								
+								
+								) sản phẩm
 							</ul>
 						</div>
 						<!-- /store top filter -->
-						@if(@ViewBag.TextSearch != null){
-						<h4> 
-							@ViewBag.TextSearch
-					
-						</h4>
-				
+						<div>
+							@if(@ViewBag.TextSearch != null){
+							<h4> 
+								@ViewBag.TextSearch					
+							</h4>
 							}
+
+							@if (@ViewBag.ProductNull != null)
+							{
+
+							<h4>@ViewBag.ProductNull</h4>
+								
+							
+							}
+							@if (@ViewBag.ProductSS != null)
+							{
+								@foreach (var item in ViewBag.ProductSS)
+								{	
+								
+					
+
+								<h4>@item</h4>
+								}
+
+							}
+							@if (ViewData["CurrentSort"] != null){
+							<a href="@Url.Action("Product", "Home", new {sortOrder = ""})" class="btn btn-warning">@ViewData["CurrentSort"] <i class="fa fa-times-circle" aria-hidden="true"></i> </a>
+					
+							}
+							@*@if (ViewBag.PageSize != null)
+							{
+								<a href="@Url.Action("Product", "Home", new {pageSize = 0})" class="btn btn-warning">@ViewBag.PageSize <i class="fa fa-times-circle" aria-hidden="true"></i> </a>
+							}*@
+							
+						</div>
 						<!-- store products -->
 						<s class="row">
 							<!-- product -->
+							
 							@foreach( var item in Model)
 							{
 
@@ -298,16 +346,80 @@
 							
 						</s>
 						<!-- /store products -->
-
+				@{
+					var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";
+					var nextDisabled = !Model.HasNextPage ? "disabled" : "";
+					
+				}
+				
+				
+				
 						<!-- store bottom filter -->
 						<div class="store-filter clearfix">
-							<span class="store-qty">Hiển thị 20-100 sản phẩm</span>
+					<span class="store-qty">
+						Hiển thị @if (@ViewBag.PageSize != null)
+						{
+							@ViewBag.PageSize
+						} sản phẩm</span>
 							<ul class="store-pagination">
-								<li class="active">1</li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#"><i class="fa fa-angle-right"></i></a></li>
+								@if(Model.HasPreviousPage){
+								<li>
+										
+									<a asp-action="Product"
+									   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+									   asp-route-pageNumber="@(Model.PageIndex - 1)"
+									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
+									   asp-route-idtacgia="@ViewData["IdTacGia"]"
+									   asp-route-idtheloai="@ViewData["IdTheLoai"]"
+										asp-route-sortOrder="@ViewData["CurrentSort"]"
+									   class="@prevDisabled">
+										<i class="fa fa-angle-left"></i>
+									</a>
+								</li>
+								}
+						@for (var pagex = 1;pagex <= Model.TotalPages; pagex++)
+						{
+
+							<li class=" @(@pagex == Model.PageIndex ?"active":"")">
+								@if (pagex != Model.PageIndex)
+								{
+									<a asp-action="Product"
+									   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+									  asp-route-pageNumber="@pagex"
+									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
+							   asp-route-idtacgia="@ViewData["IdTacGia"]"
+							   asp-route-idtheloai="@ViewData["IdTheLoai"]"
+									asp-route-sortOrder="@ViewData["CurrentSort"]"
+									>
+
+
+
+								@pagex 
+										
+									</a>
+								}else{
+									<a>@pagex</a>
+								}
+
+								
+							</li>
+							
+						}
+								@if(Model.HasNextPage){
+								<li>
+							
+									<a asp-action="Product"
+									   asp-route-currentFilter="@ViewData["CurrentFilter"]"
+									   asp-route-pageNumber="@(Model.PageIndex + 1)"
+							   asp-route-idtacgia="@ViewData["IdTacGia"]"
+							   asp-route-idtheloai="@ViewData["IdTheLoai"]"
+									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
+									 asp-route-sortOrder="@ViewData["CurrentSort"]"
+									   class="@nextDisabled">
+										<i class="fa fa-angle-right"></i>
+									</a>
+								</li>
+								}
 							</ul>
 						</div>
 						<!-- /store bottom filter -->
@@ -319,3 +431,4 @@
 			<!-- /container -->
 		</div>
 		<!-- /SECTION -->
+		
