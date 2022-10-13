@@ -1,0 +1,60 @@
+﻿@using WebNewBook.Model
+@model NhanVien
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Update" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group" hidden>
+                <label asp-for="ID_NhanVien" class="col-sm-2 col-form-label">ID</label>
+                <input asp-for="ID_NhanVien" class="form-control" />
+                <span asp-validation-for="ID_NhanVien" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="HoVaTen" class="control-label">Họ và tên</label>
+                <input asp-for="HoVaTen" class="form-control" />
+                <span asp-validation-for="HoVaTen" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label">Email</label>
+                <input asp-for="Email" class="form-control"/>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SDT" class="control-label">SDT</label>
+                <input asp-for="SDT" class="form-control"/>
+                <span asp-validation-for="SDT" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DiaChi" class="control-label">Địa chỉ</label>
+                <input asp-for="DiaChi" class="form-control" />
+                <span asp-validation-for="DiaChi" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="HinhAnh" class="control-label">Hình ảnh</label>
+                <input asp-for="HinhAnh" class="form-control" />
+                <span asp-validation-for="HinhAnh" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="NgaySinh" class="control-label">Ngày sinh</label>
+                <input asp-for="NgaySinh" class="form-control" />
+                <span asp-validation-for="NgaySinh" class="text-danger"></span>
+            </div>
+             <div class="form-group">
+                <label asp-for="MatKhau" class="control-label">Mật khẩu</label>
+                <input asp-for="MatKhau" class="form-control" />
+                <span asp-validation-for="MatKhau" class="text-danger"></span>
+            </div>
+             <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" asp-for="Quyen" /> Admin
+                </label>
+            </div>
+            <button type="submit" class="btn btn-primary">Nhập nhân viên</button>
+        </form>
+    </div>
+</div>

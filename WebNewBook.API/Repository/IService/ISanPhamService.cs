@@ -8,5 +8,6 @@ namespace WebNewBook.API.Repository.IService
         Task<SanPham?> GetSanPhamAsync(string id);
         Task AddSanPhamAsync(SanPham par, IEnumerable<string> Sachs);
         Task UpdateSanPhamAsync(SanPham par);
+        Task<List<Sach>?> GetSachsBySanPhamAsync(string id);
     }
 }
