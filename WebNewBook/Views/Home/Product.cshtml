@@ -2,6 +2,8 @@
 @{
 	ViewBag.Title = "Product";
 	Layout = "~/Views/Shared/_Layout.cshtml";
+
+	////Page///
 	string page20 = "";
 	string page50 = "";
 	if (ViewBag.PageSize != null && ViewBag.PageSize ==20)
@@ -16,6 +18,21 @@
 	}else{
 		page50 = "default";
 	}
+	//////////
+
+	////Price/////
+	double priceMax = 0;
+	double priceMin = 0;
+	if (ViewBag.PriceMax != 0 || ViewBag.PriceMin != 0)
+	{
+		priceMax = ViewBag.PriceMax;
+		priceMin = ViewBag.PriceMin;
+	}else
+	{
+		priceMax = 999;
+		priceMin = 1;
+	}
+
 
 
 }
@@ -78,19 +95,20 @@
 							<h3 class="aside-title">Giá</h3>
 							<div class="price-filter">
 								<div id="price-slider"></div>
-								<div class="input-number price-min">
-									<input id="price-min" type="number">
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
+								<div class="input-number price-min" >
+							<input id="price-min" type="number" value="@priceMin" min="1" max="999" data-search="@ViewData["CurrentFilter"]" data-idtheloai="@ViewData["IdTheLoai"]" data-iddanhmuc="@ViewData["IdDanhMuc"]" data-idtacgia="@ViewData["IdTacGia"]" data-sortOrder="@ViewData["CurrentSort"]" data-pageNumber="@ViewData["PageNumber"]" data-pageSize="@ViewBag.PageSize">
+									@*<span class="qty-up">+</span>
+									<span class="qty-down">-</span>*@
 								</div>
 								<span>-</span>
-								<div class="input-number price-max">
-									<input id="price-max" type="number">
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
+							<div class="input-number price-max" >
+							<input id="price-max" type="number" value="@priceMax" min="1" max="999" data-search="@ViewData["CurrentFilter"]" data-idtheloai="@ViewData["IdTheLoai"]" data-iddanhmuc="@ViewData["IdDanhMuc"]" data-idtacgia="@ViewData["IdTacGia"]" data-sortOrder="@ViewData["CurrentSort"]" data-pageNumber="@ViewData["PageNumber"]" data-pageSize="@ViewBag.PageSize">
+									@*<span class="qty-up">+</span>
+									<span class="qty-down">-</span>*@
 								</div>
 							</div>
-						</div>
+							
+						</div> 
 						<!-- /aside Widget -->
 
 						<!-- aside Widget -->
@@ -273,7 +291,7 @@
 							{
 								@foreach (var item in ViewBag.ProductSS)
 								{	
-						
+								
 					
 
 								<h4>@item</h4>
@@ -413,3 +431,4 @@
 			<!-- /container -->
 		</div>
 		<!-- /SECTION -->
+		
