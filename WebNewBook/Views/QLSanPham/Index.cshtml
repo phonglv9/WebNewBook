@@ -1,0 +1,117 @@
+﻿@using WebNewBook.Model
+@model SanPham
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container py-3" style="background-color: #f1f1f1;">
+    <h3 style="font-weight: 700;">Sản phẩm</h3>
+    <div class="container " style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <h6>
+                <div class="row">
+                    <div class="col-5 mb-3">
+                        <input type="email" class="form-control" placeholder="Số điện thoại, Họ và tên,...">
+                    </div>
+                    <div class="col-5 mb-3">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Chọn trạng thái</option>
+                            <option value="1">Hoạt động</option>
+                            <option value="0">Không hoạt động</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                    </div>
+                    <p>@*10000 thành viên*@</p>
+                    <div class="col-3">
+                        <!-- Button trigger modal -->
+                        <a type="button" class="btn btn-primary"asp-action="Create">
+                            <i class="fa-solid fa-address-book"></i> Thêm sản phẩm
+                        </a>
+                    </div>
+                </div>
+            </h6>
+        </div>
+    </div>
+    <br>
+    <div class="container " style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <p>
+                <table class="table">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th scope="col">Tên sản phẩm</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Giá</th>
+                            <th scope="col">Khuyến mại</th>
+                            <th scope="col">Trạng thái</th>
+                            <th colspan="2" style="text-align: center ;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.SanPham)
+                        {
+                            var trangThai = item.TrangThai == 0 ? "Hoạt động" : "Vô hiệu hóa";
+                            <tr>
+                                <th scope="row">@item.TenSanPham</th>
+                                <td>@item.SoLuong</td>
+                                <td>@item.GiaBan</td>
+                                <td>@item.MaPhieuGiamGiaSP</td>
+                                <td>@trangThai</td>
+                                <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_SanPham"><i class="fa-solid fa-pen"></i></a></td>
+                                <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_SanPham"><i class="fa-solid fa-trash"></i></button></td>
+                            </tr>
+
+                             <!-- Modal Delete-->
+                            <form action="/QLSanPham/Delete?id=@item.ID_SanPham" method="post" enctype="multipart/form-data">
+                                <div class="modal fade" id="delete-@item.ID_SanPham" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Đổi trạng thái sản phẩm</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3 row">
+                                                    <label for="ID_SanPham" class="col-sm-2 col-form-label">ID</label>
+                                                    <input for="ID_SanPham" class="form-control" name="ID" value="@item.ID_SanPham" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="TenSanPham" class="control-label">Tên sản phẩm</label>
+                                                    <input for="TenSanPham" class="form-control" name="nhanVien" value="@item.TenSanPham" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="SoLuong" class="control-label">Số lượng</label>
+                                                    <input for="SoLuong" class="form-control" name="giaNhap" value="@item.SoLuong" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="GiaBan" class="control-label">Giá bán</label>
+                                                    <input for="GiaBan" class="form-control" name="soLuongNhap" value="@item.GiaBan" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="MaPhieuGiamGiaSP" class="control-label">Khuyến mại</label>
+                                                    <input for="MaPhieuGiamGiaSP" class="form-control" name="soLuongNhap" value="@item.MaPhieuGiamGiaSP" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="Quyen" class="control-label">Trạng thái</label>
+                                                    <input for="Quyen" class="form-control" name="soLuongNhap" value="@trangThai" disabled/>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Đổi trạng thái</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                    </tbody>
+                </table>
+            </p>
+        </div>
+    </div>
+</div>
+
+

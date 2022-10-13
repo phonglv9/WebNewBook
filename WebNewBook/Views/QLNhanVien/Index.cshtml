@@ -1,0 +1,128 @@
+﻿@using WebNewBook.Model
+@model NhanVien
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container py-3" style="background-color: #f1f1f1;">
+    <h3 style="font-weight: 700;">Nhân viên</h3>
+    <div class="container " style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <h6>
+                <div class="row">
+                    <div class="col-5 mb-3">
+                        <input type="email" class="form-control" placeholder="Số điện thoại, Họ và tên,...">
+                    </div>
+                    <div class="col-5 mb-3">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Chọn trạng thái</option>
+                            <option value="1">Hoạt động</option>
+                            <option value="0">Không hoạt động</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                    </div>
+                    <p>@*10000 thành viên*@</p>
+                    <div class="col-3">
+                        <!-- Button trigger modal -->
+                        <a type="button" class="btn btn-primary"asp-action="Create">
+                            <i class="fa-solid fa-address-book"></i> Thêm nhân viên
+                        </a>
+                    </div>
+                </div>
+            </h6>
+        </div>
+    </div>
+    <br>
+    <div class="container " style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <p>
+                <table class="table">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th scope="col">Họ và tên</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">SĐT</th>
+                            <th scope="col">Địa chỉ</th>
+                            <th scope="col">Chức vụ</th>
+                            <th scope="col">Trạng thái</th>
+                            <th colspan="2" style="text-align: center ;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.NhanVien)
+                        {
+                            var chucVu = item.Quyen ? "Admin" : "Nhân viên";
+                            var trangThai = item.TrangThai == 0 ? "Hoạt động" : "Vô hiệu hóa";
+                            <tr>
+                                <th scope="row">@item.HoVaTen</th>
+                                <td>@item.Email</td>
+                                <td>@item.SDT</td>
+                                <td>@item.DiaChi</td>
+                                <td>@chucVu</td>
+                                <td>@trangThai</td>
+                                <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_NhanVien"><i class="fa-solid fa-pen"></i></a></td>
+                                <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_NhanVien"><i class="fa-solid fa-trash"></i></button></td>
+                            </tr>
+
+                             <!-- Modal Delete-->
+                            <form action="/QLNhanVien/Delete?id=@item.ID_NhanVien" method="post" enctype="multipart/form-data">
+                                <div class="modal fade" id="delete-@item.ID_NhanVien" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Đổi trạng thái</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3 row">
+                                                    <label for="ID_NhanVien" class="col-sm-2 col-form-label">ID</label>
+                                                    <input for="ID_NhanVien" class="form-control" name="ID" value="@item.ID_NhanVien" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="HoVaTen" class="control-label">Họ và tên</label>
+                                                    <input for="HoVaTen" class="form-control" name="nhanVien" value="@item.ID_NhanVien" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="Email" class="control-label">Email</label>
+                                                    <input for="Email" class="form-control" name="sach" value="@item.Email" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="SDT" class="control-label">SĐT</label>
+                                                    <input for="SDT" class="form-control" name="giaNhap" value="@item.SDT" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="DiaChi" class="control-label">Địa chỉ</label>
+                                                    <input for="DiaChi" class="form-control" name="soLuongNhap" value="@item.DiaChi" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="NgaySinh" class="control-label">Ngày sinh</label>
+                                                    <input for="NgaySinh" class="form-control" name="soLuongNhap" value="@item.NgaySinh" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="Quyen" class="control-label">Chức vụ</label>
+                                                    <input for="Quyen" class="form-control" name="soLuongNhap" value="@chucVu" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="Quyen" class="control-label">Trạng thái</label>
+                                                    <input for="Quyen" class="form-control" name="soLuongNhap" value="@trangThai" disabled/>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                    </tbody>
+                </table>
+            </p>
+        </div>
+    </div>
+</div>
+
+

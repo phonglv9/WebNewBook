@@ -34,6 +34,35 @@ namespace WebNewBook.API.Controllers
             try
             {
                 await phieuNhapService.AddPhieuNhapAsync(nv);
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+
+            return Ok();
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> UpdatePhieuNhapAsync(PhieuNhap nv)
+        {
+            try
+            {
+                await phieuNhapService.UpdatePhieuNhapAsync(nv);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeletePhieuNhapAsync(string id)
+        {
+            try
+            {
+                await phieuNhapService.DeletePhieuNhapAsync(id);
                 return Ok();
             }
             catch (Exception e)
