@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
+using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.API.Controllers
 {
@@ -28,17 +29,24 @@ namespace WebNewBook.API.Controllers
             return sp;
         }
 
+        [HttpGet("sanpham_sach/{id}")]
+        public async Task<List<Sach>?> GetSachsBySanPhamAsync(string id)
+        {
+            var sachs = await sanPhamService.GetSachsBySanPhamAsync(id);
+            return sachs;
+        }
+
         [HttpPost]
-        public async Task<ActionResult> AddSanPhamAsync(SanPham sp, [FromRoute]IEnumerable<string> Sachs)
+        public async Task<ActionResult> AddSanPhamAsync(SanPhamAPI sp)
         {
             try
             {
-                await sanPhamService.AddSanPhamAsync(sp, Sachs);
+                await sanPhamService.AddSanPhamAsync(sp.SanPham, sp.Sachs);
                 return Ok();
             }
             catch (Exception e)
             {
-                return BadRequest(e.Message);
+                throw new Exception(e.Message);
             }
         }
 

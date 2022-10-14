@@ -1,0 +1,40 @@
+﻿@using WebNewBook.Model
+@model PhieuNhap
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Update" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="ID_PhieuNhap" class="col-sm-2 col-form-label">ID</label>
+                <input asp-for="ID_PhieuNhap" class="form-control" />
+                <span asp-validation-for="ID_PhieuNhap" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaNhanVien" class="control-label">Nhân viên</label>
+                <input asp-for="MaNhanVien" class="form-control" />
+                <span asp-validation-for="MaNhanVien" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MaSach" class="control-label">Sách</label>
+                <input asp-for="MaSach" class="form-control" />
+                <span asp-validation-for="MaSach" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GiaNhap" class="control-label">Giá nhập</label>
+                <input asp-for="GiaNhap" class="form-control" />
+                <span asp-validation-for="GiaNhap" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SoLuongNhap" class="control-label">Số lượng nhập</label>
+                <input asp-for="SoLuongNhap" class="form-control" />
+                <span asp-validation-for="SoLuongNhap" class="text-danger"></span>
+            </div>
+            <button type="submit" class="btn btn-primary">Nhập sách</button>
+        </form>
+    </div>
+</div>
