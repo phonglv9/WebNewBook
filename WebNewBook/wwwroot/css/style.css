@@ -363,7 +363,7 @@ textarea.input {
   padding: 30px 0px;
   background: #FBFBFC;
   border-bottom: 1px solid #E4E7ED;
-  margin-bottom: 30px;
+
 }
 
 #breadcrumb .breadcrumb-header {
@@ -2184,14 +2184,13 @@ textarea.input {
 }
 #tab1 {
     position: relative;
-    padding-bottom: 60px;
-    margin-bottom: -60px;
+    
     z-index: 2;
 }
 
 .products-slick-nav {
     position: absolute;
-    top: 50%;
+    top: calc(50% - 60px);
     transform: translateY(-50%);
     display: flex;
     width: 100%;
@@ -2222,4 +2221,44 @@ textarea.input {
         }
 .slider-size {
     height: 200px;
+}
+.slick-list{
+    padding-bottom:60px;
+}
+#footer > .container{
+    padding: 40px 0px;
+}
+.footer-links li{
+    line-height:36px;
+}
+.fa.fa-angle-left {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    background-color: red;
+    width: 40px;
+    height: 40px;
+    border-radius: 1000px;
+    /* display: grid; */
+    /* place-items: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.fa.fa-angle-right {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    background-color: red;
+    width: 40px;
+    height: 40px;
+    border-radius: 1000px;
+    /* display: grid; */
+    /* place-items: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.carousel-control{
+    width:0;
 }

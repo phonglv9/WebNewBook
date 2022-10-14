@@ -149,7 +149,7 @@
 		}
 	});
 	
-	priceInputMax.addEventListener('change', function(){
+	priceInputMax.addEventListener('keyup', function(){
 		/*updatePriceSlider($(this).parent(), this.value);*/
 		let search = $(this).attr("data-search");
 		let currentFilter = "";
@@ -170,7 +170,7 @@
 		
 	});
 
-	priceInputMin.addEventListener('change', function(){
+	priceInputMin.addEventListener('keyup', function(){
 		/*updatePriceSlider($(this).parent(), this.value);*/
 		let search = $(this).attr("data-search");
 		let currentFilter = "";
