@@ -18,10 +18,10 @@ namespace WebNewBook.Controllers
 
         }
     
-        public async Task<IActionResult> Index(string search)
+        public async Task<IActionResult> Index(string search, int? status)
         {
             List<KhachHang> GetKhachHang = new List<KhachHang>();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Customer?search=" + search ).Result;
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Customer?status=" + status + "&search=" + search).Result;
             if (response.IsSuccessStatusCode)
             {
                 string jsondata = response.Content.ReadAsStringAsync().Result;
@@ -32,18 +32,26 @@ namespace WebNewBook.Controllers
         }
         public  async Task<IActionResult> Add(KhachHang khachang)
         {
-
-          
-            using (var httpClient = new HttpClient())
+           
+            if (ModelState.IsValid)
             {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(khachang), Encoding.UTF8, "application/json");
-                using (var response = await httpClient.PostAsync("https://localhost:7266/api/Customer", content))
+                using (var httpClient = new HttpClient())
                 {
-                    string apiResponse= await   response.Content.ReadAsStringAsync();
-                    khachang = JsonConvert.DeserializeObject<KhachHang>(apiResponse);
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(khachang), Encoding.UTF8, "application/json");
+                    using (var response = await httpClient.PostAsync("https://localhost:7266/api/Customer", content))
+                    {
+                        string apiResponse = await response.Content.ReadAsStringAsync();
+                        khachang = JsonConvert.DeserializeObject<KhachHang>(apiResponse);
+                    }
                 }
+                ViewBag.message = 1;
+                  return RedirectToAction("Index",ViewBag.message);
             }
-            return RedirectToAction("Index");
+            else
+            {
+                ViewBag.message = 0;
+                return RedirectToAction("Index", ViewBag.message);
+            }
         }
         
         public async Task<IActionResult> Update(KhachHang khachHang)
