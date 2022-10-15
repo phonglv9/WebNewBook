@@ -1,6 +1,7 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     var lstKhachHang = ViewBag.lstKhachHang;
+    var message = ViewBag.message;
 }
 @using WebNewBook.Model
 @model KhachHang
@@ -15,16 +16,19 @@
                         <input asp-action="Index" type="text" name="search" class="form-control" placeholder="Số điện thoại, Họ và tên,...">
                     </div>
                     <div class="col-5 mb-3">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Chọn trạng thái</option>
-                            <option value="1">Hoạt động</option>
+                        <select name="status" class="form-select" aria-label="Default select example">
+                            <option  selected>Chọn trạng thái</option>
+                            <option  value="1">Hoạt động</option>
                             <option value="0">Không hoạt động</option>
                         </select>
                     </div>
                     <div class="col-2">
                         <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
                     </div>
-                    <p> thành viên</p>
+                    @*<p>@lstKhachHang.ID_KhachHang.Count().ToString() thành viên</p>*@
+                 
+                </form>
+                <form class="needs-validation was-validated" onsubmit = "return(validate());">
                     <div class="col-3">
                         <!-- Button trigger modal -->
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
@@ -39,45 +43,57 @@
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
+                                      <input asp-for="ID_KhachHang" type="hidden" value="null" class="form-control">
                                         <div class="mb-3 row">
                                             <label for="" class="col-sm-2 col-form-label">Họ tên</label>
                                             <div class="col-sm-10">
-                                                <input asp-for="HoVaTen" type="text" class="form-control">
+                                                <input asp-for="HoVaTen" type="text"  class="form-control" required>
+
+                                            @*    <div class="invalid-feedback">Please fill out this field.</div>
+                                                <div class="valid-feedback">
+                                                     <font style="vertical-align: inherit"><font style="vertical-align: inherit"> Có vẻ tốt! </font></font>
+                                                </div>*@
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
                                             <label for="" class="col-sm-2 col-form-label">Email</label>
                                             <div class="col-sm-10">
-                                                <input asp-for="Email" type="text" class="form-control">
+                                                <input asp-for="Email" type="email"   class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
                                             <label for="" class="col-sm-2 col-form-label">SDT</label>
                                             <div class="col-sm-10">
-                                                <input asp-for="SDT" type="text" class="form-control">
+                                                <input asp-for="SDT" type="text" class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
                                             <label for="" class="col-sm-2 col-form-label">Địa chỉ</label>
                                             <div class="col-sm-10">
-                                                <input asp-for="DiaChi" type="text" class="form-control">
+                                                <input asp-for="DiaChi" type="text" class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
                                             <label for="" class="col-sm-2 col-form-label">Ngày sinh</label>
                                             <div class="col-sm-10">
-                                                <input asp-for="NgaySinh" type="date" class="form-control">
+                                                <input asp-for="NgaySinh" type="date" class="form-control" required>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
                                             <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
                                             <div class="col-sm-10">
-                                                <input asp-for="MatKhau" type="password" class="form-control" id="inputPassword">
+                                                <input asp-for="MatKhau" maxlength="" min="5" type="password" class="form-control" id="inputPassword" required>
+                                            </div>
+                                        </div>                                     
+                                        <div class="mb-3 row">
+                                            <label for="inputPassword" class="col-sm-2 col-form-label">Điểm tích lũy</label>
+                                            <div class="col-sm-10">
+                                                <input asp-for="DiemTichLuy" type="number" value="0" class="form-control" disabled id="inputPassword">
                                             </div>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" asp-action="Add" class="btn btn-primary">Thêm tài khoản</button>
+                                        <button asp-action="Add"  type="submit" class="btn btn-primary">Thêm</button>
                                     </div>
                                 </div>
                             </div>
@@ -91,9 +107,51 @@
     <div class="container " style="background-color: rgb(255, 255, 255);">
         <div class="py-3">
             <p>
+               @if (message==1)
+                {
+                     <div class="toast fade show"
+                     role="alert"
+                     aria-live="assertive"
+                     aria-atomic="true">
+                    <div class="toast-header">
+
+                        <rect width="100%" height="100%" fill="#007aff"></rect>
+                       
+
+                        <strong class="me-auto">Thông báo</strong>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="toast"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body bg-primary text-light">Thêm khách hàng thành công !</div>
+                </div>
+                }
+                  @if (message==0)
+                {
+                     <div class="toast fade show"
+                     role="alert"
+                     aria-live="assertive"
+                     aria-atomic="true">
+                    <div class="toast-header">
+
+                        <rect width="100%" height="100%" fill="#007aff"></rect>
+                       
+
+                        <strong class="me-auto">Thông báo</strong>
+
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="toast"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body bg-primary text-light">Thêm khách hàng thất bại !</div>
+                </div>
+                }
                 <table class="table">
                     <thead class="table-secondary">
-                        <tr>
+                        <tr >
 
                             <th scope="col">Họ và tên</th>
                             <th scope="col">Email</th>
@@ -101,6 +159,7 @@
                             <th scope="col">Địa chỉ</th>
                             <th scope="col">Ngày Sinh</th>
                             <th scope="col">Điểm tích lũy</th>
+                            <th scope="col">Trạng thái</th>
                             <th colspan="2" style="text-align: center ;">Thao tác</th>
                         </tr>
                     </thead>
@@ -115,11 +174,23 @@
                                 <td>@x.DiaChi</td>
                                 <td>@x.NgaySinh.ToString("d/M/yyyy")</td>
                                 <td>@x.DiemTichLuy</td>
+                                <td>@(x.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa")  </td>
                                 <td>
                                     <button data-bs-toggle="modal" data-bs-target="#updateCustomer_@x.ID_KhachHang" class="btn border bg-primary"><i class="fa-solid fa-pen"></i></button>
                                 </td>
                                 <td>
-                                    <button class="btn border bg-danger"> <a style="color : white" asp-action="Delete" asp-route-Id="@x.ID_KhachHang"> Delete</a> </button>
+                                    <form>
+                                        @if (x.TrangThai==1)
+                                        {
+                                            <button type="submit" class="btn border bg-danger" style="color : white ; font-size : 10px" asp-action="Delete" asp-route-Id="@x.ID_KhachHang">Vô hiệu hóa </button>
+                                        }
+                                        @if (x.TrangThai == 0)
+                                        {
+                                            <button type="submit" class="btn border bg-success" style="color : white; font-size : 10px" asp-action="Delete" asp-route-Id="@x.ID_KhachHang">Hoạt động </button>
+                                        }
+                                      
+                                    </form>
+                                  
                                 </td>
 
                                 
@@ -139,31 +210,31 @@
                                                 <div class="mb-3 row">
                                                     <label for="" class="col-sm-2 col-form-label">Họ tên</label>
                                                     <div class="col-sm-10">
-                                                        <input asp-for="HoVaTen" value="@x.HoVaTen" type="text" class="form-control">
+                                                            <input asp-for="HoVaTen" value="@x.HoVaTen" type="text" class="form-control" required>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="" class="col-sm-2 col-form-label">Email</label>
                                                     <div class="col-sm-10">
-                                                        <input asp-for="Email" value="@x.Email" type="text" class="form-control">
+                                                            <input asp-for="Email" value="@x.Email" type="text" class="form-control" required>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="" class="col-sm-2 col-form-label">SDT</label>
                                                     <div class="col-sm-10">
-                                                        <input asp-for="SDT" value="@x.SDT" type="text" class="form-control">
+                                                        <input asp-for="SDT" value="@x.SDT" type="text" class="form-control" required>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="" class="col-sm-2 col-form-label">Địa chỉ</label>
                                                     <div class="col-sm-10">
-                                                        <input asp-for="DiaChi" value="@x.DiaChi" type="text" class="form-control">
+                                                            <input asp-for="DiaChi" value="@x.DiaChi" type="text" class="form-control" required>
                                                     </div>
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="" class="col-sm-2 col-form-label">Ngày sinh</label>
                                                     <div class="col-sm-10">
-                                                        <input asp-for="NgaySinh" value="@x.NgaySinh" type="text" class="form-control">
+                                                            <input asp-for="NgaySinh" value="@x.NgaySinh" type="text" class="form-control" required>
                                                     </div>
                                                 </div>
 
@@ -191,35 +262,60 @@
         </div>
     </div>
 </div>
-@*<script>
-    function Add() {
 
-        var name = $("#HoVaTen").val();
-        var email = $("#Email")
-        var sdt = $("#SDT").val();
-        var diachi = $("#DiaChi").val();
-        var ngaysinh = $("#NgaySinh").val();
-        var pass = $("#password").val();
 
-        $.ajax({
-            url: "/Customer/Add",
+<div class="toast fade show"
+     role="alert"
+     aria-live="assertive"
+     aria-atomic="true">
+    <div class="toast-header">
 
-            data: {
-                HoVaTen: name,
-                Email: email,
-                SDT: sdt,
-                DiaChi: diachi,
-                NgaySinh: ngaysinh,
-                password: image
-            },
-            success: function(res) {
-                if (res != 1) {
-                    alert("Thêm thất bại")
-                }
-                if (res == 1) {
-                    alert("Thêm thành công")
-                }
-            }
-        })
-    }
-</script>*@
+        <rect width="100%" height="100%" fill="#007aff"></rect>
+
+
+        <strong class="me-auto">Thông báo</strong>
+
+        <button type="button"
+                class="btn-close"
+                data-bs-dismiss="toast"
+                aria-label="Close"></button>
+    </div>
+    <div class="toast-body bg-primary text-light">Thêm khách hàng thành công !</div>
+</div>
+<script >
+  
+
+
+    //function Add_customer() {
+     
+     
+    //    var name = $("#HoVaTen").val();
+    //    var email = $("#Email").val();
+    //    var sdt = $("#SDT").val();
+    //    var diachi = $("#DiaChi").val();
+    //    var ngaysinh = $("#NgaySinh").val();
+    //    var pass = $("#password").val();
+    //    alert(name)
+    //    $.ajax({
+    //        type: "POST",
+    //        url: '/Customer/Add',
+    //        data: {
+    //            ID_KhachHang : "null1"
+    //            HoVaTen: name,
+    //            Email: email,
+    //            SDT: sdt,
+    //            DiaChi: diachi,
+    //            NgaySinh: ngaysinh,
+    //            MatKhau: pass,
+    //            DiemTichLuy :0
+               
+    //        },
+    //        contentType: "application/json; charset=utf-8",
+    //        dataType: "json",
+    //        success: function(res) {
+    //            alert(res.HoVaTen)
+    //        }
+      
+    //    });
+    //}
+</script>

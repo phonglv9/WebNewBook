@@ -45,6 +45,10 @@ namespace WebNewBook.Controllers
             return RedirectToAction("Index");
         }
 
+        public async Task<IActionResult> Detail()
+        {
+            return View();
+        }
         public async Task<IActionResult> Update(Voucher voucher)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(voucher), Encoding.UTF8, "application/json");

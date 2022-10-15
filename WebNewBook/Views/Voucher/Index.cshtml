@@ -60,17 +60,12 @@
                                                             aria-selected="false">
                                                         Áp dụng
                                                     </button>
-                                                    <button class="nav-link" id="nav-danhsach-tab"
-                                                            data-bs-toggle="tab" data-bs-target="#nav-danhsach"
-                                                            type="button" role="tab" aria-controls="nav-danhsach"
-                                                            aria-selected="false">
-                                                        Danh sách voucher
-                                                    </button>
+
                                                 </div>
                                             </nav>
                                             <form asp-action="Add">
-                                                <input type="hidden" asp-for="Id"  value="null"/>
-                                                <input type="hidden" asp-for="MaNhanVien"  value="null"/>
+                                                <input type="hidden" asp-for="Id" value="null" />
+                                                <input type="hidden" asp-for="MaNhanVien" value="null" />
                                                 <div class="tab-content" id="nav">
                                                     <div class="tab-pane fade show active my-3" id="nav-thongtin"
                                                          role="tabpanel" aria-labelledby="nav-thongtin-tab">
@@ -97,11 +92,11 @@
                                                                         Tình trạng
                                                                     </label>
                                                                     <div class="col-sm-8">
-                                                                        <div  class="form-check form-switch">
-                                                                            <input  class="form-check-input"
+                                                                        <div class="form-check form-switch">
+                                                                            <input class="form-check-input"
                                                                                    type="checkbox" role="switch"
                                                                                    id="flexSwitchCheckCheckedDisabled">
-                                                                            <label  class="form-check-label"
+                                                                            <label class="form-check-label"
                                                                                    for="flexSwitchCheckCheckedDisabled">
                                                                                 Kích hoạt hoặc chưa kích hoạt
                                                                             </label>
@@ -181,78 +176,7 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane fade  active " id="nav-danhsach" role="tabpanel"
-                                                         aria-labelledby="nav-dansach-tab">
-                                                        <div class="row my-3 ">
-                                                            <button type="button" style="font-size: 13px;" class="btn btn-success col-2 mx-1" data-bs-toggle="modal" data-bs-target="#voucher">
-                                                                <i class="fa-solid fa-plus"></i> Voucher
-                                                            </button>
-                                                            <div class="modal fade" id="voucher" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                                <div class="modal-dialog">
-                                                                    <div class="modal-content">
-                                                                        <div class="modal-header">
-                                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm voucher</h1>
-                                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                                        </div>
-                                                                        <div class="modal-body">
-                                                                            <div class="mb-3 row">
-                                                                                <label for="" class="col-sm-3 col-form-label">Mã voucher</label>
-                                                                                <div class="col-sm-9">
-                                                                                    <input type="text" class="form-control">
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="modal-footer">
-                                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                                            <button type="button" class="btn btn-primary">Save changes</button>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <button style="font-size: 13px;" class="btn btn-success col-3 mx-1">
-                                                                <i class="fa-solid fa-plus"></i> Danh sách voucher
-                                                            </button>
-                                                            <button style="font-size: 13px;" class="btn btn-success col-2 mx-1">
-                                                                <i class="fa-solid fa-folder-open"></i> import
-                                                            </button>
 
-                                                        </div>
-                                                        <table class="table table-striped  table-hover">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>
-                                                                        <div class="form-check">
-                                                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                                        </div>
-                                                                    </th>
-                                                                    <th>Mã Voucher</th>
-                                                                    <th>Người sử dụng</th>
-                                                                    <th>Ngày phát hành</th>
-                                                                    <th>Ngày hết hạn</th>
-                                                                    <th>Ngày sử dụng</th>
-                                                                    <th>Điểm đổi</th>
-                                                                    <th>Trạng thái</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-
-                                                                <tr>
-                                                                    <td>
-                                                                        <div class="form-check">
-                                                                            <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                                                        </div>
-                                                                    </td>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
                                                 </div>
                                             </form>
 
@@ -284,161 +208,22 @@
                     <tbody>
                         @foreach (var x in lstvoucher)
                         {
-                            <tr id="Voucher_@x.Id" data-bs-toggle="collapse" onclick="Doimauhang()" href="#Voucher_@x.Id" role="button" aria-expanded="false"
-                            aria-controls="Voucher_@x.Id">
-                                <td >@x.Id</td>
+                            <tr>
+                                <td>@x.Id</td>
                                 <td>@x.TenPhatHanh</td>
                                 <td>@x.StartDate.ToString("d/M/yyyy")</td>
                                 <td>@x.EndDate.ToString("d/M/yyyy")</td>
-                          @*      @if (@x.VoucherCTs.SoLuong!=null)
-                                {
-                                    <td>@x.VoucherCTs.SoLuong</td>
-                                }else {
-                                     <td></td>
-                                }*@
                                 <td></td>
-                               
                                 <td>@x.MenhGia</td>
                                 <td>@x.TrangThai</td>
-
-                            </tr>
-
-                            <tr>
-                                <td colspan="7">
-                                    <div class="collapse" id="Voucher_@x.Id">
-                                        <div>
-                                            <nav>
-                                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                    <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab"
-                                                        data-bs-target="#nav-home" type="button" role="tab"
-                                                        aria-controls="nav-home" aria-selected="true">
-                                                        Thông tin
-                                                    </button>
-                                                    <button class="nav-link" id="nav-list-tab" data-bs-toggle="tab"
-                                                        data-bs-target="#nav-list" type="button" role="tab"
-                                                        aria-controls="nav-profile" aria-selected="false">
-                                                        Danh sách
-                                                        voucher
-                                                    </button>
-                                                    <button class="nav-link" id="nav-history-tab" data-bs-toggle="tab"
-                                                        data-bs-target="#nav-history" type="button" role="tab"
-                                                        aria-controls="nav-contact" aria-selected="false">
-                                                        Lịch sử sử
-                                                        dụng
-                                                    </button>
-                                                </div>
-                                            </nav>
-                                            <div class="tab-content" id="nav-tabContent">
-                                                <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                                                 aria-labelledby="nav-home-tab">
-                                                    <div style="margin-top: 40px;" class="row ">
-                                                        <div class="col-4">
-                                                            <p>Mã đợt phát Hành : @x.Id</p>
-                                                            <p>Thời Gian :@x.StartDate.ToString("d/M/yyyy") / @x.EndDate.ToString("d/M/yyyy")</p>
-                                                            <p>Trạng Thái : Kích Hoạt</p>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <p>Tên đợt phát hành : @x.TenPhatHanh</p>
-                                                            <p>Mệnh Giá :@x.MenhGia</p>
-                                                            <p>Tổng tiền tối thiểu : @x.MenhGiaDieuKien</p>
-                                                        </div>
-                                                        <div class="col-4">
-                                                            <p>
-                                                                Ghi chú   </p>
-                                                        </div>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class=" offset-9">
-                                                            <button style="font-size: 11px;" class="btn btn-success col-1">
-                                                                <i class="fa-solid fa-square-check"></i> Sửa
-                                                            </button>
-                                                            <button style="font-size: 12px;" class="btn btn-danger col-1">
-                                                                <i class="fa-solid fa-trash-can"></i> Xóa
-                                                            </button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="tab-pane fade  active" id="nav-list" role="tabpanel"
-                                                 aria-labelledby="nav-list-tab">
-                                                    <div style="padding: 30px;">
-                                                        <form action="" class="row">
-                                                            <div class="col-5 mb-3">
-                                                                <input type="text" class="form-control"
-                                                                   placeholder="Tìm kiếm mã voucher">
-                                                            </div>
-                                                            <div class="col-5 mb-3">
-                                                                <select class="form-select"
-                                                                    aria-label="Default select example">
-                                                                    <option selected>Tất cả</option>
-                                                                    <option value="1">Đã phát hành</option>
-                                                                    <option value="0">Chưa phát hành</option>
-                                                                    <option value="2">Đã Sửa dụng</option>
-                                                                    <option value="3">Chưa sử dụng</option>
-
-                                                                </select>
-                                                            </div>
-                                                            <div class="col-2">
-                                                                <button type="submit" class="btn btn-secondary">
-                                                                    Tìm
-                                                                    kiếm
-                                                                </button>
-                                                            </div>
-                                                        </form>
-                                                        <table class="table table-striped  table-hover">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th>Mã Voucher</th>
-                                                                    <th>Người sử dụng</th>
-                                                                    <th>Ngày phát hành</th>
-                                                                    <th>Ngày hết hạn</th>
-                                                                    <th>Ngày sử dụng</th>
-                                                                    <th>Điểm đổi</th>
-                                                                    <th>Trạng thái</th>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-
-                                                                <tr>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                    <td>1223</td>
-                                                                </tr>
-
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                                <div class="tab-pane fade  active" id="nav-history" role="tabpanel"
-                                                 aria-labelledby="nav-history-tab">
-                                                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquam autem quidem, ut consequatur aliquid, fuga amet aspernatur odit libero quos, magni et quae voluptas fugit. Velit similique rem esse accusamus!
-                                                </div>
-                                            </div>
-                                        </div>
+                                <td>
+                                    <a asp-action="Detail" asp-route-Id="@x.Id">Chi Tiết</a>
                                 </td>
                             </tr>
                         }
-
                     </tbody>
                 </table>
             </p>
         </div>
     </div>
 </div>
-
-<script>
-
-     
-    function Doimauhang(){
- for (int i = 0; i < lstvoucher.length; i++)
-{
-    alert("vào")
-            document.getElementById("Voucher_"+lstvoucher[i].Id).style.backgroundColor = "black";
-            document.getElementById("Voucher_" + lstvoucher[i].Id).style.color = "White";
-        }   
-     
-    }
-</script>
