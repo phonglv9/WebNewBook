@@ -21,6 +21,7 @@ namespace WebNewBook.Model
         public int? Diemdoi { get; set; }
         public DateTime? NgayBatDau { get; set; }
         public DateTime? NgayHetHan { get; set; }
+        public DateTime? NgaySuDung { get; set; }
         public int? TrangThai { get; set; }
         [ForeignKey("KhachHang")]
         public string? MaKhachHang { get; set; }

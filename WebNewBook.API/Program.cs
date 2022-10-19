@@ -28,6 +28,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<INhanVienService, NhanVienService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();
+builder.Services.AddScoped<IVoucherCTServices, VoucherCTServices>();
 builder.Services.AddScoped<IPhieuNhapService, PhieuNhapService>();
 builder.Services.AddScoped<ISanPhamService, SanPhamService>();
 builder.Services.AddScoped<IHomeService, HomeService>();

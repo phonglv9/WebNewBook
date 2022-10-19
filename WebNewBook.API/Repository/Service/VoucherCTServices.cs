@@ -1,6 +1,8 @@
-﻿using WebNewBook.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using WebNewBook.API.Data;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
+
 
 namespace WebNewBook.API.Repository.Service
 {
@@ -15,11 +17,8 @@ namespace WebNewBook.API.Repository.Service
 
         public async Task AddAutomaticallyAsync(VoucherCT voucherCT)
         {
-            voucherCT.TrangThai = 0;
-            voucherCT.CreateDate = DateTime.Now;
-            voucherCT.NgayHetHan = voucherCT.Voucher.EndDate;
-            _dbcontext.Add(voucherCT);
-            await _dbcontext.SaveChangesAsync();
+         
+            throw new NotImplementedException();
         }
 
         public Task AddImportExcerAsync(VoucherCT voucherCT)
@@ -27,9 +26,14 @@ namespace WebNewBook.API.Repository.Service
             throw new NotImplementedException();
         }
 
-        public Task AddManuallyAsync(VoucherCT voucherCT)
+        public async Task AddManuallyAsync(VoucherCT voucherCT)
         {
-            throw new NotImplementedException();
+            voucherCT.NgayBatDau = null;
+            voucherCT.TrangThai = 0;
+            voucherCT.CreateDate = DateTime.Now;
+
+            _dbcontext.Add(voucherCT);
+            await _dbcontext.SaveChangesAsync();
         }
 
         public Task<VoucherCT?> GetVoucherByIdAsync(string id)
@@ -37,9 +41,14 @@ namespace WebNewBook.API.Repository.Service
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<VoucherCT>> GetVoucherChuaphathanhAsync()
+        public async Task<IEnumerable<VoucherCT?>> GetVoucherByMaVoucherAsync(string id)
         {
-            throw new NotImplementedException();
+            return await _dbcontext.VoucherCTs.Where(c => c.MaVoucher == id).ToListAsync();
+        }
+
+        public async Task<IEnumerable<VoucherCT>> GetVoucherChuaphathanhAsync()
+        {
+            return await _dbcontext.VoucherCTs.Where(c=>c.TrangThai==0).ToListAsync();
         }
 
         public Task<IEnumerable<VoucherCT>> GetVoucherDaphathanhAsync()
