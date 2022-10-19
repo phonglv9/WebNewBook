@@ -32,6 +32,10 @@ builder.Services.AddScoped<IPhieuNhapService, PhieuNhapService>();
 builder.Services.AddScoped<ISanPhamService, SanPhamService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
 
+builder.Services.AddScoped<IBookSevice, BookService>();
+builder.Services.AddScoped<IHomeService, HomeService>();
+
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,11 +1,18 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 
-   
+ 
 
 }
+@using WebNewBook.ViewModel
+@model VoucherModel
 
+
+<form asp-action="Detail" >
+    <input asp-for="Voucher.Id" />
+</form>
                 <div>
+                   
                     <nav>
                         <div class="nav nav-tabs" id="nav-tab" role="tablist">
                             <button class="nav-link active" id="nav-add-tab"

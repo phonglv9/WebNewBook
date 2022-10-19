@@ -17,6 +17,7 @@ namespace WebNewBook.Model
         public string TenPhatHanh { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        public int? SoLuong { get; set; }
         public double MenhGia { get; set; }
         public double MenhGiaDieuKien { get; set; }
         public string GhiChu { get; set; } = String.Empty;

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Text;
 using WebNewBook.Model;
+using WebNewBook.ViewModel;
 
 namespace WebNewBook.Controllers
 {
@@ -45,9 +46,15 @@ namespace WebNewBook.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Detail()
+        public async Task<IActionResult> Detail(string Id,VoucherModel voucherModel)
         {
-            return View();
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Voucher/"+Id).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string jsondata = response.Content.ReadAsStringAsync().Result;
+                voucherModel.Voucher = JsonConvert.DeserializeObject<Voucher>(jsondata);
+            }
+            return View(voucherModel);
         }
         public async Task<IActionResult> Update(Voucher voucher)
         {
@@ -64,7 +71,7 @@ namespace WebNewBook.Controllers
         public async Task<IActionResult> Delete(string Id)
         {
             StringContent content = new StringContent(JsonConvert.SerializeObject(Id));
-        
+
             HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/Voucher/" + Id, null).Result;
             if (response.IsSuccessStatusCode)
             {
@@ -73,5 +80,10 @@ namespace WebNewBook.Controllers
             }
             return RedirectToAction("Index");
         }
+
+        //public async Task<IActionResult> ThemtungVoucher(VoucherCT voucherCT)
+        //{
+
+        //}
     }
 }
