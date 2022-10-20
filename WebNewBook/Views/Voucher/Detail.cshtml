@@ -1,16 +1,11 @@
 ﻿@{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 
- 
 
+    var lstvoucherCT = ViewBag.lstvoucherCT;
 }
 @using WebNewBook.ViewModel
 @model VoucherModel
-
-
-<form asp-action="Detail" >
-    <input asp-for="Voucher.Id" />
-</form>
                 <div>
                    
                     <nav>
@@ -49,18 +44,23 @@
                                 <h1 class="modal-title fs-5" id="exampleModalLabel">Thêm voucher</h1>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="mb-3 row">
-                                    <label for="" class="col-sm-3 col-form-label">Mã voucher</label>
-                                    <div class="col-sm-9">
-                                        <input type="text" class="form-control">
+                            <form asp-action="Create">
+                                <input asp-for="Voucher.Id" type="hidden" />
+                                <input asp-for="Voucher.EndDate" type="hidden" />
+                                <div class="modal-body">
+                                    <div class="mb-3 row">
+                                        <label for="" class="col-sm-3 col-form-label">Mã voucher</label>
+                                        <div class="col-sm-9">
+                                            <input asp-for="voucherCT.Id" type="text" class="form-control">
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary">Save changes</button>
-                            </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Thêm Voucher</button>
+                                </div>
+                            </form>
+                            
                         </div>
                     </div>
                 </div>
@@ -89,22 +89,27 @@
                         <th>Trạng thái</th>
                     </tr>
                 </thead>
-                <tbody>
-
-                    <tr>
-                        <td>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                            </div>
-                        </td>
-                        <td>1223</td>
-                        <td>1223</td>
-                        <td>1223</td>
-                        <td>1223</td>
-                        <td>1223</td>
-                        <td>1223</td>
-                        <td>1223</td>
-                    </tr>
+                <tbody >
+                    @foreach (var x in lstvoucherCT)
+                    {
+                        <tr>
+                            <td>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                </div>
+                            </td>
+                            <td>@x.Id</td>
+                            <td></td>
+                            <td>@x.NgayBatDau</td>
+                            <td>@x.NgayHetHan</td>
+                            <td>@x.NgaySuDung</td>
+                            <td>@x.Diemdoi</td>
+                            <td>@x.TrangThai</td>
+                        </tr>
+                    }
+                  
+                    
+                    
                 </tbody>
             </table>
                         </div>
