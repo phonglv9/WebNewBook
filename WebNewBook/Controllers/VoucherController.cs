@@ -72,10 +72,11 @@ namespace WebNewBook.Controllers
         }
         public async Task<IActionResult> Create(VoucherModel voucherModel)
         {
-           
-    
-            if (!ModelState.IsValid)
+
+
+            try
             {
+
                 using (var httpClient = new HttpClient())
                 {
                     StringContent content = new StringContent(JsonConvert.SerializeObject(voucherModel.voucherCT), Encoding.UTF8, "application/json");
@@ -85,12 +86,15 @@ namespace WebNewBook.Controllers
                         voucherModel = JsonConvert.DeserializeObject<VoucherModel>(apiResponse);
                     }
                 }
-                return RedirectToAction("Detail");
+                return RedirectToAction("Index");
+             //   return RedirectToAction("Detail"+"/"+voucherModel.voucherCT.MaVoucher);
             }
-            else
+            catch (Exception e)
             {
-                return RedirectToAction("Detail");
+
+                return View(e.Message);
             }
+          
             
         }
         public async Task<IActionResult> Update(Voucher voucher)
