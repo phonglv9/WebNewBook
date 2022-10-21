@@ -5,6 +5,7 @@ using System.Diagnostics;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.Models;
+using WebNewBook.ReadAPI;
 using WebNewBook.ViewModel;
 using X.PagedList;
 
@@ -14,6 +15,7 @@ namespace WebNewBook.Controllers
     {      
         Uri baseAdress = new Uri("https://localhost:7266/api");
         HttpClient _httpClient;
+        IBaseApiClient _baseApiClient;
         public HomeController()
         {
             _httpClient = new HttpClient();
@@ -55,7 +57,7 @@ namespace WebNewBook.Controllers
 
                 ViewBag.DanhMuc = danhMucSaches.ToList();
             };
-
+         
 
             return View(modelHome);
         }
