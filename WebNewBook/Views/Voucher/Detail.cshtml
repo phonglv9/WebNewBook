@@ -51,6 +51,8 @@
                                     <div class="mb-3 row">
                                         <label for="" class="col-sm-3 col-form-label">Mã voucher</label>
                                         <div class="col-sm-9">
+                                            <input  asp-for="voucherCT.NgayHetHan  " type="hidden" value="@Model.Voucher.EndDate"/>
+                                            <input asp-for="voucherCT.MaVoucher" type="hidden" value="@Model.Voucher.Id" />
                                             <input asp-for="voucherCT.Id" type="text" class="form-control">
                                         </div>
                                     </div>
@@ -100,11 +102,34 @@
                             </td>
                             <td>@x.Id</td>
                             <td></td>
-                            <td>@x.NgayBatDau</td>
-                            <td>@x.NgayHetHan</td>
-                            <td>@x.NgaySuDung</td>
+                            @if (x.NgayBatDau!=null)
+                            {
+                                <td>@x.NgayBatDau.ToString("d/M/yyyy")</td>
+                            }else{
+                                <td></td>
+                            }    
+                             @if (x.NgayHetHan !=null)
+                            {
+                                <td>@x.NgayHetHan.ToString("d/M/yyyy")</td>
+                            }else{
+                                <td></td>
+                            }
+                            
+                            @if (x.NgaySuDung !=null)
+                            {
+                                <td>@x.NgaySuDung.ToString("d/M/yyyy")</td>
+                            }else{
+                                <td></td>
+                            }
+                          
                             <td>@x.Diemdoi</td>
-                            <td>@x.TrangThai</td>
+                        @*    <td>@(x.TrangThai==0?"Chưa phát Hành": "Đã phát hành")</td>*@
+                            @if (@x.TrangThai==0) {
+                                <td class="text-danger fs-6 fst-italic">Chưa Phát hành</td>
+                            }else   
+                            {
+                        <td class="text-success fs-6 fst-italic">Đã Phát hành</td>
+                            }
                         </tr>
                     }
                   

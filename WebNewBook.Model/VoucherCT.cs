@@ -14,9 +14,7 @@ namespace WebNewBook.Model
         [Key]
         [Required]
         public string Id { get; set; }
-        [Required]
         public DateTime? CreateDate { get; set; }
-        [Required]
         public int? HinhThuc { get; set; }
         public int? Diemdoi { get; set; }
         public DateTime? NgayBatDau { get; set; }
