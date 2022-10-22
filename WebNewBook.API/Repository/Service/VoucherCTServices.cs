@@ -15,10 +15,33 @@ namespace WebNewBook.API.Repository.Service
             _dbcontext = dbcontext;
         }
 
-        public async Task AddAutomaticallyAsync(VoucherCT voucherCT)
+        private Random random = new Random();
+        public string RandomVoucher(int length)
         {
+             string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            return new string(Enumerable.Repeat(characters, length)
+              .Select(s => s[random.Next(s.Length)]).ToArray());
+        }
+        public async Task AddAutomaticallyAsync(int quantityVoucher, int lengthVoucher , string startTextVoucher, string endTextVoucher, string maVoucher)
+        {
+           
+            VoucherCT voucherCT = new VoucherCT();
+            lengthVoucher = lengthVoucher - startTextVoucher.Length - endTextVoucher.Length;
+            for (int i = 0; i < quantityVoucher; i++)
+            {
+
+                string ktRandom = RandomVoucher(lengthVoucher);
+                string idVoucher = startTextVoucher + ktRandom + endTextVoucher;
+                voucherCT.Id = idVoucher;
+                voucherCT.NgayBatDau = null;
+                voucherCT.TrangThai = 0;
+                voucherCT.CreateDate = DateTime.Now;
+                voucherCT.MaVoucher = maVoucher;
+                _dbcontext.Add(voucherCT);
+                await _dbcontext.SaveChangesAsync();
+            }
          
-            throw new NotImplementedException();
+           
         }
 
         public Task AddImportExcerAsync(VoucherCT voucherCT)

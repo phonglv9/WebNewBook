@@ -70,6 +70,17 @@ namespace WebNewBook.Controllers
          
             return View(voucherModel);
         }
+        //public async Task<IActionResult> CreateListvoucher(int quantityVoucher, int sizeVoucher, string startTextVoucher, string endTextVoucher, string maVoucher)
+        //{
+        //    HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/VoucherCT/AddAutomatically?" + status + "&search=" + search).Result;
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        string jsondata = response.Content.ReadAsStringAsync().Result;
+        //        GetKhachHang = JsonConvert.DeserializeObject<List<KhachHang>>(jsondata);
+        //    }
+        //    ViewBag.lstKhachHang = GetKhachHang;
+        //    return View();
+        //}
         public async Task<IActionResult> Create(VoucherModel voucherModel)
         {
 
