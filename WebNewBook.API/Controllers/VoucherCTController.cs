@@ -51,5 +51,19 @@ namespace WebNewBook.API.Controllers
                 return BadRequest(e.Message);
             }
         }
+        [HttpPost("AddAutomatically")]
+        public async Task<ActionResult> AddTuDongVoucher(int quantityVoucher, int sizeVoucher, string startTextVoucher, string endTextVoucher, string maVoucher)
+        {
+            try
+            {
+                await _voucherCTServices.AddAutomaticallyAsync(quantityVoucher, sizeVoucher, startTextVoucher, endTextVoucher,maVoucher);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+                
+            }
+        }
     }
 }

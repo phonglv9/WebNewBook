@@ -6,31 +6,31 @@
 }
 @using WebNewBook.ViewModel
 @model VoucherModel
-                <div>
-                   
-                    <nav>
-                        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                            <button class="nav-link active" id="nav-add-tab"
+<div>
+
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <button class="nav-link active" id="nav-add-tab"
                     data-bs-toggle="tab" data-bs-target="#nav-add"
                     type="button" role="tab" aria-controls="nav-add"
-                                    aria-selected="true">
-                             Thêm Voucher 
-                            </button>
-                            <button class="nav-link" id="nav-list-tab"
+                    aria-selected="true">
+                Thêm Voucher
+            </button>
+            <button class="nav-link" id="nav-list-tab"
                     data-bs-toggle="tab" data-bs-target="#nav-list"
                     type="button" role="tab" aria-controls="nav-list"
-                                    aria-selected="false">
-                               Danh sách Voucher phát hành
-                            </button>
+                    aria-selected="false">
+                Danh sách Voucher phát hành
+            </button>
             <button class="nav-link" id="nav-history-tab"
-                                    data-bs-toggle="tab" data-bs-target="#nav-history"
+                    data-bs-toggle="tab" data-bs-target="#nav-history"
                     type="button" role="tab" aria-controls="nav-history"
-                                    aria-selected="false">
-                              Lịch sử Voucher
-                            </button>
-                        </div>
-                    </nav>
-                    <div class="tab-content" id="nav">
+                    aria-selected="false">
+                Lịch sử Voucher
+            </button>
+        </div>
+    </nav>
+    <div class="tab-content" id="nav">
         <div class="tab-pane fade show active my-3" id="nav-add"
              role="tabpanel" aria-labelledby="nav-add-tab">
             <div class="row my-3 ">
@@ -51,7 +51,7 @@
                                     <div class="mb-3 row">
                                         <label for="" class="col-sm-3 col-form-label">Mã voucher</label>
                                         <div class="col-sm-9">
-                                            <input  asp-for="voucherCT.NgayHetHan  " type="hidden" value="@Model.Voucher.EndDate"/>
+                                            <input asp-for="voucherCT.NgayHetHan  " type="hidden" value="@Model.Voucher.EndDate" />
                                             <input asp-for="voucherCT.MaVoucher" type="hidden" value="@Model.Voucher.Id" />
                                             <input asp-for="voucherCT.Id" type="text" class="form-control">
                                         </div>
@@ -62,13 +62,49 @@
                                     <button type="submit" class="btn btn-primary">Thêm Voucher</button>
                                 </div>
                             </form>
-                            
+
                         </div>
                     </div>
                 </div>
-                <button style="font-size: 13px;" class="btn btn-success col-3 mx-1">
+                <button style="font-size: 13px;" class="btn btn-success col-3 mx-1" data-bs-toggle="modal" data-bs-target="#List_voucher">
                     <i class="fa-solid fa-plus"></i> Danh sách voucher
                 </button>
+                <!-- Modal -->
+                <div class="modal fade" id="List_voucher" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Thêm danh sách voucher</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="Dodai" placeholder="Độ dài mã voucher" >
+                                    <label for="Dodai">Độ dài mã voucher</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="ktstart" placeholder="Kí tự bắt đầu">
+                                    <label for="ktstart">Kí tự bắt đầu</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control" id="ktend" placeholder="Kí tự kết thúc">
+                                    <label for="ktend">Kí tự kết thúc</label>
+                                </div>
+                                <div class="form-floating mb-3">
+                                    <input type="number" class="form-control" id="quantity" placeholder="Số lượng voucher">
+                                    <label for="quantity">Số lượng voucher</label>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button type="button" class="btn btn-primary">Thêm</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
                 <button style="font-size: 13px;" class="btn btn-success col-2 mx-1">
                     <i class="fa-solid fa-folder-open"></i> import
                 </button>
@@ -91,7 +127,7 @@
                         <th>Trạng thái</th>
                     </tr>
                 </thead>
-                <tbody >
+                <tbody>
                     @foreach (var x in lstvoucherCT)
                     {
                         <tr>
@@ -102,44 +138,52 @@
                             </td>
                             <td>@x.Id</td>
                             <td></td>
-                            @if (x.NgayBatDau!=null)
+                            @if (x.NgayBatDau != null)
                             {
                                 <td>@x.NgayBatDau.ToString("d/M/yyyy")</td>
-                            }else{
+                            }
+                            else
+                            {
                                 <td></td>
-                            }    
-                             @if (x.NgayHetHan !=null)
+                            }
+                            @if (x.NgayHetHan != null)
                             {
                                 <td>@x.NgayHetHan.ToString("d/M/yyyy")</td>
-                            }else{
+                            }
+                            else
+                            {
                                 <td></td>
                             }
-                            
-                            @if (x.NgaySuDung !=null)
+
+                            @if (x.NgaySuDung != null)
                             {
                                 <td>@x.NgaySuDung.ToString("d/M/yyyy")</td>
-                            }else{
+                            }
+                            else
+                            {
                                 <td></td>
                             }
-                          
+
                             <td>@x.Diemdoi</td>
-                        @*    <td>@(x.TrangThai==0?"Chưa phát Hành": "Đã phát hành")</td>*@
-                            @if (@x.TrangThai==0) {
-                                <td class="text-danger fs-6 fst-italic">Chưa Phát hành</td>
-                            }else   
+                            @*    <td>@(x.TrangThai==0?"Chưa phát Hành": "Đã phát hành")</td>*@
+                            @if (@x.TrangThai == 0)
                             {
-                        <td class="text-success fs-6 fst-italic">Đã Phát hành</td>
+                                <td class="text-danger fs-6 fst-italic">Chưa Phát hành</td>
+                            }
+                            else
+                            {
+                                <td class="text-success fs-6 fst-italic">Đã Phát hành</td>
                             }
                         </tr>
                     }
-                  
-                    
-                    
+
+
+
                 </tbody>
             </table>
-                        </div>
+        </div>
         <div class="tab-pane fade  active" id="nav-list" role="tabpanel"
-                             aria-labelledby="nav-list-tab">
+             aria-labelledby="nav-list-tab">
 
             <div style="padding: 30px;">
                 <form action="" class="row">
@@ -192,10 +236,9 @@
                     </tbody>
                 </table>
             </div>
-                        </div>
+        </div>
         <div class="tab-pane fade  active " id="nav-history" role="tabpanel"
              aria-labelledby="nav-history-tab">
-                         
-                        </div>
-                    </div>
-                </div>
+        </div>
+    </div>
+</div>
