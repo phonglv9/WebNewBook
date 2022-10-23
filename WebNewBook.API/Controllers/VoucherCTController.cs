@@ -65,5 +65,21 @@ namespace WebNewBook.API.Controllers
                 
             }
         }
+
+
+        [HttpPost("AddImportExcer")]
+        public async Task<ActionResult> AddImportExcerVoucher(IFormFile file, string Phathanh)
+        {
+            try
+            {
+                await _voucherCTServices.AddImportExcerAsync(file,Phathanh);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+
+            }
+        }
     }
 }

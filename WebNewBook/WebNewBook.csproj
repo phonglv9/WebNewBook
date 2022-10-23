@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="ClosedXML" Version="0.97.0" />
     <PackageReference Include="Microsoft.AspNetCore.Components" Version="6.0.9" />
     <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
@@ -23,6 +24,10 @@
   <ItemGroup>
     <ProjectReference Include="..\WebNewBook.API\WebNewBook.API.csproj" />
     <ProjectReference Include="..\WebNewBook.Model\WebNewBook.Model.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\File\News\" />
   </ItemGroup>
 
 </Project>
