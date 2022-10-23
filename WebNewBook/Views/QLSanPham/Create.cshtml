@@ -1,0 +1,57 @@
+﻿@using WebNewBook.Model
+@using WebNewBook.Model.APIModels
+@model SanPhamAPI
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+@if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <h1 class="text-danger">@ViewBag.Error</h1>
+}
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="SanPham.TenSanPham" class="control-label">Tên sản phẩm</label>
+                <input asp-for="SanPham.TenSanPham" class="form-control" />
+                <span asp-validation-for="SanPham.TenSanPham" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Sách</label>
+                <select id="Sachs" name="SelectedSachs"
+                        asp-items="@ViewBag.Sachs" multiple class="form-control">
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="SanPham.SoLuong" class="control-label">Số lượng</label>
+                <input asp-for="SanPham.SoLuong" class="form-control" />
+                <span asp-validation-for="SanPham.SoLuong" class="text-danger"></span>
+            </div>
+            <div class="form-group" hidden>
+                <input asp-for="SanPham.GiaBan" class="form-control" value="0"/>
+            </div>
+            <div class="form-group">
+                <label asp-for="SanPham.MaPhieuGiamGiaSP" class="control-label">Khuyến mại</label>
+                <input asp-for="SanPham.MaPhieuGiamGiaSP" class="form-control" />
+                <span asp-validation-for="SanPham.MaPhieuGiamGiaSP" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GiamGia" class="control-label">Giảm %</label>
+                <input asp-for="GiamGia" class="form-control" />
+                <span asp-validation-for="GiamGia" class="text-danger"></span>
+            </div>
+            <input asp-for="SanPham.ID_SanPham" value="SP" hidden />
+            <button type="submit" class="btn btn-primary">Nhập sản phẩm</button>
+        </form>
+    </div>
+</div>
+
+@section Scripts{
+<script>
+    $(function() {
+        $("#Sachs").chosen();
+    });
+</script>
+}

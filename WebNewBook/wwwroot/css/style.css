@@ -55,11 +55,11 @@ Table OF Contents
 	Typography
 \*----------------------------*/
 
-body {
-  font-family: 'Montserrat', sans-serif;
-  font-weight: 400;
-  color: #333;
-}
+    body {
+        font-family: 'Montserrat', sans-serif;
+        font-weight: 400;
+        color: #333;
+    }
 
 h1, h2, h3, h4, h5, h6 {
   color: #2B2D42;
@@ -293,8 +293,9 @@ textarea.input {
 \*----------------------------*/
 
 .section {
-  padding-top: 30px;
-  padding-bottom: 30px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    background-color: #f9f9f9;
 }
 
 .section-title {
@@ -362,7 +363,7 @@ textarea.input {
   padding: 30px 0px;
   background: #FBFBFC;
   border-bottom: 1px solid #E4E7ED;
-  margin-bottom: 30px;
+
 }
 
 #breadcrumb .breadcrumb-header {
@@ -615,6 +616,11 @@ textarea.input {
   padding-top: 15px;
   padding-bottom: 15px;
 }
+.open > .dropdown-menu {
+    display: block;
+    padding: 10px;
+    line-height: 2;
+}
 
 /*=========================================================
 	03 -> Navigation
@@ -719,33 +725,33 @@ textarea.input {
   margin: 15px 0px;
 }
 
-.shop:before {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0px;
-  width: 60%;
-  
-  opacity: 0.9;
-  -webkit-transform: skewX(-45deg);
-  -ms-transform: skewX(-45deg);
-  transform: skewX(-45deg);
-}
+    .shop:before {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0px;
+        width: 60%;
+        
+        opacity: 0.9;
+        -webkit-transform: skewX(-45deg);
+        -ms-transform: skewX(-45deg);
+        transform: skewX(-45deg);
+    }
 
-.shop:after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 1px;
-  width: 100%;
-  background: #2c55a5;
-  opacity: 0.9;
-  -webkit-transform: skewX(-45deg) translateX(-100%);
-  -ms-transform: skewX(-45deg) translateX(-100%);
-  transform: skewX(-45deg) translateX(-100%);
-}
+    .shop:after {
+        content: "";
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 1px;
+        width: 100%;
+        background: #ff9c00;
+        opacity: 0.9;
+        -webkit-transform: skewX(-45deg) translateX(-100%);
+        -ms-transform: skewX(-45deg) translateX(-100%);
+        transform: skewX(-45deg) translateX(-100%);
+    }
 
 .shop .shop-img {
   position: relative;
@@ -1158,11 +1164,7 @@ textarea.input {
 	Products slick
 \*----------------------------*/
 
-.products-slick .slick-list {
-  padding-bottom: 60px;
-  margin-bottom: -60px;
-  z-index: 2;
-}
+
 
 .products-slick .product.slick-slide {
   margin: 15px;
@@ -1173,7 +1175,7 @@ textarea.input {
   height: 0;
   opacity: 0;
   visibility: hidden;
-  overflow-y: hidden;
+ 
   padding-bottom: 60px;
   margin-bottom: -60px;
 }
@@ -1186,20 +1188,11 @@ textarea.input {
 
 .products-slick-nav {
   position: absolute;
-  right: 15px;
+ 
   z-index: 10;
 }
 
-.products-slick-nav .slick-prev, .products-slick-nav .slick-next {
-  position: static;
-  -webkit-transform: none;
-  -ms-transform: none;
-  transform: none;
-  width: 20px;
-  height: 20px;
-  display: inline-block !important;
-  margin: 0px 2px;
-}
+
 
 .products-slick-nav .slick-prev:before, .products-slick-nav .slick-next:before {
   font-size: 14px;
@@ -1395,19 +1388,7 @@ textarea.input {
 	Product view
 \*----------------------------*/
 
-#product-main-img .slick-prev {
-  -webkit-transform: translateX(-15px);
-  -ms-transform: translateX(-15px);
-  transform: translateX(-15px);
-  left: 15px;
-}
 
-#product-main-img .slick-next {
-  -webkit-transform: translateX(15px);
-  -ms-transform: translateX(15px);
-  transform: translateX(15px);
-  right: 15px;
-}
 
 #product-main-img .slick-prev, #product-main-img .slick-next {
   opacity: 0;
@@ -1921,11 +1902,13 @@ textarea.input {
 /*=========================================================
 	10 -> NEWSLETTER
 ===========================================================*/
-
+.box-container{
+    position:relative;
+}
 #newsletter.section {
-  border-top: 2px solid #E4E7ED;
-  border-bottom: 3px solid #2c55a5;
-  margin-top: 30px;
+    border-top: 2px solid #E4E7ED;
+    border-bottom: 3px solid #2c55a5;
+    margin-top: 30px;
 }
 
 .newsletter {
@@ -2008,8 +1991,13 @@ textarea.input {
 ===========================================================*/
 
 #footer {
-  background: #2c55a5;
-  color: #B9BABC;
+    
+    background: #2c55a5;
+    color: #B9BABC;
+}
+#top-footer {
+    padding-top: 30px;
+    padding-bottom: 30px;
 }
 
 #bottom-footer {
@@ -2193,4 +2181,84 @@ textarea.input {
     float: none;
     margin-top: 10px;
   }
+}
+#tab1 {
+    position: relative;
+    
+    z-index: 2;
+}
+
+.products-slick-nav {
+    position: absolute;
+    top: calc(50% - 60px);
+    transform: translateY(-50%);
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+    #tab1 .products-slick-nav .slick-prev, .products-slick-nav .slick-next {
+        width: 42px !important;
+        height: 42px !important;
+        display: flex !important;
+        align-items: center;
+        justify-content:center;
+        font-size: 16px;
+        position:relative;
+        right:3%;
+        transform:translateX(100%);
+    }
+#tab1 .products-slick-nav .slick-prev {
+    left: 3%;
+    transform: translateX(-100%);
+}
+        .products-slick-nav .slick-prev:before, .products-slick-nav .slick-next:before {
+            font-size: 24px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+        }
+.slider-size {
+    height: 200px;
+}
+.slick-list{
+    padding-bottom:60px;
+}
+#footer > .container{
+    padding: 40px 0px;
+}
+.footer-links li{
+    line-height:36px;
+}
+.fa.fa-angle-left {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    background-color: red;
+    width: 40px;
+    height: 40px;
+    border-radius: 1000px;
+    /* display: grid; */
+    /* place-items: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.fa.fa-angle-right {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    background-color: red;
+    width: 40px;
+    height: 40px;
+    border-radius: 1000px;
+    /* display: grid; */
+    /* place-items: center; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.carousel-control{
+    width:0;
 }

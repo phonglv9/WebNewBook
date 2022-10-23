@@ -5,6 +5,7 @@ using System.Diagnostics;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.Models;
+
 using WebNewBook.ViewModel;
 using X.PagedList;
 
@@ -14,6 +15,7 @@ namespace WebNewBook.Controllers
     {      
         Uri baseAdress = new Uri("https://localhost:7266/api");
         HttpClient _httpClient;
+
         public HomeController()
         {
             _httpClient = new HttpClient();
@@ -55,12 +57,13 @@ namespace WebNewBook.Controllers
 
                 ViewBag.DanhMuc = danhMucSaches.ToList();
             };
-
+         
 
             return View(modelHome);
         }
-        public async Task<IActionResult> Product(string search, string currentFilter,string iddanhmuc,string idtheloai, string idtacgia, string sortOrder, int? pageNumber, int pageSize,double priceMin , double priceMax)
-            {
+
+        public async Task<IActionResult> Product(string search, string currentFilter,string iddanhmuc,string idtheloai, string idtacgia, string sortOrder, int? pageNumber, int pageSize, double priceMin , double priceMax)
+                {
 
             #region Product
 
@@ -116,10 +119,13 @@ namespace WebNewBook.Controllers
             ViewData["IdDanhMuc"] = iddanhmuc;
             ViewData["IdTheLoai"] = idtheloai;
             ViewData["IdTacGia"] = idtacgia;
-            
+           
+           
+
+
             if (pageSize == 0)
             {
-                pageSize = 15;
+                pageSize = 20;
             }
             
             if (search != null)
@@ -130,6 +136,13 @@ namespace WebNewBook.Controllers
             {
                 search = currentFilter;
             }
+            if (priceMin > priceMax)
+            {
+                priceMax = priceMin;
+            }
+            ViewBag.PriceMax = priceMax;
+            ViewBag.PriceMin = priceMin;
+            ViewData["PageNumber"] = pageNumber;
             ViewBag.PageSize = pageSize;
             switch (sortOrder)
             {
@@ -150,12 +163,24 @@ namespace WebNewBook.Controllers
                     break;
 
             }
+            #region Fillter price
+            if (priceMax != 0 || priceMin != 0)
+            {
+                productStore = await productStore.Where(c => c.sanPhams.GiaBan >= priceMin && c.sanPhams.GiaBan <= priceMax).ToListAsync();
+                ViewBag.NumberProduct = productStore.Count();
+               
+            }
 
+            #endregion
+
+
+          
 
             #region Tìm kiếm           
             if (!String.IsNullOrEmpty(search) && !(iddanhmuc == "Tất cả sách"))
             {
-                productStore = productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc && c.sanPhams.TenSanPham.Contains(search)).ToList();
+
+                productStore = await productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc && c.sanPhams.TenSanPham.Contains(search)).ToListAsync();
                 if (productStore.Count == 0)
                 {
                     ViewBag.TextSearch = $"Không tìm thấy kết quả {search} trong danh mục";
@@ -173,7 +198,9 @@ namespace WebNewBook.Controllers
                 {
                     ViewBag.TextSearch = "Không tìm thấy kết quả " + search;
                 }
+
                 ViewBag.NumberProduct = productStore.Count();
+
                 return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
 
             }
@@ -196,6 +223,7 @@ namespace WebNewBook.Controllers
                     ViewBag.ProductSS = productStore.Select(c=>c.danhMucSach.TenDanhMuc).Distinct();
                 }
                 ViewBag.NumberProduct = productStore.Count();
+                  
                 return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
 
             }
@@ -239,9 +267,6 @@ namespace WebNewBook.Controllers
 
             #endregion
 
-            #region FillterOderby
-
-            #endregion
 
             ViewBag.NumberProduct = productStore.Count();
             return View(await PaginatedList<HomeVM>.CreateAsync( await productStore.ToListAsync(), pageNumber ?? 1, pageSize));

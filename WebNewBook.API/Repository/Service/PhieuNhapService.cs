@@ -16,9 +16,9 @@ namespace WebNewBook.API.Repository.Service
 
         public async Task AddPhieuNhapAsync(PhieuNhap par)
         {
+            par.NgayNhap = DateTime.Now;
             dbcontext.Add(par);
-            Sach? sach = dbcontext.Sachs.FirstOrDefault(c => c.ID_Sach == par.MaSach);
-            if (sach == null) return;
+            Sach sach = dbcontext.Sachs.FirstOrDefault(c => c.ID_Sach == par.MaSach);
             sach.SoLuong += par.SoLuongNhap;
             sach.SoLuongKho += par.SoLuongNhap;
             dbcontext.Update(sach);

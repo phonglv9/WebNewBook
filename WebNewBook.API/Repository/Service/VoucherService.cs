@@ -19,6 +19,7 @@ namespace WebNewBook.API.Repository.Service
             string a;
             Random random = new Random();
             voucher.Id = "MPHVC" + random.Next().ToString();
+            voucher.SoLuong = 0;
             voucher.Createdate = DateTime.Now;
       
             voucher.MaNhanVien = "NV01";       

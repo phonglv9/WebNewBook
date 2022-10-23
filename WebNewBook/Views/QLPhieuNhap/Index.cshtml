@@ -1,0 +1,69 @@
+﻿@using WebNewBook.Model
+@model PhieuNhap
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container py-3" style="background-color: #f1f1f1;">
+    <h3 style="font-weight: 700;">Danh sách phiếu nhập</h3>
+    <div class="container " style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <h6>
+                <div class="row">
+                    <div class="col-5 mb-3">
+                        <input type="text" class="form-control" placeholder="Số điện thoại, Họ và tên,...">
+                    </div>
+                    <div class="col-5 mb-3">
+                        <select class="form-select" aria-label="Default select example">
+                            <option selected>Chọn trạng thái</option>
+                            <option value="1">Hoạt động</option>
+                            <option value="0">Không hoạt động</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                    </div>
+                    <p>@*10000 thành viên*@</p>
+                    <div class="col-3">
+                        <a type="button" class="btn btn-primary"asp-action="Create">
+                            <i class="fa-solid fa-address-book"></i> Thêm phiếu nhập
+                        </a>
+                    </div>
+                </div>
+            </h6>
+        </div>
+    </div>
+    <br>
+    <div class="container " style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <p>
+                <table class="table">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th scope="col">Nhân viên</th>
+                            <th scope="col">Sách</th>
+                            <th scope="col">Giá nhập</th>
+                            <th scope="col">Số lượng</th>
+                            <th scope="col">Ngày nhập</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.PhieuNhap)
+                        {
+                            <tr>
+                                <th scope="row">@item.MaNhanVien</th>
+                                <td>@item.MaSach</td>
+                                <td>@item.GiaNhap</td>
+                                <td>@item.SoLuongNhap</td>
+                                <td>@item.NgayNhap</td>        
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </p>
+        </div>
+    </div>
+</div>
+
+
