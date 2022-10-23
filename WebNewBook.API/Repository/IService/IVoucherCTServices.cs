@@ -9,7 +9,7 @@ namespace WebNewBook.API.Repository.IService
         Task<IEnumerable<VoucherCT?>> GetVoucherByMaVoucherAsync(string id);
         Task AddManuallyAsync(VoucherCT voucherCT);
         Task AddAutomaticallyAsync(int quantityVoucher, int sizeVoucher, string startTextVoucher, string endTextVoucher,string maVoucher);
-        Task AddImportExcerAsync(VoucherCT voucherCT);
+        Task AddImportExcerAsync(IFormFile file, string Phathanh);
         Task PhathanhVouCherAsync(string id);
         Task HuyVouCherAsync(string id);
     }
