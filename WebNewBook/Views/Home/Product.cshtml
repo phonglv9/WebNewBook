@@ -209,38 +209,7 @@
 							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "A-Z",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"]  })">A-Z</a>
 							<a class="btn btn-default" href="@Url.Action("Product", "Home", new { sortOrder = "Z-A",search = @ViewData["CurrentFilter"] , iddanhmuc = @ViewData["IdDanhMuc"]  })">Z-A</a>
 								
-								@*<a asp-action="Product"
-							   asp-route-currentFilter="@ViewData["CurrentFilter"]"
-							   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
-							   asp-route-sortOrder="@ViewData["CurrentSort"]"
-										
-								</a>*@
-									@*@using (Html.BeginForm("Product", "Home", FormMethod.Post)){
-									<select class="input-select" name="sortOrder">
-										@if (@ViewData["CurrentSort"] != null)
-									{
-										<option value="@ViewData["CurrentSort"]"> @ViewData["CurrentSort"]</option>
-									}
-																												
-									<option  value="Bán chạy nhất">Bán chạy nhất</option>
-									
 								
-									<option value="Giá cao nhất">Giá cao nhất</option>
-									
-									
-									<option value="Giá thấp nhẩt">Giá thấp nhẩt</option>
-								
-									
-									<option value="A-Z">A-Z</option>
-									
-									
-									<option value="Z-A">Z-A</option>
-									
-									</select>
-									<input class="btn btn-success" type="submit" value="Áp dụng" />
-
-
-									}*@
 								</label>
 
 								<label>
@@ -335,9 +304,12 @@
 											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
 										</div>
 									</div>
+									<form asp-controller="GioHang"  asp-action="AddToCart" asp-route-id="@item.sanPhams.ID_SanPham">
 									<div class="add-to-cart">
-										<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+										<input name="SoLuong" type="hidden" value="1">
+										<button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
 									</div>
+									</form>
 								</div>
 							</div>
 							<!-- /product -->
@@ -373,7 +345,7 @@
 									   asp-route-idtheloai="@ViewData["IdTheLoai"]"
 										asp-route-sortOrder="@ViewData["CurrentSort"]"
 									   class="@prevDisabled">
-										<i class="fa fa-angle-left"></i>
+									<i class="fa fa-chevron-left"></i>
 									</a>
 								</li>
 								}
@@ -416,7 +388,7 @@
 									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
 									 asp-route-sortOrder="@ViewData["CurrentSort"]"
 									   class="@nextDisabled">
-										<i class="fa fa-angle-right"></i>
+									<i class="fa fa-chevron-right"></i>
 									</a>
 								</li>
 								}

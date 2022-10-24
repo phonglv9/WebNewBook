@@ -1,4 +1,9 @@
-﻿<!-- BREADCRUMB -->
+﻿@{
+	double ship = 18000;
+	ViewBag.TongTien = ViewBag.TongTien + ship;
+}
+
+<!-- BREADCRUMB -->
 		<div id="breadcrumb" class="section">
 			<!-- container -->
 			<div class="container">
@@ -114,25 +119,38 @@
 						<div class="order-summary">
 							<div class="order-col">
 								<div><strong>Sản phẩm</strong></div>
-								<div><strong>Tổng tiền</strong></div>
+								<div><strong>Giá tiền</strong></div>
 							</div>
+							@foreach (var item in ViewBag.Cart)
+								{
 							<div class="order-products">
 								<div class="order-col">
-									<div>1x Product Name Goes Here</div>
-									<div>$980.00</div>
+								
+
+								<div><span class="qty text-waring">@item.Soluong X</span>  @item.Tensp</div>
+								<div>@item.ThanhTien.ToString("#,##0").Replace(',', '.') đ</div>
+								
 								</div>
-								<div class="order-col">
-									<div>2x Product Name Goes Here</div>
-									<div>$980.00</div>
-								</div>
+							
+							</div>
+							}
+							<div class="order-col">
+								<div>Phí vận chuyển </div>
+						<div><strong>@ship.ToString("#,##0").Replace(',', '.') đ </strong></div>
 							</div>
 							<div class="order-col">
-								<div>Shiping</div>
-								<div><strong>FREE</strong></div>
-							</div>
-							<div class="order-col">
-								<div><strong>TOTAL</strong></div>
-								<div><strong class="order-total">$2940.00</strong></div>
+								<div><strong>Tổng tiền</strong></div>
+
+								<div>
+									<strong class="order-total">
+										@if (ViewBag.TongTien != null)
+										{
+										@ViewBag.TongTien.ToString("#,##0").Replace(',', '.')
+
+
+								}đ
+									</strong>
+								</div>
 							</div>
 						</div>
 						<div class="payment-method">
