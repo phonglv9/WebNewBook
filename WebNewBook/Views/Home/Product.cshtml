@@ -327,7 +327,7 @@
 									</div>
 									<div class="product-body">
 										<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
-										<h3 class="product-name"><a href="#">@item.sanPhams.TenSanPham</a></h3>
+									<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
 										<h4 class="product-price">@item.sanPhams.GiaBan <del class="product-old-price">$990.00</del></h4>
 									
 										<div class="product-btns">

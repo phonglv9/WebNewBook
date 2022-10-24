@@ -379,7 +379,7 @@
 												</div>
 												<div class="product-body">
 													<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
-													<h3 class="product-name"><a href="#">@item.sanPhams.TenSanPham</a></h3>
+												<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
 													<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.') đ<del class="product-old-price"> @item.sanPhams.GiaBan</del></h4>
 												
 													<div class="product-btns">
@@ -387,9 +387,13 @@
 														<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
 													</div>
 												</div>
-												<div class="add-to-cart">
-													<a class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-												</div>
+												<form asp-controller="GioHang"  asp-action="AddToCart" asp-route-id="@item.sanPhams.ID_SanPham">
+															<div class="add-to-cart">
+																<input name="SoLuong" type="hidden"  value="1"> 
+
+																<button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+															</div>
+												</form>
 											</div>
 											}
 											
@@ -592,7 +596,7 @@
 												</div>
 												<div class="product-body">
 													<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
-													<h3 class="product-name"><a href="#">@item.sanPhams.TenSanPham</a></h3>
+													<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
 													<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.')đ <del class="product-old-price">@item.sanPhams.GiaBan</del></h4>
 												
 													<div class="product-btns">
@@ -600,9 +604,13 @@
 														<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
 													</div>
 												</div>
-												<div class="add-to-cart">
-													<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-												</div>
+												<form asp-controller="GioHang"  asp-action="AddToCart" asp-route-id="@item.sanPhams.ID_SanPham ">
+															<div class="add-to-cart">
+																<input name="SoLuong" type="hidden"  value="1"> 
+
+																<button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+															</div>
+												</form>
 											</div>
 											
 											

@@ -17,6 +17,7 @@
   <ItemGroup>
     <Compile Include="Repository\IService\IBookSevice.cs" />
     <Compile Include="Repository\IService\ICustomerService.cs" />
+    <Compile Include="Repository\IService\IGioHangService.cs" />
     <Compile Include="Repository\IService\IHomeService.cs" />
     <Compile Include="Repository\IService\INhanVienService.cs" />
     <Compile Include="Repository\IService\IPhieuNhapService.cs" />
@@ -25,6 +26,7 @@
     <Compile Include="Repository\IService\IVoucherService.cs" />
     <Compile Include="Repository\Service\BookService.cs" />
     <Compile Include="Repository\Service\CustomerService.cs" />
+    <Compile Include="Repository\Service\GioHangService.cs" />
     <Compile Include="Repository\Service\HomeService.cs" />
     <Compile Include="Repository\Service\NhanVienService.cs" />
     <Compile Include="Repository\Service\PhieuNhapService.cs" />

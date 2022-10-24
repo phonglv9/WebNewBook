@@ -271,9 +271,65 @@ namespace WebNewBook.Controllers
             ViewBag.NumberProduct = productStore.Count();
             return View(await PaginatedList<HomeVM>.CreateAsync( await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
         }
-        public async Task<IActionResult> ProductDetail(string idProduct)
+        
+        public async Task<IActionResult> ProductDetaill(string id)
         {
-            return View();
+            //Model home
+            HomeVM modelHome = new HomeVM();
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/home/Product/{id}").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonData = response.Content.ReadAsStringAsync().Result;
+                modelHome = JsonConvert.DeserializeObject<HomeVM>(jsonData);
+
+
+            };
+            ViewBag.test = modelHome;
+
+            //Thể loại
+            List<TheLoai> theLoais = new List<TheLoai>();
+            HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;
+            if (responseTL.IsSuccessStatusCode)
+            {
+                string jsonData = responseTL.Content.ReadAsStringAsync().Result;
+                theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
+
+
+            };
+            if (!String.IsNullOrEmpty(modelHome.sachCT.MaTheLoai))
+            {
+                foreach (var a in modelHome.sachCT.MaTheLoai)
+                {
+                    List<TheLoai> lsttheLoai = new List<TheLoai>();
+                    lsttheLoai = theLoais.Where(c => c.ID_TheLoai == a.ToString()).ToList();
+                    ViewBag.TheLoai = lsttheLoai;
+                }
+            }
+
+
+
+
+
+            //TÁC GIẢ
+            List<TacGia> tacGias = new List<TacGia>();
+            HttpResponseMessage responseTG = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/Tacgia").Result;
+            if (responseTL.IsSuccessStatusCode)
+            {
+                string jsonData = responseTG.Content.ReadAsStringAsync().Result;
+                tacGias = JsonConvert.DeserializeObject<List<TacGia>>(jsonData);
+
+
+            };
+            List<TacGia> LstTacGia = new List<TacGia>();
+
+
+
+            LstTacGia = tacGias.Where(c => c.ID_TacGia == modelHome.tacGia.ID_TacGia).ToList();
+
+            ViewBag.TacGia = LstTacGia;
+
+
+            return View("ProductDetail");
         }
         public IActionResult Privacy()
         {
