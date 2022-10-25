@@ -58,6 +58,7 @@ namespace WebNewBook.API.Repository.Service
                 using (var stream = new MemoryStream())
                 {
                     await file.CopyToAsync(stream);
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
                     using (var package = new ExcelPackage(stream))
                     {
                         ExcelWorksheet worksheet= package.Workbook.Worksheets[0];
