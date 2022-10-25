@@ -1,0 +1,95 @@
+﻿@model List<CartItem>
+@{
+
+    ViewBag.Title = "Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<!-- BREADCRUMB -->
+<div id="breadcrumb" class="section">
+    <!-- container -->
+    <div class="container">
+        <!-- row -->
+        <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumb-tree">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Book</a></li>
+
+                </ul>
+            </div>
+        </div>
+        <!-- /row -->
+    </div>
+    <!-- /container -->
+</div>
+<!-- /BREADCRUMB -->
+
+<div class="section">
+
+
+    <div class="container">
+        @if (ViewBag.giohang == null || ViewBag.giohang.Count == 0)
+        {
+            <h3 class="text-info text-center">
+                Giỏ hàng của bạn rỗng!
+            </h3>
+        }else{
+        <div class="col-sm-12">
+            <div class="table-responsive">
+                <div class="text-black">Giỏ hàng của bạn</div>
+                <br />
+                <table class="table table-bordered">
+                    <tr>
+                        <th>Hình</th>
+                        <th>Tên sản phẩm</th>
+                        <th>Số lượng</th>
+                        <th>Đơn giá</th>
+                        <th>Thành tiền</th>
+                       
+                        
+                    </tr>
+
+                    @foreach (var i in ViewBag.giohang)
+                    {
+                        <tr>
+                            <td class="text-center"><img src="~/img/product01.png" width="70" height="60" /> </td>
+                            <td> @i.Tensp </td>
+                            <td>
+                                <form asp-action="SuaSoLuong" method="get">
+                                    <input type="hidden" name="id" value="@i.Maasp" />
+                                    <input type="number" min="1" step="1" name="soluongmoi" max="100" value="@i.Soluong" />
+                                    <button type="submit" class="btn btn-primary btn-sm"> Cập nhật </button>
+
+                                </form>
+                            </td>
+                            @*<td > 2000 VNĐ </td>*@
+                            <td> @i.DonGia </td>
+
+                            <td> <a asp-action="XoaKhoiGio" asp-route-id="@i.Maasp" class="btn btn-danger btn-sm">Xóa</a> </td>
+                        </tr>
+
+                    }
+                    <tr>
+                       
+                        <td class="text-right">Tổng số lượng:</td>
+                        <td>
+                            @if (ViewBag.soluong != null)
+                                @ViewBag.soluong
+                            </td>
+                        <td class="text-right">Tổng thành tiền:</td>
+                        <td>
+                            @if (ViewBag.thanhtien != null)
+                                @ViewBag.thanhtien  
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
+            <a class="btn btn-primary" asp-controller="Payment" asp-action="Checkout">
+                Mua hàng
+            </a>
+
+        </div>
+        }
+    </div>
+</div>

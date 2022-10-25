@@ -1,4 +1,7 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using ExcelDataReader;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using OfficeOpenXml;
 using WebNewBook.API.Data;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
@@ -9,10 +12,13 @@ namespace WebNewBook.API.Repository.Service
     public class VoucherCTServices : IVoucherCTServices
     {
         private readonly dbcontext _dbcontext;
+ 
 
-        public VoucherCTServices(dbcontext dbcontext)
+
+        public VoucherCTServices(dbcontext dbcontext, IConfiguration configuration)
         {
             _dbcontext = dbcontext;
+   
         }
 
         private Random random = new Random();
@@ -44,9 +50,48 @@ namespace WebNewBook.API.Repository.Service
            
         }
 
-        public Task AddImportExcerAsync(VoucherCT voucherCT)
+        public async Task AddImportExcerAsync(IFormFile file ,string Phathanh)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var list = new List<VoucherCT>();
+                using (var stream = new MemoryStream())
+                {
+                    await file.CopyToAsync(stream);
+                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                    using (var package = new ExcelPackage(stream))
+                    {
+                        ExcelWorksheet worksheet= package.Workbook.Worksheets[0];
+                        var rowcount =worksheet.Dimension.Rows;
+                        for (int row = 2; row <= rowcount; row++)
+                        {
+                            list.Add(new VoucherCT
+                            {
+                             Id = worksheet.Cells[row,1].Value.ToString().Trim(),
+                             NgayBatDau = null,
+                            TrangThai = 0,
+                            CreateDate = DateTime.Now,
+                            MaVoucher = Phathanh
+
+                            });
+                        }
+                    }
+
+                }
+
+                foreach (var lst in list)
+                {
+                    _dbcontext.Add(lst);
+                    await _dbcontext.SaveChangesAsync();
+                }
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
         }
 
         public async Task AddManuallyAsync(VoucherCT voucherCT)

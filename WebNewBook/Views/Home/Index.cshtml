@@ -19,31 +19,31 @@
 				<!-- NOTE: Bootstrap v4 changes class name to carousel-item -->
 				<div class="item">
 					<!-- The only change from the original bootstrap carousel is the "item" divs. I am using this in a CMS so I use inline styles for the background divs so I can set the background image files within the loop.  Just easier for my purposes.  Change the img tag to a div as follows: -->
-					<img src="~/img/nhung-cuon-sach-van-hoc-hay.jpg" alt="First slide" >
-					<div style="center center; background-size:cover;" class="slider-size">
+					<img src="~/img/nhung-cuon-sach-van-hoc-hay.jpg" alt="First slide">
+				@*	<div style="center center; background-size:cover;" class="slider-size">
 						<div class="carousel-caption">
 							<h3>A woman with a camera</h3>
 							<p>She is probably taking a picture</p>
 						</div>
-					</div>
+					</div>*@
 				</div>
 				<div class="item">
-					<img src="~/img/1588654894-784901682-banner-h-i-sach.jpg" alt="Second slide">
-					<div style=" center center; background-size:cover;" class="slider-size">
+					<img src="~/img/1588654894-784901682-banner-h-i-sach.jpg" alt="Second slide" >
+					@*<div style=" center center; background-size:cover;" class="slider-size">
 						<div class="carousel-caption">
 							<h3>Down came the rain</h3>
 							<p>And washed the spider out</p>
 						</div>
-					</div>
+					</div>*@
 				</div>
 				<div class="item active">
-					<img src="~/img/banner-ctst-slide.png" alt="Third slide">
-				<div style=" center center; background-size:cover;" class="slider-size">
+				<img src="~/img/banner-ctst-slide.png" alt="Third slide">
+				@*<div style=" center center; background-size:cover;" class="slider-size">
 						<div class="carousel-caption">
 							<h3>Making love</h3>
 							<p>She is probably taking a picture</p>
 						</div>
-					</div>
+					</div>*@
 				</div>
 			</div>
 			<a class="left carousel-control" href="#carousel-fixed-height" role="button" data-slide="prev">
@@ -370,7 +370,7 @@
 
 										<div class="products-slick" data-nav="#slick-nav-1">
 											<!-- product -->
-											@foreach (var item in Model)
+											@foreach (var item in Model.Distinct())
 											{		
 										
 											<div class="product">
@@ -379,7 +379,7 @@
 												</div>
 												<div class="product-body">
 													<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
-													<h3 class="product-name"><a href="#">@item.sanPhams.TenSanPham</a></h3>
+												<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
 													<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.') đ<del class="product-old-price"> @item.sanPhams.GiaBan</del></h4>
 												
 													<div class="product-btns">
@@ -387,9 +387,13 @@
 														<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
 													</div>
 												</div>
-												<div class="add-to-cart">
-													<a class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</a>
-												</div>
+												<form asp-controller="GioHang"  asp-action="AddToCart" asp-route-id="@item.sanPhams.ID_SanPham">
+															<div class="add-to-cart">
+																<input name="SoLuong" type="hidden"  value="1"> 
+
+																<button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+															</div>
+												</form>
 											</div>
 											}
 											
@@ -592,7 +596,7 @@
 												</div>
 												<div class="product-body">
 													<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
-													<h3 class="product-name"><a href="#">@item.sanPhams.TenSanPham</a></h3>
+													<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
 													<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.')đ <del class="product-old-price">@item.sanPhams.GiaBan</del></h4>
 												
 													<div class="product-btns">
@@ -600,9 +604,13 @@
 														<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
 													</div>
 												</div>
-												<div class="add-to-cart">
-													<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-												</div>
+												<form asp-controller="GioHang"  asp-action="AddToCart" asp-route-id="@item.sanPhams.ID_SanPham ">
+															<div class="add-to-cart">
+																<input name="SoLuong" type="hidden"  value="1"> 
+
+																<button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+															</div>
+												</form>
 											</div>
 											
 											

@@ -30,6 +30,12 @@ namespace WebNewBook.API.Controllers
             return await _homeService.GetProductHome();
 
         }
+        [HttpGet("Product/{id}")]
+        public async Task<HomeVM> ProductDetail(string id)
+        {
+
+            return await _homeService.GetProductDetail(id);
+        }
         [HttpGet("TheLoai")]
         public async Task<List<TheLoai>> GetTL()
         {

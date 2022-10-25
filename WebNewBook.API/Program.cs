@@ -35,6 +35,7 @@ builder.Services.AddScoped<IHomeService, HomeService>();
 
 builder.Services.AddScoped<IBookSevice, BookService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
+builder.Services.AddScoped<IGioHangService, GioHangService>();
 
 
 var app = builder.Build();
