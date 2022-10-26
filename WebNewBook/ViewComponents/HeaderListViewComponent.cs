@@ -9,6 +9,7 @@ namespace WebNewBook.Component
     
     public class HeaderListViewComponent : ViewComponent
     {
+        
         private IHeaderService _headerService;
         public HeaderListViewComponent(IHeaderService headerService)
         {
