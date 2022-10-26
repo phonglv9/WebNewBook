@@ -15,6 +15,10 @@ namespace WebNewBook.API.Controllers
         {
             _voucherCTServices = voucherCTServices;
         }
+        /// <summary>
+        /// Lấy danh sách voucher
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public async Task<IEnumerable<VoucherCT>> GetVoucherAsync()
         {
@@ -22,7 +26,11 @@ namespace WebNewBook.API.Controllers
     
             return voucher;
         }
-
+        /// <summary>
+        /// Lấy voucher theo id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("{id}")]
         public async Task<VoucherCT?> GetVoucherByIdAsync(string id)
         {
@@ -30,14 +38,22 @@ namespace WebNewBook.API.Controllers
             return voucher;
         }
 
-
+        /// <summary>
+        /// lấy Voucher theo phát hành
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("CallIdPH/{id}")]
         public async Task<IEnumerable<VoucherCT?>> GetVoucherBymavoucherAsync(string id)
         {
             var voucher = await _voucherCTServices.GetVoucherByMaVoucherAsync(id);
             return voucher;
         }
-
+        /// <summary>
+        /// Thêm từng voucher thủ công
+        /// </summary>
+        /// <param name="voucherCT"></param>
+        /// <returns></returns>
         [HttpPost("AddManually")]
         public async Task<ActionResult> AddthucongVoucherAsync(VoucherCT voucherCT)
         {
@@ -51,6 +67,16 @@ namespace WebNewBook.API.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        /// <summary>
+        /// Thêm danh sách voucher tự động 
+        /// </summary>
+        /// <param name="quantityVoucher"></param>
+        /// <param name="sizeVoucher"></param>
+        /// <param name="startTextVoucher"></param>
+        /// <param name="endTextVoucher"></param>
+        /// <param name="maVoucher"></param>
+        /// <returns></returns>
         [HttpPost("AddAutomatically")]
         public async Task<ActionResult> AddTuDongVoucher(int quantityVoucher, int sizeVoucher, string startTextVoucher, string endTextVoucher, string maVoucher)
         {
@@ -66,7 +92,12 @@ namespace WebNewBook.API.Controllers
             }
         }
 
-
+        /// <summary>
+        /// thêm voucher bằng file excel
+        /// </summary>
+        /// <param name="file"></param>
+        /// <param name="Phathanh"></param>
+        /// <returns></returns>
         [HttpPost("AddImportExcer")]
         public async Task<ActionResult> AddImportExcerVoucher(IFormFile file, string Phathanh)
         {
