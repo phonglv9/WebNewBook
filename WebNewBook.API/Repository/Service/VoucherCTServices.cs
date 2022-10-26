@@ -12,13 +12,11 @@ namespace WebNewBook.API.Repository.Service
     public class VoucherCTServices : IVoucherCTServices
     {
         private readonly dbcontext _dbcontext;
- 
-
-
-        public VoucherCTServices(dbcontext dbcontext, IConfiguration configuration)
+        private IVoucherService _voucherService;
+        public VoucherCTServices(dbcontext dbcontext, IConfiguration configuration, IVoucherService voucherService)
         {
             _dbcontext = dbcontext;
-   
+            _voucherService = voucherService;
         }
 
         private Random random = new Random();
@@ -30,23 +28,33 @@ namespace WebNewBook.API.Repository.Service
         }
         public async Task AddAutomaticallyAsync(int quantityVoucher, int lengthVoucher , string startTextVoucher, string endTextVoucher, string maVoucher)
         {
-           
-            VoucherCT voucherCT = new VoucherCT();
-            lengthVoucher = lengthVoucher - startTextVoucher.Length - endTextVoucher.Length;
-            for (int i = 0; i < quantityVoucher; i++)
+
+            try
+            {
+                DateTime ngayKetThuc = _dbcontext.Vouchers.FirstOrDefault(c => c.Id == maVoucher).EndDate;
+                VoucherCT voucherCT = new VoucherCT();
+                lengthVoucher = lengthVoucher - startTextVoucher.Length - endTextVoucher.Length;
+                for (int i = 0; i < quantityVoucher; i++)
+                {
+
+                    string ktRandom = RandomVoucher(lengthVoucher);
+                    string idVoucher = startTextVoucher + ktRandom + endTextVoucher;
+                    voucherCT.Id = idVoucher;
+                    voucherCT.NgayBatDau = null;
+                    voucherCT.TrangThai = 0;
+                    voucherCT.NgayHetHan = ngayKetThuc;
+                    voucherCT.CreateDate = DateTime.Now;
+                    voucherCT.MaVoucher = maVoucher;
+                    _dbcontext.Add(voucherCT);
+                    await _dbcontext.SaveChangesAsync();
+                }
+
+            }
+            catch (Exception ex)
             {
 
-                string ktRandom = RandomVoucher(lengthVoucher);
-                string idVoucher = startTextVoucher + ktRandom + endTextVoucher;
-                voucherCT.Id = idVoucher;
-                voucherCT.NgayBatDau = null;
-                voucherCT.TrangThai = 0;
-                voucherCT.CreateDate = DateTime.Now;
-                voucherCT.MaVoucher = maVoucher;
-                _dbcontext.Add(voucherCT);
-                await _dbcontext.SaveChangesAsync();
+                throw ex;
             }
-         
            
         }
 
@@ -54,6 +62,7 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
+                DateTime ngayKetThuc = _dbcontext.Vouchers.FirstOrDefault(c => c.Id == Phathanh).EndDate;
                 var list = new List<VoucherCT>();
                 using (var stream = new MemoryStream())
                 {
@@ -70,10 +79,11 @@ namespace WebNewBook.API.Repository.Service
                              Id = worksheet.Cells[row,1].Value.ToString().Trim(),
                              NgayBatDau = null,
                             TrangThai = 0,
+                            NgayHetHan=ngayKetThuc,
                             CreateDate = DateTime.Now,
                             MaVoucher = Phathanh
 
-                            });
+                            });;
                         }
                     }
 
@@ -87,51 +97,125 @@ namespace WebNewBook.API.Repository.Service
 
 
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                throw e;
+            
             }
         }
 
         public async Task AddManuallyAsync(VoucherCT voucherCT)
         {
-            voucherCT.NgayBatDau = null;
-            voucherCT.TrangThai = 0;
-            voucherCT.CreateDate = DateTime.Now;
+            try
+            {
+                voucherCT.NgayBatDau = null;
+                voucherCT.TrangThai = 0;
+                voucherCT.CreateDate = DateTime.Now;
 
-            _dbcontext.Add(voucherCT);
-            await _dbcontext.SaveChangesAsync();
+                _dbcontext.Add(voucherCT);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
-        public Task<VoucherCT?> GetVoucherByIdAsync(string id)
+        public async Task<VoucherCT?> GetVoucherByIdAsync(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _dbcontext.VoucherCTs.FirstOrDefaultAsync(c => c.Id == id) ?? null;
+            }
+            catch (Exception ex) 
+            {
+
+                throw ex;
+            }
         }
 
         public async Task<IEnumerable<VoucherCT?>> GetVoucherByMaVoucherAsync(string id)
         {
-            return await _dbcontext.VoucherCTs.Where(c => c.MaVoucher == id).ToListAsync();
+            try
+            {
+                return await _dbcontext.VoucherCTs.Where(c => c.MaVoucher == id).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
         public async Task<IEnumerable<VoucherCT>> GetVoucherChuaphathanhAsync()
         {
-            return await _dbcontext.VoucherCTs.Where(c=>c.TrangThai==0).ToListAsync();
+            try
+            {
+                return await _dbcontext.VoucherCTs.Where(c => c.TrangThai == 0).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
-        public Task<IEnumerable<VoucherCT>> GetVoucherDaphathanhAsync()
+        public async Task<IEnumerable<VoucherCT>> GetVoucherDaphathanhAsync()
         {
-            throw new NotImplementedException();
+            try
+            {
+                return await _dbcontext.VoucherCTs.Where(c => c.TrangThai == 1).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
 
-        public Task HuyVouCherAsync(string id)
+        public async Task HuyVouCherAsync(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+
+                if (id != null)
+                {
+                    var modal = await _dbcontext.VoucherCTs.FindAsync(id);
+                    modal.TrangThai = 3;
+                    _dbcontext.VoucherCTs.Update(modal);
+                    await _dbcontext.SaveChangesAsync();
+                }
+
+
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+
+               
         }
 
-        public Task PhathanhVouCherAsync(string id)
+        public async Task PhathanhVouCherAsync(string id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                if (id != null)
+                {
+                    var modal = await _dbcontext.VoucherCTs.FindAsync(id);
+                    modal.TrangThai = 1;
+                    _dbcontext.VoucherCTs.Update(modal);
+                    await _dbcontext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
     }
 }
