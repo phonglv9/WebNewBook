@@ -87,8 +87,38 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                _dbcontext.Update(voucher);
-                await _dbcontext.SaveChangesAsync();
+                if (voucher!=null)
+                {
+                    bool checkthaydoi=true;
+                    var vouchers = _dbcontext.VoucherCTs.Where(c => c.MaVoucher == voucher.Id).ToList();
+                    if (vouchers!=null)
+                    {
+                        foreach (var x in vouchers)
+                        {
+
+                            if (x.TrangThai!=0)
+                            {
+                                checkthaydoi = false;
+                                break;
+                               
+                            }
+                        }
+                    }
+                   
+                    if (checkthaydoi==true)
+                    {
+                        _dbcontext.Update(voucher);
+                        await _dbcontext.SaveChangesAsync();
+                    }
+                    else
+                    {
+                        var model = _dbcontext.Vouchers.FirstOrDefault(c => c.Id == voucher.Id);
+                        model.TenPhatHanh = voucher.TenPhatHanh;
+                        model.GhiChu=voucher.GhiChu;    
+                        _dbcontext.Update(model);
+                        await _dbcontext.SaveChangesAsync();
+                    }
+                }
             }
             catch (Exception ex)
             {
