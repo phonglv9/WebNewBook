@@ -1,12 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Text;
 using WebNewBook.Model;
 using WebNewBook.Model.APIModels;
+using WebNewBook.API.Book;
+using System.Net.Http.Headers;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace WebNewBook.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class QLSanPhamController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -18,7 +23,13 @@ namespace WebNewBook.Controllers
             sanPhams = new List<SanPham>();
         }
 
-        public async Task<List<SanPham>?> Get()
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
+        }
+
+        private async Task<List<SanPham>?> Get()
         {
             List<SanPham> sanPhams = new List<SanPham>();
             HttpResponseMessage responseGet = await _httpClient.GetAsync("sanpham");
@@ -30,6 +41,28 @@ namespace WebNewBook.Controllers
             return sanPhams;
         }
 
+        private async Task<List<BookModel>> GetSachs()
+        {
+            List<BookModel> sachs = new List<BookModel>();
+            HttpResponseMessage responseGet = await _httpClient.GetAsync("api/Book/GetlistBook");
+            if (responseGet.IsSuccessStatusCode)
+            {
+                string jsonData = responseGet.Content.ReadAsStringAsync().Result;
+                sachs = JsonConvert.DeserializeObject<List<BookModel>>(jsonData);
+            };
+            return sachs ?? new List<BookModel>();
+        }
+
+        private async Task<List<SelectListItem>> GetSelectListItems()
+        {
+            var sachs = await GetSachs();
+            var listItem = new List<SelectListItem>();
+            sachs.ForEach(s =>
+            {
+                listItem.Add(new SelectListItem { Text = s.TenSach + " - " + s.GiaBan, Value = s.TenSach + " @ " + s.GiaBan });
+            });
+            return listItem;
+        }
         public async Task<IActionResult> Index()
         {
             List<SanPham>? lstSanPham = new List<SanPham>();
@@ -50,14 +83,9 @@ namespace WebNewBook.Controllers
             return sachs;
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Sachs = new List<SelectListItem>
-            {
-                new SelectListItem {Text = "Shyju - 10000", Value = "3 @ 10000"},
-                new SelectListItem {Text = "Sean - 30000", Value = "4 @ 30000"}
-            };
-
+            ViewBag.Sachs = await GetSelectListItems();
             return View();
         }
 
@@ -82,6 +110,7 @@ namespace WebNewBook.Controllers
                 giaGoc += item.GiaBan;
             }
             sanPhamAPI.GiamGia = 100 - sanPham.GiaBan * 100 / giaGoc;
+            sanPhamAPI.SLChuaDoi = sanPham.SoLuong;
             return View(sanPhamAPI);
         }
 
@@ -114,11 +143,7 @@ namespace WebNewBook.Controllers
                 error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
             }
 
-            ViewBag.Sachs = new List<SelectListItem>
-            {
-                new SelectListItem {Text = "Shyju - 10000", Value = "3 @ 10000"},
-                new SelectListItem {Text = "Sean - 30000", Value = "4 @ 30000"}
-            };
+            ViewBag.Sachs = await GetSelectListItems();
             ViewBag.Error = error;
             return View(sanPhamAPI);
         }
@@ -138,7 +163,7 @@ namespace WebNewBook.Controllers
                 }
 
                 sanPhamAPI.SanPham.GiaBan = giaBan - giaBan * (sanPhamAPI.GiamGia / 100);
-                StringContent content = new StringContent(JsonConvert.SerializeObject(sanPhamAPI.SanPham), Encoding.UTF8, "application/json");
+                StringContent content = new StringContent(JsonConvert.SerializeObject(sanPhamAPI), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await _httpClient.PutAsync("sanpham", content);
 
                 if (response.IsSuccessStatusCode)
@@ -166,7 +191,7 @@ namespace WebNewBook.Controllers
             {
                 sanPham.TrangThai = sanPham.TrangThai == 1 ? 0 : 1;
                 StringContent content = new StringContent(JsonConvert.SerializeObject(sanPham), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await _httpClient.PutAsync("sanpham/", content);
+                HttpResponseMessage response = await _httpClient.PutAsync("sanpham/update_status", content);
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction("Index");

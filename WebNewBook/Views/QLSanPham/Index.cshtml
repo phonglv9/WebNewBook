@@ -45,6 +45,7 @@
                             <th scope="col">Tên sản phẩm</th>
                             <th scope="col">Số lượng</th>
                             <th scope="col">Giá</th>
+                            <th scope="col">Hình ảnh</th>
                             <th scope="col">Khuyến mại</th>
                             <th scope="col">Trạng thái</th>
                             <th colspan="2" style="text-align: center ;">Thao tác</th>
@@ -54,10 +55,12 @@
                         @foreach (var item in ViewBag.SanPham)
                         {
                             var trangThai = item.TrangThai == 0 ? "Hoạt động" : "Vô hiệu hóa";
+                            var img = item.HinhAnh ?? string.Empty;
                             <tr>
                                 <th scope="row">@item.TenSanPham</th>
                                 <td>@item.SoLuong</td>
                                 <td>@item.GiaBan</td>
+                                <td><img src="~/img/@img" style="width:100px;height:100px"/></td>
                                 <td>@item.MaPhieuGiamGiaSP</td>
                                 <td>@trangThai</td>
                                 <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_SanPham"><i class="fa-solid fa-pen"></i></a></td>

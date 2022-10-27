@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.API.Controllers
 {
+    [Authorize(Roles = "Admin")]
     [ApiController]
     [Route("[controller]")]
     public class SanPhamController : Controller
@@ -51,6 +53,20 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpPut]
+        public async Task<ActionResult> UpdateSanPhamAsync(SanPhamAPI sp)
+        {
+            try
+            {
+                await sanPhamService.UpdateSanPhamAsync(sp.SanPham, sp.SLChuaDoi);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("update_status")]
         public async Task<ActionResult> UpdateSanPhamAsync(SanPham sp)
         {
             try
