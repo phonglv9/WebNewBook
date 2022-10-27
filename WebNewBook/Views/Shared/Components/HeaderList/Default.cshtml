@@ -2,80 +2,109 @@
 @model List<DanhMucSach>
 <!-- HEADER -->
 <header>
-	<!-- TOP HEADER -->
-	<div id="top-header">
-		<div class="container">
-			<ul class="header-links pull-left">
-				<li><a href="#"><i class="fa fa-phone"></i> 0332579815</a></li>
-				<li><a href="#"><i class="fa fa-envelope-o"></i> newbook2299@gmail.com</a></li>
-				<li><a href="#"><i class="fa fa-map-marker"></i> 322/95 Mỹ Đình </a></li>
-			</ul>
-			<ul class="header-links pull-right">
-				<li><a href="#">Đăng nhập</a></li>
-				<li><a href="#">Đăng kí</a></li>
-				<li><a href="#">Quên mật khẩu</a></li>
-				
-				
-
-			</ul>
-		</div>
-	</div>
-	<!-- /TOP HEADER -->
-	<!-- MAIN HEADER -->
-	<div id="header">
-		<!-- container -->
-		<div class="container">
-			<!-- row -->
-			<div class="row">
-				<!-- LOGO -->
-				<div class="col-md-3">
-					<div class="header-logo">
-						<a href="#" class="logo">
-							<img src="~/img/logo.png" width="130px" alt="">
-						</a>
-					</div>
-				</div>
-				<!-- /LOGO -->
-				<!-- SEARCH BAR -->
-				<div class="col-md-6">
-					<div class="header-search">
-						<form asp-controller="Home" asp-action="Product" method="get">
-							@if (Model != null)
-							{
-
-
-								<select class="input-select" asp-items="@(new SelectList(Model,"ID_DanhMuc","TenDanhMuc"))" name="iddanhmuc">
-									<option value="Tất cả sách">Tất cả sách</option>
-									
-								</select>
-							}
-							<input class="input" name="search" value="@ViewData["CurrentFilter"]" placeholder="Nhập từ khóa để tìm kiếm">
-							<button class="search-btn" type="submit">Tìm kiếm</button>
-						</form>
-					</div>
-				</div>
-				<!-- /SEARCH BAR -->
-				<!-- ACCOUNT -->
-				<div class="col-md-3 clearfix">
-					<div class="header-ctn">
-						<!-- Wishlist -->
+    <!-- TOP HEADER -->
+    <div id="top-header">
+        <div class="container">
+            <ul class="header-links pull-left">
+                <li><a href="#"><i class="fa fa-phone"></i> 0332579815</a></li>
+                <li><a href="#"><i class="fa fa-envelope-o"></i> newbook2299@gmail.com</a></li>
+                <li><a href="#"><i class="fa fa-map-marker"></i> 322/95 Mỹ Đình </a></li>
+            </ul>
+            <ul class="header-links pull-right">
+                <li class="dropdown no-arrow">
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Login</span>
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu dropdown-menu-right shadow"
+                         aria-labelledby="userDropdown">
+                            <a class="dropdown-item" href="#">
+                                Thông tin tài khoản
+                            </a>
+                            <div class="dropdown-divider"></div>
+                           <a asp-action="Logout" asp-controller="QLLogin" class="dropdown-item">Đăng xuất</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
+                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Đăng nhập</span>
+                        </a>
+                        <!-- Dropdown - User Information -->
+                        <div class="dropdown-menu"
+                         aria-labelledby="userDropdown">
+                            <a asp-action="Index" asp-controller="QLLogin" asp-route-nhanVien="false" class="dropdown-item">Khách hàng</a>
+                            <a asp-action="Index" asp-controller="QLLogin" asp-route-nhanVien="true" class="dropdown-item">Nhân viên</a>
+                            <a href="#">Đăng kí</a>
+                            <a href="#">Quên mật khẩu</a>
+                        </div>
+                    }
+                </li>
 
 
+            </ul>
+        </div>
+    </div>
+    <!-- /TOP HEADER -->
+    <!-- MAIN HEADER -->
+    <div id="header">
+        <!-- container -->
+        <div class="container">
+            <!-- row -->
+            <div class="row">
+                <!-- LOGO -->
+                <div class="col-md-3">
+                    <div class="header-logo">
+                        <a href="#" class="logo">
+                            <img src="~/img/logo.png" width="130px" alt="">
+                        </a>
+                    </div>
+                </div>
+                <!-- /LOGO -->
+                <!-- SEARCH BAR -->
+                <div class="col-md-6">
+                    <div class="header-search">
+                        <form asp-controller="Home" asp-action="Product" method="get">
+                            @if (Model != null)
+                            {
 
 
-						<div class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<i class="fa fa-user-o"></i>
-								<span>Tài khoản</span>
-							</a>
-							<div class="dropdown-menu">
-								
-								<div><a href="">Đăng nhập</a></div>
-								<div><a href="">Đăng ký</a></div>
-								<div><a href="">Quên mật khẩu</a></div>
+                                <select class="input-select" asp-items="@(new SelectList(Model,"ID_DanhMuc","TenDanhMuc"))" name="iddanhmuc">
+                                    <option value="Tất cả sách">Tất cả sách</option>
 
-							</div>
-						</div>
+                                </select>
+                            }
+                            <input class="input" name="search" value="@ViewData["CurrentFilter"]" placeholder="Nhập từ khóa để tìm kiếm">
+                            <button class="search-btn" type="submit">Tìm kiếm</button>
+                        </form>
+                    </div>
+                </div>
+                <!-- /SEARCH BAR -->
+                <!-- ACCOUNT -->
+                <div class="col-md-3 clearfix">
+                    <div class="header-ctn">
+                        <!-- Wishlist -->
+
+
+
+
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fa fa-user-o"></i>
+                                <span>Tài khoản</span>
+                            </a>
+                            <div class="dropdown-menu">
+
+                                <div><a href="">Đăng nhập</a></div>
+                                <div><a href="">Đăng ký</a></div>
+                                <div><a href="">Quên mật khẩu</a></div>
+
+                            </div>
+                        </div>
 
 
 
@@ -166,27 +195,27 @@
 <!-- /HEADER -->
 <!-- NAVIGATION -->
 <nav id="navigation">
-	<!-- container -->
-	<div class="container">
-		<!-- responsive-nav -->
-		<div id="responsive-nav">
-			<!-- NAV -->
-			<ul class="main-nav nav navbar-nav">
-				<li class="active"><a href="/Home">Trang chủ</a></li>
-				
-				@if (Model != null)
-					@foreach (var item in Model)
-					{
+    <!-- container -->
+    <div class="container">
+        <!-- responsive-nav -->
+        <div id="responsive-nav">
+            <!-- NAV -->
+            <ul class="main-nav nav navbar-nav">
+                <li class="active"><a href="/Home">Trang chủ</a></li>
 
-						
-						<li><a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})">@item.TenDanhMuc</a></li>
-					}
+                @if (Model != null)
+                    @foreach (var item in Model)
+                    {
 
-			</ul>
-			<!-- /NAV -->
-		</div>
-		<!-- /responsive-nav -->
-	</div>
-	<!-- /container -->
+
+                        <li><a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})">@item.TenDanhMuc</a></li>
+                    }
+
+            </ul>
+            <!-- /NAV -->
+        </div>
+        <!-- /responsive-nav -->
+    </div>
+    <!-- /container -->
 </nav>
 <!-- /NAVIGATION -->
