@@ -15,6 +15,10 @@ namespace WebNewBook.Model
         public string ID_HoaDon { get; set; }
         [ForeignKey("KhachHang")]
         public string MaKhachHang { get; set; }
+        public string TenNguoiNhan { get; set; }
+        public string DiaChiGiaoHang { get; set; }
+        public string GhiChu { get; set; }
+        public string SDT { get; set; }
         public string MaGiamGia { get; set; }
         public DateTime NgayMua { get; set; }
         public double TongTien { get; set; }
