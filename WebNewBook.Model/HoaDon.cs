@@ -19,6 +19,7 @@ namespace WebNewBook.Model
         public string DiaChiGiaoHang { get; set; }
         public string GhiChu { get; set; }
         public string SDT { get; set; }
+        public string Email { get; set; }
         public string MaGiamGia { get; set; }
         public DateTime NgayMua { get; set; }
         public double TongTien { get; set; }

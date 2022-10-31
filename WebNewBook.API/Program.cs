@@ -29,8 +29,7 @@ builder.Services.AddControllers(options =>
     }));
 });
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
-
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=FinalASM;User ID=hung;Password=hung;"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;Initial Catalog=WebNewBook;User ID=LVP09;Password=Ph@16158;"));
 
 //builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=LoginFinalASM;User ID=hung;Password=hung;"));
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
@@ -49,6 +48,7 @@ builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<IBookSevice, BookService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<IGioHangService, GioHangService>();
+builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {
     var secret = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]);

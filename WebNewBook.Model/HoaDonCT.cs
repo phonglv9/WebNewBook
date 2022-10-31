@@ -17,7 +17,7 @@ namespace WebNewBook.Model
         public string MaSanPham { get; set; }
         [ForeignKey("HoaDon")]
         public string MaHoaDon { get; set; }
-        public int SoLuong { get; set; }
+        public int SoLuong{ get; set; }
         public virtual HoaDon? HoaDon { get; set; }
         public virtual SanPham? SanPham { get; set; }
         public virtual ICollection<PhieuTra>? PhieuTras { get; set; }
