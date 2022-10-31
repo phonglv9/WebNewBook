@@ -3,6 +3,7 @@ namespace WebNewBook.API.Repository.IService
 {
     public interface IVoucherCTServices
     {
+        Task<IEnumerable<VoucherCT>> GetVoucherOfCustomer(string maCustomer);
         Task<IEnumerable<VoucherCT>> GetVoucherChuaphathanhAsync();
         Task<IEnumerable<VoucherCT>> GetVoucherDaphathanhAsync();
         Task<VoucherCT?> GetVoucherByIdAsync(string id);
