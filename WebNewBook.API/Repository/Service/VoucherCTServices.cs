@@ -45,7 +45,9 @@ namespace WebNewBook.API.Repository.Service
                     voucherCT.NgayHetHan = ngayKetThuc;
                     voucherCT.CreateDate = DateTime.Now;
                     voucherCT.MaVoucher = maVoucher;
-                    _dbcontext.Add(voucherCT);
+                    _dbcontext.VoucherCTs.Add(voucherCT);
+
+                    _dbcontext.Vouchers.Update(SoluongVoucherCT(maVoucher));
                     await _dbcontext.SaveChangesAsync();
                 }
 
@@ -62,40 +64,48 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                DateTime ngayKetThuc = _dbcontext.Vouchers.FirstOrDefault(c => c.Id == Phathanh).EndDate;
-                var list = new List<VoucherCT>();
-                using (var stream = new MemoryStream())
+                if (file!=null)
                 {
-                    await file.CopyToAsync(stream);
-                    ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
-                    using (var package = new ExcelPackage(stream))
+
+                    DateTime ngayKetThuc = _dbcontext.Vouchers.FirstOrDefault(c => c.Id == Phathanh).EndDate;
+                    var list = new List<VoucherCT>();
+                    using (var stream = new MemoryStream())
                     {
-                        ExcelWorksheet worksheet= package.Workbook.Worksheets[0];
-                        var rowcount =worksheet.Dimension.Rows;
-                        for (int row = 2; row <= rowcount; row++)
+                        await file.CopyToAsync(stream);
+                        ExcelPackage.LicenseContext = LicenseContext.NonCommercial;
+                        using (var package = new ExcelPackage(stream))
                         {
-                            list.Add(new VoucherCT
+                            ExcelWorksheet worksheet = package.Workbook.Worksheets[0];
+                            var rowcount = worksheet.Dimension.Rows;
+                            for (int row = 2; row <= rowcount; row++)
                             {
-                             Id = worksheet.Cells[row,1].Value.ToString().Trim(),
-                             NgayBatDau = null,
-                            TrangThai = 0,
-                            NgayHetHan=ngayKetThuc,
-                            CreateDate = DateTime.Now,
-                            MaVoucher = Phathanh
+                                list.Add(new VoucherCT
+                                {
+                                    Id = worksheet.Cells[row, 1].Value.ToString().Trim(),
+                                    NgayBatDau = null,
+                                    TrangThai = 0,
+                                    NgayHetHan = ngayKetThuc,
+                                    CreateDate = DateTime.Now,
+                                    MaVoucher = Phathanh
 
-                            });;
+                                }); ;
+                            }
                         }
+
                     }
+                    if (list !=null)
+                    {
 
+                        foreach (var lst in list)
+                        {
+                            _dbcontext.Add(lst);
+                            await _dbcontext.SaveChangesAsync();
+                        }
+                        _dbcontext.Vouchers.Update(SoluongVoucherCT(Phathanh));
+                        await _dbcontext.SaveChangesAsync();
+
+                    }
                 }
-
-                foreach (var lst in list)
-                {
-                    _dbcontext.Add(lst);
-                    await _dbcontext.SaveChangesAsync();
-                }
-
-
             }
             catch (Exception e)
             {
@@ -103,17 +113,28 @@ namespace WebNewBook.API.Repository.Service
             
             }
         }
-
+        public Voucher SoluongVoucherCT(string mavoucher)
+        {
+            var quanttytiVoucher = _dbcontext.VoucherCTs.Count(c => c.MaVoucher == mavoucher);
+            var modelVoucher = _dbcontext.Vouchers.FirstOrDefault(c => mavoucher == c.Id);
+            if (modelVoucher != null)
+                modelVoucher.SoLuong = quanttytiVoucher;
+            return modelVoucher;
+        }
         public async Task AddManuallyAsync(VoucherCT voucherCT)
         {
             try
             {
-                voucherCT.NgayBatDau = null;
-                voucherCT.TrangThai = 0;
-                voucherCT.CreateDate = DateTime.Now;
-
-                _dbcontext.Add(voucherCT);
-                await _dbcontext.SaveChangesAsync();
+                if (voucherCT!=null)
+                {
+                    voucherCT.NgayBatDau = null;
+                    voucherCT.TrangThai = 0;
+                    voucherCT.CreateDate = DateTime.Now;
+                    _dbcontext.VoucherCTs.Add(voucherCT);
+                    _dbcontext.Vouchers.Update(SoluongVoucherCT(voucherCT.MaVoucher));
+                    await _dbcontext.SaveChangesAsync();
+                }
+             
             }
             catch (Exception ex)
             {

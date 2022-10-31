@@ -1,5 +1,11 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using System.Net.Http.Headers;
+using System.Text;
 using WebNewBook.Models;
 using WebNewBook.Services;
+using WebNewBook.ViewModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddTransient<IHeaderService,HeaderService>();
 builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, config =>
+{
+    config.Cookie.Name = "MyCookie";
+    config.LoginPath = "/QLLogin/Index";
+    config.ReturnUrlParameter = "itworkingggggg";
+});
 
 var app = builder.Build();
 
@@ -22,6 +34,8 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
