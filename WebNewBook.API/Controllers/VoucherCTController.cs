@@ -112,5 +112,17 @@ namespace WebNewBook.API.Controllers
 
             }
         }
+
+        /// <summary>
+        /// lấy Voucher của khách hàng
+        /// </summary>
+        /// <param name="maKhachHang"></param>
+        /// <returns></returns>
+        [HttpGet("VoucherKH/{maKhachHang}")]
+        public async Task<IEnumerable<VoucherCT?>> GetVoucherOfCustomer(string maKhachHang)
+        {
+            var voucher = await _voucherCTServices.GetVoucherOfCustomer(maKhachHang);
+            return voucher;
+        }
     }
 }

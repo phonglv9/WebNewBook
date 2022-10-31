@@ -30,7 +30,7 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=FinalASM;User ID=hung;Password=hung;"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-98PG69Q\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook"));
 
 //builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=LoginFinalASM;User ID=hung;Password=hung;"));
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
