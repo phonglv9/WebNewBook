@@ -160,7 +160,7 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                return await _dbcontext.VoucherCTs.Where(c => c.MaVoucher == id).ToListAsync();
+                return await _dbcontext.VoucherCTs.Where(c => c.MaVoucher == id && c.TrangThai==0).ToListAsync();
             }
             catch (Exception ex)
             {

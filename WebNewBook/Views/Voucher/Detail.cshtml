@@ -102,7 +102,7 @@
                                     <button type="submit" class="btn btn-primary">Thêm</button>
                                 </div>
                             </form>
-                           
+
                         </div>
                     </div>
                 </div>
@@ -123,15 +123,15 @@
                             <p> Tải file mẫu về (<a asp-controller="Voucher" asp-action="dowloadFilemau">Excer file </a>)</p>
                             <form asp-action="CreateImPortExcel" method="post" enctype="multipart/form-data">
                                 <div class="modal-body">
-                                   
-                                    <input  type="file" name="file" />
+
+                                    <input type="file" name="file" />
                                     <input name="maPhathanh" type="hidden" value="@Model.Voucher.Id" />
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary"> Import </button>
                                 </div>
                             </form>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -142,7 +142,7 @@
                     <tr>
                         <th>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                <input class="form-check-input" type="checkbox" value="" id="click_all">
                             </div>
                         </th>
                         <th>Mã Voucher</th>
@@ -159,9 +159,16 @@
                     {
                         <tr>
                             <td>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
-                                </div>
+                              <form asp-action="Phathanh">
+                                    <div class="form-check">
+                                        <input asp-for="voucherCT.TrangThai " class="form-check-input" type="checkbox" value="" name="Name[]">
+                                        @if ()
+                                        {
+                                            
+                                        }
+                                    </div>
+                              </form>
+                               
                             </td>
                             <td>@x.Id</td>
                             <td></td>
@@ -269,3 +276,35 @@
         </div>
     </div>
 </div>
+@section Scripts{
+    <script>
+        document.getElementById("click_all").onclick = function () {
+            console.log('ra')
+
+            var chon = document.getElementById("click_all");
+
+            if (chon.checked == true) {
+
+                // Lấy danh sách checkbox
+                var checkboxes = document.getElementsByName('Name[]');
+
+                // Lặp và thiết lập checked
+                for (var i = 0; i < checkboxes.length; i++) {
+                    checkboxes[i].checked = true;
+                    console.log('vào1')
+                }
+            } if (chon.checked == false) {
+                // Chức năng bỏ chọn hết
+
+                // Lấy danh sách checkbox
+                var checkboxes = document.getElementsByName('Name[]');
+
+                // Lặp và thiết lập Uncheck
+                for (var i = 0; i < checkboxes.length; i++) {
+                    checkboxes[i].checked = false;
+                    console.log('vào2')
+                }
+            }
+        }
+    </script>
+}
