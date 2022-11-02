@@ -163,14 +163,15 @@
                                    Phát hành Voucher
                                 </div>
                             </a>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
+                            <a  id="btnHuyVoucher" class="dropdown-item d-flex align-items-center">
                                 <div class="mr-3">
                                     <div class="icon-circle bg-success">
                                         <i class="fas fa-donate text-white"></i>
                                     </div>
                                 </div>
+                                <input  type="hidden" value="OK" name="NamOK"/>
                                 <div>
-                                   Hủy Voucher 
+                                   Hủy Voucher
                                 </div>
                             </a>
        
@@ -202,13 +203,13 @@
                 <tbody>
                     @foreach (var x in lstvoucherCT)
                     {
-                        <tr>
-                            <td>
-                              <form asp-action="Phathanh">
-                                    <div class="form-check">
-                                        <input onclick="showThaotac()"  class="form-check-input" type="checkbox" id="Tick[]" value="" name="Name[]">
+                        <tr id="timCkeckBox">
+                            <td id="ListItem">
+                          
+                                    <div  class="form-check">
+                                        <input onclick="showThaotac()"  class="form-check-input" type="checkbox" id="@x.Id" value="" name="NameOK">
                                     </div>
-                              </form>
+                             
                                
                             </td>
                             <td>@x.Id</td>
@@ -317,12 +318,21 @@
         </div>
     </div>
 </div>
+
+
+
+
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 @section Scripts{
     <script>
 
+
+
         function showThaotac(){
             console.log('ra')
-            var chon = document.getElementsByName("Name[]");
+            var chon = document.getElementsByName("NameOK");
             for (var i = 0; i < chon.length; i++) {
                 document.getElementById("thaotac").style.display = 'none';
               if(chon[i].checked==true){
@@ -343,7 +353,7 @@
               
                 document.getElementById("thaotac").style.display = 'block';
               
-                var checkboxes = document.getElementsByName('Name[]');
+                var checkboxes = document.getElementsByName('NameOK');
 
              
                 for (var i = 0; i < checkboxes.length; i++) {
@@ -354,7 +364,7 @@
            
                  document.getElementById("thaotac").style.display = 'none';
             
-                var checkboxes = document.getElementsByName('Name[]');
+                var checkboxes = document.getElementsByName('NameOK');
 
              
                 for (var i = 0; i < checkboxes.length; i++) {
@@ -363,5 +373,52 @@
                 }
             }
         }
+
+
+        $(function () {
+          var arrItem=[];
+          var commaSeparatedIds="";
+            $("#btnHuyVoucher").click(function () {
+                $("#timCkeckBox #ListItem input[type=checkbox]").each(function(index, val){
+                    var checkId = $(val).attr("Id");
+                    var Ischeked =$("#"+checkId).is(":checked",true)
+                    if(Ischeked){
+                        arrItem.push(checkId);
+                    }
+                  
+                });
+                commaSeparatedIds=arrItem.toString();
+               arrItem[];
+              
+                $.ajax({
+                    type: "POST",
+                    data: { timCkeckBox:commaSeparatedIds },
+                    url: "/Voucher/HuyVoucher",
+                    success: function (response) {
+                        alert("Thành công");
+                    },
+                    failure: function (response) {
+                        alert(response.responseText);
+                    },
+                    error: function (response) {
+                        alert(response.responseText);
+                    }
+                });
+            });
+        });
+
+
     </script>
 }
+
+
+@*
+
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+        window.onload = function () {
+            alert("@ViewBag.Message");
+        };
+    </script>
+}*@
