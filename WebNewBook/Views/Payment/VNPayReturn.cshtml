@@ -1,0 +1,63 @@
+﻿
+@{
+    ViewData["Title"] = "VNPayReturn";
+    var color = "success";
+    if (ViewBag.ReturnPay.vnp_TransactionStatus!="00")
+        color = "danger";
+    ViewBag.Title = "Return Payment";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="section">
+
+        <div class="container">
+
+                <div class="panel panel-@color">
+				<div class="panel-heading">
+      
+				<h1 class="panel-title">@if(ViewBag.ReturnPay!=null) @ViewBag.ReturnPay.message</h1>
+				</div>
+            
+				</div>
+       
+
+         </div>
+       @*  <div class="col-md-5 order-details">
+						<div class="section-title text-center">
+							<h3 class="title">Đơn hàng của bạn</h3>
+						</div>
+						<div class="order-summary">
+							<div class="order-col">
+								<div><strong>Sản phẩm</strong></div>
+								<div><strong>Tổng tiền</strong></div>
+							</div>
+						
+							<div class="order-products">
+								<div class="order-col">
+								
+
+								<div><span class="qty text-waring">@item.Soluong X</span>  @item.Tensp</div>
+								<div>@item.ThanhTien.ToString("#,##0").Replace(',', '.') đ</div>
+								
+								</div>
+							
+							</div>
+							
+						
+							<div class="order-col">
+								<div><strong>Tổng tiền</strong></div>
+
+								<div>
+									<strong class="order-total">
+										@if (ViewBag.TongTien != null)
+										{
+										@ViewBag.TongTien.ToString("#,##0").Replace(',', '.')
+										}đ
+									</strong>
+								</div>
+							</div>
+						</div>																		
+					</div>*@
+  <a href="/Payment/Checkout" class="btn btn-primary float-right">Quay lại thanh toán</a>
+
+</div>

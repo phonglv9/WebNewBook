@@ -18,6 +18,8 @@ namespace WebNewBook.Model
         [ForeignKey("HoaDon")]
         public string MaHoaDon { get; set; }
         public int SoLuong{ get; set; }
+        public double GiaBan { get; set; }
+
         public virtual HoaDon? HoaDon { get; set; }
         public virtual SanPham? SanPham { get; set; }
         public virtual ICollection<PhieuTra>? PhieuTras { get; set; }

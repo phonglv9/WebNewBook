@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 using System.Text.Json;
+using WebNewBook.Common;
 using WebNewBook.Model;
 using WebNewBook.Models;
 
@@ -10,6 +11,17 @@ namespace WebNewBook.Controllers
 {
     public class PaymentController : Controller
     {
+        public static Dictionary<string, string> vnp_TransactionStatus = new Dictionary<string, string>()
+        {
+            {"00","Giao dịch thành công" },
+            {"01","Giao dịch chưa hoàn tất" },
+            {"02","Giao dịch bị lỗi" },
+            {"04","Giao dịch đảo (Khách hàng đã bị trừ tiền tại Ngân hàng nhưng GD chưa thành công ở VNPAY)" },
+            {"05","VNPAY đang xử lý giao dịch này (GD hoàn tiền)" },
+            {"06","VNPAY đã gửi yêu cầu hoàn tiền sang Ngân hàng (GD hoàn tiền)" },
+            {"07","Giao dịch bị nghi ngờ gian lận" },
+            {"09","GD Hoàn trả bị từ chối" }
+        };
         private readonly HttpClient _httpClient;
         public PaymentController()
         {
@@ -60,67 +72,121 @@ namespace WebNewBook.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult>Pay(HoaDon hoaDon, string payment, string paymentnow)
+        public async Task<IActionResult>Pay(HoaDon hoaDon, string payment)
         {
             try
             {
+                ViewBag.SuccessMessage = "";
                 List<KhachHang>? ListKhachHangs = new List<KhachHang>();
                 ListKhachHangs = await GetKhachHang();
                 var KhachHang = ListKhachHangs.Where(c => c.Email == User.Identity.Name).FirstOrDefault();
                 if (payment == "1")
                 {
-                    var lstCart = Giohangs;
-
-                   
-
-                    foreach (var item in lstCart)
-                    {
-                        
-                        hoaDon.ID_HoaDon = "HD" + Guid.NewGuid().ToString();
-                        if (KhachHang ==null)
+                    var lstCart = Giohangs;                                       
+                        if (KhachHang == null)
 
                         {
+                            //Tạo mới khách hàng khi chưa login
                             KhachHang = new KhachHang();
-                            KhachHang.ID_KhachHang = "KH" + Guid.NewGuid().ToString();
-                            KhachHang.HoVaTen = hoaDon.TenNguoiNhan;
-                            KhachHang.SDT = hoaDon.SDT;
-                            KhachHang.DiaChi = hoaDon.DiaChiGiaoHang;
-                            KhachHang.Email = hoaDon.Email;
-                            KhachHang.MatKhau = "123123";
-                            KhachHang.TrangThai = 1;
+                            KhachHang.ID_KhachHang = "KH" + DateTime.Now.Ticks;
+                            KhachHang.HoVaTen = hoaDon.TenNguoiNhan;                        
+                            KhachHang.DiaChi = hoaDon.DiaChiGiaoHang;                                                    
                             KhachHang.DiemTichLuy = 1;
-                            KhachHang.NgaySinh = DateTime.Now;
+                         
                             StringContent contentKH = new StringContent(JsonConvert.SerializeObject(KhachHang), Encoding.UTF8, "application/json");
                             HttpResponseMessage responseKH = await _httpClient.PostAsync("api/Customer", contentKH);
 
                         }
-                        hoaDon.MaKhachHang = KhachHang.ID_KhachHang;                    
-                        hoaDon.TongTien = item.ThanhTien;
-                        hoaDon.NgayMua = DateTime.Now;
-                        hoaDon.TrangThai = 2;
-                        //hoaDon.MaGiamGia = "123";
-                        StringContent contentHD = new StringContent(JsonConvert.SerializeObject(hoaDon), Encoding.UTF8, "application/json");
-                        HttpResponseMessage responseHD = await _httpClient.PostAsync("api/HoaDon/AddHoaDon", contentHD);
-                       
+       
+                    //Hóa đơn
+                    hoaDon.ID_HoaDon = "HD" + DateTime.Now.Ticks;
+                    hoaDon.MaKhachHang = KhachHang.ID_KhachHang;
+                    
+                    hoaDon.NgayMua = DateTime.Now;
+                    hoaDon.TrangThai = 1;
+                    StringContent contentHD = new StringContent(JsonConvert.SerializeObject(hoaDon), Encoding.UTF8, "application/json");
+                    HttpResponseMessage responseHD = await _httpClient.PostAsync("api/HoaDon/AddHoaDon", contentHD);
 
-                        List<HoaDonCT> listHoaDonCTs = new List<HoaDonCT>();
+
+                    List<HoaDonCT> listHoaDonCTs = new List<HoaDonCT>();
+                    foreach (var item in lstCart)
+                    {
+                        
+                        //Hóa đơn chi tiết
+                       
                         HoaDonCT hoaDonCT = new HoaDonCT();
                         hoaDonCT.ID_HDCT = Guid.NewGuid().ToString();
                         hoaDonCT.MaSanPham = item.Maasp;
                         hoaDonCT.MaHoaDon = hoaDon.ID_HoaDon;
                         hoaDonCT.SoLuong = item.Soluong;
-
-
-
+                        hoaDonCT.GiaBan = item.DonGia;
                         listHoaDonCTs.Add(hoaDonCT);
-                        StringContent contentHDCT = new StringContent(JsonConvert.SerializeObject(listHoaDonCTs), Encoding.UTF8, "application/json");
-                        HttpResponseMessage responseHDCT = await _httpClient.PostAsync("api/HoaDon/AddHoaDonCT", contentHDCT);
-                        ViewBag.SuccessMessage = "Thanh toán thành công";
-
-
-
+                       
+                       
                     }
+                    StringContent contentHDCT = new StringContent(JsonConvert.SerializeObject(listHoaDonCTs), Encoding.UTF8, "application/json");
+                    HttpResponseMessage responseHDCT = await _httpClient.PostAsync("api/HoaDon/AddHoaDonCT", contentHDCT);
+                    ViewBag.SuccessMessage = "Đặt hàng thành công";
+                    return View();
+
+
+
+
+
                 }
+                if (payment == "2")
+                {
+                    
+                    if (string.IsNullOrEmpty(VNPayConfig.vnp_TmnCode) || string.IsNullOrEmpty(VNPayConfig.vnp_HashSecret))
+                    {
+                        ViewBag.SuccessMessage = "Vui lòng cấu hình các tham số: vnp_TmnCode,vnp_HashSecret";
+                        return View();
+                    }
+                    //Hóa đơn VNpay
+                    OrderInfo order = new OrderInfo();
+                      order.OrderId = DateTime.Now.Ticks; // Giả lập mã giao dịch hệ thống merchant gửi sang VNPAY
+                        order.Amount = hoaDon.TongTien; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
+                        order.Status = "0"; //0: Trạng thái thanh toán "chờ thanh toán" hoặc "Pending"                   
+                        order.CreatedDate = DateTime.Now;
+                  
+                    VnPayLibrary vnpay = new VnPayLibrary();
+                    vnpay.AddRequestData("vnp_Version", VnPayLibrary.VERSION);
+                    vnpay.AddRequestData("vnp_Command", "pay");
+                    vnpay.AddRequestData("vnp_TmnCode", VNPayConfig.vnp_TmnCode);
+                    vnpay.AddRequestData("vnp_Amount", (order.Amount * 100).ToString());//Số tiền thanh toán. Số tiền không mang các ký tự phân tách thập phân, phần nghìn, ký tự tiền tệ. Để gửi số tiền thanh toán là 100,000 VND (một trăm nghìn VNĐ) thì merchant cần nhân thêm 100 lần (khử phần thập phân), sau đó gửi sang VNPAY là: 10000000
+                    //if (!string.IsNullOrEmpty(request.NganHang))
+                        vnpay.AddRequestData("vnp_BankCode", "NCB" /*request.NganHang*/);
+                    vnpay.AddRequestData("vnp_CreateDate", order.CreatedDate.ToString("yyyyMMddHHmmss"));
+                    vnpay.AddRequestData("vnp_CurrCode", "VND");
+                    vnpay.AddRequestData("vnp_IpAddr", HttpContext.Connection.RemoteIpAddress?.ToString());
+                    vnpay.AddRequestData("vnp_Locale", "vn");
+                    vnpay.AddRequestData("vnp_OrderInfo", "Thanh toan don hang:" + order.OrderId);
+                  
+                    vnpay.AddRequestData("vnp_ReturnUrl", VNPayConfig.vnp_Returnurl);
+                    vnpay.AddRequestData("vnp_TxnRef", order.OrderId.ToString());// Mã tham chiếu của giao dịch tại hệ thống của merchant. Mã này là duy nhất dùng để phân biệt các đơn hàng gửi sang VNPAY. Không được trùng lặp trong ngày
+                                                                                 //Add Params of 2.1.0 Version
+                    //vnpay.AddRequestData("vnp_ExpireDate", request.ThoiHanThanhToan);
+                    //Billing
+                    vnpay.AddRequestData("vnp_Bill_Mobile", hoaDon.SDT.Trim());
+                    vnpay.AddRequestData("vnp_Bill_Email", hoaDon.Email.Trim());
+                    var fullName = hoaDon.TenNguoiNhan.Trim();
+                    if (!String.IsNullOrEmpty(fullName))
+                    {
+                        var indexof = fullName.IndexOf(' ');
+                        vnpay.AddRequestData("vnp_Bill_FirstName", fullName.Substring(0, indexof));
+                        vnpay.AddRequestData("vnp_Bill_LastName", fullName.Substring(indexof + 1, fullName.Length - indexof - 1));
+                    }
+
+                    //Load thông tin hóa đơn
+   
+
+                    string paymentUrl = vnpay.CreateRequestUrl(VNPayConfig.vnp_Url, VNPayConfig.vnp_HashSecret);
+                    return Redirect(paymentUrl);
+
+
+
+                }
+
 
             }
             catch (Exception)
@@ -130,6 +196,68 @@ namespace WebNewBook.Controllers
             }
             
             
+            return View();
+        }
+        public IActionResult VNPayReturn([FromQuery]VNPayReturn request)
+        {
+            request.message = "Không xác định được trạng thái";
+            if (vnp_TransactionStatus.ContainsKey(request.vnp_TransactionStatus)) { 
+                request.message = vnp_TransactionStatus[request.vnp_TransactionStatus];
+            }
+            if (request.vnp_TransactionStatus == "00")
+            {
+                var lstCart = Giohangs;
+
+
+
+                foreach (var item in lstCart)
+                {
+                    //Hóa đơn
+                    //hoaDon.ID_HoaDon = "HD" + Guid.NewGuid().ToString();
+                    //if (KhachHang == null)
+
+                    //{
+                    //    //Tạo mới khách hàng khi chưa login
+                    //    KhachHang = new KhachHang();
+                    //    KhachHang.ID_KhachHang = "KH" + Guid.NewGuid().ToString();
+                    //    KhachHang.HoVaTen = hoaDon.TenNguoiNhan;
+                    //    KhachHang.DiaChi = hoaDon.DiaChiGiaoHang;
+                    //    KhachHang.DiemTichLuy = 1;
+
+                    //    StringContent contentKH = new StringContent(JsonConvert.SerializeObject(KhachHang), Encoding.UTF8, "application/json");
+                    //    HttpResponseMessage responseKH = await _httpClient.PostAsync("api/Customer", contentKH);
+
+                    //}
+                    //hoaDon.MaKhachHang = KhachHang.ID_KhachHang;
+                    //hoaDon.TongTien = item.ThanhTien;
+                    //hoaDon.NgayMua = DateTime.Now;
+                    //hoaDon.TrangThai = 1;
+                    //StringContent contentHD = new StringContent(JsonConvert.SerializeObject(hoaDon), Encoding.UTF8, "application/json");
+                    //HttpResponseMessage responseHD = await _httpClient.PostAsync("api/HoaDon/AddHoaDon", contentHD);
+                    ////Hóa đơn chi tiết
+                    //List<HoaDonCT> listHoaDonCTs = new List<HoaDonCT>();
+                    //HoaDonCT hoaDonCT = new HoaDonCT();
+                    //hoaDonCT.ID_HDCT = Guid.NewGuid().ToString();
+                    //hoaDonCT.MaSanPham = item.Maasp;
+                    //hoaDonCT.MaHoaDon = hoaDon.ID_HoaDon;
+                    //hoaDonCT.SoLuong = item.Soluong;
+                    //listHoaDonCTs.Add(hoaDonCT);
+                    //StringContent contentHDCT = new StringContent(JsonConvert.SerializeObject(listHoaDonCTs), Encoding.UTF8, "application/json");
+                    //HttpResponseMessage responseHDCT = await _httpClient.PostAsync("api/HoaDon/AddHoaDonCT", contentHDCT);
+                    //ViewBag.SuccessMessage = "Đặt hàng thành công";
+
+                   
+
+                }
+
+
+            }
+      
+
+
+
+
+
             return View();
         }
     }

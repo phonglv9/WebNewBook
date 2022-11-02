@@ -18,7 +18,11 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                khachHang.ID_KhachHang = Guid.NewGuid().ToString();
+                if (khachHang.ID_KhachHang ==null)
+                {
+                    khachHang.ID_KhachHang = Guid.NewGuid().ToString();
+                }
+                
                 khachHang.TrangThai = 1;
                 _dbcontext.Add(khachHang);
                 await _dbcontext.SaveChangesAsync();

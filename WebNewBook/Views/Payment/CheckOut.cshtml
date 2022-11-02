@@ -3,6 +3,8 @@
 @{
 	double ship = 18000;
 	ViewBag.TongTien = ViewBag.TongTien + ship;
+	ViewBag.Title = "Checkout";
+	Layout = "~/Views/Shared/_Layout.cshtml";
 	
 }
 
@@ -30,6 +32,12 @@
 		<div class="section">
 			<!-- container -->
 			<div class="container">
+				@if (ViewBag.thongBaoLoi != null && ViewBag.thongBaoLoi != "")
+				{
+					<div class="alert alert-danger" role="alert">
+						@ViewBag.thongBaoLoi
+					</div>
+				}
 				<!-- row -->
 				 <form asp-action="Pay" asp-controller="Payment" method="post" enctype="multipart/form-data">
 					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -143,7 +151,7 @@
 								</div>
 							</div>	
 							<div class="input-radio">
-								<input type="radio" name="paymentnow" value="2" id="payment-2">
+								<input type="radio" name="payment" value="2" id="payment-2">
 								<label for="payment-2">
 									<span></span>
 									Thanh toán ví điện tử VN Pay
@@ -152,9 +160,13 @@
 									<p><img src="https://inkythuatso.com/uploads/images/2021/12/vnpay-logo-inkythuatso-01-13-16-26-42.jpg" width="120px" alt=""></p>
 									<p>Thông tin tài khoản ngân hàng sẽ hiển thị sau khi bạn chọn Đặt Hàng.</p>
 								</div>
+
+
+
+
 							</div>
 						</div>
-						
+							<input  asp-for="TongTien" class="input"hidden value="@ViewBag.TongTien" name="TongTien" placeholder="Điện thoại">
 						<button type="submit"  class="primary-btn order-submit">Đặt hàng</button>
 					</div>
 					  </form>

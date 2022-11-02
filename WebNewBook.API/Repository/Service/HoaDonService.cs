@@ -31,12 +31,13 @@ namespace WebNewBook.API.Repository.Service
               
                 foreach (var item in hoaDonCTs)
                 {
-                    var x = dbcontext.SanPhams.Where(c => c.ID_SanPham == item.MaSanPham).FirstOrDefault();
-                    x.SoLuong = x.SoLuong - item.SoLuong;
-                    dbcontext.SanPhams.Update(x);
+                    var sanPham = dbcontext.SanPhams.Where(c => c.ID_SanPham == item.MaSanPham).FirstOrDefault();
+                    if (sanPham != null)
+                    sanPham.SoLuong = sanPham.SoLuong - item.SoLuong;
+                    dbcontext.SanPhams.UpdateRange(sanPham);
+                    dbcontext.SaveChanges();
 
                 }
-
                 dbcontext.HoaDonCTs.AddRange(hoaDonCTs);
                 dbcontext.SaveChanges();
             }
@@ -44,6 +45,9 @@ namespace WebNewBook.API.Repository.Service
             {
                 throw new Exception("404");
             }
+
+
+
         }
 
     }
