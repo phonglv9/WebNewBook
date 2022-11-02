@@ -275,12 +275,12 @@ namespace WebNewBook.Controllers
         public async Task<IActionResult> ProductDetaill(string id)
         {
             //Model home
-            HomeVM modelHome = new HomeVM();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/home/Product/{id}").Result;
+            SanPhamChiTiet modelHome = new SanPhamChiTiet();
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/home/ProductDetail/{id}").Result;
             if (response.IsSuccessStatusCode)
             {
                 string jsonData = response.Content.ReadAsStringAsync().Result;
-                modelHome = JsonConvert.DeserializeObject<HomeVM>(jsonData);
+                modelHome = JsonConvert.DeserializeObject<SanPhamChiTiet>(jsonData);
 
 
             };
@@ -324,7 +324,7 @@ namespace WebNewBook.Controllers
 
 
 
-            LstTacGia = tacGias.Where(c => c.ID_TacGia == modelHome.tacGia.ID_TacGia).ToList();
+            LstTacGia = tacGias.Where(c => c.ID_TacGia == modelHome.sachCT.TacGia.ID_TacGia).ToList();
 
             ViewBag.TacGia = LstTacGia;
 
