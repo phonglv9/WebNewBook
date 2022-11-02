@@ -76,33 +76,33 @@ namespace WebNewBook.API.Repository.Service
 
             return  homeVMs;
         }
-        public async Task<HomeVM> GetProductDetail (string id)
+        public async Task<SanPhamChiTiet> GetProductDetail (string id)
         {
 
-            var sanPham = await _dbContext.SanPhams.ToListAsync();
+            
             var sanPhamCT = await _dbContext.SanPhamCTs.ToListAsync();
             var sachCT = await _dbContext.SachCTs.ToListAsync();
             var sach = await _dbContext.Sachs.ToListAsync();
+            var sanPham = await _dbContext.SanPhams.ToListAsync();
             var theLoai = await _dbContext.TheLoais.ToListAsync();
-            var danhMuc = await _dbContext.DanhMucSachs.ToListAsync();
-            var tacgia = await _dbContext.TacGias.ToListAsync();
-            List<HomeVM> homeVMs = new List<HomeVM>();
-            homeVMs = (from a in sanPham
-                       join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
-                       join c in sach on b.MaSach equals c.ID_Sach
-                       join d in sachCT on c.ID_Sach equals d.MaSach
-                       join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
-                       join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
-                       join l in tacgia on d.MaTacGia equals l.ID_TacGia
-                       select new HomeVM()
+            var tacGia = await _dbContext.TacGias.ToListAsync();
+
+            List<SanPhamChiTiet> homeVMs = new List<SanPhamChiTiet>();
+            homeVMs = (from a in sanPhamCT join b in sach on a.MaSach equals b.ID_Sach
+                       join c in sachCT on b.ID_Sach equals c.MaSach
+                       join d in sanPham on a.MaSanPham equals d.ID_SanPham
+                       join j in tacGia on c.MaTacGia equals j.ID_TacGia
+                       join k in theLoai on c.MaTheLoai equals k.ID_TheLoai
+                       select new SanPhamChiTiet()
                        {
-                           sanPhams = a,
-                           SanPhamCT = b,
-                           sach = c,
-                           sachCT = d,
-                           theLoai = e,
-                           danhMucSach = f,
-                           tacGia = l,
+                          SanPhamCT=a,
+                          sach=b,
+                          sachCT=c,
+                          sanPhams=d,
+                          tacGia=j,
+                          theLoai=k
+
+                          
                        }).ToList();
 
             var x = homeVMs.Where(o => o.sanPhams.ID_SanPham == id).First();

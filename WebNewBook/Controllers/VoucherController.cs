@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.IO;
@@ -256,9 +257,16 @@ namespace WebNewBook.Controllers
             return RedirectToAction("Index");
         }
 
-        //public async Task<IActionResult> ThemtungVoucher(VoucherCT voucherCT)
-        //{
 
-        //}
+        [HttpPost]
+         public  IActionResult HuyVoucher(string timCkeckBox)
+        {
+            string[] arr = timCkeckBox.Split(',');
+            foreach (var x in arr)
+            {
+
+            }
+            return RedirectToAction("Index");
+        }
     }
 }

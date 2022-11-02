@@ -384,7 +384,8 @@
 												
 													<div class="product-btns">
 													
-														<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
+														@*<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>*@
+														<a asp-controller="Home" asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham" > Xem chi tiet</a>
 													</div>
 												</div>
 												<form asp-controller="GioHang"  asp-action="AddToCart" asp-route-id="@item.sanPhams.ID_SanPham">

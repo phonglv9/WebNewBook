@@ -77,7 +77,11 @@
 					<div class="product-details">
 					<h2 class="product-name">
 						@if (ViewBag.test != null)
-						@ViewBag.test.sach.TenSach</h2>
+							@ViewBag.test.sanPhams.TenSanPham
+
+
+
+						</h2>
 
 						<div>
 
@@ -170,7 +174,12 @@
                                       text-align:center;">
 										
 									@if (ViewBag.test != null){
-										<p>Tên sách :  @ViewBag.test.sach.TenSach</p>
+										<!-- On rows -->
+										
+
+
+
+										<p>Tên sách :@ViewBag.test.sach.TenSach </p>
 										<p>Số lượng :  @ViewBag.test.sach.SoTrang</p>
 										<p>Tái bản : @ViewBag.test.sach.TaiBan</p>
 										<p>Số lượng :	@ViewBag.test.sach.SoLuong</p>
