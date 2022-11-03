@@ -1,0 +1,47 @@
+﻿@{
+    var color="";
+    if (ViewBag.SuccessMessage == "Thanh toán thành công")
+    {
+        color = "success";
+    }else
+    {
+        color = "warning";
+    }
+}
+@section Scripts{
+    <script>
+            setTimeout(function()){
+            $(#gg).fadeOut('slow');
+        }, 2000);
+       
+    </script>
+}
+
+
+        @if (@ViewBag.SuccessMessage != null)
+             {
+                
+              if (@ViewBag.SuccessMessage == "Đặt hàng thành công")
+                {
+        
+                <div id="gg" class="alert alert-@color" role="alert">           
+                             @ViewBag.SuccessMessage
+                        </div>
+                         <a class="btn-link" href="@Url.Action("Index","Home")">
+                                     Tiếp tục mua hàng
+                </a>
+            }
+            else
+            {
+        
+       
+
+   
+                <div class="alert alert-@color" role="alert">
+                     @ViewBag.SuccessMessage
+                </div>
+                  <a class="btn-link" href="@Url.Action("Checkout","Home")">
+                                     Quay lại đặt hàng
+                </a>
+            }
+     }

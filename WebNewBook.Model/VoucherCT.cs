@@ -16,7 +16,7 @@ namespace WebNewBook.Model
         public string Id { get; set; }
         public DateTime? CreateDate { get; set; }
         public int? HinhThuc { get; set; }
-        public int? Diemdoi { get; set; }
+        public int? Diemdoi { get; set;}
         public DateTime? NgayBatDau { get; set; }
         public DateTime? NgayHetHan { get; set; }
         public DateTime? NgaySuDung { get; set; }
