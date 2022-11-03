@@ -2,7 +2,8 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 
 
-    var lstvoucherCT = ViewBag.lstvoucherCT;
+    var lstvoucherCT0 = ViewBag.lstvoucherCT0;
+    var lstvoucherCT1 = ViewBag.lstvoucherCT1;
 }
 @using WebNewBook.ViewModel
 @model VoucherModel
@@ -141,9 +142,9 @@
                 <ul id="thaotac" style="display : none" class="navbar-nav ml-auto col-3">
                     <!-- Nav Item - Alerts -->
                     <li class="nav-item dropdown no-arrow mx-1">
-                        <a class="nav-link dropdown-toggle"  id="alertsDropdown" role="button"
+                        <a class="nav-link dropdown-toggle" id="alertsDropdown" role="button"
                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          
+
                             <!-- Counter - Alerts -->
                             <span class="badge badge-danger badge-counter">Thao tác</span>
                         </a>
@@ -151,7 +152,7 @@
                         <div class="dropdown-list dropdown-menu dropdown-menu-right shadow "
                              aria-labelledby="alertsDropdown">
                             <h6 class="dropdown-header">
-                               Thao tác
+                                Thao tác
                             </h6>
                             <a class="dropdown-item d-flex align-items-center" href="#">
                                 <div class="mr-3">
@@ -160,28 +161,28 @@
                                     </div>
                                 </div>
                                 <div>
-                                   Phát hành Voucher
+                                    Phát hành Voucher
                                 </div>
                             </a>
-                            <a  id="btnHuyVoucher" class="dropdown-item d-flex align-items-center">
+                            <a id="btnHuyVoucher" class="dropdown-item d-flex align-items-center">
                                 <div class="mr-3">
                                     <div class="icon-circle bg-success">
                                         <i class="fas fa-donate text-white"></i>
                                     </div>
                                 </div>
-                                <input  type="hidden" value="OK" name="NamOK"/>
+                                <input type="hidden" value="OK" name="NamOK" />
                                 <div>
-                                   Hủy Voucher
+                                    Hủy Voucher
                                 </div>
                             </a>
-       
+
                         </div>
                     </li>
                     <div class="topbar-divider d-none d-sm-block"></div>
                 </ul>
-                 
-        
-               
+
+
+
             </div>
             <table class="table table-striped  table-hover">
                 <thead>
@@ -201,16 +202,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var x in lstvoucherCT)
+                    @foreach (var x in lstvoucherCT0)
                     {
                         <tr id="timCkeckBox">
                             <td id="ListItem">
-                          
-                                    <div  class="form-check">
-                                        <input onclick="showThaotac()"  class="form-check-input" type="checkbox" id="@x.Id" value="" name="NameOK">
-                                    </div>
-                             
-                               
+
+                                <div class="form-check">
+                                    <input onclick="showThaotac()" class="form-check-input" type="checkbox" id="@x.Id" value="" name="NameOK">
+                                </div>
+
+
                             </td>
                             <td>@x.Id</td>
                             <td></td>
@@ -298,16 +299,51 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach (var x in lstvoucherCT1)
+                        {
+                            <tr>
 
-                        <tr>
-                            <td>1223</td>
-                            <td>1223</td>
-                            <td>1223</td>
-                            <td>1223</td>
-                            <td>1223</td>
-                            <td>1223</td>
-                            <td>1223</td>
-                        </tr>
+                                <td>@x.Id</td>
+                                <td></td>
+                                @if (x.NgayBatDau != null)
+                                {
+                                    <td>@x.NgayBatDau.ToString("d/M/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                @if (x.NgayHetHan != null)
+                                {
+                                    <td>@x.NgayHetHan.ToString("d/M/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+                                @if (x.NgaySuDung != null)
+                                {
+                                    <td>@x.NgaySuDung.ToString("d/M/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+                                <td>@x.Diemdoi</td>
+                                @*    <td>@(x.TrangThai==0?"Chưa phát Hành": "Đã phát hành")</td>*@
+                                @if (@x.TrangThai == 0)
+                                {
+                                    <td class="text-danger fs-6 fst-italic">Chưa Phát hành</td>
+                                }
+                                else
+                                {
+                                    <td class="text-success fs-6 fst-italic">Đã Phát hành</td>
+                                }
+                            </tr>
+                        }
+
 
                     </tbody>
                 </table>
@@ -330,43 +366,43 @@
 
 
 
-        function showThaotac(){
+        function showThaotac() {
             console.log('ra')
             var chon = document.getElementsByName("NameOK");
             for (var i = 0; i < chon.length; i++) {
                 document.getElementById("thaotac").style.display = 'none';
-              if(chon[i].checked==true){
+                if (chon[i].checked == true) {
                     console.log('vào')
                     document.getElementById("thaotac").style.display = 'block';
                     break;
-              }   
+                }
             }
         }
-          
-        
+
+
         document.getElementById("click_all").onclick = function () {
             console.log('ra')
 
             var chon = document.getElementById("click_all");
 
             if (chon.checked == true) {
-              
+
                 document.getElementById("thaotac").style.display = 'block';
-              
+
                 var checkboxes = document.getElementsByName('NameOK');
 
-             
+
                 for (var i = 0; i < checkboxes.length; i++) {
                     checkboxes[i].checked = true;
                     console.log('vào1')
                 }
             } if (chon.checked == false) {
-           
-                 document.getElementById("thaotac").style.display = 'none';
-            
+
+                document.getElementById("thaotac").style.display = 'none';
+
                 var checkboxes = document.getElementsByName('NameOK');
 
-             
+
                 for (var i = 0; i < checkboxes.length; i++) {
                     checkboxes[i].checked = false;
                     console.log('vào2')
@@ -376,32 +412,34 @@
 
 
         $(function () {
-          var arrItem=[];
-          var commaSeparatedIds="";
+            var arrItem = [];
+            var commaSeparatedIds = "";
             $("#btnHuyVoucher").click(function () {
-                $("#timCkeckBox #ListItem input[type=checkbox]").each(function(index, val){
+                $("#timCkeckBox #ListItem input[type=checkbox]").each(function (index, val) {
+
                     var checkId = $(val).attr("Id");
-                    var Ischeked =$("#"+checkId).is(":checked",true)
-                    if(Ischeked){
+                    var Ischeked = $("#" + checkId).is(":checked", true)
+                    if (Ischeked) {
                         arrItem.push(checkId);
                     }
-                  
+
                 });
-                commaSeparatedIds=arrItem.toString();
-               arrItem[];
-              
+                commaSeparatedIds = arrItem.toString();
+                arrItem=[];
+                console.log(commaSeparatedIds);
+
                 $.ajax({
                     type: "POST",
-                    data: { timCkeckBox:commaSeparatedIds },
+                    data: { timCkeckBox: commaSeparatedIds },
                     url: "/Voucher/HuyVoucher",
                     success: function (response) {
-                        alert("Thành công");
-                    },
-                    failure: function (response) {
-                        alert(response.responseText);
-                    },
-                    error: function (response) {
-                        alert(response.responseText);
+                        if(response==1){
+                            alert("Thành công");
+                            window.location.reload();
+                        }else{
+                            alert("Thất Bại");
+                        }
+                        
                     }
                 });
             });
@@ -412,7 +450,7 @@
 }
 
 
-@*
+    @*
 
 @if (ViewBag.Message != null)
 {

@@ -160,7 +160,7 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                return await _dbcontext.VoucherCTs.Where(c => c.MaVoucher == id && c.TrangThai==0).ToListAsync();
+                return await _dbcontext.VoucherCTs.Where(c => c.MaVoucher == id ).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -195,17 +195,21 @@ namespace WebNewBook.API.Repository.Service
             }
         }
 
-        public async Task HuyVouCherAsync(string id)
+        public async Task HuyVouCherAsync(List<string> id)
         {
             try
             {
 
                 if (id != null)
                 {
-                    var modal = await _dbcontext.VoucherCTs.FindAsync(id);
-                    modal.TrangThai = 3;
-                    _dbcontext.VoucherCTs.Update(modal);
-                    await _dbcontext.SaveChangesAsync();
+                    foreach (var x in id)
+                    {
+                        var modal = await _dbcontext.VoucherCTs.FindAsync(x);
+                        modal.TrangThai = 3;
+                        _dbcontext.VoucherCTs.Update(modal);
+                        await _dbcontext.SaveChangesAsync();
+                    }
+                   
                 }
 
 
