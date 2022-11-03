@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using WebNewBook.API.Data;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 
@@ -31,11 +29,25 @@ namespace WebNewBook.API.Controllers
             }
         }
         [HttpPost("AddHoaDonCT")]
-        public async Task<ActionResult> AddHoaDonCT( List<HoaDonCT> hoaDonCTs)
+        public async Task<ActionResult> AddHoaDonCT(List<HoaDonCT> hoaDonCTs)
         {
             try
             {
                 await _hoaDonService.AddHoaDonCT(hoaDonCTs);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        [HttpGet("UpdateTrangThai{id}")]
+        public async Task<ActionResult> UpdateTrangThai(string id)
+        {
+            try
+            {
+                await _hoaDonService.UpdateTrangThai(id);
+
                 return Ok();
             }
             catch (Exception e)

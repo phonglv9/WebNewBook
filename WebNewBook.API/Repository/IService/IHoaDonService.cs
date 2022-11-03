@@ -6,5 +6,6 @@ namespace WebNewBook.API.Repository.IService
     {
         Task AddHoaDon(HoaDon hoaDon);
         Task AddHoaDonCT(List<HoaDonCT> hoaDonCTs);
+        Task UpdateTrangThai(string id);
     }
 }

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace WebNewBook.Models
+﻿namespace WebNewBook.Models
 {
     public class VNPayReturn
     {
@@ -20,7 +15,7 @@ namespace WebNewBook.Models
         public string vnp_TxnRef { get; set; }
         public string vnp_SecureHash { get; set; }
         public string message { get; set; }
-        
-        
+
+
     }
 }

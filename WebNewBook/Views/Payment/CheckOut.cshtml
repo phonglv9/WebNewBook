@@ -5,6 +5,11 @@
 	ViewBag.TongTien = ViewBag.TongTien + ship;
 	ViewBag.Title = "Checkout";
 	Layout = "~/Views/Shared/_Layout.cshtml";
+
+if (true)
+	{
+		
+	}
 	
 }
 
@@ -39,6 +44,7 @@
 					</div>
 				}
 				<!-- row -->
+
 				 <form asp-action="Pay" asp-controller="Payment" method="post" enctype="multipart/form-data">
 					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 					<div class="row">
@@ -166,9 +172,12 @@
 
 							</div>
 						</div>
-							<input  asp-for="TongTien" class="input"hidden value="@ViewBag.TongTien" name="TongTien" placeholder="Điện thoại">
+							<input  asp-for="TongTien" class="input"hidden value="@ViewBag.TongTien" name="TongTien">
 						<button type="submit"  class="primary-btn order-submit">Đặt hàng</button>
 					</div>
+
+
+
 					  </form>
 					<!-- /Order Details -->
 				</div>

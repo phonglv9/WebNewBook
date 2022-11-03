@@ -4,7 +4,7 @@ using WebNewBook.Model;
 
 namespace WebNewBook.API.Repository.Service
 {
-    public class HoaDonService: IHoaDonService
+    public class HoaDonService : IHoaDonService
     {
         private readonly dbcontext dbcontext;
 
@@ -12,9 +12,9 @@ namespace WebNewBook.API.Repository.Service
         {
             this.dbcontext = dbcontext;
         }
-        public async Task AddHoaDon(HoaDon hoaDon )
+        public async Task AddHoaDon(HoaDon hoaDon)
         {
-            if (hoaDon != null )
+            if (hoaDon != null)
             {
                 dbcontext.HoaDons.Add(hoaDon);
                 dbcontext.SaveChanges();
@@ -24,16 +24,16 @@ namespace WebNewBook.API.Repository.Service
                 throw new Exception("404");
             }
         }
-        public async Task AddHoaDonCT( List<HoaDonCT> hoaDonCTs)
+        public async Task AddHoaDonCT(List<HoaDonCT> hoaDonCTs)
         {
             if (hoaDonCTs != null)
             {
-              
+
                 foreach (var item in hoaDonCTs)
                 {
                     var sanPham = dbcontext.SanPhams.Where(c => c.ID_SanPham == item.MaSanPham).FirstOrDefault();
                     if (sanPham != null)
-                    sanPham.SoLuong = sanPham.SoLuong - item.SoLuong;
+                        sanPham.SoLuong = sanPham.SoLuong - item.SoLuong;
                     dbcontext.SanPhams.UpdateRange(sanPham);
                     dbcontext.SaveChanges();
 
@@ -49,6 +49,20 @@ namespace WebNewBook.API.Repository.Service
 
 
         }
+        public async Task UpdateTrangThai(string id)
+        {
+            var hoaDon = dbcontext.HoaDons.Where(c => c.ID_HoaDon == id).FirstOrDefault();
+            if (hoaDon != null)
+            {
+                hoaDon.TrangThai = 1;
+                dbcontext.HoaDons.Update(hoaDon);
+                await dbcontext.SaveChangesAsync();
 
+            }
+            else
+            {
+                throw new Exception("404");
+            }
+        }
     }
 }
