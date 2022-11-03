@@ -75,10 +75,17 @@ namespace WebNewBook.Controllers
         {
             try
             {
-                if (!ModelState.IsValid)
+                if (hoaDon != null && !string.IsNullOrEmpty(payment))
                 {
 
-
+                    //Trang thái đơn hàng :
+                    //0.Không tồn tại
+                    //1.Đặt hàng
+                    //2.Đã thanh toán 
+                    //3.Hủy đơn hàng
+                    //4.Trả hàng
+                    //5.Thành công
+         
 
 
                     var lstCart = Giohangs;
@@ -118,7 +125,7 @@ namespace WebNewBook.Controllers
                         hoaDon.TrangThai = 0;
                     }
                     StringContent contentHD = new StringContent(JsonConvert.SerializeObject(hoaDon), Encoding.UTF8, "application/json");
-                    HttpResponseMessage responseHD = await _httpClient.PostAsync("api/HoaDon/AddHoaDon", contentHD);
+                    HttpResponseMessage responseHD = await _httpClient.PostAsync("api/Payment/AddHoaDon", contentHD);
                     if (!responseHD.IsSuccessStatusCode)
                     {
 
@@ -141,13 +148,17 @@ namespace WebNewBook.Controllers
                         listHoaDonCTs.Add(hoaDonCT);
                     }
                     StringContent contentHDCT = new StringContent(JsonConvert.SerializeObject(listHoaDonCTs), Encoding.UTF8, "application/json");
-                    HttpResponseMessage responseHDCT = await _httpClient.PostAsync("api/HoaDon/AddHoaDonCT", contentHDCT);
+                    HttpResponseMessage responseHDCT = await _httpClient.PostAsync("api/Payment/AddHoaDonCT", contentHDCT);
 
                     if (responseHDCT.IsSuccessStatusCode)
                     {
                         if (payment == "1")
                         {
+
+                            Response.Cookies.Delete("Cart");
                             ViewBag.SuccessMessage = "Đặt hàng thành công";
+
+
                             return View();
                         }
 
@@ -168,7 +179,7 @@ namespace WebNewBook.Controllers
 
                         //Hóa đơn VNpay
                         OrderInfo order = new OrderInfo();
-                        order.OrderId = hoaDon.ID_HoaDon; // Giả lập mã giao dịch hệ thống merchant gửi sang VNPAY
+                        order.OrderId =hoaDon.ID_HoaDon; // Giả lập mã giao dịch hệ thống merchant gửi sang VNPAY
                         order.Amount = hoaDon.TongTien; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
                         order.Status = "0"; //0: Trạng thái thanh toán "chờ thanh toán" hoặc "Pending"                   
                         order.CreatedDate = hoaDon.NgayMua;
@@ -226,20 +237,25 @@ namespace WebNewBook.Controllers
             ViewBag.vnp_TransactionStatus = request.vnp_TransactionStatus;
             if (request.vnp_TransactionStatus != "00")
             {
-                string Infoid = request.vnp_OrderInfo;
-
-                var getIdHoaDon = (from t in Infoid
-                                   where char.IsDigit(t)
-                                   select t).ToArray();
-                var idHoaDon = new string("HD" + getIdHoaDon);
-
-                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"api/HoaDon/UpdateTrangThai/{idHoaDon}").Result;
-                ViewBag.SuccessMessage = "Thanh toán thất bại";
+                
+                ViewBag.Message = request.message;
                 return View();
 
 
 
             }
+            var Infoid = request.vnp_OrderInfo;
+            var getIdHoaDon = (from t in Infoid
+                               where char.IsDigit(t)
+                               select t).ToArray();
+            var idHoaDon = new string(getIdHoaDon);
+            if (!string.IsNullOrEmpty(idHoaDon))
+            {
+                HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/UpdateTrangThai/{"HD"+idHoaDon}", null).Result;
+
+            }
+           
+            Response.Cookies.Delete("Cart");
             ViewBag.Message = request.message;
             return View();
         }

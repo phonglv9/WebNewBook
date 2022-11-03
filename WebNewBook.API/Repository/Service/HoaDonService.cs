@@ -21,7 +21,7 @@ namespace WebNewBook.API.Repository.Service
             }
             else
             {
-                throw new Exception("404");
+                throw null;
             }
         }
         public async Task AddHoaDonCT(List<HoaDonCT> hoaDonCTs)
@@ -43,7 +43,7 @@ namespace WebNewBook.API.Repository.Service
             }
             else
             {
-                throw new Exception("404");
+                throw null;
             }
 
 
@@ -54,14 +54,14 @@ namespace WebNewBook.API.Repository.Service
             var hoaDon = dbcontext.HoaDons.Where(c => c.ID_HoaDon == id).FirstOrDefault();
             if (hoaDon != null)
             {
-                hoaDon.TrangThai = 1;
+                hoaDon.TrangThai = 2;
                 dbcontext.HoaDons.Update(hoaDon);
                 await dbcontext.SaveChangesAsync();
 
             }
             else
             {
-                throw new Exception("404");
+                throw null;
             }
         }
     }

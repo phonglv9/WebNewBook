@@ -37,12 +37,15 @@ if (true)
 		<div class="section">
 			<!-- container -->
 			<div class="container">
-				@if (ViewBag.thongBaoLoi != null && ViewBag.thongBaoLoi != "")
+				@if (ViewBag.MessageVNPay != null && ViewBag.MessageVNPay != "")
 				{
 					<div class="alert alert-danger" role="alert">
-						@ViewBag.thongBaoLoi
+						@ViewBag.MessageVNPay
 					</div>
 				}
+
+
+
 				<!-- row -->
 
 				 <form asp-action="Pay" asp-controller="Payment" method="post" enctype="multipart/form-data">
