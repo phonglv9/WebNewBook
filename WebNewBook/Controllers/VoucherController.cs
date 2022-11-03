@@ -1,4 +1,6 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -70,7 +72,8 @@ namespace WebNewBook.Controllers
                 string jsondata_2 = response_2.Content.ReadAsStringAsync().Result;
                 List<VoucherCT> voucherCTs = new List<VoucherCT>();
                voucherCTs= JsonConvert.DeserializeObject<List<VoucherCT>>(jsondata_2);
-                ViewBag.lstvoucherCT=voucherCTs;
+                ViewBag.lstvoucherCT0=voucherCTs.Where(c=>c.TrangThai==0).ToList();
+                ViewBag.lstvoucherCT1=voucherCTs.Where(c=>c.TrangThai==1).ToList();
 
             }
          
@@ -259,14 +262,28 @@ namespace WebNewBook.Controllers
 
 
         [HttpPost]
-         public  IActionResult HuyVoucher(string timCkeckBox)
+         public  int HuyVoucher(string timCkeckBox)
         {
+            List<string> Id = new List<string>();
             string[] arr = timCkeckBox.Split(',');
             foreach (var x in arr)
             {
+                Id.Add(x);
+            }
+
+          
+            HttpResponseMessage response = _httpClient.PutAsJsonAsync(_httpClient.BaseAddress + "/VoucherCT/HuyVoucher/" , Id).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string jsondata = response.Content.ReadAsStringAsync().Result;
 
             }
-            return RedirectToAction("Index");
+
+
+
+
+
+            return 1;
         }
     }
 }
