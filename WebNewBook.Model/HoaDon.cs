@@ -18,7 +18,7 @@ namespace WebNewBook.Model
         public string? MaGiamGia { get; set; }
         public DateTime NgayMua { get; set; }
         public double TongTien { get; set; }
-        [Range(0, 2)]
+        [Range(0, 5)]
         public int TrangThai { get; set; }
         
         public virtual KhachHang? KhachHang { get; set; }
