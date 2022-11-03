@@ -231,7 +231,7 @@ namespace WebNewBook.Controllers
                 var getIdHoaDon = (from t in Infoid
                                    where char.IsDigit(t)
                                    select t).ToArray();
-                var idHoaDon = new string(getIdHoaDon);
+                var idHoaDon = new string("HD" + getIdHoaDon);
 
                 HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"api/HoaDon/UpdateTrangThai/{idHoaDon}").Result;
                 ViewBag.SuccessMessage = "Thanh toán thất bại";
