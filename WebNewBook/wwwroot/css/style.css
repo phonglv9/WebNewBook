@@ -293,8 +293,7 @@ textarea.input {
 \*----------------------------*/
 
 .section {
-    padding-top: 30px;
-    padding-bottom: 30px;
+  
     background-color: #f9f9f9;
 }
 
@@ -2224,9 +2223,8 @@ textarea.input {
 .slick-list{
     padding-bottom:60px;
 }
-#footer > .container{
-    padding: 40px 0px;
-}
+
+
 .footer-links li{
     line-height:36px;
 }
