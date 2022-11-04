@@ -7,8 +7,32 @@
 }
 @using WebNewBook.ViewModel
 @model VoucherModel
-<div>
 
+
+<style>
+    .loading {
+        background: rgba(0, 0, 0, .5);
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999;
+    }
+
+    .spinner-center {
+        top: 50%;
+        left: 50%;
+        position: absolute;
+    }
+</style>
+
+
+
+<div>
+    <div id="load" style="display : block" class="loading">
+        <div class="spinner-border text-primary spinner-center" role="status"></div>
+    </div>
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link active" id="nav-add-tab"
@@ -154,7 +178,7 @@
                             <h6 class="dropdown-header">
                                 Thao tác
                             </h6>
-                            <a class="dropdown-item d-flex align-items-center" href="#">
+                            <a class="dropdown-item d-flex align-items-center" href="#" data-bs-toggle="modal" data-bs-target="#phathanh">
                                 <div class="mr-3">
                                     <div class="icon-circle bg-primary">
                                         <i class="fas fa-file-alt text-white"></i>
@@ -164,6 +188,8 @@
                                     Phát hành Voucher
                                 </div>
                             </a>
+
+
                             <a id="btnHuyVoucher" class="dropdown-item d-flex align-items-center">
                                 <div class="mr-3">
                                     <div class="icon-circle bg-success">
@@ -182,6 +208,65 @@
                 </ul>
 
 
+                <!-- Modal phát hành -->
+                <div class="modal fade" id="phathanh" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="phathanh" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="phathanh">Phát hành</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="mb-3 row">
+                                    <label for="" class="col-sm-4 col-form-label">Số lượng Voucher</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control" disabled>
+
+                            
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="" class="col-sm-4 col-form-label">Hình thức</label>
+                                    <div class="col-sm-8">
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
+                                            <label class="form-check-label" for="flexRadioDefault1">
+                                               Đổi điểm
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
+                                            <label class="form-check-label" for="flexRadioDefault2">
+                                                Tặng
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="" class="col-sm-4 col-form-label">Điểm</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control" disabled>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3 row">
+                                    <label for="" class="col-sm-4 col-form-label">Ngày Phát hành</label>
+                                    <div class="col-sm-8">
+                                        <input  type="date" class="form-control" required>
+                                    </div>
+                                </div>
+                                
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary">Understood</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
             <table class="table table-striped  table-hover">
@@ -356,15 +441,23 @@
 </div>
 
 
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast  text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+        <div class="toast-header">
 
-
-
+            <strong class="me-auto">Thông báo</strong>
+            <small>Bây giờ</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Thành Công
+        </div>
+    </div>
+</div>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 @section Scripts{
     <script>
-
-
 
         function showThaotac() {
             console.log('ra')
@@ -412,8 +505,14 @@
 
 
         $(function () {
+            document.getElementById("load").style.display = 'none';
             var arrItem = [];
             var commaSeparatedIds = "";
+
+
+
+
+            //Hủy voucher
             $("#btnHuyVoucher").click(function () {
                 $("#timCkeckBox #ListItem input[type=checkbox]").each(function (index, val) {
 
@@ -425,21 +524,30 @@
 
                 });
                 commaSeparatedIds = arrItem.toString();
-                arrItem=[];
-                console.log(commaSeparatedIds);
+                arrItem = [];
+
 
                 $.ajax({
                     type: "POST",
                     data: { timCkeckBox: commaSeparatedIds },
                     url: "/Voucher/HuyVoucher",
                     success: function (response) {
-                        if(response==1){
-                            alert("Thành công");
-                            window.location.reload();
-                        }else{
+                        if (response == 1) {
+                            const toastLiveExample = document.getElementById('liveToast')
+                            const toast = new bootstrap.Toast(toastLiveExample)
+                            toast.show()
+
+                            setTimeout(function () {
+
+                                window.location.reload(1);
+                                document.getElementById("load").style.display = 'block';
+
+                            }, 3000);
+
+                        } else {
                             alert("Thất Bại");
                         }
-                        
+
                     }
                 });
             });
@@ -448,15 +556,3 @@
 
     </script>
 }
-
-
-    @*
-
-@if (ViewBag.Message != null)
-{
-    <script type="text/javascript">
-        window.onload = function () {
-            alert("@ViewBag.Message");
-        };
-    </script>
-}*@
