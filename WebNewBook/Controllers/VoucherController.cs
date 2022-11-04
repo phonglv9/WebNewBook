@@ -218,7 +218,7 @@ namespace WebNewBook.Controllers
             catch (Exception e)
             {
 
-                return View(e.Message);
+                return RedirectToAction("Index");
             }
           
             
