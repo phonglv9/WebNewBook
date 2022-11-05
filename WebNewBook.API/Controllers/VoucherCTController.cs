@@ -140,5 +140,21 @@ namespace WebNewBook.API.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+
+        [HttpPut("PhatHanhVoucher")]
+        public async Task<ActionResult> PhatHanhVoucher(List<VoucherCT> lstvoucherCTs)
+        {
+            try
+            {
+                await _voucherCTServices.PhathanhVouCherAsync(lstvoucherCTs);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+                
+            }
+        }
     }
 }
