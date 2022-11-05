@@ -134,7 +134,6 @@ namespace WebNewBook.API.Repository.Service
                     _dbcontext.Vouchers.Update(SoluongVoucherCT(voucherCT.MaVoucher));
                     await _dbcontext.SaveChangesAsync();
                 }
-
             }
             catch (Exception ex)
             {
@@ -223,16 +222,23 @@ namespace WebNewBook.API.Repository.Service
 
         }
 
-        public async Task PhathanhVouCherAsync(string id)
+        public async Task PhathanhVouCherAsync(List<VoucherCT> lstvoucherCTs)
         {
             try
             {
-                if (id != null)
+                if (lstvoucherCTs != null)
                 {
-                    var modal = await _dbcontext.VoucherCTs.FindAsync(id);
-                    modal.TrangThai = 1;
-                    _dbcontext.VoucherCTs.Update(modal);
-                    await _dbcontext.SaveChangesAsync();
+                    foreach (var x in lstvoucherCTs)
+                    {
+                        var model = await _dbcontext.VoucherCTs.FindAsync(x.Id);
+                        model.TrangThai = 1;
+                        model.HinhThuc = x.HinhThuc;
+                        model.Diemdoi = x.Diemdoi;
+                        model.NgayBatDau = x.NgayBatDau;
+                        _dbcontext.VoucherCTs.Update(model);
+                        await _dbcontext.SaveChangesAsync();
+                    }
+           
                 }
             }
             catch (Exception ex)
