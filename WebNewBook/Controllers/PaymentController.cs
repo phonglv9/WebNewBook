@@ -82,11 +82,9 @@ namespace WebNewBook.Controllers
                     //0.Không tồn tại
                     //1.Đặt hàng
                     //2.Đã thanh toán 
-                    //3.Hủy đơn hàng
+                    //3.Đơn hàng thanh toán thất bại
                     //4.Trả hàng
-                    //5.Thành công
-         
-
+                    //5.Thành công         
 
                     var lstCart = Giohangs;
                     ViewBag.SuccessMessage = "";
@@ -122,7 +120,10 @@ namespace WebNewBook.Controllers
                     }
                     else
                     {
-                        hoaDon.TrangThai = 0;
+
+                        //Thanh toán:
+
+                        hoaDon.TrangThai = 3;
                     }
                     StringContent contentHD = new StringContent(JsonConvert.SerializeObject(hoaDon), Encoding.UTF8, "application/json");
                     HttpResponseMessage responseHD = await _httpClient.PostAsync("api/Payment/AddHoaDon", contentHD);
