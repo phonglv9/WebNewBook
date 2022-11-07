@@ -619,6 +619,7 @@ textarea.input {
 .open > .dropdown-menu {
     display: block;
     padding: 10px;
+
     line-height: 2;
 }
 
@@ -1990,18 +1991,11 @@ textarea.input {
 ===========================================================*/
 
 #footer {
-    
-    background: #2c55a5;
-    color: #B9BABC;
-}
-#top-footer {
+    background: #1E1F29;
     padding-top: 30px;
     padding-bottom: 30px;
 }
 
-#bottom-footer {
-  background: #1E1F29;
-}
 
 .footer {
   margin: 30px 0px;
