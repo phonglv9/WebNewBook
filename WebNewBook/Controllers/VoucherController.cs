@@ -295,8 +295,6 @@ namespace WebNewBook.Controllers
                 return 1; 
 
             }
-
-
             return 0;
         }
 
