@@ -159,7 +159,7 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                return await _dbcontext.VoucherCTs.Where(c => c.MaVoucher == id ).ToListAsync();
+                return await _dbcontext.VoucherCTs.Where(c => c.MaVoucher == id).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -208,7 +208,7 @@ namespace WebNewBook.API.Repository.Service
                         _dbcontext.VoucherCTs.Update(modal);
                         await _dbcontext.SaveChangesAsync();
                     }
-                   
+
                 }
 
 
@@ -226,19 +226,46 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
+                int i=0;
+                var lstCustomer = _dbcontext.KhachHangs.ToList();
                 if (lstvoucherCTs != null)
                 {
                     foreach (var x in lstvoucherCTs)
                     {
-                        var model = await _dbcontext.VoucherCTs.FindAsync(x.Id);
-                        model.TrangThai = 1;
-                        model.HinhThuc = x.HinhThuc;
-                        model.Diemdoi = x.Diemdoi;
-                        model.NgayBatDau = x.NgayBatDau;
-                        _dbcontext.VoucherCTs.Update(model);
-                        await _dbcontext.SaveChangesAsync();
+                        if (x.HinhThuc == 0 && lstCustomer[i]!=null)
+                        {
+                            var model = await _dbcontext.VoucherCTs.FindAsync(x.Id);
+                            model.TrangThai = 1;
+
+                            if (lstvoucherCTs.Count >= lstCustomer.Count)
+                            {
+                                model.MaKhachHang = lstCustomer[i].ID_KhachHang;
+                                i++;
+                            }
+
+                            model.HinhThuc = x.HinhThuc;
+                            model.Diemdoi = x.Diemdoi;
+                            model.NgayBatDau = x.NgayBatDau;
+                            _dbcontext.VoucherCTs.Update(model);
+                            await _dbcontext.SaveChangesAsync();
+                            if (i==lstCustomer.Count)
+                            {
+                                break;
+                            }
+                        }
+                        if (x.HinhThuc==1)
+                        {
+                            var model = await _dbcontext.VoucherCTs.FindAsync(x.Id);
+                            model.TrangThai = 1;
+                            model.HinhThuc = x.HinhThuc;
+                            model.Diemdoi = x.Diemdoi;
+                            model.NgayBatDau = x.NgayBatDau;
+                            _dbcontext.VoucherCTs.Update(model);
+                            await _dbcontext.SaveChangesAsync();
+                        }
+                       
                     }
-           
+
                 }
             }
             catch (Exception ex)
