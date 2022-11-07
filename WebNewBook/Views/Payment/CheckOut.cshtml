@@ -48,7 +48,7 @@ if (true)
 
 				<!-- row -->
 
-				 <form asp-action="Pay" asp-controller="Payment" method="post" enctype="multipart/form-data">
+		<form asp-action="Pay" asp-controller="Payment" method="post" enctype="multipart/form-data">
 					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 					<div class="row">
 
@@ -60,20 +60,20 @@ if (true)
 							</div>
 							
 							<div class="form-group">
-								<input asp-for="TenNguoiNhan" class="input" type="text" name="TenNguoiNhan" placeholder="Họ và tên">
-								<span asp-validation-for="TenNguoiNhan" class="text-danger"></span>
+								<input asp-for="TenNguoiNhan" class="input" type="text" required name="TenNguoiNhan" id="TenNguoiNhan" placeholder="Họ và tên">
+							<span id="TenNguoiNhanT" class="text-danger"></span>
 							</div>							
 							<div class="form-group">
-								<input asp-for="Email" class="input" type="email" name="email" placeholder="Email">
+							<input asp-for="Email" class="input" type="email" required name="email" placeholder="Email">
 								<span asp-validation-for="Email" class="text-danger"></span>
 							</div>
 							<div class="form-group">
 								<input asp-for="DiaChiGiaoHang" class="input" type="text" name="DiaChiGiaoHang" placeholder="Địa chỉ">
-									<span asp-validation-for="DiaChiGiaoHang" class="text-danger"></span>
+								<span asp-validation-for="DiaChiGiaoHang" class="text-danger"></span>
 							</div>
 						
 							<div class="form-group">
-								<input  asp-for="SDT" class="input" type="tel" name="SDT" placeholder="Điện thoại">
+							<input asp-for="SDT" class="input" type="tel" required name="SDT" placeholder="Điện thoại">
 								<span asp-validation-for="SDT" class="text-danger"></span>
 							</div>
 							<div class="form-group">
@@ -176,7 +176,8 @@ if (true)
 							</div>
 						</div>
 							<input  asp-for="TongTien" class="input"hidden value="@ViewBag.TongTien" name="TongTien">
-						<button type="submit"  class="primary-btn order-submit">Đặt hàng</button>
+					<button type="submit" onclick="myFunction()" class="primary-btn order-submit">Đặt hàng</button>
+
 					</div>
 
 
