@@ -24,6 +24,7 @@ namespace WebNewBook.Model
         public virtual KhachHang? KhachHang { get; set; }
         public virtual ICollection<HoaDonCT>? HoaDonCTs { get; set; }
         public virtual ICollection<PhieuTra>? PhieuTras { get; set; }
+        public virtual Fpoint? Fpoint { get; set; }
 
     }
 }
