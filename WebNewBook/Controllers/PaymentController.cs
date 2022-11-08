@@ -37,17 +37,6 @@ namespace WebNewBook.Controllers
             };
             return khachHangs;
         }
-        public async Task<List<SanPham>?> GetSanPham()
-        {
-            List<SanPham> sanPhams = new List<SanPham>();
-            HttpResponseMessage responseGet = await _httpClient.GetAsync("khachhang");
-            if (responseGet.IsSuccessStatusCode)
-            {
-                string jsonData = responseGet.Content.ReadAsStringAsync().Result;
-                sanPhams = JsonConvert.DeserializeObject<List<SanPham>>(jsonData);
-            };
-            return sanPhams;
-        }
 
         public List<CartItem> Giohangs
         {
@@ -62,7 +51,7 @@ namespace WebNewBook.Controllers
                 return data;
             }
         }
-        public IActionResult CheckOut(string messvnpay, string idHoaDon)
+        public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon)
         {
 
 
@@ -72,7 +61,7 @@ namespace WebNewBook.Controllers
             {
                 ViewBag.MessageVNPay = messvnpay;
                 HoaDon hoaDon = new HoaDon();
-                HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/GetHoaDon/{"HD" + idHoaDon}", null).Result;
+                HttpResponseMessage response = await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/GetHoaDon/{idHoaDon}", null);
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonData = response.Content.ReadAsStringAsync().Result;
@@ -133,7 +122,7 @@ namespace WebNewBook.Controllers
                 else
                 {
 
-                    //Thanh toán:
+                    //Thanh toán thất bại:
 
                     hoaDon.TrangThai = 3;
                 }
@@ -231,13 +220,13 @@ namespace WebNewBook.Controllers
 
         }
 
-        public IActionResult VNPayReturn([FromQuery] VNPayReturn request)
+        public async Task<IActionResult> VNPayReturn([FromQuery] VNPayReturn request)
         {
             var Infoid = request.vnp_OrderInfo;
             var getIdHoaDon = (from t in Infoid
                                where char.IsDigit(t)
                                select t).ToArray();
-            var idHoaDon = new string(getIdHoaDon);
+            var idHoaDon = "HD" + new string(getIdHoaDon);
 
             request.message = "Không xác định được trạng thái";
             if (vnp_TransactionStatus.ContainsKey(request.vnp_TransactionStatus))
@@ -254,7 +243,7 @@ namespace WebNewBook.Controllers
 
             if (!string.IsNullOrEmpty(idHoaDon))
             {
-                HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/UpdateTrangThai/{"HD" + idHoaDon}", null).Result;
+                HttpResponseMessage response = await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/UpdateTrangThai/{idHoaDon}", null);
 
             }
 
@@ -262,5 +251,47 @@ namespace WebNewBook.Controllers
             ViewBag.Message = request.message;
             return View();
         }
+        //public async Task<IActionResult> ApDungVouCher(string maVoucher)
+        //{
+        //    List<KhachHang>? ListKhachHangs = new List<KhachHang>();
+        //    ListKhachHangs = await GetKhachHang();
+        //    var KhachHang = ListKhachHangs.Where(c => c.Email == User.Identity.Name).FirstOrDefault();
+        //    if (KhachHang != null)
+        //    {
+        //        if (!string.IsNullOrEmpty(maVoucher))
+        //        {
+        //            VoucherCT voucherCT = new VoucherCT();
+        //            HttpResponseMessage responseVC = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VoucherCT/{maVoucher}");
+        //            if (responseVC.IsSuccessStatusCode)
+        //            {
+        //                string jsonData = responseVC.Content.ReadAsStringAsync().Result;
+        //                voucherCT = JsonConvert.DeserializeObject<VoucherCT>(jsonData);
+
+
+        //            }
+        //            if (voucherCT.MaKhachHang == KhachHang.ID_KhachHang)
+        //            {
+        //                Voucher voucher = new Voucher();
+        //                HttpResponseMessage responseVCCT = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VouCher/{voucherCT.MaVoucher}");
+        //                string jsonData = responseVCCT.Content.ReadAsStringAsync().Result;
+        //                voucher = JsonConvert.DeserializeObject<Voucher>(jsonData);
+
+
+
+
+
+        //            }
+
+        //        }
+        //        else
+        //        {
+        //            ViewBag.MessageVC = "Vui lòng nhập mã voucher";
+        //        }
+        //    }
+
+
+
+        //    return View("CheckOut");
+        //}
     }
 }

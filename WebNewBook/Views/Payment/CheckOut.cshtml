@@ -6,7 +6,14 @@
 	ViewBag.Title = "Checkout";
 
 
-	}
+}
+@section Scripts{
+	<script>
+		setTimeout(function(){
+			$('#msVnPay').fadeOut('slow');
+		},2000)
+	</script>
+}
 
 <!-- BREADCRUMB -->
 		<div id="breadcrumb" class="section">
@@ -34,8 +41,8 @@
 			<div class="container">
 		@if (ViewBag.MessageVNPay != null && ViewBag.MessageVNPay != "")
 				{
-					<div class="alert alert-danger" role="alert">
-				@ViewBag.MessageVNPay
+					<div id="msVnPay" class="alert alert-danger" role="alert">
+						@ViewBag.MessageVNPay
 					</div>
 				}
 
@@ -78,14 +85,17 @@
 										<span></span>
 										Bạn có mã ưu đãi? Ấn vào đây để nhập mã
 									</label>
+
+									<form asp-action="ApDungVouCher">
 									<div class="caption">
 										<p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới.</p>
-										<input class="input" type="text" name="voucher" placeholder="voucher">
+										<input class="input" type="text" name="maVoucher" placeholder="voucher">
 										<hr>
 										<div>
 											<button type="button" class="btn btn-primary">Áp dụng</button>
 										</div>
 									</div>
+									</form>
 									
 								</div>
 							</div>
