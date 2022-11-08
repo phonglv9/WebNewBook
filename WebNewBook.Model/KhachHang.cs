@@ -28,5 +28,6 @@ namespace WebNewBook.Model
         public int TrangThai { get; set; }
         public virtual ICollection<HoaDon>? HoaDons { get; set; }
         public virtual ICollection<VoucherCT>? VoucherCTs { get; set; }
+        public virtual ICollection<Fpoint>? Fpoints { get; set; }
     }
 }
