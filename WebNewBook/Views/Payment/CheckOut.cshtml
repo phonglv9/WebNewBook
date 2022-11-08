@@ -4,7 +4,12 @@
 	double ship = 18000;
 	ViewBag.TongTien = ViewBag.TongTien + ship;
 	ViewBag.Title = "Checkout";
-
+	KhachHang khachHang  = new KhachHang();
+	if (ViewBag.KhachHang != null)
+	{
+		
+		khachHang = ViewBag.KhachHang;
+	}
 
 }
 @section Scripts{
@@ -50,7 +55,7 @@
 
 				<!-- row -->
 
-		<form asp-action="Pay" asp-controller="Payment" method="post" enctype="multipart/form-data">
+				<form asp-action="Pay" asp-controller="Payment" method="post" enctype="multipart/form-data">
 					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 					<div class="row">
 
@@ -62,20 +67,20 @@
 							</div>
 							
 							<div class="form-group">
-								<input asp-for="TenNguoiNhan" class="input" type="text"  name="TenNguoiNhan" id="TenNguoiNhan" placeholder="Họ và tên">
+								<input asp-for="TenNguoiNhan" class="input" type="text" value="@khachHang.HoVaTen" name="TenNguoiNhan" id="TenNguoiNhan" placeholder="Họ và tên">
 							<span id="TenNguoiNhanT" class="text-danger"></span>
 							</div>							
 							<div class="form-group">
-							<input asp-for="Email" class="input" type="email"  name="email" placeholder="Email">
+							<input asp-for="Email" class="input" type="email" value="@khachHang.Email" name="email"  placeholder="Email">
 								<span asp-validation-for="Email" class="text-danger"></span>
 							</div>
 							<div class="form-group">
-								<input asp-for="DiaChiGiaoHang" class="input" type="text" name="DiaChiGiaoHang" placeholder="Địa chỉ">
+								<input asp-for="DiaChiGiaoHang" class="input" type="text"value="@khachHang.DiaChi" name="DiaChiGiaoHang" placeholder="Địa chỉ">
 								<span asp-validation-for="DiaChiGiaoHang" class="text-danger"></span>
 							</div>
 						
 							<div class="form-group">
-							<input asp-for="SDT" class="input" type="tel"  name="SDT" placeholder="Điện thoại">
+							<input asp-for="SDT" class="input" type="tel"  name="SDT"value="@khachHang.SDT" placeholder="Điện thoại">
 								<span asp-validation-for="SDT" class="text-danger"></span>
 							</div>
 							<div class="form-group">

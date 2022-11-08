@@ -26,16 +26,17 @@ namespace WebNewBook.Controllers
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7266/");
         }
-        public async Task<List<KhachHang>?> GetKhachHang()
+        public async Task<KhachHang> GetKhachHang()
         {
-            List<KhachHang> khachHangs = new List<KhachHang>();
-            HttpResponseMessage responseGet = await _httpClient.GetAsync("khachhang");
+            var email = User.Identity.Name;
+            KhachHang khachHang = new KhachHang();
+            HttpResponseMessage responseGet = await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Customer/{email}",null);
             if (responseGet.IsSuccessStatusCode)
             {
                 string jsonData = responseGet.Content.ReadAsStringAsync().Result;
-                khachHangs = JsonConvert.DeserializeObject<List<KhachHang>>(jsonData);
+                khachHang = JsonConvert.DeserializeObject<KhachHang>(jsonData);
             };
-            return khachHangs;
+            return khachHang;
         }
 
         public List<CartItem> Giohangs
@@ -54,6 +55,15 @@ namespace WebNewBook.Controllers
         public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon)
         {
 
+            //Khi khách hàng đã đăng nhập
+            KhachHang khachHang = new KhachHang();
+            khachHang = await GetKhachHang();         
+            if (khachHang != null)
+            {
+                ViewBag.KhachHang = khachHang;
+            }
+
+            ////
 
             ViewBag.Cart = Giohangs;
             ViewBag.TongTien = Giohangs.Sum(c => c.ThanhTien);
@@ -89,31 +99,19 @@ namespace WebNewBook.Controllers
 
                 var lstCart = Giohangs;
                 ViewBag.SuccessMessage = "";
-                List<KhachHang>? ListKhachHangs = new List<KhachHang>();
-                ListKhachHangs = await GetKhachHang();
-                var KhachHang = ListKhachHangs.Where(c => c.Email == User.Identity.Name).FirstOrDefault();
-                if (KhachHang == null)
-
-                {
-                    //Tạo mới khách hàng khi chưa login
-                    KhachHang = new KhachHang();
-                    KhachHang.ID_KhachHang = "KHX" + DateTime.Now.Ticks;
-                    KhachHang.HoVaTen = hoaDon.TenNguoiNhan;
-                    KhachHang.DiaChi = hoaDon.DiaChiGiaoHang;
-                    KhachHang.DiemTichLuy = 1;
-                    StringContent contentKH = new StringContent(JsonConvert.SerializeObject(KhachHang), Encoding.UTF8, "application/json");
-                    HttpResponseMessage responseKH = await _httpClient.PostAsync("api/Customer", contentKH);
-                    if (!responseKH.IsSuccessStatusCode)
-                    {
-                        ViewBag.SuccessMessage = "Đặt hàng thất bại vui lòng kiểm tra lại";
-                        return View();
-                    }
-
-                }
+                KhachHang khachHang = new KhachHang();
+                khachHang = await GetKhachHang();
+                
+ 
 
                 //Hóa đơn
                 hoaDon.ID_HoaDon = "HD" + DateTime.Now.Ticks;
-                hoaDon.MaKhachHang = KhachHang.ID_KhachHang;
+                if (khachHang == null)
+                {
+                    //Nếu khách hàng chưa đăng nhập 
+                    hoaDon.MaKhachHang = "KHNOLOGIN";
+                }
+                hoaDon.MaKhachHang = khachHang.ID_KhachHang;
                 hoaDon.NgayMua = DateTime.Now;
                 if (payment == "1")
                 {
@@ -245,23 +243,24 @@ namespace WebNewBook.Controllers
             {
                 HttpResponseMessage response = await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/UpdateTrangThai/{idHoaDon}", null);
 
+
             }
 
             Response.Cookies.Delete("Cart");
             ViewBag.Message = request.message;
             return View();
         }
-        //public async Task<IActionResult> ApDungVouCher(string maVoucher)
+        //public async Task<IActionResult> ApDungVouCher(HoaDon hoaDon)
         //{
-        //    List<KhachHang>? ListKhachHangs = new List<KhachHang>();
-        //    ListKhachHangs = await GetKhachHang();
-        //    var KhachHang = ListKhachHangs.Where(c => c.Email == User.Identity.Name).FirstOrDefault();
-        //    if (KhachHang != null)
+        //    KhachHang khachHang = new KhachHang();
+        //    khachHang = await GetKhachHang();
+          
+        //    if (khachHang != null)
         //    {
-        //        if (!string.IsNullOrEmpty(maVoucher))
+        //        if (!string.IsNullOrEmpty(hoaDon.MaGiamGia))
         //        {
         //            VoucherCT voucherCT = new VoucherCT();
-        //            HttpResponseMessage responseVC = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VoucherCT/{maVoucher}");
+        //            HttpResponseMessage responseVC = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VoucherCT/{hoaDon.MaGiamGia}");
         //            if (responseVC.IsSuccessStatusCode)
         //            {
         //                string jsonData = responseVC.Content.ReadAsStringAsync().Result;
@@ -269,7 +268,7 @@ namespace WebNewBook.Controllers
 
 
         //            }
-        //            if (voucherCT.MaKhachHang == KhachHang.ID_KhachHang)
+        //            if (voucherCT.MaKhachHang == khachHang.ID_KhachHang)
         //            {
         //                Voucher voucher = new Voucher();
         //                HttpResponseMessage responseVCCT = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VouCher/{voucherCT.MaVoucher}");

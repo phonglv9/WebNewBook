@@ -105,5 +105,17 @@ namespace WebNewBook.API.Repository.Service
                 throw ex;
             }
         }
+        public async Task<KhachHang?> GetKhachHangByEmail(string email)
+        {
+            try
+            {
+                return await _dbcontext.KhachHangs.FirstOrDefaultAsync(c => c.Email == email) ?? null;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
     }
 }

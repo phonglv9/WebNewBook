@@ -91,5 +91,15 @@ namespace WebNewBook.API.Controllers
                 return BadRequest(e.Message);
             }
         }
+
+        //phóng thêm để lấy khách hàng
+        [HttpPost("{email}")]
+        public async Task<KhachHang> GetCustomerByEmail(string email)
+        {
+            
+               var khachHang =  await _customerService.GetKhachHangByEmail(email);
+                return khachHang;
+            
+        }
     }
 }

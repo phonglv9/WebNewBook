@@ -6,6 +6,7 @@ namespace WebNewBook.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    
     public class PaymentController : ControllerBase
     {
         private readonly IHoaDonService _hoaDonService;

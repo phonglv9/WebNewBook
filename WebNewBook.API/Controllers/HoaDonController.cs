@@ -7,8 +7,10 @@ namespace WebNewBook.API.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
+     
     public class HoaDonController : ControllerBase
     {
+
         private readonly IHoaDonService _hoaDonService;
 
         public HoaDonController(IHoaDonService hoaDonService)
