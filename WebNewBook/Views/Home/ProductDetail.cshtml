@@ -34,7 +34,7 @@
 				<div class="col-md-5 col-md-push-2">
 					<div id="product-main-img">
 						<div class="product-preview">
-							<img src="./img/product01.png" alt="">
+							<img src="/img/product01.png" alt="">
 						</div>
 
 						<div class="product-preview">
@@ -167,29 +167,41 @@
 							<!-- tab2  -->
 							<div id="tab2" class="tab-pane fade in">
 								<div class="row">
-									<div class="col-md-12" style="
-									 justify-content;
-									 font-weight: bold;
-                                      font-size:20px;
-                                      text-align:center;">
-										
-									@if (ViewBag.test != null){
-										<!-- On rows -->
-										
-
-
-
-										<p>Tên sách :@ViewBag.test.sach.TenSach </p>
-										<p>Số lượng :  @ViewBag.test.sach.SoTrang</p>
-										<p>Tái bản : @ViewBag.test.sach.TaiBan</p>
-										<p>Số lượng :	@ViewBag.test.sach.SoLuong</p>
-									}
+									<div class="col-md-3">
+									</div>
+								<div class="col-md-6">
 									
 										
+									@if (ViewBag.test != null){
+									
+									<table class="table table-hover ">
+										<tbody>
 
+											<tr>
+												<td>Tên sách :</td>
+											<td class="col-2">@ViewBag.test.sach.TenSach</td>
+											</tr>
+											<tr>
+												<td>Số trang :</td>
+												<td> @ViewBag.test.sach.SoTrang</td>
+											</tr>
+											<tr>
+												<td>Tái bản :</td>
+												<td> @ViewBag.test.sach.TaiBan</td>
+											</tr>
+											<tr>
+												<td>Số lượng : :</td>
+												<td>@ViewBag.test.sach.SoLuong</td>
+											</tr>
+												
+										</tbody>
+									</table>
+								}
 
 									</div>
+								<div class="col-md-3">
 								</div>
+							</div>
 							</div>
 							<!-- /tab2  -->
 
@@ -204,4 +216,120 @@
 		</div>
 		<!-- /container -->
 	</div>
-		<!-- /SECTION -->
+<div class="section">
+	<!-- container -->
+	<div class="container">
+		<!-- row -->
+		<div class="row">
+
+			<!-- section title -->
+			<div class="col-md-12">
+				<div class="section-title">
+					<h3 class="title">SẢN PHẨM LIÊN QUAN</h3>
+					
+				</div>
+			</div>
+			<!-- /section title -->
+			<!-- Products tab & slick -->
+			<div class="col-md-12">
+				<div class="row">
+					<div class="products-tabs">
+						<!-- tab -->
+						<div id="tab1" class="tab-pane fade in active">
+							<div class="box-container">
+								<div class="products-slick" data-nav="#slick-nav-2">
+									<!-- product -->
+									<div class="product">
+										<div class="product-img">
+											<img src="~/img/product01.png" alt="">
+										</div>
+										<div class="product-body">
+											<p class="product-category">Category</p>
+											<h3 class="product-name"><a href="#">product name goes here</a></h3>
+											<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
+
+
+										</div>
+										<div class="add-to-cart">
+											<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+										</div>
+									</div>
+									<!-- product -->
+									<div class="product">
+										<div class="product-img">
+											<img src="~/img/product01.png" alt="">
+										</div>
+										<div class="product-body">
+											<p class="product-category">Category</p>
+											<h3 class="product-name"><a href="#">product name goes here</a></h3>
+											<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
+
+
+										</div>
+										<div class="add-to-cart">
+											<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+										</div>
+									</div>
+									<!-- product -->
+									<div class="product">
+										<div class="product-img">
+											<img src="~/img/product01.png" alt="">
+										</div>
+										<div class="product-body">
+											<p class="product-category">Category</p>
+											<h3 class="product-name"><a href="#">product name goes here</a></h3>
+											<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
+
+
+										</div>
+										<div class="add-to-cart">
+											<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+										</div>
+									</div>
+									<!-- product -->
+									<div class="product">
+										<div class="product-img">
+											<img src="~/img/product01.png" alt="">
+										</div>
+										<div class="product-body">
+											<p class="product-category">Category</p>
+											<h3 class="product-name"><a href="#">product name goes here</a></h3>
+											<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
+
+
+										</div>
+										<div class="add-to-cart">
+											<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+										</div>
+									</div>
+									<!-- product -->
+									<div class="product">
+										<div class="product-img">
+											<img src="~/img/product01.png" alt="">
+										</div>
+										<div class="product-body">
+											<p class="product-category">Category</p>
+											<h3 class="product-name"><a href="#">product name goes here</a></h3>
+											<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
+
+
+										</div>
+										<div class="add-to-cart">
+											<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+										</div>
+									</div>
+									<!-- /product -->
+								</div>
+							</div>
+							<div id="slick-nav-2" class="products-slick-nav"></div>
+						</div>
+						<!-- /tab -->
+					</div>
+				</div>
+			</div>
+			<!-- /Products tab & slick -->
+		</div>
+		<!-- /row -->
+	</div>
+	<!-- /container -->
+</div>

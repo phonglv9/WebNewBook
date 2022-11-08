@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 
@@ -14,6 +13,12 @@ namespace WebNewBook.API.Controllers
         public PaymentController(IHoaDonService hoaDonService)
         {
             this._hoaDonService = hoaDonService;
+        }
+        [HttpPost("GetHoaDon/{id}")]
+        public async Task<HoaDon> GetHoaDon(string id)
+        {
+            var hoaDon = await _hoaDonService.GetHoaDon(id);
+            return hoaDon;
         }
         [HttpPost("AddHoaDon")]
         public async Task<ActionResult> AddHoaDon(HoaDon hoaDon)

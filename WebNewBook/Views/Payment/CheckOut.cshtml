@@ -4,13 +4,15 @@
 	double ship = 18000;
 	ViewBag.TongTien = ViewBag.TongTien + ship;
 	ViewBag.Title = "Checkout";
-	Layout = "~/Views/Shared/_Layout.cshtml";
 
-if (true)
-	{
-		
-	}
-	
+
+}
+@section Scripts{
+	<script>
+		setTimeout(function(){
+			$('#msVnPay').fadeOut('slow');
+		},2000)
+	</script>
 }
 
 <!-- BREADCRUMB -->
@@ -37,9 +39,9 @@ if (true)
 		<div class="section">
 			<!-- container -->
 			<div class="container">
-				@if (ViewBag.MessageVNPay != null && ViewBag.MessageVNPay != "")
+		@if (ViewBag.MessageVNPay != null && ViewBag.MessageVNPay != "")
 				{
-					<div class="alert alert-danger" role="alert">
+					<div id="msVnPay" class="alert alert-danger" role="alert">
 						@ViewBag.MessageVNPay
 					</div>
 				}
@@ -60,8 +62,8 @@ if (true)
 							</div>
 							
 							<div class="form-group">
-								<input asp-for="TenNguoiNhan" class="input" type="text" name="TenNguoiNhan" id="TenNguoiNhan" placeholder="Họ và tên">
-							<span asp-validation-for="TenNguoiNhan" class="text-danger"></span>
+								<input asp-for="TenNguoiNhan" class="input" type="text"  name="TenNguoiNhan" id="TenNguoiNhan" placeholder="Họ và tên">
+							<span id="TenNguoiNhanT" class="text-danger"></span>
 							</div>							
 							<div class="form-group">
 							<input asp-for="Email" class="input" type="email"  name="email" placeholder="Email">
@@ -74,7 +76,7 @@ if (true)
 						
 							<div class="form-group">
 							<input asp-for="SDT" class="input" type="tel"  name="SDT" placeholder="Điện thoại">
-							<span asp-validation-for="SDT" class="text-danger"></span>
+								<span asp-validation-for="SDT" class="text-danger"></span>
 							</div>
 							<div class="form-group">
 								<div class="input-checkbox">
@@ -83,14 +85,17 @@ if (true)
 										<span></span>
 										Bạn có mã ưu đãi? Ấn vào đây để nhập mã
 									</label>
+
+									<form asp-action="ApDungVouCher">
 									<div class="caption">
 										<p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới.</p>
-										<input class="input" type="text" name="voucher" placeholder="voucher">
+										<input class="input" type="text" name="maVoucher" placeholder="voucher">
 										<hr>
 										<div>
 											<button type="button" class="btn btn-primary">Áp dụng</button>
 										</div>
 									</div>
+									</form>
 									
 								</div>
 							</div>
