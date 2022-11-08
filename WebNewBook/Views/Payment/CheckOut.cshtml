@@ -4,14 +4,9 @@
 	double ship = 18000;
 	ViewBag.TongTien = ViewBag.TongTien + ship;
 	ViewBag.Title = "Checkout";
-	Layout = "~/Views/Shared/_Layout.cshtml";
 
-if (true)
-	{
-		
+
 	}
-	
-}
 
 <!-- BREADCRUMB -->
 		<div id="breadcrumb" class="section">
@@ -37,10 +32,10 @@ if (true)
 		<div class="section">
 			<!-- container -->
 			<div class="container">
-				@if (ViewBag.MessageVNPay != null && ViewBag.MessageVNPay != "")
+		@if (ViewBag.MessageVNPay != null && ViewBag.MessageVNPay != "")
 				{
 					<div class="alert alert-danger" role="alert">
-						@ViewBag.MessageVNPay
+				@ViewBag.MessageVNPay
 					</div>
 				}
 
@@ -60,11 +55,11 @@ if (true)
 							</div>
 							
 							<div class="form-group">
-								<input asp-for="TenNguoiNhan" class="input" type="text" required name="TenNguoiNhan" id="TenNguoiNhan" placeholder="Họ và tên">
+								<input asp-for="TenNguoiNhan" class="input" type="text"  name="TenNguoiNhan" id="TenNguoiNhan" placeholder="Họ và tên">
 							<span id="TenNguoiNhanT" class="text-danger"></span>
 							</div>							
 							<div class="form-group">
-							<input asp-for="Email" class="input" type="email" required name="email" placeholder="Email">
+							<input asp-for="Email" class="input" type="email"  name="email" placeholder="Email">
 								<span asp-validation-for="Email" class="text-danger"></span>
 							</div>
 							<div class="form-group">
@@ -73,7 +68,7 @@ if (true)
 							</div>
 						
 							<div class="form-group">
-							<input asp-for="SDT" class="input" type="tel" required name="SDT" placeholder="Điện thoại">
+							<input asp-for="SDT" class="input" type="tel"  name="SDT" placeholder="Điện thoại">
 								<span asp-validation-for="SDT" class="text-danger"></span>
 							</div>
 							<div class="form-group">

@@ -10,6 +10,8 @@ namespace WebNewBook.Model
         public string ID_HoaDon { get; set; }
         [ForeignKey("KhachHang")]
         public string MaKhachHang { get; set; }
+        [Required]
+
         public string TenNguoiNhan { get; set; }
         public string DiaChiGiaoHang { get; set; }
         public string? GhiChu { get; set; }
@@ -20,7 +22,7 @@ namespace WebNewBook.Model
         public double TongTien { get; set; }
         [Range(0, 5)]
         public int TrangThai { get; set; }
-        
+
         public virtual KhachHang? KhachHang { get; set; }
         public virtual ICollection<HoaDonCT>? HoaDonCTs { get; set; }
         public virtual ICollection<PhieuTra>? PhieuTras { get; set; }

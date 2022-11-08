@@ -1,4 +1,5 @@
-﻿using WebNewBook.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using WebNewBook.API.Data;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 
@@ -64,5 +65,19 @@ namespace WebNewBook.API.Repository.Service
                 throw null;
             }
         }
+
+        public async Task<HoaDon?> GetHoaDon(string id)
+        {
+            try
+            {
+                return await dbcontext.HoaDons.FirstOrDefaultAsync(c => c.ID_HoaDon == id) ?? null;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+
     }
 }

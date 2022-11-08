@@ -62,17 +62,31 @@ namespace WebNewBook.Controllers
                 return data;
             }
         }
-        public IActionResult CheckOut()
+        public IActionResult CheckOut(string messvnpay, string idHoaDon)
         {
+
 
             ViewBag.Cart = Giohangs;
             ViewBag.TongTien = Giohangs.Sum(c => c.ThanhTien);
+            if (!string.IsNullOrEmpty(idHoaDon))
+            {
+                ViewBag.MessageVNPay = messvnpay;
+                HoaDon hoaDon = new HoaDon();
+                HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/GetHoaDon/{"HD" + idHoaDon}", null).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonData = response.Content.ReadAsStringAsync().Result;
+                    hoaDon = JsonConvert.DeserializeObject<HoaDon>(jsonData);
 
+                    return View("CheckOut", hoaDon);
+                };
+            }
             return View();
         }
         [HttpPost]
         public async Task<IActionResult> Pay(HoaDon hoaDon, string payment)
         {
+
             if (hoaDon != null && !string.IsNullOrEmpty(payment))
             {
 
@@ -219,6 +233,12 @@ namespace WebNewBook.Controllers
 
         public IActionResult VNPayReturn([FromQuery] VNPayReturn request)
         {
+            var Infoid = request.vnp_OrderInfo;
+            var getIdHoaDon = (from t in Infoid
+                               where char.IsDigit(t)
+                               select t).ToArray();
+            var idHoaDon = new string(getIdHoaDon);
+
             request.message = "Không xác định được trạng thái";
             if (vnp_TransactionStatus.ContainsKey(request.vnp_TransactionStatus))
             {
@@ -229,16 +249,9 @@ namespace WebNewBook.Controllers
             {
 
                 ViewBag.Message = request.message;
-                return View();
-
-
-
+                return RedirectToAction("CheckOut", "Payment", new { messvnpay = request.message, idHoaDon = idHoaDon });
             }
-            var Infoid = request.vnp_OrderInfo;
-            var getIdHoaDon = (from t in Infoid
-                               where char.IsDigit(t)
-                               select t).ToArray();
-            var idHoaDon = new string(getIdHoaDon);
+
             if (!string.IsNullOrEmpty(idHoaDon))
             {
                 HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/UpdateTrangThai/{"HD" + idHoaDon}", null).Result;
