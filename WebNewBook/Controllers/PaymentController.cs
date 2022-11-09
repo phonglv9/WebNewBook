@@ -102,16 +102,18 @@ namespace WebNewBook.Controllers
                 KhachHang khachHang = new KhachHang();
                 khachHang = await GetKhachHang();
 
-
-
                 //Hóa đơn
                 hoaDon.ID_HoaDon = "HD" + DateTime.Now.Ticks;
-                if (khachHang == null)
+                if (khachHang.ID_KhachHang != null)
                 {
-                    //Nếu khách hàng chưa đăng nhập 
+                    hoaDon.MaKhachHang = khachHang.ID_KhachHang;
+                }
+                else
+                {
+                    //Nếu khách hàng chưa đăng nhập
                     hoaDon.MaKhachHang = "KHNOLOGIN";
                 }
-                hoaDon.MaKhachHang = khachHang.ID_KhachHang;
+               
                 hoaDon.NgayMua = DateTime.Now;
                 if (payment == "1")
                 {
@@ -249,36 +251,34 @@ namespace WebNewBook.Controllers
             ViewBag.Message = request.message;
             return View();
         }
+        [HttpPost]
         public async Task<IActionResult> ApDungVouCher(string maVoucher)
         {
             KhachHang khachHang = new KhachHang();
             khachHang = await GetKhachHang();
 
-            if (khachHang != null)
+            if (!string.IsNullOrEmpty(khachHang.ID_KhachHang))
             {
                 if (!string.IsNullOrEmpty(maVoucher))
                 {
-                    VoucherCT voucherCT = new VoucherCT();
-                    HttpResponseMessage responseVC = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VoucherCT/{maVoucher}");
-                    if (responseVC.IsSuccessStatusCode)
-                    {
-                        string jsonData = responseVC.Content.ReadAsStringAsync().Result;
-                        voucherCT = JsonConvert.DeserializeObject<VoucherCT>(jsonData);
+                    //VoucherCT voucherCT = new VoucherCT();
+                    //HttpResponseMessage responseVC = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VoucherCT/{maVoucher}");
+                    //if (responseVC.IsSuccessStatusCode)
+                    //{
+                    //    string jsonData = responseVC.Content.ReadAsStringAsync().Result;
+                    //    voucherCT = JsonConvert.DeserializeObject<VoucherCT>(jsonData);
 
 
-                    }
-                    if (voucherCT.MaKhachHang == khachHang.ID_KhachHang)
-                    {
-                        Voucher voucher = new Voucher();
-                        HttpResponseMessage responseVCCT = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VouCher/{voucherCT.MaVoucher}");
-                        string jsonData = responseVCCT.Content.ReadAsStringAsync().Result;
-                        voucher = JsonConvert.DeserializeObject<Voucher>(jsonData);
+                    //}
+                    //if (voucherCT.MaKhachHang == khachHang.ID_KhachHang)
+                    //{
+                    //    Voucher voucher = new Voucher();
+                    //    HttpResponseMessage responseVCCT = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VouCher/{voucherCT.MaVoucher}");
+                    //    string jsonData = responseVCCT.Content.ReadAsStringAsync().Result;
+                    //    voucher = JsonConvert.DeserializeObject<Voucher>(jsonData);
 
 
-
-
-
-                    }
+                    //}
 
                 }
                 else
@@ -286,10 +286,11 @@ namespace WebNewBook.Controllers
                     ViewBag.MessageVC = "Vui lòng nhập mã voucher";
                 }
             }
+           
 
 
 
-            return View("CheckOut");
+            return RedirectToAction("CheckOut");
         }
     }
 }

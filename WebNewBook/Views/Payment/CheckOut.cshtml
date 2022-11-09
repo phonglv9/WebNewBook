@@ -44,7 +44,7 @@
 		<div class="section">
 			<!-- container -->
 			<div class="container">
-		@if (ViewBag.MessageVNPay != null && ViewBag.MessageVNPay != "")
+				@if (ViewBag.MessageVNPay != null && ViewBag.MessageVNPay != "")
 				{
 					<div id="msVnPay" class="alert alert-danger" role="alert">
 						@ViewBag.MessageVNPay
@@ -55,7 +55,7 @@
 
 				<!-- row -->
 
-				<form asp-action="Pay" asp-controller="Payment" method="post" enctype="multipart/form-data">
+				<form asp-action="Pay" method="post" enctype="multipart/form-data">
 					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
 					<div class="row">
 
@@ -85,22 +85,10 @@
 							</div>
 							<div class="form-group">
 								<div class="input-checkbox">
-									<input type="checkbox" id="create-account">
-									<label for="create-account">
-										<span></span>
-										Bạn có mã ưu đãi? Ấn vào đây để nhập mã
-									</label>
+									<button type="button"  class="btn btn-link" data-toggle="modal" data-target="#exampleModalVoucher"><i class="fa fa-gift" aria-hidden="true"></i>Bạn có mã ưu đãi? Ấn vào đây để nhập mã</button>
+									
 
-									<form asp-action="ApDungVouCher">
-									<div class="caption">
-										<p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới</p>
-										<input class="input" type="text" name="maVoucher" placeholder="voucher">
-										<hr>
-										<div>
-											<button type="button" class="btn btn-primary">Áp dụng voucher</button>
-										</div>
-									</div>
-									</form>
+									
 									
 								</div>
 							</div>
@@ -207,12 +195,44 @@
 					</div>
 				</div>
 				<!---modal->
-					</form>
+		
 					<!-- /Order Details -->
 				</div>
+			
 				<!-- /row -->
+				</form>
 			</div>
 			<!-- /container -->
+		
 		</div>
 		<!-- /SECTION -->
 
+			<form asp-action="ApDungVouCher" method="post" enctype="multipart/form-data">
+				<!-- Modal voucher-->
+				<div class="modal fade" id="exampleModalVoucher" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								
+									<div class="caption">
+										<p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới</p>
+										<input class="input" type="text" name="maVoucher" placeholder="voucher">
+										<hr>
+										<div>
+											<button type="submit" class="btn btn-primary">Áp dụng voucher</button>
+										</div>
+									</div>
+								
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				<!---modal->
+			</form>
