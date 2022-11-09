@@ -307,7 +307,6 @@ namespace WebNewBook.Controllers
 
 
 
-
             //TÁC GIẢ
             List<TacGia> tacGias = new List<TacGia>();
             HttpResponseMessage responseTG = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/Tacgia").Result;

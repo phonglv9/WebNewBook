@@ -21,7 +21,7 @@
 }
 
 <!-- BREADCRUMB -->
-		<div id="breadcrumb" class="section">
+		<div id="breadcrumb" >
 			<!-- container -->
 			<div class="container">
 				<!-- row -->
@@ -93,11 +93,11 @@
 
 									<form asp-action="ApDungVouCher">
 									<div class="caption">
-										<p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới.</p>
+										<p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới</p>
 										<input class="input" type="text" name="maVoucher" placeholder="voucher">
 										<hr>
 										<div>
-											<button type="button" class="btn btn-primary">Áp dụng</button>
+											<button type="button" class="btn btn-primary">Áp dụng voucher</button>
 										</div>
 									</div>
 									</form>
@@ -150,10 +150,7 @@
 									<strong class="order-total">
 										@if (ViewBag.TongTien != null)
 										{
-										@ViewBag.TongTien.ToString("#,##0").Replace(',', '.')
-
-
-								}đ
+										@ViewBag.TongTien.ToString("#,##0").Replace(',', '.')}đ
 									</strong>
 								</div>
 							</div>
@@ -185,14 +182,32 @@
 
 							</div>
 						</div>
-							<input  asp-for="TongTien" class="input"hidden value="@ViewBag.TongTien" name="TongTien">
-					<button type="submit" onclick="myFunction()" class="primary-btn order-submit">Đặt hàng</button>
+					<input  asp-for="TongTien" class="input"hidden value="@ViewBag.TongTien" name="TongTien">
+					<button type="button"  data-toggle="modal" data-target="#exampleModal" class="primary-btn order-submit">Đặt hàng</button>
 
 					</div>
-
-
-
-					  </form>
+				<!-- Modal thông báo đặt hàng-->
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								Bạn có chắc chắn muốn đặt hàng ?
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+								<button type="submit" class="btn btn-danger">Đặt hàng</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!---modal->
+					</form>
 					<!-- /Order Details -->
 				</div>
 				<!-- /row -->
@@ -200,3 +215,4 @@
 			<!-- /container -->
 		</div>
 		<!-- /SECTION -->
+

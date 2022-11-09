@@ -296,6 +296,7 @@ textarea.input {
     padding-top: 30px;
     padding-bottom: 30px;
     background-color: #f9f9f9;
+    min-height: calc(100vh - 160px - 358px);
 }
 
 .section-title {

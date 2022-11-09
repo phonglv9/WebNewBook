@@ -12,39 +12,13 @@
             </ul>
             <ul class="header-links pull-right">
                 <li class="dropdown no-arrow">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                       data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Login</span>
-                        </a>
-                        <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu dropdown-menu-right shadow"
-                         aria-labelledby="userDropdown">
-                            <a class="dropdown-item" href="#">
-                                Thông tin tài khoản
-                            </a>
-                            <div class="dropdown-divider"></div>
-                           <a asp-action="Logout" asp-controller="QLLogin" class="dropdown-item">Đăng xuất</a>
-                        </div>
-                    }
-                    else
+                    @if (User.Identity.Name != null)
                     {
                         <a class="dropdown-toggle" href="#" id="userDropdown" role="button"
                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Đăng nhập</span>
+                            <span class="mr-2 d-none d-lg-inline text-gray-600 small">Xin chào : @User.Identity.Name</span>
                         </a>
-                        <!-- Dropdown - User Information -->
-                        <div class="dropdown-menu">
-                            <div><a asp-action="Index" asp-controller="QLLogin" asp-route-nhanVien="false" style="color:#2B2D42" class="dropdown-item">Khách hàng</a></div>
-                            <div><a asp-action="Index" asp-controller="QLLogin" asp-route-nhanVien="true" style="color:#2B2D42" class="dropdown-item">Nhân viên</a></div>
-                            <div><a href="#" style="color:#2B2D42">Đăng kí</a></div>
-                            <div><a href="#" style="color:#2B2D42">Quên mật khẩu</a></div>
-                           
-                        </div>
                     }
-                </li>
-
 
             </ul>
         </div>
@@ -98,10 +72,21 @@
                                 <span>Tài khoản</span>
                             </a>
                             <div class="dropdown-menu">
-
-                                <div><a href="">Đăng nhập</a></div>
-                                <div><a href="">Đăng ký</a></div>
-                                <div><a href="">Quên mật khẩu</a></div>
+                                 @if (User.Identity.IsAuthenticated)
+                                {
+                                    <div>
+                                        <a href="#">
+                                        Thông tin tài khoản
+                                    </a>
+                                    </div>
+                                    <div>
+                                        <a asp-action="Logout" asp-controller="QLLogin" class="dropdown-item">Đăng xuất</a>
+                                    </div>
+                                }else{
+                                    <div><a asp-action="Index" asp-controller="QLLogin" asp-route-nhanVien="false" class="dropdown-item">Đăng nhập</a></div>
+                                    <div><a href="">Đăng ký</a></div>
+                                    <div><a href="">Quên mật khẩu</a></div>
+                                }
 
                             </div>
                         </div>

@@ -1,7 +1,7 @@
-﻿using WebNewBook.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using WebNewBook.API.Data;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebNewBook.API.Repository.Service
 {
@@ -18,11 +18,11 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                if (khachHang.ID_KhachHang ==null)
+                if (khachHang.ID_KhachHang == null)
                 {
                     khachHang.ID_KhachHang = Guid.NewGuid().ToString();
                 }
-                
+
                 khachHang.TrangThai = 1;
                 _dbcontext.Add(khachHang);
                 await _dbcontext.SaveChangesAsync();
