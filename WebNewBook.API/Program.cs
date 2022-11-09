@@ -28,7 +28,7 @@ builder.Services.AddControllers(options =>
     }));
 });
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
-builder.Services.AddControllers().AddJsonOptions(o => o.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
 builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-KBU829B;Integrated Security=True;Integrated Security=True;Database=WebNewBook"));
 
 //builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=LoginFinalASM;User ID=hung;Password=hung;"));
