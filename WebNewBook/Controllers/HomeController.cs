@@ -272,6 +272,15 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> ProductDetaill(string id)
         {
+            List<HomeVM> modelHomeDM = new List<HomeVM>();
+            HttpResponseMessage responseDM = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/HomeVM").Result;
+            if (responseDM.IsSuccessStatusCode)
+            {
+                string jsonData = responseDM.Content.ReadAsStringAsync().Result;
+                modelHomeDM = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
+
+
+            };
             //Model home
             SanPhamChiTiet modelHome = new SanPhamChiTiet();
             HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/home/ProductDetail/{id}").Result;
@@ -300,11 +309,27 @@ namespace WebNewBook.Controllers
                 {
                     List<TheLoai> lsttheLoai = new List<TheLoai>();
                     lsttheLoai = theLoais.Where(c => c.ID_TheLoai == a.ToString()).ToList();
+                    var TentheLoai = theLoais.Where(c => c.ID_TheLoai == a.ToString()).Select(v => v.TenTL).FirstOrDefault();
                     ViewBag.TheLoai = lsttheLoai;
+                    ViewBag.listTL = modelHomeDM.Where(a => a.theLoai.TenTL == TentheLoai).ToList();
                 }
             }
 
+            List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
+            HttpResponseMessage responseDMm = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
+            if (responseDMm.IsSuccessStatusCode)
+            {
+                string jsonData = responseDMm.Content.ReadAsStringAsync().Result;
+                danhMucSaches = JsonConvert.DeserializeObject<List<DanhMucSach>>(jsonData);
 
+                
+                   
+                
+                    ViewBag.DanhMuc = danhMucSaches.ToList();
+
+                
+                
+            };
 
 
             //TÁC GIẢ
