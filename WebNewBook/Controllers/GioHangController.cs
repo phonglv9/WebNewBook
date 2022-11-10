@@ -1,21 +1,15 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http; 
 using Newtonsoft.Json;
-using System.Data;
-using System.Reflection;
 using System.Text.Json;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.Models;
-using Microsoft.AspNetCore.Mvc.Filters;
-using System.Net.Http.Headers;
-using Microsoft.AspNetCore.Authorization;
 
 namespace WebNewBook.Controllers
 {
-    [Authorize(Roles = "User")]
+
     public class GioHangController : Controller
-	{
+    {
         Uri baseAdress = new Uri("https://localhost:7266/api");
         HttpClient _httpClient;
 
@@ -27,11 +21,7 @@ namespace WebNewBook.Controllers
             ListData();
 
         }
-        public override void OnActionExecuting(ActionExecutingContext context)
-        {
-            base.OnActionExecuting(context);
-            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
-        }
+
 
         public async Task<IActionResult> GetSanPham()
         {
@@ -172,7 +162,7 @@ namespace WebNewBook.Controllers
             }
             var opt = new JsonSerializerOptions() { WriteIndented = true };
             var json = System.Text.Json.JsonSerializer.Serialize(myCart, opt);
-            Response.Cookies.Append("Cart", json , new Microsoft.AspNetCore.Http.CookieOptions
+            Response.Cookies.Append("Cart", json, new Microsoft.AspNetCore.Http.CookieOptions
             {
                 Expires = DateTimeOffset.Now.AddDays(3)
             });
