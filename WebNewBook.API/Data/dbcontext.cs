@@ -21,6 +21,7 @@ namespace WebNewBook.API.Data
             //modelbuilder.Entity<NhaXuatBan>().HasIndex(c => c.TenXuatBan).IsUnique();
             //modelbuilder.Entity<Sach>().HasIndex(c => new { c.TenSach, c.TaiBan, c.MaNXB }).IsUnique();
         }
+        public DbSet<GioHang> GioHangs { get; set; }
         public DbSet<HoaDon> HoaDons { get; set; }
         public DbSet<HoaDonCT> HoaDonCTs { get; set; }
         public DbSet<KhachHang> KhachHangs { get; set; }
