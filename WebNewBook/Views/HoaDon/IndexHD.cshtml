@@ -1,0 +1,74 @@
+﻿@using WebNewBook.Model
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+<!-- SECTION -->
+
+  
+
+
+    <div class="container">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Hóa Đơn</h1>
+    <form asp-controller="HoaDon" asp-action="Index" method="get" class="form-inline md-form mr-auto mb-4">
+        <div class="timkiem" style="margin-left: 880px; margin-bottom: 10px;">
+            <button class="aa  btn aqua-gradient btn-rounded btn-sm my-0" style="background: #2c55a5;color: white;" type="submit">Search</button>
+            <input class="form-control mr-sm-2" name="timkiem" type="text" placeholder="Search" aria-label="Search">
+            
+        </div>
+       
+    </form>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+           
+        <div class="card-body">
+            <div class="table-responsive">
+               <form>
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+
+                        <thead>
+                            <tr>
+                                <th>Tên khách hàng</th>
+                                <th>Tổng tiền </th>
+                                <th>Tên sản phẩm</th>
+                                <th>Ngày mua</th>
+                                <th>số lượng</th>
+                                <th>Chi Tiết</th>
+                            </tr>
+                        </thead>
+                        @if (ViewBag.data != null)
+                        @foreach (var a in ViewBag.data)
+                        {
+                            <tbody>
+                                <tr>
+                                    <td>@a.KhachHang.HoVaTen</td>
+                                    <td>@a.hoaDon.TongTien</td>
+                                    <td>@a.sanPham.TenSanPham</td>
+                                    <td>@a.hoaDon.NgayMua</td>
+                                    <td>@a.hoaDonCT.SoLuong</td>
+                                    <td><a asp-action="ChiTiet" asp-route-id="@a.hoaDonCT.ID_HDCT">Chi Tiết</a> </td>
+
+                                </tr>
+
+
+                            </tbody>
+                        }
+
+                    </table>
+                   
+					
+
+                </form>
+            </div>
+        </div>
+           
+        </div>
+
+    </div>
+
+	
