@@ -1,8 +1,7 @@
 ﻿@using WebNewBook.Model
 @model HoaDon
 @{
-	double ship = 18000;
-	ViewBag.TongTien = ViewBag.TongTien + ship;
+	
 	ViewBag.Title = "Checkout";
 	KhachHang khachHang  = new KhachHang();
 	if (ViewBag.KhachHang != null)
@@ -17,6 +16,9 @@
 		setTimeout(function(){
 			$('#msVnPay').fadeOut('slow');
 		},2000)
+		setTimeout(function () {
+			$('#msVoucher').fadeOut('slow');
+		}, 5000)
 	</script>
 }
 
@@ -86,8 +88,15 @@
 							<div class="form-group">
 								<div class="input-checkbox">
 									<button type="button"  class="btn btn-link" data-toggle="modal" data-target="#exampleModalVoucher"><i class="fa fa-gift" aria-hidden="true"></i>Bạn có mã ưu đãi? Ấn vào đây để nhập mã</button>
-									
-
+								@if (ViewBag.MessageVC != null)
+								{
+									<label  class="text-bg-danger">  </label>
+									<div class="alert alert-danger alert-dismissible" role="alert" id="msVoucher">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<strong>@ViewBag.MessageVC</strong>
+									</div>
+								}
+								
 									
 									
 								</div>
@@ -127,16 +136,20 @@
 							
 							</div>
 							}
-							<div class="order-col">
-								<div>Phí vận chuyển </div>
-						<div><strong>@ship.ToString("#,##0").Replace(',', '.') đ </strong></div>
+							
+						@if (ViewBag.MenhGiaVC != 0)
+						{
+						<div class="order-col">
+							<div>Mã giảm giá </div>
+								<div><strong>@ViewBag.MenhGiaVC.ToString("#,##0").Replace(',', '.') đ </strong></div>
 							</div>
+						}
 							<div class="order-col">
 								<div><strong>Tổng tiền</strong></div>
 
 								<div>
 									<strong class="order-total">
-										@if (ViewBag.TongTien != null)
+										@if (ViewBag.TongTien != 0)
 										{
 										@ViewBag.TongTien.ToString("#,##0").Replace(',', '.')}đ
 									</strong>
@@ -220,14 +233,28 @@
 							</div>
 							<div class="modal-body">
 								
+									
+									@if (!string.IsNullOrEmpty(khachHang.ID_KhachHang))
+									{
 									<div class="caption">
-										<p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới</p>
-										<input class="input" type="text" name="maVoucher" placeholder="voucher">
-										<hr>
+									<p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới</p>
+									<input hidden value="@ViewBag.TongTien" name="tongTien">
+									<input class="input" type="text" name="maVoucher" placeholder="voucher">
+									<hr>
+									<div>
+										<button type="submit" class="btn btn-primary">Áp dụng voucher</button>
+									</div>
+									</div>
+									}else{
+									<div class="caption">
+										<p>Vui lòng đăng nhập để sử dụng mã giảm giá</p>
+										
+										
 										<div>
-											<button type="submit" class="btn btn-primary">Áp dụng voucher</button>
+										<a asp-controller="QLLogin" asp-action="Index" asp-controller="QLLogin" asp-route-nhanVien="false" class="btn btn-primary">Đăng nhập</a>
 										</div>
 									</div>
+									}
 								
 							</div>
 							
