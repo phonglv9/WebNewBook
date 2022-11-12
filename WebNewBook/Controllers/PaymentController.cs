@@ -52,8 +52,10 @@ namespace WebNewBook.Controllers
                 return data;
             }
         }
-        public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, double tongTien, double menhGiaVC, string messageVC)
+        public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, string messageVC)
         {
+          double tongTien = Convert.ToDouble( HttpContext.Session.GetString("amout"));
+            double menhGiaVC = Convert.ToDouble( HttpContext.Session.GetString("amoutVoucher"));
             ViewBag.Cart = Giohangs;
             ViewBag.MessageVC = messageVC;
             //Khi khách hàng đã đăng nhập
@@ -262,8 +264,9 @@ namespace WebNewBook.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> ApDungVouCher(string maVoucher, double tongTien)
+        public async Task<IActionResult> ApDungVouCher(string maVoucher)
         {
+            var tongTien = Giohangs.Sum(c => c.ThanhTien);
             KhachHang khachHang = new KhachHang();
             khachHang = await GetKhachHang();
             ViewBag.MessageVC = "";
@@ -287,7 +290,10 @@ namespace WebNewBook.Controllers
                             if (tongTien >= voucher.MenhGiaDieuKien)
                             {
                                 tongTien = tongTien - voucher.MenhGia;
-                                return RedirectToAction("CheckOut", new { tongTien = tongTien, menhGiaVC = voucher.MenhGia });
+
+                                HttpContext.Session.SetString("amoutVoucher", voucher.MenhGia.ToString());
+                                HttpContext.Session.SetString("amout", tongTien.ToString());
+                                return RedirectToAction("CheckOut");
                             }
 
 
