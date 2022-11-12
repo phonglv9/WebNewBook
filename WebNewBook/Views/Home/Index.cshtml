@@ -2,10 +2,10 @@
 	ViewBag.Title = "Home Page";
 	Layout = "~/Views/Shared/_Layout.cshtml";
 	int count = 3;
+	
 }
+
 @model IEnumerable<WebNewBook.API.ModelsAPI.HomeVM>
-
-
 
 	<!-- Carousel Fixed Height -->
 	<div class="section carousel-fixed-height">
@@ -383,13 +383,13 @@
 												
 													
 												</div>
-												<form asp-controller="GioHang"  asp-action="AddToCart" asp-route-id="@item.sanPhams.ID_SanPham">
-															<div class="add-to-cart">
-																<input name="SoLuong" type="hidden"  value="1"> 
+											
+														<div class="add-to-cart">
+																
 
-																<button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+																<button type="button"data-toggle="modal" data-target="#exampleModalCart" class="add-to-cart-btn" value="@item.sanPhams.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
 															</div>
-												</form>
+												
 											</div>
 											}
 											
@@ -582,13 +582,13 @@
 												
 													
 												</div>
-												<form asp-controller="GioHang"  asp-action="AddToCart" asp-route-id="@item.sanPhams.ID_SanPham ">
+												
 															<div class="add-to-cart">
-																<input name="SoLuong" type="hidden"  value="1"> 
+																
 
-																<button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+																<button type="button" class="add-to-cart-btn" data-toggle="modal" data-target="#exampleModalCart" value="@item.sanPhams.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
 															</div>
-												</form>
+												
 											</div>
 											
 											

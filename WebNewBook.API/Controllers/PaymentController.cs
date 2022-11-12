@@ -61,5 +61,34 @@ namespace WebNewBook.API.Controllers
                 throw new Exception(e.Message);
             }
         }
+        [HttpPost("UpdateSoLuongSP")]
+        public async Task<ActionResult> UpdateSoLuongSanPham(List<HoaDonCT> hoaDonCTs)
+        {
+            try
+            {
+                await _hoaDonService.UpdateSLSanPham(hoaDonCTs);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        [HttpPost("UpdateSLVNPay/{id}")]
+        public async Task<ActionResult> UpdateSLSanPhamVNPay(string id)
+        {
+            try
+            {
+                await _hoaDonService.UpdateSLSanPhamVNPay(id);
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                throw new Exception(e.Message);
+            }
+        }
+        
     }
 }

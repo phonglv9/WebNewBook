@@ -54,10 +54,13 @@ namespace WebNewBook.Controllers
         }
         public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, string messageVC)
         {
-          double tongTien = Convert.ToDouble( HttpContext.Session.GetString("amout"));
+            double tongTien = Convert.ToDouble( HttpContext.Session.GetString("amout"));
             double menhGiaVC = Convert.ToDouble( HttpContext.Session.GetString("amoutVoucher"));
             ViewBag.Cart = Giohangs;
             ViewBag.MessageVC = messageVC;
+            //Voucher
+            ViewBag.MenhGiaVC = menhGiaVC;
+            ViewBag.TongTien = tongTien;
             //Khi khách hàng đã đăng nhập
             KhachHang khachHang = new KhachHang();
             khachHang = await GetKhachHang();
@@ -66,16 +69,8 @@ namespace WebNewBook.Controllers
                 ViewBag.KhachHang = khachHang;
             }
 
-            //Voucher
-            ViewBag.MenhGiaVC = menhGiaVC;
-            if (tongTien != 0)
-            {
-                ViewBag.TongTien = tongTien;
-            }
-            else
-            {
-                ViewBag.TongTien = Giohangs.Sum(c => c.ThanhTien);
-            }
+       
+            
 
 
 
@@ -97,8 +92,14 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public async Task<IActionResult> Pay(HoaDon hoaDon, string payment)
         {
-
-            if (hoaDon != null && !string.IsNullOrEmpty(payment))
+         
+            double tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout"));
+            
+            var idVoucher = HttpContext.Session.GetString("idVoucher");
+            hoaDon.TongTien = tongTien;
+            hoaDon.MaGiamGia = idVoucher;
+          
+            if (hoaDon != null && !string.IsNullOrEmpty(payment) && hoaDon.TongTien != 0)
             {
 
                 //Trang thái đơn hàng :
@@ -168,7 +169,10 @@ namespace WebNewBook.Controllers
                 {
                     if (payment == "1")
                     {
-
+                        StringContent contentHDCT2 = new StringContent(JsonConvert.SerializeObject(listHoaDonCTs), Encoding.UTF8, "application/json");
+                        await _httpClient.PostAsync("api/Payment/UpdateSoLuongSP", contentHDCT2);
+                
+                        HttpContext.Session.Clear();
                         Response.Cookies.Delete("Cart");
                         ViewBag.SuccessMessage = "Đặt hàng thành công";
                         return View();
@@ -191,7 +195,7 @@ namespace WebNewBook.Controllers
                     //Hóa đơn VNpay
                     OrderInfo order = new OrderInfo();
                     order.OrderId = hoaDon.ID_HoaDon; // Giả lập mã giao dịch hệ thống merchant gửi sang VNPAY
-                    order.Amount = hoaDon.TongTien; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
+                    order.Amount = tongTien; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
                     order.Status = "0"; //0: Trạng thái thanh toán "chờ thanh toán" hoặc "Pending"                   
                     order.CreatedDate = hoaDon.NgayMua;
 
@@ -249,16 +253,18 @@ namespace WebNewBook.Controllers
             {
 
                 ViewBag.Message = request.message;
-                return RedirectToAction("CheckOut", "Payment", new { messvnpay = request.message, idHoaDon = idHoaDon });
+                return RedirectToAction("CheckOut", "Payment", new { messvnpay = request.message, idHoaDon = idHoaDon});
             }
 
             if (!string.IsNullOrEmpty(idHoaDon))
             {
-                HttpResponseMessage response = await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/UpdateTrangThai/{idHoaDon}", null);
+                await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/UpdateTrangThai/{idHoaDon}", null);
+                await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/UpdateSLVNPay/{idHoaDon}", null);
 
 
             }
-
+            
+            HttpContext.Session.Clear();
             Response.Cookies.Delete("Cart");
             ViewBag.Message = request.message;
             return View();
@@ -290,19 +296,26 @@ namespace WebNewBook.Controllers
                             if (tongTien >= voucher.MenhGiaDieuKien)
                             {
                                 tongTien = tongTien - voucher.MenhGia;
-
+                                HttpContext.Session.SetString("idVoucher", maVoucher.ToString());
                                 HttpContext.Session.SetString("amoutVoucher", voucher.MenhGia.ToString());
                                 HttpContext.Session.SetString("amout", tongTien.ToString());
                                 return RedirectToAction("CheckOut");
                             }
+                            else
+                            {
+                                var dkVoucher = voucher.MenhGiaDieuKien - tongTien;
+                                ViewBag.MessageVC = "Số tiền bạn mua không đủ điều kiện để dùng, bạn cần mua thêm " +dkVoucher+"đ";
+                            }
 
 
 
-                            ViewBag.MessageVC = "Mã giảm giá không hợp lệ";
+
 
 
 
                         }
+                        else { ViewBag.MessageVC = "Mã giảm giá không hợp lệ"; }
+                       
                     }
 
 
@@ -317,7 +330,7 @@ namespace WebNewBook.Controllers
             }
 
 
-            ViewBag.MessageVC = "Mã giảm giá không hợp lệ";
+          
 
 
 

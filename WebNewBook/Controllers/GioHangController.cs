@@ -89,10 +89,11 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Index()
         {
+            var tongTien = Giohangs.Sum(a => a.ThanhTien);
             ViewBag.giohang = Giohangs;
-            ViewBag.thanhtien = Giohangs.Sum(a => a.ThanhTien);
+            ViewBag.thanhtien = tongTien;
             ViewBag.soluong = Giohangs.Sum(a => a.Soluong);
-
+            HttpContext.Session.SetString("amout", tongTien.ToString());
             return View("Index");
         }
 
@@ -124,7 +125,7 @@ namespace WebNewBook.Controllers
                     Tensp = modelHome.TenSanPham,
                     DonGia = modelHome.GiaBan,
                     Soluong = SoLuong,
-
+                    
 
                 };
                 myCart.Add(item);
@@ -146,7 +147,7 @@ namespace WebNewBook.Controllers
             Response.Cookies.Append("Cart", json);
 
 
-            return RedirectToAction("Index");
+            return Json("Thêm vào giỏ hàng thành công");
         }
 
         public IActionResult SuaSoLuong(string id, int soluongmoi)

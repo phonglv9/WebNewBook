@@ -191,7 +191,27 @@
 			window.location.href = `https://localhost:7047/Home/Product?search=${search}&currentFilter=${currentFilter}&iddanhmuc=${iddanhmuc}&idtheloai=${idtheloai}&idtacgia=${idtacgia}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&priceMax=${priceMax}&priceMin=${priceMin}`
 
 		});
-    }
+	}
+	$(".add-to-cart-btn").click(function () {
+
+		var idsp = $(this).attr("value");
+		$.post("/GioHang/AddToCart",
+			{
+				id: idsp,
+				SoLuong: 1
+			},
+			function (data) {
+				$('#exampleModalLabel').text(data);
+				setTimeout(function () {
+					location.reload();
+				}, 1000)
+
+			});
+
+
+
+	});
+
 	
 
 	

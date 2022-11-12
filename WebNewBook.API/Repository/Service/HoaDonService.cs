@@ -30,17 +30,58 @@ namespace WebNewBook.API.Repository.Service
             if (hoaDonCTs != null)
             {
 
+               
+                dbcontext.HoaDonCTs.AddRange(hoaDonCTs);
+                dbcontext.SaveChanges();
+            }
+            else
+            {
+                throw null;
+            }
+
+
+
+        }
+        public async Task UpdateSLSanPham(List<HoaDonCT> hoaDonCTs)
+        {
+            if (hoaDonCTs != null)
+            {
+
                 foreach (var item in hoaDonCTs)
                 {
-                    var sanPham = dbcontext.SanPhams.Where(c => c.ID_SanPham == item.MaSanPham).FirstOrDefault();
+                    var sanPham =  await dbcontext.SanPhams.Where(c => c.ID_SanPham == item.MaSanPham).FirstOrDefaultAsync();
+                    if (sanPham != null)
+                        sanPham.SoLuong = sanPham.SoLuong - item.SoLuong;
+                     dbcontext.SanPhams.UpdateRange(sanPham);
+                    await  dbcontext.SaveChangesAsync();
+
+                }
+               
+            }
+            else
+            {
+                throw null;
+            }
+
+
+
+        }
+        public async Task UpdateSLSanPhamVNPay(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+
+              var hoaDonCTs = dbcontext.HoaDonCTs.Where(c => c.MaHoaDon == id).ToList();
+                foreach (var item in hoaDonCTs)
+                {
+                    var sanPham = await dbcontext.SanPhams.Where(c => c.ID_SanPham == item.MaSanPham).FirstOrDefaultAsync();
                     if (sanPham != null)
                         sanPham.SoLuong = sanPham.SoLuong - item.SoLuong;
                     dbcontext.SanPhams.UpdateRange(sanPham);
-                    dbcontext.SaveChanges();
+                    await dbcontext.SaveChangesAsync();
 
                 }
-                dbcontext.HoaDonCTs.AddRange(hoaDonCTs);
-                dbcontext.SaveChanges();
+
             }
             else
             {

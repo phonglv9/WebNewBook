@@ -26,8 +26,10 @@ namespace WebNewBook.Model
         public virtual KhachHang? KhachHang { get; set; }
         [ForeignKey("Voucher")]
         public string? MaVoucher { get; set; }
-        public virtual Voucher? Voucher { get; set; }
-    
+        public virtual Voucher? Voucher { get; set;}
+        //Đổi trạng thái = 2
+        //set ngày 
+        //check ngày
 
     }
 }
