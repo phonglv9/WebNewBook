@@ -201,7 +201,7 @@
 				SoLuong: 1
 			},
 			function (data) {
-				$('#exampleModalLabel').text(data);
+				$('.messCart').text(data);
 				setTimeout(function () {
 					location.reload();
 				}, 1000)
@@ -210,6 +210,9 @@
 
 
 
+	});
+	$('.dropdown').hover(function () {
+		$(this).toggleClass('open');
 	});
 
 	

@@ -34,62 +34,82 @@
                 Giỏ hàng của bạn rỗng!
             </h3>
         }else{
-        <div class="col-sm-12">
-            <div class="table-responsive">
-                <div class="text-black">Giỏ hàng của bạn</div>
+        <div class="col-sm-12 col-md-10 col-md-offset-1">
+            
+                <h3 class="text-black">Giỏ hàng của bạn</h3>
                 <br />
-                <table class="table table-bordered">
-                    <tr>
-                        <th>Hình</th>
-                        <th>Tên sản phẩm</th>
-                        <th>Số lượng</th>
-                        <th>Đơn giá</th>
-                        <th>Thành tiền</th>
-                       
-                        
-                    </tr>
+             
 
+                <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th class="text-center">Số lượng</th>
+                        <th class="text-center">Giá</th>
+                        <th class="text-center">Thành tiền</th>
+                        <th> </th>
+                    </tr>
+                </thead>
+                <tbody>
                     @foreach (var i in ViewBag.giohang)
                     {
-                        <tr>
-                            <td class="text-center"><img src="~/img/product01.png" width="70" height="60" /> </td>
-                            <td> @i.Tensp </td>
-                            <td>
-                                <form asp-action="SuaSoLuong" method="get">
-                                    <input type="hidden" name="id" value="@i.Maasp" />
-                                    <input type="number" min="1" step="1" name="soluongmoi" max="100" value="@i.Soluong" />
-                                    <button type="submit" class="btn btn-primary btn-sm"> Cập nhật </button>
+                    <tr>
+                        <td class="col-sm-8 col-md-6">
+                        <div class="media">
+                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="~/img/product03.png" style="width: 72px; height: 72px;"> </a>
+                            <div class="media-body">
+                                <h4 class="media-heading"><a href="#">@i.Tensp</a></h4>
+                                @*<h5 class="media-heading"> by <a href="#">Brand name</a></h5>
+                                <span>Status: </span><span class="text-success"><strong>In Stock</strong></span>*@
+                            </div>
+                        </div></td>
+                        <td class="col-sm-2 col-md-4  text-center">
+                        <form asp-action="SuaSoLuong" asp-route-id="@i.Maasp" method="get">
+                                    
+                                    <button class=""><i class="fa fa-minus" aria-hidden="true"></i></button>
+                                    <input type="number"min="1" step="1" name="soluongmoi" max="100" value="@i.Soluong" />
+                                    <button><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                @*    <button type="submit" class="btn btn-primary btn-sm"> Cập nhật </button>*@
 
                                 </form>
-                            </td>
-                            @*<td > 2000 VNĐ </td>*@
-                            <td> @i.DonGia </td>
-
-                            <td> <a asp-action="XoaKhoiGio" asp-route-id="@i.Maasp" class="btn btn-danger btn-sm">Xóa</a> </td>
-                        </tr>
-
-                    }
-                    <tr>
-                       
-                        <td class="text-right">Tổng số lượng:</td>
-                        <td>
-                            @if (ViewBag.soluong != null)
-                                @ViewBag.soluong
-                            </td>
-                        <td class="text-right">Tổng thành tiền:</td>
-                        <td>
-                            @if (ViewBag.thanhtien != null)
-                                @ViewBag.thanhtien  
                         </td>
-
+                        <td class="col-sm-1 col-md-1 text-center"><strong>@i.DonGia.ToString("#,##0").Replace(',', '.') đ</strong></td>
+                        <td class="col-sm-1 col-md-1 text-center"><strong>@i.ThanhTien.ToString("#,##0").Replace(',', '.') đ</strong></td>
+                        <td class="col-sm-1 col-md-1">
+                        <button type="button" class="btn btn-danger">
+                            <span class="fa fa-trash"></span> Xóa
+                        </button></td>
                     </tr>
-                </table>
+                  }
+                    
+                   
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td><h4>Tổng tiền</h4></td>
+                        <td class="text-right"><h4><strong>@if (ViewBag.thanhtien != null)
+                                @ViewBag.thanhtien.ToString("#,##0").Replace(',', '.') đ  </strong></h4></td>
+                    </tr>
+                    <tr>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>   </td>
+                        <td>
+                        <button type="button" class="btn btn-default">
+                            <span class="fa fa-arrow-left"></span> Tiếp tục mua hàng
+                        </button></td>
+                        <td>
+                        <a type="button"asp-controller="Payment" asp-action="Checkout" class="btn btn-success">
+                            Thanh Toán <span class="fa fa-arrow-right"></span>
+                        </a></td>
+                    </tr>
+                </tbody>
+            </table>
             </div>
-            <a class="btn btn-primary" asp-controller="Payment" asp-action="Checkout">
-                Mua hàng
-            </a>
+            
 
-        </div>
+       
         }
     </div>
 </div>

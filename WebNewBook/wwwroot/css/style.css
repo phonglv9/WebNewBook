@@ -1230,11 +1230,14 @@ textarea.input {
 .checkbox-filter .input-radio label small, .checkbox-filter .input-checkbox label small {
   color: #8D99AE;
 }
-
+.checkbox-filter {
+    overflow-y: scroll;
+    margin-bottom: 15px;
+    max-height: 500px;
+}
 /*-- Price Filter --*/
-
 #price-slider {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .noUi-target {
@@ -2254,4 +2257,11 @@ textarea.input {
 }
 .carousel-control{
     width:0;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
 }
