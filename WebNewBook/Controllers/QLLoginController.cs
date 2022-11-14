@@ -51,6 +51,7 @@ namespace WebNewBook.Controllers
                 error = await response.Content.ReadAsStringAsync();
                 error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
             }
+          
             return View();
         }
 

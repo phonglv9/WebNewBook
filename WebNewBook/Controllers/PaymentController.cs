@@ -67,6 +67,7 @@ namespace WebNewBook.Controllers
             if (khachHang != null)
             {
                 ViewBag.KhachHang = khachHang;
+                
             }
 
        
