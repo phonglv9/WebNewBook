@@ -112,7 +112,7 @@ namespace WebNewBook.Controllers
             }
             else if (myCart.Exists(c => c.Maasp == id))
             {
-                if (SoLuong > modelHome.SoLuong || item.Soluong > modelHome.SoLuong)
+                if (SoLuong >= modelHome.SoLuong || item.Soluong >= modelHome.SoLuong)
                 {
                     
                     return Json("Số lượng không có sẵn");

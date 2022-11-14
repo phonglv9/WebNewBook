@@ -56,19 +56,24 @@ namespace WebNewBook.Controllers
         {
             double tongTien = Convert.ToDouble( HttpContext.Session.GetString("amout"));
             double menhGiaVC = Convert.ToDouble( HttpContext.Session.GetString("amoutVoucher"));
+
+            var khachHang = await GetKhachHang();
+            //Khi khách hàng đã đăng nhập
+            if (khachHang != null)
+            {
+                ViewBag.KhachHang = khachHang;
+
+            }
+
+
             ViewBag.Cart = Giohangs;
             ViewBag.MessageVC = messageVC;
             //Voucher
             ViewBag.MenhGiaVC = menhGiaVC;
             ViewBag.TongTien = tongTien;
-            //Khi khách hàng đã đăng nhập
-            KhachHang khachHang = new KhachHang();
-            khachHang = await GetKhachHang();
-            if (khachHang != null)
-            {
-                ViewBag.KhachHang = khachHang;
-                
-            }
+            
+          
+             
 
        
             
@@ -172,7 +177,12 @@ namespace WebNewBook.Controllers
                     {
                         StringContent contentHDCT2 = new StringContent(JsonConvert.SerializeObject(listHoaDonCTs), Encoding.UTF8, "application/json");
                         await _httpClient.PostAsync("api/Payment/UpdateSoLuongSP", contentHDCT2);
-                
+                        if (!string.IsNullOrEmpty(hoaDon.MaGiamGia))
+                        {
+                            await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{hoaDon.MaGiamGia}", null);
+                      
+                        }
+                      
                         HttpContext.Session.Clear();
                         Response.Cookies.Delete("Cart");
                         ViewBag.SuccessMessage = "Đặt hàng thành công";
@@ -274,6 +284,7 @@ namespace WebNewBook.Controllers
         public async Task<IActionResult> ApDungVouCher(string maVoucher)
         {
             var tongTien = Giohangs.Sum(c => c.ThanhTien);
+            var ngayHienTai = DateTime.Now;
             KhachHang khachHang = new KhachHang();
             khachHang = await GetKhachHang();
             ViewBag.MessageVC = "";
@@ -294,15 +305,25 @@ namespace WebNewBook.Controllers
                             HttpResponseMessage responseVoucher = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VouCher/{voucherCT.MaVoucher}");
                             string jsonData2 = responseVoucher.Content.ReadAsStringAsync().Result;
                             voucher = JsonConvert.DeserializeObject<Voucher>(jsonData2);
-                            if (tongTien >= voucher.MenhGiaDieuKien)
+                            if (tongTien >= voucher.MenhGiaDieuKien && ngayHienTai >= voucher.StartDate && ngayHienTai <= voucher.EndDate)
                             {
                                 tongTien = tongTien - voucher.MenhGia;
                                 HttpContext.Session.SetString("idVoucher", maVoucher.ToString());
                                 HttpContext.Session.SetString("amoutVoucher", voucher.MenhGia.ToString());
                                 HttpContext.Session.SetString("amout", tongTien.ToString());
                                 return RedirectToAction("CheckOut");
+                            }else if (voucher.TrangThai == 2)
+                            {
+                                ViewBag.MessageVC = "Voucher đã hết hiệu lực";
+                            }else if (ngayHienTai < voucher.StartDate)
+                            {
+                                ViewBag.MessageVC = "Voucher chưa phát hàng, bạn có thể sử dụng vào lúc"+voucher.StartDate;
                             }
-                            else
+                            else if (ngayHienTai > voucher.EndDate )
+                            {
+                                ViewBag.MessageVC = "Voucher đã hết thời hạn sử dụng" ;
+                            }
+                            else if(tongTien < voucher.MenhGiaDieuKien)
                             {
                                 var dkVoucher = voucher.MenhGiaDieuKien - tongTien;
                                 ViewBag.MessageVC = "Số tiền bạn mua không đủ điều kiện để dùng, bạn cần mua thêm " +dkVoucher+"đ";

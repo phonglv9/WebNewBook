@@ -13,5 +13,7 @@ namespace WebNewBook.API.Repository.IService
         Task AddImportExcerAsync(IFormFile file, string Phathanh);
         Task PhathanhVouCherAsync(List<VoucherCT> lstvoucherCTs);
         Task HuyVouCherAsync(List<string> id);
+        Task UpdateVoucherByPayment(string idVoucherCT);
+        Task<List<VoucherCT>> ListVoucherCTByPayment(string id);
     }
 }

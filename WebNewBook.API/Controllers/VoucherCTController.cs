@@ -156,5 +156,30 @@ namespace WebNewBook.API.Controllers
                 
             }
         }
+      
+        [HttpPut("UpdateVoucherByPayment/{idVoucherCT}")]
+        public async Task<ActionResult> UpdateVoucherByPayment(string idVoucherCT )
+        {
+            try
+            {
+                await _voucherCTServices.UpdateVoucherByPayment(idVoucherCT);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+
+            }
+        }
+
+        [HttpPost("GetVoucherByIdKhachHang/{id}")]
+        public async Task<List<VoucherCT>> ListVoucherCTByPayment(string id)
+        {
+            
+             var lstVCCT =await _voucherCTServices.ListVoucherCTByPayment(id);
+                return lstVCCT;
+            
+            
+        }
     }
 }
