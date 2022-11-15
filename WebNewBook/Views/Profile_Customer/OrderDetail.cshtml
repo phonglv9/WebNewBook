@@ -1,0 +1,151 @@
+﻿
+    <link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
+
+    <div style="background-color: #f1f1f1;">
+        <div class="row  p-1">
+            <div class="col-3 mx-2">
+                <div class="list-group">
+                    <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
+                     <a asp-action="account" class="list-group-item list-group-item-action ">
+                        Bảng điều khiển tài khoản
+                    </a>
+                    <a asp-action="profile" class="list-group-item list-group-item-action ">Thông tin tài khoản</a>
+                    <a asp-action="order" class="list-group-item list-group-item-action active">Đơn hàng của tôi</a>
+                    <a asp-action="VoucherWallet" class="list-group-item list-group-item-action">Ví Voucher</a>
+                    <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
+                </div>
+            </div>
+            <div class="col-8  mx-4 ">
+                <div class="bg-white mb-2 p-3 ">
+                    <div style="font-size: 13px;">
+                        <h6>Chi tiết đơn hàng</h6>
+                        <p><small class="rounded-pill p-1 bg-primary text-white ">Đơn hàng đang sử lý</small></p>
+                        <p>Mã đơn hàng : <span class="fw-bold">10202002</span></p>
+                        <p>Ngày mua : <span class="fw-bold">10202002</span></p>
+                        <p>Tổng tiền : <span class="fw-bold">10202002</span></p>
+                        <p>Ghi chú : <span>(Không có) </span></p>
+
+                    </div>
+
+                </div>
+                <div class="bg-white mb-1  p-3">
+                    <div style="font-size: 15px;">
+                        <h6>Lịch sử liên lạc</h6>
+                        <hr class="opacity-25">
+                        <div>
+                            <p>Đơn hàng 31867283_103033726 của Quý khách đã được bàn giao cho bên vận chuyển. Dự kiến
+                                ngày 17-11-2022 đơn hàng sẽ được giao đến. Quý khách vui lòng nghe máy khi có nhân viên
+                                liên hệ giao hàng.</p>
+                            <p class="opacity-50">2022-11-10 16:03:32</p>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="bg-white mb-1  p-3">
+                    <div class="row  " style="font-size: 13px;">
+                        <div class="col-4">
+                            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                                <p class="card-header fw-bold">THÔNG TIN NGƯỜI NHẬN</p>
+                                <div class="card-body">
+                                    <p>Name</p>
+                                    <p>Address</p>
+                                    <p>Tel</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card text-bg-light mb-3" style="max-width: 120rem;">
+                                <p class="card-header fw-bold">PHƯƠNG THỨC VẬN CHUYỂN</p>
+                                <div class="card-body">
+                                    <p>Name</p>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
+                                <p class="card-header fw-bold">PHƯƠNG THỨC VẬN CHUYỂN</p>
+                                <div class="card-body">
+                                    <p>Name</p>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                </div>
+                <div class="bg-white mb-1  p-3">
+                    <table class="table table-borderless">
+                        <thead>
+                          <tr>
+                            <th scope="col">Hình ảnh</th>
+                            <th colspan="2">Tên sản phẩm</th>
+                            <th scope="col">Sku</th>
+                            <th scope="col">Giá bán</th>
+                            <th scope="col">SL</th>
+                            <th scope="col">Thành tiền</th>
+
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <th scope="row">1</th>
+                            <td colspan="2"></td>
+                            <td>Otto</td>
+                            <td>mdo</td>
+                            <td>mdo</td>
+                            <td>mdo</td>
+                          </tr>
+
+                        </tbody>
+                        <tfoot>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
+                            <td>Thành tiền:</td>
+                            <th>10000 <span>đ</span></th>
+                        </tfoot>
+                        <tfoot>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
+                            <td>Phí vận chuyển:</td>
+                            <th>10000 <span>đ</span></th>
+                        </tfoot>
+                        <tfoot>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
+                            <td>Chiết khấu:</td>
+                            <th>10000 <span>đ</span></th>
+                        </tfoot>
+                        <tfoot>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
+                            <td>Tổng số tiền:</td>
+                            <th>10000 <span>đ</span></th>
+                        </tfoot>
+                      </table>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+    <script src="/bootstrap-5.2.1/dist/js/bootstrap.min.js"></script>
+    <script src="/fontawesome-free-6.2.0-web/js/fontawesome.min.js"></script>
+    <script src="/fontawesome-free-6.2.0-web/js/all.min.js"></script>
+
