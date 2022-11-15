@@ -39,10 +39,9 @@ namespace WebNewBook.Controllers
             return khachHang;
         }
 
-        public List<CartItem> Giohangs
+        public List<CartItem> Giohangs()
         {
-            get
-            {
+           
                 List<CartItem> data = new List<CartItem>();
                 var jsonData = Request.Cookies["Cart"];
                 if (jsonData != null)
@@ -50,13 +49,14 @@ namespace WebNewBook.Controllers
                     data = JsonConvert.DeserializeObject<List<CartItem>>(jsonData);
                 }
                 return data;
-            }
+            
         }
         public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, string messageVC)
         {
             double tongTien = Convert.ToDouble( HttpContext.Session.GetString("amout"));
             double menhGiaVC = Convert.ToDouble( HttpContext.Session.GetString("amoutVoucher"));
-
+            double menhGiaDK = Convert.ToDouble(HttpContext.Session.GetString("menhgiadk"));
+            ViewBag.MessageVC = messageVC;
             var khachHang = await GetKhachHang();
             //Khi khách hàng đã đăng nhập
             if (khachHang != null)
@@ -64,22 +64,27 @@ namespace WebNewBook.Controllers
                 ViewBag.KhachHang = khachHang;
 
             }
+            ViewBag.Cart = Giohangs();
 
 
-            ViewBag.Cart = Giohangs;
-            ViewBag.MessageVC = messageVC;
             //Voucher
-            ViewBag.MenhGiaVC = menhGiaVC;
-            ViewBag.TongTien = tongTien;
-            
-          
-             
+            if (menhGiaVC != 0 && menhGiaDK != 0  )
+            {                  
 
-       
-            
+                if (tongTien >= menhGiaDK)
+                {
+                   tongTien = tongTien - menhGiaVC;
+                   ViewBag.MenhGiaVC = menhGiaVC;
+                }
+                //else
+                //{
+                //    tongTien = tongTien + menhGiaVC;
+                //}
 
 
-
+            }
+            HttpContext.Session.SetString("amout", tongTien.ToString());
+            ViewBag.TongTien = tongTien;          
             if (!string.IsNullOrEmpty(idHoaDon))
             {
                 ViewBag.MessageVNPay = messvnpay;
@@ -99,8 +104,7 @@ namespace WebNewBook.Controllers
         public async Task<IActionResult> Pay(HoaDon hoaDon, string payment)
         {
          
-            double tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout"));
-            
+            double tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout"));                             
             var idVoucher = HttpContext.Session.GetString("idVoucher");
             hoaDon.TongTien = tongTien;
             hoaDon.MaGiamGia = idVoucher;
@@ -116,7 +120,7 @@ namespace WebNewBook.Controllers
                 //4.Trả hàng
                 //5.Thành công         
 
-                var lstCart = Giohangs;
+                var lstCart = Giohangs();
                 ViewBag.SuccessMessage = "";
                 KhachHang khachHang = new KhachHang();
                 khachHang = await GetKhachHang();
@@ -283,7 +287,7 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public async Task<IActionResult> ApDungVouCher(string maVoucher)
         {
-            var tongTien = Giohangs.Sum(c => c.ThanhTien);
+            var tongTien = Giohangs().Sum(c => c.ThanhTien);
             var ngayHienTai = DateTime.Now;
             KhachHang khachHang = new KhachHang();
             khachHang = await GetKhachHang();
@@ -307,10 +311,11 @@ namespace WebNewBook.Controllers
                             voucher = JsonConvert.DeserializeObject<Voucher>(jsonData2);
                             if (tongTien >= voucher.MenhGiaDieuKien && ngayHienTai >= voucher.StartDate && ngayHienTai <= voucher.EndDate)
                             {
-                                tongTien = tongTien - voucher.MenhGia;
+                                //tongTien = tongTien - voucher.MenhGia;
                                 HttpContext.Session.SetString("idVoucher", maVoucher.ToString());
                                 HttpContext.Session.SetString("amoutVoucher", voucher.MenhGia.ToString());
-                                HttpContext.Session.SetString("amout", tongTien.ToString());
+                                HttpContext.Session.SetString("menhgiadk", voucher.MenhGiaDieuKien.ToString());
+                                //HttpContext.Session.SetString("amout", tongTien.ToString());
                                 return RedirectToAction("CheckOut");
                             }else if (voucher.TrangThai == 2)
                             {
