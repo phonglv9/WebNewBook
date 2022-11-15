@@ -60,7 +60,7 @@ namespace WebNewBook.Controllers
             ViewBag.MessageVC = messageVC;
             var khachHang = await GetKhachHang();
             //Khi khách hàng đã đăng nhập
-            if (khachHang != null)
+            if (!string.IsNullOrEmpty(khachHang.ID_KhachHang))
             {
                 ViewBag.KhachHang = khachHang;
                 List<Voucher> lstVouchers = new List<Voucher>();
@@ -86,7 +86,7 @@ namespace WebNewBook.Controllers
                             {
 
                                 VoucherPaymentVM VoucherPayment = new VoucherPaymentVM();
-                                VoucherPayment.ID_Voucher = VoucherCTs.MaVoucher;
+                                VoucherPayment.ID_Voucher = VoucherCTs.Id;
                                 VoucherPayment.MenhGia = Vouchers.MenhGia;
                                 VoucherPayment.MenhGiaDieuKien = Vouchers.MenhGiaDieuKien;
                                 VoucherPayment.NgayBatDau = VoucherCTs.NgayBatDau;
@@ -334,7 +334,7 @@ namespace WebNewBook.Controllers
             ViewBag.Message = request.message;
             return View();
         }
-        [HttpPost]
+        //[HttpPost]
         public async Task<IActionResult> ApDungVouCher(string maVoucher)
         {
             var tongTien = Giohangs().Sum(c => c.ThanhTien);

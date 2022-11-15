@@ -248,8 +248,12 @@
 									  <a  class="list-group-item list-group-item-action active">
 										Danh sách voucher của bạn
 									  </a>
-									  <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-									
+									  @foreach( var item in ViewBag.ListVoucher){
+									  <a asp-action="ApDungVoucher" asp-route-maVoucher="@item.ID_Voucher" class="list-group-item list-group-item-action">@item.MenhGia</a>
+
+										}
+
+											
 									</div>
 
 
