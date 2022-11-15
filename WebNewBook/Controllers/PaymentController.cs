@@ -4,6 +4,7 @@ using System.Text;
 using WebNewBook.Common;
 using WebNewBook.Model;
 using WebNewBook.Models;
+using WebNewBook.ViewModel;
 
 namespace WebNewBook.Controllers
 {
@@ -62,6 +63,58 @@ namespace WebNewBook.Controllers
             if (khachHang != null)
             {
                 ViewBag.KhachHang = khachHang;
+                List<Voucher> lstVouchers = new List<Voucher>();
+                List<VoucherCT> lstVoucherCTs = new List<VoucherCT>();
+                List<VoucherPaymentVM> voucherPaymentVMs = new List<VoucherPaymentVM>();
+                HttpResponseMessage responseVoucherCT = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VoucherCT/VoucherKH/{khachHang.ID_KhachHang}");
+                if (responseVoucherCT.IsSuccessStatusCode)
+                {
+
+                    string jsonData = responseVoucherCT.Content.ReadAsStringAsync().Result;
+                    lstVoucherCTs = JsonConvert.DeserializeObject<List<VoucherCT>>(jsonData);
+                    HttpResponseMessage responseVoucher = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VouCher");
+                    if (responseVoucherCT.IsSuccessStatusCode)
+                    {
+                        string jsonData2 = responseVoucher.Content.ReadAsStringAsync().Result;
+                        lstVouchers = JsonConvert.DeserializeObject<List<Voucher>>(jsonData2);
+                        
+                    }
+                   
+                        foreach (var Vouchers in lstVouchers)
+                        {
+                            foreach (var VoucherCTs in lstVoucherCTs.Where(c => c.MaVoucher == Vouchers.Id))
+                            {
+
+                                VoucherPaymentVM VoucherPayment = new VoucherPaymentVM();
+                                VoucherPayment.ID_Voucher = VoucherCTs.MaVoucher;
+                                VoucherPayment.MenhGia = Vouchers.MenhGia;
+                                VoucherPayment.MenhGiaDieuKien = Vouchers.MenhGiaDieuKien;
+                                VoucherPayment.NgayBatDau = VoucherCTs.NgayBatDau;
+                                VoucherPayment.NgayHetHan = VoucherCTs.NgayHetHan;                               
+                                voucherPaymentVMs.Add(VoucherPayment);
+
+                                
+
+
+                         }
+                       
+                    }
+
+
+                    ViewBag.ListVoucher = voucherPaymentVMs;
+
+
+
+
+
+
+
+
+
+
+
+                }
+
 
             }
             ViewBag.Cart = Giohangs();
@@ -76,10 +129,7 @@ namespace WebNewBook.Controllers
                    tongTien = tongTien - menhGiaVC;
                    ViewBag.MenhGiaVC = menhGiaVC;
                 }
-                //else
-                //{
-                //    tongTien = tongTien + menhGiaVC;
-                //}
+            
 
 
             }
@@ -317,7 +367,7 @@ namespace WebNewBook.Controllers
                                 HttpContext.Session.SetString("menhgiadk", voucher.MenhGiaDieuKien.ToString());
                                 //HttpContext.Session.SetString("amout", tongTien.ToString());
                                 return RedirectToAction("CheckOut");
-                            }else if (voucher.TrangThai == 2)
+                            }else if (voucher.TrangThai == 2 || voucherCT.TrangThai == 2)
                             {
                                 ViewBag.MessageVC = "Voucher đã hết hiệu lực";
                             }else if (ngayHienTai < voucher.StartDate)

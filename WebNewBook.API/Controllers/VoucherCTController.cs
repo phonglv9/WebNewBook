@@ -124,8 +124,7 @@ namespace WebNewBook.API.Controllers
             var voucher = await _voucherCTServices.GetVoucherOfCustomer(maKhachHang);
             return voucher;
         }
-
-
+        
 
         [HttpPut("HuyVoucher")]
         public async Task<ActionResult> HuyVoucherAsync(List<string> id)
