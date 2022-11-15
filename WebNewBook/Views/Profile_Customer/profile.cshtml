@@ -1,0 +1,121 @@
+﻿@{
+    var modelCustome = ViewBag.KhachHang;
+}
+@using WebNewBook.Model
+@model KhachHang
+    <link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
+    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
+
+    <div style="background-color: #f1f1f1;">
+        <div class="row  p-1 ">
+            <div class="col-3 mx-2">
+                <div class="list-group">
+                    <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
+                <a asp-action="account" class="list-group-item list-group-item-action ">
+                    Bảng điều khiển tài khoản
+                </a>
+                <a asp-action="profile" class="list-group-item list-group-item-action active">Thông tin tài khoản</a>
+                <a asp-action="order" class="list-group-item list-group-item-action">Đơn hàng của tôi</a>
+                <a asp-action="VoucherWallet" class="list-group-item list-group-item-action">Ví Voucher</a>
+                <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
+                </div>
+            </div>
+            <div class="col-8 bg-white fs-6 my-3 ">
+                <h4>Thông tin tài khoản</h4>
+                <br>
+                <div class="row mb-3">
+                    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Họ và tên</label>
+                    <div class="col-sm-10">
+                    <input asp-for="HoVaTen" type="text" value="@modelCustome.HoVaTen" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Họ và tên">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Số điện thoại</label>
+                    <div class="col-sm-10">
+                        <input readonly type="tel" value="@modelCustome.SDT" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Số điện thoại">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Email</label>
+                    <div class="col-sm-10">
+                        <input readonly type="email" value="@modelCustome.Email" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Email">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Birthday</label>
+                    <div class="col-sm">
+                    <input readonly type="number" value="@modelCustome.NgaySinh.ToString("dd")" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Ngày">
+                    </div>
+                    <div class="col-sm">
+                    <input readonly type="number" value="@modelCustome.NgaySinh.ToString("MM")" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Tháng">
+                    </div>
+                    <div class="col-sm">
+                    <input readonly type="number" value="@modelCustome.NgaySinh.ToString("yyyy")" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Năm">
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm"></label>
+                    <div class="col-sm-10">
+                        <input type="checkbox" value="Đổi mật khẩu" class="form-check-input form-control-sm-3" id="check_doimatkhau">
+                        <label class="form-check-label" for="flexCheckDefault">
+                            Đổi mật khẩu
+                        </label>
+                    </div>
+                </div>
+                <div style="display : none" id="list_passwork">
+                    <div class="row mb-3">
+                        <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Mật khẩu hiện tại</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Mật khẩu hiện tại">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Mật khẩu mới</label>
+                        <div class="col-sm-9">
+                            <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Mật khẩu mới">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Nhập lại mật khẩu mới</label>
+                        <div class="col-sm-9">
+                            <input asp-for="MatKhau" type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Nhập lại mật khẩu mới">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="d-grid gap-2 col-6 mx-auto">
+
+                    <button class="btn btn-primary" type="button">Lưu thay đổi</button>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+
+
+    <script src="/bootstrap-5.2.1/dist/js/bootstrap.min.js"></script>
+    <script src="/fontawesome-free-6.2.0-web/js/fontawesome.min.js"></script>
+    <script src="/fontawesome-free-6.2.0-web/js/all.min.js"></script>
+
+
+    <script>
+        document.getElementById("check_doimatkhau").onclick = function () {
+            var check = document.getElementById("check_doimatkhau")
+
+            if (check.checked == true) {
+
+
+                document.getElementById("list_passwork").style.display = 'block';
+            } if (check.checked == false) {
+
+                document.getElementById("list_passwork").style.display = 'none';
+            }
+        }
+    </script>
