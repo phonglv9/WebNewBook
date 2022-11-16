@@ -8,6 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Net.Http.Headers;
 using System.Security.Claims;
 using System.Text;
+using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.Model.APIModels;
 
@@ -28,6 +29,32 @@ namespace WebNewBook.Controllers
             return View();
         }
 
+        public IActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Register(CustomInputModel user)
+        {
+            string error = "";
+            if (ModelState.IsValid)
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _httpClient.PostAsync("login/register", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                error = await response.Content.ReadAsStringAsync();
+                error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
+            }
+            ViewBag.Error = error;
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> Index(UserDTO user)
         {
@@ -44,13 +71,15 @@ namespace WebNewBook.Controllers
                     var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
                     ClaimsPrincipal principal = new ClaimsPrincipal(identity);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
-                    Set("token", token, 10);
+                    Set("token", token, 1);
                     return RedirectToAction("Index", "Home");
                 }
 
                 error = await response.Content.ReadAsStringAsync();
                 error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
             }
+            ViewBag.nhanVien = user.NhanVien;
+            ViewBag.Error = error;
             return View();
         }
 
@@ -72,7 +101,7 @@ namespace WebNewBook.Controllers
             CookieOptions option = new CookieOptions();
 
             if (expireTime.HasValue)
-                option.Expires = DateTime.Now.AddMinutes(expireTime.Value);
+                option.Expires = DateTime.Now.AddDays(expireTime.Value);
             else
                 option.Expires = DateTime.Now.AddMilliseconds(10);
 
