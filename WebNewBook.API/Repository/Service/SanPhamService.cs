@@ -2,7 +2,6 @@
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 using Microsoft.EntityFrameworkCore;
-using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.API.Repository.Service
 {
@@ -87,14 +86,15 @@ namespace WebNewBook.API.Repository.Service
             return sachs;
         }
 
-        public async Task UpdateSanPhamAsync(SanPham par, int slChuaDoi)
+        public async Task UpdateSanPhamAsync(SanPham par)
         {
-            if (!dbcontext.SanPhams.AsNoTracking().ToList().Exists(c => c.TenSanPham == par.TenSanPham && c.ID_SanPham != par.ID_SanPham))
+            if (/*!dbcontext.SanPhams.ToList().Exists(c => c.TenSanPham == par.TenSanPham && c.ID_SanPham != par.ID_SanPham)*/true)
             {
                 dbcontext.Update(par);
-                if (slChuaDoi != par.SoLuong)
+                int sl = dbcontext.SanPhamCTs.FirstOrDefault(c => c.MaSanPham == par.ID_SanPham).SoLuong;
+                if (sl != par.SoLuong)
                 {
-                    int change = slChuaDoi - par.SoLuong;
+                    int change = sl - par.SoLuong;
 
                     List<Sach> sachs = new List<Sach>();
                     sachs = await GetSachsBySanPhamAsync(par.ID_SanPham);
@@ -109,15 +109,14 @@ namespace WebNewBook.API.Repository.Service
                         }
                         dbcontext.Update(sach);
                     }
+
+                    foreach (var item in dbcontext.SanPhamCTs.Where(c => c.MaSanPham == par.ID_SanPham))
+                    {
+                        item.SoLuong = par.SoLuong;
+                        dbcontext.Update(item);
+                    }
                 }
-
-                await dbcontext.SaveChangesAsync();
             }
-        }
-
-        public async Task UpdateSanPhamAsync(SanPham par)
-        {
-            dbcontext.Update(par);
             await dbcontext.SaveChangesAsync();
         }
     }

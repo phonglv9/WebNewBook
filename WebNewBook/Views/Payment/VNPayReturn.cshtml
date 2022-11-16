@@ -1,0 +1,37 @@
+﻿
+@{
+    ViewData["Title"] = "VNPayReturn";
+    var button = "Tiếp tục mua hàng";
+    var color = "success";
+    var link = "/Home";
+    if (ViewBag.vnp_TransactionStatus!="00"){
+        color = "danger";
+        button = "Quay lại thanh toán";
+        link = "/Payment/Checkout";
+    }
+
+  
+
+    ViewBag.Title = "Return Payment";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="section">
+
+        <div class="container">
+
+                <div class="panel panel-@color">
+				<div class="panel-heading">
+      
+				<h1 class="panel-title">@if (ViewBag.Message != null)
+						@ViewBag.Message
+
+				</h1>
+				</div>
+               
+				
+				</div>
+       
+                <a href="@link" class="btn btn-primary float-right">@button</a>
+         </div>
+</div>

@@ -16,7 +16,7 @@ namespace WebNewBook.Model
         public string Id { get; set; }
         public DateTime? CreateDate { get; set; }
         public int? HinhThuc { get; set; }
-        public int? Diemdoi { get; set; }
+        public int? Diemdoi { get; set;}
         public DateTime? NgayBatDau { get; set; }
         public DateTime? NgayHetHan { get; set; }
         public DateTime? NgaySuDung { get; set; }
@@ -26,8 +26,10 @@ namespace WebNewBook.Model
         public virtual KhachHang? KhachHang { get; set; }
         [ForeignKey("Voucher")]
         public string? MaVoucher { get; set; }
-        public virtual Voucher? Voucher { get; set; }
-    
+        public virtual Voucher? Voucher { get; set;}
+        //Đổi trạng thái = 2
+        //set ngày 
+        //check ngày
 
     }
 }

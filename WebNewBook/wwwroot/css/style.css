@@ -296,6 +296,7 @@ textarea.input {
     padding-top: 30px;
     padding-bottom: 30px;
     background-color: #f9f9f9;
+    min-height: calc(100vh - 160px - 358px);
 }
 
 .section-title {
@@ -619,6 +620,7 @@ textarea.input {
 .open > .dropdown-menu {
     display: block;
     padding: 10px;
+
     line-height: 2;
 }
 
@@ -1228,11 +1230,14 @@ textarea.input {
 .checkbox-filter .input-radio label small, .checkbox-filter .input-checkbox label small {
   color: #8D99AE;
 }
-
+.checkbox-filter {
+    overflow-y: scroll;
+    margin-bottom: 15px;
+    max-height: 500px;
+}
 /*-- Price Filter --*/
-
 #price-slider {
-  margin-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .noUi-target {
@@ -1618,7 +1623,7 @@ textarea.input {
 
 #product-tab .tab-nav li {
   display: inline-block;
-  background: #FFF;
+  background: #f9f9f9;
   padding: 0px 15px;
 }
 
@@ -1990,18 +1995,11 @@ textarea.input {
 ===========================================================*/
 
 #footer {
-    
-    background: #2c55a5;
-    color: #B9BABC;
-}
-#top-footer {
+    background: #1E1F29;
     padding-top: 30px;
     padding-bottom: 30px;
 }
 
-#bottom-footer {
-  background: #1E1F29;
-}
 
 .footer {
   margin: 30px 0px;
@@ -2224,9 +2222,8 @@ textarea.input {
 .slick-list{
     padding-bottom:60px;
 }
-#footer > .container{
-    padding: 40px 0px;
-}
+
+
 .footer-links li{
     line-height:36px;
 }
@@ -2260,4 +2257,11 @@ textarea.input {
 }
 .carousel-control{
     width:0;
+}
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    margin: 0;
 }

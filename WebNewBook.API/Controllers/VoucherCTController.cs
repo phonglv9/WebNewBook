@@ -112,5 +112,49 @@ namespace WebNewBook.API.Controllers
 
             }
         }
+
+        /// <summary>
+        /// lấy Voucher của khách hàng
+        /// </summary>
+        /// <param name="maKhachHang"></param>
+        /// <returns></returns>
+        [HttpGet("VoucherKH/{maKhachHang}")]
+        public async Task<IEnumerable<VoucherCT?>> GetVoucherOfCustomer(string maKhachHang)
+        {
+            var voucher = await _voucherCTServices.GetVoucherOfCustomer(maKhachHang);
+            return voucher;
+        }
+
+
+
+        [HttpPut("HuyVoucher")]
+        public async Task<ActionResult> HuyVoucherAsync(List<string> id)
+        {
+            try
+            {
+                await _voucherCTServices.HuyVouCherAsync(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+
+        [HttpPut("PhatHanhVoucher")]
+        public async Task<ActionResult> PhatHanhVoucher(List<VoucherCT> lstvoucherCTs)
+        {
+            try
+            {
+                await _voucherCTServices.PhathanhVouCherAsync(lstvoucherCTs);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+                
+            }
+        }
     }
 }

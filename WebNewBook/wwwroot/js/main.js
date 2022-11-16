@@ -127,108 +127,97 @@
 
 	let priceInputMax = document.getElementById('price-max');
 	let priceInputMin = document.getElementById('price-min');
+	if (priceInputMax != null) {
+		priceInputMax.addEventListener('input', function () {
+			if (priceInputMax.value > 999) {
 
-	priceInputMax.addEventListener('input', function () {
-		if (priceInputMax.value > 999) {
+				priceInputMax.value = 999;
+			}
+			if (priceInputMax.value < 1) {
+				priceInputMax.style.borderColor = "red";
+				priceInputMax.value = 1;
+			}
+		})
+	}
+	if (priceInputMin != null) {
+		priceInputMin.addEventListener('input', function () {
+			if (priceInputMin.value > 999) {
+				priceInputMin.style.borderColor = "red";
+				priceInputMin.value = 999;
+			}
+			if (priceInputMin.value < 1) {
 
-			priceInputMax.value = 999;
-		}
-		if (priceInputMax.value < 1) {
-			priceInputMax.style.borderColor = "red";
-			priceInputMax.value = 1;
-		}
-	})
-	priceInputMin.addEventListener('input', function () {
-		if (priceInputMin.value > 999) {
-			priceInputMin.style.borderColor = "red";
-			priceInputMin.value = 999;
-		}
-		if (priceInputMin.value < 1) {
+				priceInputMin.value = 1;
+			}
+		});
+	}
+	if (priceInputMax != null) {
+		priceInputMax.addEventListener('change', function () {
+			
+			let search = $(this).attr("data-search");
+			let currentFilter = "";
+			let iddanhmuc = $(this).attr("data-iddanhmuc");
+			let idtheloai = $(this).attr("data-idtheloai");
+			let idtacgia = $(this).attr("data-idtacgia");
+			let sortOrder = $(this).attr("data-sortOrder");
+			let pageNumber = $(this).attr("data-pageNumber");
+			let pageSize = $(this).attr("data-pageSize");
 
-			priceInputMin.value = 1;
-		}
+			let priceMax = priceInputMax.value;
+			let priceMin = priceInputMin.value;
+
+
+
+
+			window.location.href = `https://localhost:7047/Home/Product?search=${search}&currentFilter=${currentFilter}&iddanhmuc=${iddanhmuc}&idtheloai=${idtheloai}&idtacgia=${idtacgia}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&priceMax=${priceMax}&priceMin=${priceMin}`
+
+		});
+    }
+
+	if (priceInputMin != null) {
+		priceInputMin.addEventListener('change', function () {
+
+			let search = $(this).attr("data-search");
+			let currentFilter = "";
+			let iddanhmuc = $(this).attr("data-iddanhmuc");
+			let idtheloai = $(this).attr("data-idtheloai");
+			let idtacgia = $(this).attr("data-idtacgia");
+			let sortOrder = $(this).attr("data-sortOrder");
+			let pageNumber = $(this).attr("data-pageNumber");
+			let pageSize = $(this).attr("data-pageSize");
+
+			let priceMax = priceInputMax.value;
+			let priceMin = priceInputMin.value;
+			window.location.href = `https://localhost:7047/Home/Product?search=${search}&currentFilter=${currentFilter}&iddanhmuc=${iddanhmuc}&idtheloai=${idtheloai}&idtacgia=${idtacgia}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&priceMax=${priceMax}&priceMin=${priceMin}`
+
+		});
+	}
+	$(".add-to-cart-btn").click(function () {
+
+		var idsp = $(this).attr("value");
+		$.post("/GioHang/AddToCart",
+			{
+				id: idsp,
+				SoLuong: 1
+			},
+			function (data) {
+				$('.messCart').text(data);
+				setTimeout(function () {
+					location.reload();
+				}, 1000)
+
+			});
+
+
+
+	});
+	$('.dropdown').hover(function () {
+		$(this).toggleClass('open');
 	});
 
-	priceInputMax.addEventListener('change', function () {
-		/*updatePriceSlider($(this).parent(), this.value);*/
-		let search = $(this).attr("data-search");
-		let currentFilter = "";
-		let iddanhmuc = $(this).attr("data-iddanhmuc");
-		let idtheloai = $(this).attr("data-idtheloai");
-		let idtacgia = $(this).attr("data-idtacgia");
-		let sortOrder = $(this).attr("data-sortOrder");
-		let pageNumber = $(this).attr("data-pageNumber");
-		let pageSize = $(this).attr("data-pageSize");
+	
 
-		let priceMax = priceInputMax.value;
-		let priceMin = priceInputMin.value;
-
-
-
-
-		window.location.href = `https://localhost:7047/Home/Product?search=${search}&currentFilter=${currentFilter}&iddanhmuc=${iddanhmuc}&idtheloai=${idtheloai}&idtacgia=${idtacgia}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&priceMax=${priceMax}&priceMin=${priceMin}`
-
-	});
-
-	priceInputMin.addEventListener('change', function () {
-		/*updatePriceSlider($(this).parent(), this.value);*/
-		let search = $(this).attr("data-search");
-		let currentFilter = "";
-		let iddanhmuc = $(this).attr("data-iddanhmuc");
-		let idtheloai = $(this).attr("data-idtheloai");
-		let idtacgia = $(this).attr("data-idtacgia");
-		let sortOrder = $(this).attr("data-sortOrder");
-		let pageNumber = $(this).attr("data-pageNumber");
-		let pageSize = $(this).attr("data-pageSize");
-
-		let priceMax = priceInputMax.value;
-		let priceMin = priceInputMin.value;
-		window.location.href = `https://localhost:7047/Home/Product?search=${search}&currentFilter=${currentFilter}&iddanhmuc=${iddanhmuc}&idtheloai=${idtheloai}&idtacgia=${idtacgia}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&priceMax=${priceMax}&priceMin=${priceMin}`
-
-	});
-
-	//function updatePriceSlider(elem , value) {
-	//	if ( elem.hasClass('price-min') ) {
-	//		console.log('min')
-	//		priceSlider.noUiSlider.set([value, null]);
-	//	} else if ( elem.hasClass('price-max')) {
-	//		console.log('max')
-	//		priceSlider.noUiSlider.set([null, value]);
-	//	}
-	//}
-
-	//// Price Slider
-	//var priceSlider = document.getElementById('price-slider');
-	//if (priceSlider) {
-	//	noUiSlider.create(priceSlider, {
-	//		start: [1, 999],
-	//		connect: true,
-	//		step: 1,
-	//		range: {
-	//			'min': 1,
-	//			'max': 999
-	//		}
-	//	});
-
-	//	priceSlider.noUiSlider.on('update', function( values, handle ) {
-	//		var value = values[handle];
-	//		handle ? priceInputMax.value = value : priceInputMin.value = value
-
-
-
-	//	});
-	//	//priceSlider.addEventListener('click', function (values, handle) {
-	//	//	var value = values[handle];
-	//	//	handle ? priceInputMax.value = value : priceInputMin.value = value
-	//	//	window.location.href = `https://localhost:7047/Home/Product?search=${search}&currentFilter=${currentFilter}&iddanhmuc=${iddanhmuc}&idtheloai=${idtheloai}&idtacgia=${idtacgia}&sortOrder=${sortOrder}&pageNumber=${pageNumber}&pageSize=${pageSize}&priceMax=${priceMax}&priceMin=${priceMin}`
-	//	//	alert("xxx")
-
-
-	//	//});
-
-
-
-	//}
+	
 
 
 })(jQuery);

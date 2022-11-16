@@ -1,6 +1,9 @@
 ﻿using ClosedXML.Excel;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Globalization;
 using System.IO;
@@ -15,7 +18,7 @@ namespace WebNewBook.Controllers
     {
         Uri baseAdress = new Uri("https://localhost:7266/api");
         HttpClient _httpClient;
-        
+
         public VoucherController()
         {
             _httpClient = new HttpClient();
@@ -26,7 +29,7 @@ namespace WebNewBook.Controllers
         public async Task<IActionResult> Index()
         {
             List<Voucher> Getvoucher = new List<Voucher>();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Voucher" ).Result;
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Voucher").Result;
             if (response.IsSuccessStatusCode)
             {
                 string jsondata = response.Content.ReadAsStringAsync().Result;
@@ -51,16 +54,16 @@ namespace WebNewBook.Controllers
             return RedirectToAction("Index");
         }
 
-        public async Task<IActionResult> Detail(string Id,VoucherModel voucherModel)
+        public async Task<IActionResult> Detail(string Id, VoucherModel voucherModel)
         {
-            HttpResponseMessage response_1 = _httpClient.GetAsync(_httpClient.BaseAddress + "/Voucher/"+Id).Result;
-            
-            if (response_1.IsSuccessStatusCode )
+            HttpResponseMessage response_1 = _httpClient.GetAsync(_httpClient.BaseAddress + "/Voucher/" + Id).Result;
+
+            if (response_1.IsSuccessStatusCode)
             {
                 string jsondata_1 = response_1.Content.ReadAsStringAsync().Result;
-              
+
                 voucherModel.Voucher = JsonConvert.DeserializeObject<Voucher>(jsondata_1);
-             
+
             }
             HttpResponseMessage response_2 = _httpClient.GetAsync(_httpClient.BaseAddress + "/VoucherCT/CallIdPH/" + voucherModel.Voucher.Id).Result;
 
@@ -68,11 +71,12 @@ namespace WebNewBook.Controllers
             {
                 string jsondata_2 = response_2.Content.ReadAsStringAsync().Result;
                 List<VoucherCT> voucherCTs = new List<VoucherCT>();
-               voucherCTs= JsonConvert.DeserializeObject<List<VoucherCT>>(jsondata_2);
-                ViewBag.lstvoucherCT=voucherCTs;
+                voucherCTs = JsonConvert.DeserializeObject<List<VoucherCT>>(jsondata_2);
+                ViewBag.lstvoucherCT0 = voucherCTs.Where(c => c.TrangThai == 0).ToList();
+                ViewBag.lstvoucherCT1 = voucherCTs.Where(c => c.TrangThai == 1).ToList();
 
             }
-         
+
             return View(voucherModel);
         }
         public async Task<IActionResult> CreateListvoucher(int quantityVoucher, int sizeVoucher, string startTextVoucher, string endTextVoucher, string maVoucher)
@@ -160,7 +164,7 @@ namespace WebNewBook.Controllers
 
                 string extension = Path.GetExtension(file.FileName);
                 string image = file.FileName;
-              string path= UpLoadFile(file, image);
+                string path = UpLoadFile(file, image);
 
                 using (var httpClient = new HttpClient())
                 {
@@ -200,7 +204,7 @@ namespace WebNewBook.Controllers
 
                 using (var httpClient = new HttpClient())
                 {
-                    
+
                     StringContent content = new StringContent(JsonConvert.SerializeObject(voucherModel.voucherCT), Encoding.UTF8, "application/json");
                     using (var response = await httpClient.PostAsync("https://localhost:7266/api/VoucherCT/AddManually", content))
                     {
@@ -209,15 +213,15 @@ namespace WebNewBook.Controllers
                     }
                 }
                 return RedirectToAction("Index");
-             //   return RedirectToAction("Detail"+"/"+voucherModel.voucherCT.MaVoucher);
+                //   return RedirectToAction("Detail"+"/"+voucherModel.voucherCT.MaVoucher);
             }
             catch (Exception e)
             {
 
-                return View(e.Message);
+                return RedirectToAction("Index");
             }
-          
-            
+
+
         }
         public async Task<IActionResult> Update(Voucher voucher)
         {
@@ -231,7 +235,7 @@ namespace WebNewBook.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult  dowloadFilemau()
+        public IActionResult dowloadFilemau()
         {
             var workbook = new XLWorkbook();
             var worksheet = workbook.Worksheets.Add("File");
@@ -256,9 +260,56 @@ namespace WebNewBook.Controllers
             return RedirectToAction("Index");
         }
 
-        //public async Task<IActionResult> ThemtungVoucher(VoucherCT voucherCT)
-        //{
 
-        //}
+        public List<string> Get_Id(string getId)
+        {
+            List<string> lstId = new List<string>();
+            string[] arr = getId.Split(',');
+            foreach (var x in arr)
+            {
+                lstId.Add(x);
+            }
+            return lstId;
+
+        }
+
+        [HttpPost]
+        public int PhatHanhVoucher(string GetId, VoucherCT voucherCT)
+        {
+            var lstid = Get_Id(GetId);  
+            List<VoucherCT> voucherCTList = new List<VoucherCT>();
+            foreach (var id in lstid)
+            {
+                VoucherCT cT = new VoucherCT();
+                cT.HinhThuc = voucherCT.HinhThuc;
+                cT.Id = id;
+                cT.Diemdoi = voucherCT.Diemdoi;
+                cT.NgayBatDau = voucherCT.NgayBatDau;
+                voucherCTList.Add(cT);
+            }
+        //    StringContent content = new StringContent(JsonConvert.SerializeObject(voucherCTList));
+            HttpResponseMessage response = _httpClient.PutAsJsonAsync<List<VoucherCT>>(_httpClient.BaseAddress + "/VoucherCT/PhatHanhVoucher/", voucherCTList).Result;
+            if (response.IsSuccessStatusCode)
+            {
+
+                return 1; 
+
+            }
+            return 0;
+        }
+
+        [HttpPost]
+        public int HuyVoucher(string timCkeckBox)
+        {
+
+            var lstId = Get_Id(timCkeckBox);
+            HttpResponseMessage response = _httpClient.PutAsJsonAsync(_httpClient.BaseAddress + "/VoucherCT/HuyVoucher/", lstId).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string jsondata = response.Content.ReadAsStringAsync().Result;
+
+            }
+            return 1;
+        }
     }
 }

@@ -1,10 +1,29 @@
-﻿@{
-	double ship = 18000;
-	ViewBag.TongTien = ViewBag.TongTien + ship;
+﻿@using WebNewBook.Model
+@model HoaDon
+@{
+	
+	ViewBag.Title = "Checkout";
+	KhachHang khachHang  = new KhachHang();
+	if (ViewBag.KhachHang != null)
+	{
+		
+		khachHang = ViewBag.KhachHang;
+	}
+
+}
+@section Scripts{
+	<script>
+		setTimeout(function(){
+			$('#msVnPay').fadeOut('slow');
+		},2000)
+		setTimeout(function () {
+			$('#msVoucher').fadeOut('slow');
+		}, 5000)
+	</script>
 }
 
 <!-- BREADCRUMB -->
-		<div id="breadcrumb" class="section">
+		<div id="breadcrumb" >
 			<!-- container -->
 			<div class="container">
 				<!-- row -->
@@ -27,86 +46,69 @@
 		<div class="section">
 			<!-- container -->
 			<div class="container">
+				@if (ViewBag.MessageVNPay != null && ViewBag.MessageVNPay != "")
+				{
+					<div id="msVnPay" class="alert alert-danger" role="alert">
+						@ViewBag.MessageVNPay
+					</div>
+				}
+
+
+
 				<!-- row -->
-				<div class="row">
+
+				<form asp-action="Pay" method="post" enctype="multipart/form-data">
+					<div asp-validation-summary="ModelOnly" class="text-danger"></div>
+					<div class="row">
 
 					<div class="col-md-7">
 						<!-- Billing Details -->
 						<div class="billing-details">
 							<div class="section-title">
-								<h3 class="title">Thông tin thanh toán</h3>
+								<h3 class="title">Địa chỉ giao hàng</h3>
 							</div>
 							
 							<div class="form-group">
-								<input class="input" type="text" name="first-name" placeholder="Họ và tên">
+								<input asp-for="TenNguoiNhan" class="input" type="text" value="@khachHang.HoVaTen" name="TenNguoiNhan" id="TenNguoiNhan" placeholder="Họ và tên">
+							<span id="TenNguoiNhanT" class="text-danger"></span>
+							</div>							
+							<div class="form-group">
+							<input asp-for="Email" class="input" type="email" value="@khachHang.Email" name="email"  placeholder="Email">
+								<span asp-validation-for="Email" class="text-danger"></span>
 							</div>
 							<div class="form-group">
-								<input class="input" type="text" name="last-name" placeholder="Số điện thoại">
-							</div>
-							<div class="form-group">
-								<input class="input" type="email" name="email" placeholder="Email">
-							</div>
-							<div class="form-group">
-								<input class="input" type="text" name="address" placeholder="Địa chỉ">
+								<input asp-for="DiaChiGiaoHang" class="input" type="text"value="@khachHang.DiaChi" name="DiaChiGiaoHang" placeholder="Địa chỉ">
+								<span asp-validation-for="DiaChiGiaoHang" class="text-danger"></span>
 							</div>
 						
 							<div class="form-group">
-								<input class="input" type="tel" name="tel" placeholder="Điện thoại">
+							<input asp-for="SDT" class="input" type="tel"  name="SDT"value="@khachHang.SDT" placeholder="Điện thoại">
+								<span asp-validation-for="SDT" class="text-danger"></span>
 							</div>
 							<div class="form-group">
 								<div class="input-checkbox">
-									<input type="checkbox" id="create-account">
-									<label for="create-account">
-										<span></span>
-										Bạn có mã ưu đãi? Ấn vào đây để nhập mã
-									</label>
-									<div class="caption">
-										<p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới.</p>
-										<input class="input" type="text" name="voucher" placeholder="voucher">
-										<hr>
-										<div>
-											<button type="button" class="btn btn-primary">Áp dụng</button>
-										</div>
+									<button type="button"  class="btn btn-link" data-toggle="modal" data-target="#exampleModalVoucher"><i class="fa fa-gift" aria-hidden="true"></i>Bạn có mã ưu đãi? Ấn vào đây để nhập mã</button>
+								@if (ViewBag.MessageVC != null)
+								{
+									<label  class="text-bg-danger">  </label>
+									<div class="alert alert-danger alert-dismissible" role="alert" id="msVoucher">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										<strong>@ViewBag.MessageVC</strong>
 									</div>
+								}
+								
+									
 									
 								</div>
 							</div>
 						</div>
 						<!-- /Billing Details -->
 
-						<!-- Shiping Details -->
-						<div class="shiping-details">
-							<div class="section-title">
-								<h3 class="title">Địa chỉ giao hàng</h3>
-							</div>
-							<div class="input-checkbox">
-								<input type="checkbox" id="shiping-address">
-								<label for="shiping-address">
-									<span></span>
-									Giao hàng tới địa chỉ khác?
-								</label>
-								<div class="caption">
-									<div class="form-group">
-										<input class="input" type="text" name="first-name" placeholder="Họ tên người nhận">
-									</div>
-							
-									
-									<div class="form-group">
-										<input class="input" type="text" name="address" placeholder="Địa chỉ">
-									</div>
-								
-									
-									<div class="form-group">
-										<input class="input" type="tel" name="tel" placeholder="Số điện thoại">
-									</div>
-								</div>
-							</div>
-						</div>
-						<!-- /Shiping Details -->
+						
 
 						<!-- Order notes -->
 						<div class="order-notes">
-							<textarea class="input" placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay địa chỉ giao hàng chi tiết hơn"></textarea>
+							<textarea class="input" asp-for="GhiChu" placeholder="Ghi chú về đơn hàng, ví dụ: thời gian hay địa chỉ giao hàng chi tiết hơn"></textarea>
 						</div>
 						<!-- /Order notes -->
 					</div>
@@ -119,7 +121,7 @@
 						<div class="order-summary">
 							<div class="order-col">
 								<div><strong>Sản phẩm</strong></div>
-								<div><strong>Giá tiền</strong></div>
+								<div><strong>Tổng tiền</strong></div>
 							</div>
 							@foreach (var item in ViewBag.Cart)
 								{
@@ -134,28 +136,29 @@
 							
 							</div>
 							}
-							<div class="order-col">
-								<div>Phí vận chuyển </div>
-						<div><strong>@ship.ToString("#,##0").Replace(',', '.') đ </strong></div>
+							
+						@if (ViewBag.MenhGiaVC != 0)
+						{
+						<div class="order-col">
+							<div>Mã giảm giá </div>
+								<div><strong>@ViewBag.MenhGiaVC.ToString("#,##0").Replace(',', '.') đ </strong></div>
 							</div>
+						}
 							<div class="order-col">
 								<div><strong>Tổng tiền</strong></div>
 
 								<div>
 									<strong class="order-total">
-										@if (ViewBag.TongTien != null)
+										@if (ViewBag.TongTien != 0)
 										{
-										@ViewBag.TongTien.ToString("#,##0").Replace(',', '.')
-
-
-								}đ
+										@ViewBag.TongTien.ToString("#,##0").Replace(',', '.')}đ
 									</strong>
 								</div>
 							</div>
 						</div>
 						<div class="payment-method">
 							<div class="input-radio">
-								<input type="radio" name="payment" id="payment-1">
+								<input type="radio" name="payment" value="1" id="payment-1">
 								<label for="payment-1">
 									<span></span>
 									Trả tiền mặt khi nhận hàng
@@ -163,21 +166,10 @@
 								<div class="caption">
 									<p>Anh/chị nhận hàng → Kiểm tra đơn hàng → Tiến hành thanh toán cho nhân viên giao hàng</p>
 								</div>
-							</div>
+							</div>	
 							<div class="input-radio">
-								<input type="radio" name="payment" id="payment-2">
+								<input type="radio" name="payment" value="2" id="payment-2">
 								<label for="payment-2">
-									<span></span>
-									Thanh toán ví điện tử momo
-								</label>
-								<div class="caption">
-									<p><img src="https://play-lh.googleusercontent.com/dQbjuW6Jrwzavx7UCwvGzA_sleZe3-Km1KISpMLGVf1Be5N6hN6-tdKxE5RDQvOiGRg" width="120px" alt=""></p>
-									<p>Thông tin tài khoản ngân hàng sẽ hiển thị sau khi bạn chọn Đặt Hàng.</p>
-								</div>
-							</div>
-							<div class="input-radio">
-								<input type="radio" name="payment" id="payment-3">
-								<label for="payment-3">
 									<span></span>
 									Thanh toán ví điện tử VN Pay
 								</label>
@@ -185,15 +177,90 @@
 									<p><img src="https://inkythuatso.com/uploads/images/2021/12/vnpay-logo-inkythuatso-01-13-16-26-42.jpg" width="120px" alt=""></p>
 									<p>Thông tin tài khoản ngân hàng sẽ hiển thị sau khi bạn chọn Đặt Hàng.</p>
 								</div>
+
+
+
+
 							</div>
 						</div>
-						
-						<a href="#" class="primary-btn order-submit">Đặt hàng</a>
+					
+					<button type="button"  data-toggle="modal" data-target="#exampleModal" class="primary-btn order-submit">Đặt hàng</button>
+
 					</div>
+				<!-- Modal thông báo đặt hàng-->
+				<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								Bạn có chắc chắn muốn đặt hàng ?
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Thoát</button>
+								<button type="submit" class="btn btn-danger">Đặt hàng</button>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!---modal->
+		
 					<!-- /Order Details -->
 				</div>
+			
 				<!-- /row -->
+				</form>
 			</div>
 			<!-- /container -->
+		
 		</div>
 		<!-- /SECTION -->
+
+			<form asp-action="ApDungVouCher" method="post" enctype="multipart/form-data">
+				
+				<div class="modal fade" id="exampleModalVoucher" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="exampleModalLabel">Thông báo</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								
+									
+									@if (!string.IsNullOrEmpty(khachHang.ID_KhachHang))
+									{
+									<div class="caption">
+									<p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới</p>
+								
+									<input class="input" type="text" name="maVoucher" placeholder="voucher">
+									<hr>
+									<div>
+										<button type="submit" class="btn btn-primary">Áp dụng voucher</button>
+									</div>
+									</div>
+									}else{
+									<div class="caption">
+										<p>Vui lòng đăng nhập để sử dụng mã giảm giá</p>
+										
+										
+										<div>
+										<a asp-controller="QLLogin" asp-action="Index" asp-controller="QLLogin" asp-route-nhanVien="false" class="btn btn-primary">Đăng nhập</a>
+										</div>
+									</div>
+									}
+								
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				
+			</form>
+			

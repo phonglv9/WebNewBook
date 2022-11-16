@@ -29,8 +29,8 @@
 		priceMin = ViewBag.PriceMin;
 	}else
 	{
-		priceMax = 999;
-		priceMin = 1;
+		priceMax = 999000;
+		priceMin = 1000;
 	}
 
 
@@ -42,7 +42,7 @@
 
 
 <!-- BREADCRUMB -->
-		<div id="breadcrumb" class="section">
+		<div id="breadcrumb">
 			<!-- container -->
 			<div class="container">
 				<!-- row -->
@@ -96,13 +96,13 @@
 							<div class="price-filter">
 								<div id="price-slider"></div>
 								<div class="input-number price-min" >
-							<input id="price-min" type="number" value="@priceMin" min="1" max="999" data-search="@ViewData["CurrentFilter"]" data-idtheloai="@ViewData["IdTheLoai"]" data-iddanhmuc="@ViewData["IdDanhMuc"]" data-idtacgia="@ViewData["IdTacGia"]" data-sortOrder="@ViewData["CurrentSort"]" data-pageNumber="@ViewData["PageNumber"]" data-pageSize="@ViewBag.PageSize">
+							<input id="price-min" type="number" value="@priceMin" min="1000" max="999000" data-search="@ViewData["CurrentFilter"]" data-idtheloai="@ViewData["IdTheLoai"]" data-iddanhmuc="@ViewData["IdDanhMuc"]" data-idtacgia="@ViewData["IdTacGia"]" data-sortOrder="@ViewData["CurrentSort"]" data-pageNumber="@ViewData["PageNumber"]" data-pageSize="@ViewBag.PageSize">
 									@*<span class="qty-up">+</span>
 									<span class="qty-down">-</span>*@
 								</div>
 								<span>-</span>
 							<div class="input-number price-max" >
-							<input id="price-max" type="number" value="@priceMax" min="1" max="999" data-search="@ViewData["CurrentFilter"]" data-idtheloai="@ViewData["IdTheLoai"]" data-iddanhmuc="@ViewData["IdDanhMuc"]" data-idtacgia="@ViewData["IdTacGia"]" data-sortOrder="@ViewData["CurrentSort"]" data-pageNumber="@ViewData["PageNumber"]" data-pageSize="@ViewBag.PageSize">
+							<input id="price-max" type="number" value="@priceMax" min="1000" max="999000" data-search="@ViewData["CurrentFilter"]" data-idtheloai="@ViewData["IdTheLoai"]" data-iddanhmuc="@ViewData["IdDanhMuc"]" data-idtacgia="@ViewData["IdTacGia"]" data-sortOrder="@ViewData["CurrentSort"]" data-pageNumber="@ViewData["PageNumber"]" data-pageSize="@ViewBag.PageSize">
 									@*<span class="qty-up">+</span>
 									<span class="qty-down">-</span>*@
 								</div>
@@ -260,8 +260,7 @@
 							{
 								@foreach (var item in ViewBag.ProductSS)
 								{	
-								
-					
+													
 
 								<h4>@item</h4>
 								}
@@ -304,12 +303,12 @@
 											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
 										</div>
 									</div>
-									<form asp-controller="GioHang"  asp-action="AddToCart" asp-route-id="@item.sanPhams.ID_SanPham">
+									
 									<div class="add-to-cart">
-										<input name="SoLuong" type="hidden" value="1">
-										<button type="submit" class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+										
+										<button type="button" class="add-to-cart-btn" data-toggle="modal" data-target="#exampleModalCart"value="@item.sanPhams.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
 									</div>
-									</form>
+									
 								</div>
 							</div>
 							<!-- /product -->

@@ -2,12 +2,37 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 
 
-    var lstvoucherCT = ViewBag.lstvoucherCT;
+    var lstvoucherCT0 = ViewBag.lstvoucherCT0;
+    var lstvoucherCT1 = ViewBag.lstvoucherCT1;
 }
 @using WebNewBook.ViewModel
 @model VoucherModel
-<div>
 
+
+<style>
+    .loading {
+        background: rgba(0, 0, 0, .5);
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999;
+    }
+
+    .spinner-center {
+        top: 50%;
+        left: 50%;
+        position: absolute;
+    }
+</style>
+
+
+
+<div>
+    <div id="load" style="display : block" class="loading">
+        <div class="spinner-border text-primary spinner-center" role="status"></div>
+    </div>
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link active" id="nav-add-tab"
@@ -102,7 +127,7 @@
                                     <button type="submit" class="btn btn-primary">Thêm</button>
                                 </div>
                             </form>
-                           
+
                         </div>
                     </div>
                 </div>
@@ -123,15 +148,120 @@
                             <p> Tải file mẫu về (<a asp-controller="Voucher" asp-action="dowloadFilemau">Excer file </a>)</p>
                             <form asp-action="CreateImPortExcel" method="post" enctype="multipart/form-data">
                                 <div class="modal-body">
-                                   
-                                    <input  type="file" name="file" />
+
+                                    <input type="file" name="file" />
                                     <input name="maPhathanh" type="hidden" value="@Model.Voucher.Id" />
                                 </div>
                                 <div class="modal-footer">
                                     <button type="submit" class="btn btn-primary"> Import </button>
                                 </div>
                             </form>
-                            
+
+                        </div>
+                    </div>
+                </div>
+
+
+
+                <ul id="thaotac" style="display : none" class="navbar-nav ml-auto col-3">
+                    <!-- Nav Item - Alerts -->
+                    <li class="nav-item dropdown no-arrow mx-1">
+                        <a class="nav-link dropdown-toggle" id="alertsDropdown" role="button"
+                           data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                            <!-- Counter - Alerts -->
+                            <span class="badge badge-danger badge-counter">Thao tác</span>
+                        </a>
+                        <!-- Dropdown - Alerts -->
+                        <div class="dropdown-list dropdown-menu dropdown-menu-right shadow "
+                             aria-labelledby="alertsDropdown">
+                            <h6 class="dropdown-header">
+                                Thao tác
+                            </h6>
+                            <a id="SoluongPhatHanh" class="dropdown-item d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#phathanh">
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-primary">
+                                        <i class="fas fa-file-alt text-white"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    Phát hành Voucher
+                                </div>
+                            </a>
+
+
+                            <a id="btnHuyVoucher" class="dropdown-item d-flex align-items-center">
+                                <div class="mr-3">
+                                    <div class="icon-circle bg-success">
+                                        <i class="fas fa-donate text-white"></i>
+                                    </div>
+                                </div>
+                                <input type="hidden" value="OK" name="NamOK" />
+                                <div>
+                                    Hủy Voucher
+                                </div>
+                            </a>
+
+                        </div>
+                    </li>
+                    <div class="topbar-divider d-none d-sm-block"></div>
+                </ul>
+
+
+                <!-- Modal phát hành -->
+                <div class="modal fade" id="phathanh" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="phathanh" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="phathanh">Phát hành</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+
+                                <div class="mb-3 row">
+                                    <label for="" class="col-sm-4 col-form-label">Số lượng Voucher</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" id="SoluongVoucher" class="form-control" disabled>
+                                    </div>
+                                </div>
+                                <div class="mb-3 row">
+                                    <label for="" class="col-sm-4 col-form-label">Hình thức</label>
+                                    <div class="col-sm-8">
+                                        <div onclick="ChonHinhThuc()" class="form-check">
+                                            <input class="form-check-input" type="radio" name="RadioDefault" id="DoiDiem">
+                                            <label class="form-check-label" for="DoiDiem">
+                                                Đổi điểm
+                                            </label>
+                                        </div>
+                                        <div onclick="ChonHinhThuc()" class="form-check">
+                                            <input class="form-check-input" type="radio" name="RadioDefault" id="Tang" checked>
+                                            <label class="form-check-label" for="Tang">
+                                                Tặng
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="Div_diem" hidden class="mb-3 row">
+                                    <label for="" class="col-sm-4 col-form-label">Điểm</label>
+                                    <div class="col-sm-8">
+                                        <input id="diemdoi" type="number" class="form-control" >
+                                    </div>
+                                </div>
+
+                                <div class="mb-3 row">
+                                    <label for="" class="col-sm-4 col-form-label">Ngày Phát hành</label>
+                                    <div class="col-sm-8">
+                                        <input id="ngayphathanh" type="date" class="form-control" required>
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+                            <div class="modal-footer">
+                                <button id="btnDong" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                <button id="btnPhatHanh" type="button" data-bs-dismiss="modal" class="btn btn-primary">Phát Hành</button>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -142,7 +272,7 @@
                     <tr>
                         <th>
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                <input class="form-check-input" type="checkbox" value="" id="click_all">
                             </div>
                         </th>
                         <th>Mã Voucher</th>
@@ -155,13 +285,16 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (var x in lstvoucherCT)
+                    @foreach (var x in lstvoucherCT0)
                     {
-                        <tr>
-                            <td>
+                        <tr id="timCkeckBox">
+                            <td id="ListItem">
+
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+                                    <input onclick="showThaotac()" class="form-check-input" type="checkbox" id="@x.Id" value="" name="NameOK">
                                 </div>
+
+
                             </td>
                             <td>@x.Id</td>
                             <td></td>
@@ -249,16 +382,51 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach (var x in lstvoucherCT1)
+                        {
+                            <tr>
 
-                        <tr>
-                            <td>1223</td>
-                            <td>1223</td>
-                            <td>1223</td>
-                            <td>1223</td>
-                            <td>1223</td>
-                            <td>1223</td>
-                            <td>1223</td>
-                        </tr>
+                                <td>@x.Id</td>
+                                <td></td>
+                                @if (x.NgayBatDau != null)
+                                {
+                                    <td>@x.NgayBatDau.ToString("d/M/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                @if (x.NgayHetHan != null)
+                                {
+                                    <td>@x.NgayHetHan.ToString("d/M/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+                                @if (x.NgaySuDung != null)
+                                {
+                                    <td>@x.NgaySuDung.ToString("d/M/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+                                <td>@x.Diemdoi</td>
+                                @*    <td>@(x.TrangThai==0?"Chưa phát Hành": "Đã phát hành")</td>*@
+                                @if (@x.TrangThai == 0)
+                                {
+                                    <td class="text-danger fs-6 fst-italic">Chưa Phát hành</td>
+                                }
+                                else
+                                {
+                                    <td class="text-success fs-6 fst-italic">Đã Phát hành</td>
+                                }
+                            </tr>
+                        }
+
 
                     </tbody>
                 </table>
@@ -269,3 +437,206 @@
         </div>
     </div>
 </div>
+
+
+<div class="toast-container position-fixed bottom-0 end-0 p-3">
+    <div id="liveToast" class="toast  text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+        <div class="toast-header">
+
+            <strong class="me-auto">Thông báo</strong>
+            <small>Bây giờ</small>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body">
+            Thành Công
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+@section Scripts{
+    <script>
+
+        function showThaotac() {
+            console.log('ra')
+            var chon = document.getElementsByName("NameOK");
+            for (var i = 0; i < chon.length; i++) {
+                document.getElementById("thaotac").style.display = 'none';
+                if (chon[i].checked == true) {
+                    console.log('vào')
+                    document.getElementById("thaotac").style.display = 'block';
+                    break;
+                }
+            }
+        }
+
+
+        document.getElementById("click_all").onclick = function () {
+            console.log('ra')
+
+            var chon = document.getElementById("click_all");
+
+            if (chon.checked == true) {
+
+                document.getElementById("thaotac").style.display = 'block';
+
+                var checkboxes = document.getElementsByName('NameOK');
+
+
+                for (var i = 0; i < checkboxes.length; i++) {
+                    checkboxes[i].checked = true;
+                    console.log('vào1')
+                }
+            } if (chon.checked == false) {
+
+                document.getElementById("thaotac").style.display = 'none';
+
+                var checkboxes = document.getElementsByName('NameOK');
+
+
+                for (var i = 0; i < checkboxes.length; i++) {
+                    checkboxes[i].checked = false;
+                    console.log('vào2')
+                }
+            }
+        }
+
+        document.getElementById("SoluongPhatHanh").onclick = function(){
+            var checkboxes = document.getElementsByName('NameOK');
+           var soluong =0;
+             for (var i = 0; i < checkboxes.length; i++) {
+                  if(checkboxes[i].checked==true){
+                   soluong ++;  
+                  }
+                }
+               
+            document.getElementById("SoluongVoucher").value = soluong
+          
+
+        }
+
+
+        function ChonHinhThuc(){
+            var tang =     document.getElementById("Tang")
+            var doi=     document.getElementById("DoiDiem")
+          
+            if(tang.checked==true){
+                document.getElementById("Div_diem").hidden=true
+            }
+            if (doi.checked == true) {
+                document.getElementById("Div_diem").hidden=false
+                 
+            }
+        }
+        
+
+
+        $(function () {
+            document.getElementById("load").style.display = 'none';
+            var arrItem = [];
+            var commaSeparatedIds = "";
+            var tang = document.getElementById("Tang");
+            var doiDiem = document.getElementById("DoiDiem");
+
+            
+
+            // phát hành voucher
+            $("#btnPhatHanh").click(function () {
+                $("#timCkeckBox #ListItem input[type=checkbox]").each(function (index, val) {
+
+                    var checkId = $(val).attr("Id");
+                    var Ischeked = $("#" + checkId).is(":checked", true)
+                    if (Ischeked) {
+                        arrItem.push(checkId);
+                    }
+
+                });
+                commaSeparatedIds = arrItem.toString();
+                arrItem = [];
+                var diemdoi=null
+                var ngayPhatHanh=$("#ngayphathanh").val()
+                var hinhthuc =0;
+                if (tang.checked==true) {
+
+                }
+                if (doiDiem.checked == true) {
+                     hinhthuc=1;
+                     diemdoi= $("#diemdoi").val()
+                }
+                $.ajax({
+                    type: "POST",
+                    data:
+                    {
+                        GetId: commaSeparatedIds,
+                        HinhThuc : hinhthuc,
+                        NgayBatDau : ngayPhatHanh,
+                        Diemdoi : diemdoi
+                    },
+                    url: "/Voucher/PhatHanhVoucher",
+                    success: function (response) {
+                        if (response == 1) {
+                       
+                            const toastLiveExample = document.getElementById('liveToast')
+                            const toast = new bootstrap.Toast(toastLiveExample)
+                            toast.show()
+                        
+                            setTimeout(function () {
+                                    document.getElementById("load").style.display = 'block';
+                                window.location.reload(1);
+                             
+
+                            }, 2000);
+
+                        } else {
+                            alert("Thất Bại");
+                        }
+                    }
+                });
+            });
+
+
+
+            //Hủy voucher
+            $("#btnHuyVoucher").click(function () {
+                $("#timCkeckBox #ListItem input[type=checkbox]").each(function (index, val) {
+
+                    var checkId = $(val).attr("Id");
+                    var Ischeked = $("#" + checkId).is(":checked", true)
+                    if (Ischeked) {
+                        arrItem.push(checkId);
+                    }
+
+                });
+                commaSeparatedIds = arrItem.toString();
+                arrItem = [];
+
+
+                $.ajax({
+                    type: "POST",
+                    data: { timCkeckBox: commaSeparatedIds },
+                    url: "/Voucher/HuyVoucher",
+                    success: function (response) {
+                        if (response == 1) {
+                            const toastLiveExample = document.getElementById('liveToast')
+                            const toast = new bootstrap.Toast(toastLiveExample)
+                            toast.show()
+
+                            setTimeout(function () {
+
+                                window.location.reload(1);
+                                document.getElementById("load").style.display = 'block';
+
+                            }, 3000);
+
+                        } else {
+                            alert("Thất Bại");
+                        }
+
+                    }
+                });
+            });
+        });
+
+
+    </script>
+}

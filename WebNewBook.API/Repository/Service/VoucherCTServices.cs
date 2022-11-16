@@ -22,11 +22,11 @@ namespace WebNewBook.API.Repository.Service
         private Random random = new Random();
         public string RandomVoucher(int length)
         {
-             string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            string characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
             return new string(Enumerable.Repeat(characters, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-        public async Task AddAutomaticallyAsync(int quantityVoucher, int lengthVoucher , string startTextVoucher, string endTextVoucher, string maVoucher)
+        public async Task AddAutomaticallyAsync(int quantityVoucher, int lengthVoucher, string startTextVoucher, string endTextVoucher, string maVoucher)
         {
 
             try
@@ -57,14 +57,14 @@ namespace WebNewBook.API.Repository.Service
 
                 throw ex;
             }
-           
+
         }
 
-        public async Task AddImportExcerAsync(IFormFile file ,string Phathanh)
+        public async Task AddImportExcerAsync(IFormFile file, string Phathanh)
         {
             try
             {
-                if (file!=null)
+                if (file != null)
                 {
 
                     DateTime ngayKetThuc = _dbcontext.Vouchers.FirstOrDefault(c => c.Id == Phathanh).EndDate;
@@ -93,7 +93,7 @@ namespace WebNewBook.API.Repository.Service
                         }
 
                     }
-                    if (list !=null)
+                    if (list != null)
                     {
 
                         foreach (var lst in list)
@@ -110,7 +110,7 @@ namespace WebNewBook.API.Repository.Service
             catch (Exception e)
             {
                 throw e;
-            
+
             }
         }
         public Voucher SoluongVoucherCT(string mavoucher)
@@ -125,7 +125,7 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                if (voucherCT!=null)
+                if (voucherCT != null)
                 {
                     voucherCT.NgayBatDau = null;
                     voucherCT.TrangThai = 0;
@@ -134,7 +134,6 @@ namespace WebNewBook.API.Repository.Service
                     _dbcontext.Vouchers.Update(SoluongVoucherCT(voucherCT.MaVoucher));
                     await _dbcontext.SaveChangesAsync();
                 }
-             
             }
             catch (Exception ex)
             {
@@ -149,7 +148,7 @@ namespace WebNewBook.API.Repository.Service
             {
                 return await _dbcontext.VoucherCTs.FirstOrDefaultAsync(c => c.Id == id) ?? null;
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
 
                 throw ex;
@@ -195,17 +194,21 @@ namespace WebNewBook.API.Repository.Service
             }
         }
 
-        public async Task HuyVouCherAsync(string id)
+        public async Task HuyVouCherAsync(List<string> id)
         {
             try
             {
 
                 if (id != null)
                 {
-                    var modal = await _dbcontext.VoucherCTs.FindAsync(id);
-                    modal.TrangThai = 3;
-                    _dbcontext.VoucherCTs.Update(modal);
-                    await _dbcontext.SaveChangesAsync();
+                    foreach (var x in id)
+                    {
+                        var modal = await _dbcontext.VoucherCTs.FindAsync(x);
+                        modal.TrangThai = 3;
+                        _dbcontext.VoucherCTs.Update(modal);
+                        await _dbcontext.SaveChangesAsync();
+                    }
+
                 }
 
 
@@ -216,19 +219,53 @@ namespace WebNewBook.API.Repository.Service
                 throw e;
             }
 
-               
+
         }
 
-        public async Task PhathanhVouCherAsync(string id)
+        public async Task PhathanhVouCherAsync(List<VoucherCT> lstvoucherCTs)
         {
             try
             {
-                if (id != null)
+                int i=0;
+                var lstCustomer = _dbcontext.KhachHangs.ToList();
+                if (lstvoucherCTs != null)
                 {
-                    var modal = await _dbcontext.VoucherCTs.FindAsync(id);
-                    modal.TrangThai = 1;
-                    _dbcontext.VoucherCTs.Update(modal);
-                    await _dbcontext.SaveChangesAsync();
+                    foreach (var x in lstvoucherCTs)
+                    {
+                        if (x.HinhThuc == 0 && lstCustomer[i]!=null)
+                        {
+                            var model = await _dbcontext.VoucherCTs.FindAsync(x.Id);
+                            model.TrangThai = 1;
+
+                            if (lstvoucherCTs.Count >= lstCustomer.Count)
+                            {
+                                model.MaKhachHang = lstCustomer[i].ID_KhachHang;
+                                i++;
+                            }
+
+                            model.HinhThuc = x.HinhThuc;
+                            model.Diemdoi = x.Diemdoi;
+                            model.NgayBatDau = x.NgayBatDau;
+                            _dbcontext.VoucherCTs.Update(model);
+                            await _dbcontext.SaveChangesAsync();
+                            if (i==lstCustomer.Count)
+                            {
+                                break;
+                            }
+                        }
+                        if (x.HinhThuc==1)
+                        {
+                            var model = await _dbcontext.VoucherCTs.FindAsync(x.Id);
+                            model.TrangThai = 1;
+                            model.HinhThuc = x.HinhThuc;
+                            model.Diemdoi = x.Diemdoi;
+                            model.NgayBatDau = x.NgayBatDau;
+                            _dbcontext.VoucherCTs.Update(model);
+                            await _dbcontext.SaveChangesAsync();
+                        }
+                       
+                    }
+
                 }
             }
             catch (Exception ex)
@@ -237,6 +274,22 @@ namespace WebNewBook.API.Repository.Service
                 throw ex;
             }
 
+        }
+
+        public async Task<IEnumerable<VoucherCT>> GetVoucherOfCustomer(string maCustomer)
+        {
+            try
+            {
+
+                var model = await _dbcontext.VoucherCTs.Where(c => c.TrangThai == 1 && c.MaKhachHang == maCustomer).ToListAsync();
+                return model;
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
     }
 }

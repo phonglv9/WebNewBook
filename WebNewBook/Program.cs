@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
-using System.Net.Http.Headers;
-using System.Text;
 using WebNewBook.Models;
 using WebNewBook.Services;
-using WebNewBook.ViewModel;
 
 var builder = WebApplication.CreateBuilder(args);
 
+
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddTransient<IHeaderService,HeaderService>();
+builder.Services.AddTransient<IHeaderService, HeaderService>();
+builder.Services.AddSingleton(builder.Configuration.GetSection("VNPayConfig").Get<VNPayConfig>());
+builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, config =>
 {
@@ -34,6 +34,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();   
 
 app.UseAuthentication();
 

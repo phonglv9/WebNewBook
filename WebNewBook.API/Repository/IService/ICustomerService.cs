@@ -8,5 +8,6 @@ namespace WebNewBook.API.Repository.IService
         Task AddKhachHangAsync(KhachHang khachHang);
         Task UpdateKhachHangAsync(KhachHang khachHang);
         Task DeleteKhachHangAsync(string id);
+        Task<KhachHang?> GetKhachHangByEmail(string email);
     }
 }

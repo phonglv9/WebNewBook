@@ -9,6 +9,7 @@ namespace WebNewBook.Component
     
     public class HeaderListViewComponent : ViewComponent
     {
+        
         private IHeaderService _headerService;
         public HeaderListViewComponent(IHeaderService headerService)
         {
@@ -25,11 +26,13 @@ namespace WebNewBook.Component
                 data = JsonConvert.DeserializeObject<List<CartItem>>(jsonData);
             }
             var b = data.Where(n => n.Tensp != null).Select(n => n.Tensp).ToList();
-            ViewBag.giohang = data;
-            ViewBag.thanhtien = data.Sum(a => a.ThanhTien);
+            var tongTien = data.Sum(a => a.ThanhTien);
+        
+            ViewBag.thanhtien = tongTien;
             ViewBag.soluong = data.Sum(a => a.Soluong);
             ViewBag.count = b.Count;
             ViewBag.giohang = data;
+            HttpContext.Session.SetString("amout", tongTien.ToString());
             return View(headers);
         }
     }

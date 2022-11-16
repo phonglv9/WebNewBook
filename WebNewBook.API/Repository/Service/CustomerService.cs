@@ -1,7 +1,7 @@
-﻿using WebNewBook.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using WebNewBook.API.Data;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
-using Microsoft.EntityFrameworkCore;
 
 namespace WebNewBook.API.Repository.Service
 {
@@ -18,7 +18,11 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                khachHang.ID_KhachHang = Guid.NewGuid().ToString();
+                if (khachHang.ID_KhachHang == null)
+                {
+                    khachHang.ID_KhachHang = Guid.NewGuid().ToString();
+                }
+
                 khachHang.TrangThai = 1;
                 _dbcontext.Add(khachHang);
                 await _dbcontext.SaveChangesAsync();
@@ -94,6 +98,18 @@ namespace WebNewBook.API.Repository.Service
             {
                 _dbcontext.Update(khachHang);
                 await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public async Task<KhachHang?> GetKhachHangByEmail(string email)
+        {
+            try
+            {
+                return await _dbcontext.KhachHangs.FirstOrDefaultAsync(c => c.Email == email) ?? null;
             }
             catch (Exception ex)
             {

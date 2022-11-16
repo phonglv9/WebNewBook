@@ -1,8 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http; 
 using Newtonsoft.Json;
-using System.Data;
-using System.Reflection;
 using System.Text.Json;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
@@ -10,8 +7,9 @@ using WebNewBook.Models;
 
 namespace WebNewBook.Controllers
 {
-	public class GioHangController : Controller
-	{
+
+    public class GioHangController : Controller
+    {
         Uri baseAdress = new Uri("https://localhost:7266/api");
         HttpClient _httpClient;
 
@@ -24,23 +22,24 @@ namespace WebNewBook.Controllers
 
         }
 
-        public async Task<IActionResult> GetSanPham()
-        {
-            //Model home
-            List<SanPham> modelHome = new List<SanPham>();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/giohang/SanPham").Result;
-            if (response.IsSuccessStatusCode)
-            {
-                string jsonData = response.Content.ReadAsStringAsync().Result;
-                modelHome = JsonConvert.DeserializeObject<List<SanPham>>(jsonData);
+
+        //public async Task<IActionResult> GetSanPham()
+        //{
+        //    Model home
+        //    List<SanPham> modelHome = new List<SanPham>();
+        //    HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/giohang/SanPham").Result;
+        //    if (response.IsSuccessStatusCode)
+        //    {
+        //        string jsonData = response.Content.ReadAsStringAsync().Result;
+        //        modelHome = JsonConvert.DeserializeObject<List<SanPham>>(jsonData);
 
 
-            };
+        //    };
 
 
 
-            return View(modelHome);
-        }
+        //    return View(modelHome);
+        //}
         public List<HomeVM> ListData()
         {
             List<HomeVM> modelHome = new List<HomeVM>();
@@ -56,26 +55,16 @@ namespace WebNewBook.Controllers
 
         }
 
-        public List<CartItem> Giohangs
+        public List<CartItem> Giohangs()
         {
-            get
-            {
+            
                 List<CartItem> data = new List<CartItem>();
-                var opt = new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, WriteIndented = true };
+
                 var jsonData = Request.Cookies["Cart"];
                 if (jsonData != null)
                 {
                     data = JsonConvert.DeserializeObject<List<CartItem>>(jsonData);
                 }
-
-
-
-
-
-
-
-
-
                 if (data == null)
                 {
                     return data;
@@ -85,15 +74,17 @@ namespace WebNewBook.Controllers
                 }
 
                 return data;
-            }
+            
         }
 
         public async Task<IActionResult> Index()
         {
-            ViewBag.giohang = Giohangs;
-            ViewBag.thanhtien = Giohangs.Sum(a => a.ThanhTien);
-            ViewBag.soluong = Giohangs.Sum(a => a.Soluong);
-
+            var cart = Giohangs();
+            var tongTien = cart.Sum(a => a.ThanhTien);
+            ViewBag.giohang = cart;
+            ViewBag.thanhtien = tongTien;
+            ViewBag.soluong = cart.Sum(a => a.Soluong);
+            HttpContext.Session.SetString("amout", tongTien.ToString());
             return View("Index");
         }
 
@@ -113,7 +104,7 @@ namespace WebNewBook.Controllers
             };
 
 
-            var myCart = Giohangs;
+            var myCart = Giohangs();
             var item = myCart.SingleOrDefault(c => c.Maasp == id);
 
             if (item == null)
@@ -125,7 +116,7 @@ namespace WebNewBook.Controllers
                     Tensp = modelHome.TenSanPham,
                     DonGia = modelHome.GiaBan,
                     Soluong = SoLuong,
-
+                    
 
                 };
                 myCart.Add(item);
@@ -142,18 +133,19 @@ namespace WebNewBook.Controllers
             {
                 item.Soluong++;
             }
-            var opt = new JsonSerializerOptions() { WriteIndented = true };
-            var json = System.Text.Json.JsonSerializer.Serialize(myCart, opt);
-            Response.Cookies.Append("Cart", json);
+            var opt = new CookieOptions() {  Expires =  new DateTimeOffset(DateTime.Now.AddDays(3))};
+           
+            var json = System.Text.Json.JsonSerializer.Serialize(myCart);
+            Response.Cookies.Append("Cart", json, opt);
 
 
-            return RedirectToAction("Index");
+            return Json("Thêm vào giỏ hàng thành công");
         }
 
         public IActionResult SuaSoLuong(string id, int soluongmoi)
         {
-            //var sanPhams = ListData().SingleOrDefault(c => c.sanPhams.ID_SanPham == id);
-            var myCart = Giohangs;
+           
+            var myCart = Giohangs();
             var item = myCart.SingleOrDefault(c => c.Maasp == id);
 
             if (item != null)
@@ -161,16 +153,19 @@ namespace WebNewBook.Controllers
 
                 item.Soluong = soluongmoi;
             }
-            var opt = new JsonSerializerOptions() { WriteIndented = true };
-            var json = System.Text.Json.JsonSerializer.Serialize(myCart, opt);
-            Response.Cookies.Append("Cart", json);
+       
+            var json = System.Text.Json.JsonSerializer.Serialize(myCart);
+            Response.Cookies.Append("Cart", json, new Microsoft.AspNetCore.Http.CookieOptions
+            {
+                Expires = DateTimeOffset.Now.AddDays(3)
+            });
             return RedirectToAction("Index");
 
 
         }
         public IActionResult XoaKhoiGio(string id)
         {
-            var myCart = Giohangs;
+            var myCart = Giohangs();
             var item = myCart.SingleOrDefault(c => c.Maasp == id);
             if (item != null)
             {
