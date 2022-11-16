@@ -5,6 +5,7 @@ using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.API.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     [ApiController]
     [Route("[controller]")]
     public class SanPhamController : Controller
@@ -61,6 +62,59 @@ namespace WebNewBook.API.Controllers
             catch (Exception e)
             {
                 return BadRequest(e.Message);
+            }
+        }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> Create(NhanVien nhanVien, IFormFile fanh)
+        //{
+        //    if (fanh != null)
+        //    {
+        //        if (fanh != null)
+        //        {
+        //            string extensoin = Path.GetExtension(fanh.FileName);
+        //            string image = nhanVien.HoVaTen + extensoin;
+        //            nhanVien.HinhAnh = await UpLoadFile(fanh, @"SP", image.ToLower());
+        //        }
+
+        //        if (string.IsNullOrEmpty(nhanVien.HinhAnh)) nhanVien.HinhAnh = "default.jpg";
+        //        var a = _context.NhanViens.ToList();
+        //        nhanVien.ID_NhanVien = "NV" + a.Count;
+        //        _context.Add(nhanVien);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    return View(nhanVien);
+        //}
+
+        private static async Task<string> UpLoadFile(IFormFile file, string sDirectory, string newname)
+        {
+            try
+            {
+                if (newname == null) newname = file.FileName;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", sDirectory);
+                Directory.CreateDirectory(path);
+                string pathfile = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "images", sDirectory, newname);
+                var supportedtypes = new[] { "jpg", "jpeg", "png", "gif" };
+                var fileext = Path.GetExtension(file.FileName).Substring(1);
+                if (!supportedtypes.Contains(fileext.ToLower()))
+                {
+                    return null;
+                }
+                else
+                {
+                    using (var stream = new FileStream(pathfile, FileMode.Create))
+                    {
+                        await file.CopyToAsync(stream);
+                    }
+                    return newname;
+                }
+            }
+            catch (Exception ex)
+            {
+
+                return null;
             }
         }
     }

@@ -27,7 +27,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="SanPham.HinhAnh" class="control-label">Hình ảnh</label>
-                <input type="file" asp-for="SanPham.HinhAnh" accept=".jpg, .png, .jpeg, .gif, .jfif, .bmp, .tif, .tiff|image/*" />
+                <input type="text" asp-for="SanPham.HinhAnh" hidden/>
+                <input type="file" accept=".jpg, .png, .jpeg, .gif, .jfif, .bmp, .tif, .tiff|image/*" class="form-control" name="file"/>
                 <span asp-validation-for="SanPham.HinhAnh" class="text-danger"></span>
             </div>
             <div class="form-group">

@@ -9,6 +9,15 @@ using System.Text.Json.Serialization;
 using WebNewBook.API.Data;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.API.Repository.Service;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using System.Text;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using WebNewBook.Model;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using static WebNewBook.API.Repository.Service.SendMailConfig;
+using NETCore.MailKit.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("LoginContextConnection") ?? throw new InvalidOperationException("Connection string 'LoginContextConnection' not found.");
@@ -32,10 +41,14 @@ builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true)
 
 builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-98PG69Q\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook"));
 
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=LoginFinalASM;User ID=hung;Password=hung;"));
 
-
-
-//builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=LoginFinalASM;User ID=hung;Password=hung;"));
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+})
+    .AddEntityFrameworkStores<LoginContext>().AddDefaultTokenProviders()
+    .AddDefaultUI(); ;
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<LoginContext>();
 
@@ -55,6 +68,7 @@ builder.Services.AddScoped<IProfileCustomerService, ProfileCustomerService>();
 builder.Services.AddScoped<IGioHangService, GioHangService>();
 builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 
+builder.Services.AddTransient<IEmailService, SendMailConfig>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {
     var secret = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]);
