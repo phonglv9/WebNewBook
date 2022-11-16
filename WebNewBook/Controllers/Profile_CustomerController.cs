@@ -11,11 +11,11 @@ namespace WebNewBook.Controllers
         {
             HttpClient _httpClient = new HttpClient(); 
             string Id_khachang = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
-            HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7266/api/Customer/" + Id_khachang).Result;
-            
-            if (response.IsSuccessStatusCode)
+            HttpResponseMessage responseCustomer = _httpClient.GetAsync("https://localhost:7266/api/Customer/" + Id_khachang).Result;
+     //       HttpResponseMessage responseOrder = _httpClient.GetAsync("https://localhost:7266/api/profile/" + Id_khachang).Result;
+            if (responseCustomer.IsSuccessStatusCode)
             {
-                string jsondata = response.Content.ReadAsStringAsync().Result;
+                string jsondata = responseCustomer.Content.ReadAsStringAsync().Result;
                 khachHang = JsonConvert.DeserializeObject<KhachHang>(jsondata);
             }
             
@@ -23,6 +23,7 @@ namespace WebNewBook.Controllers
             return View();
         }
 
+        // màn show thông tin khách hàng 
         public IActionResult profile(KhachHang khachHang)
         {
             HttpClient _httpClient = new HttpClient();

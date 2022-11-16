@@ -51,8 +51,10 @@ builder.Services.AddScoped<ISanPhamService, SanPhamService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<IBookSevice, BookService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
+builder.Services.AddScoped<IProfileCustomerService, ProfileCustomerService>();
 builder.Services.AddScoped<IGioHangService, GioHangService>();
 builder.Services.AddScoped<IHoaDonService, HoaDonService>();
+
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {
     var secret = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]);
