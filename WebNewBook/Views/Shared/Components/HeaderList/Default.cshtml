@@ -34,7 +34,7 @@
                 <!-- LOGO -->
                 <div class="col-md-3">
                     <div class="header-logo">
-                        <a href="#" class="logo">
+                        <a href="/Home" class="logo">
                             <img src="~/img/logo.png" width="130px" alt="">
                         </a>
                     </div>
@@ -189,7 +189,8 @@
         <!-- responsive-nav -->
         <div id="responsive-nav">
             <!-- NAV -->
-            <ul class="main-nav nav navbar-nav">
+       @*     xấu quá với vở form nên xóa*@
+@*            <ul class="main-nav nav navbar-nav">
                 <li class="active"><a href="/Home">Trang chủ</a></li>
 
                 @if (Model != null)
@@ -198,7 +199,7 @@
                         <li><a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})">@item.TenDanhMuc</a></li>
                     }
 
-            </ul>
+            </ul>*@
             <!-- /NAV -->
         </div>
         <!-- /responsive-nav -->

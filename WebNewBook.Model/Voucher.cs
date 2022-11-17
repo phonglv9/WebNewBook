@@ -20,7 +20,7 @@ namespace WebNewBook.Model
         public int? SoLuong { get; set; }
         public double MenhGia { get; set; }
         public double MenhGiaDieuKien { get; set; }
-        public string GhiChu { get; set; } = String.Empty;
+        public string GhiChu { get; set; } 
         public int TrangThai { get; set; }
         [ForeignKey("NhanVien")]
         public string MaNhanVien { get; set; }

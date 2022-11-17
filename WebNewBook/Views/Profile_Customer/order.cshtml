@@ -1,4 +1,6 @@
-﻿
+﻿@{
+    var lstorder = ViewBag.lstOrder;
+}
     <link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
     <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
@@ -34,32 +36,35 @@
                     </div>
                 </div>
                 <div class="bg-white mb-1  p-3">
-                    <div style="font-size: 15px;">
-                        <table class="table ">
+                    <div style="font-size: 13px;">
+                    <div>
+                        <table class="table table-borderless">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                    <th scope="col">Handle</th>
-                                    <th scope="col"></th>
-
-
+                                    <th scope="col">Đơn Hàng #</th>
+                                    <th scope="col">Ngày</th>
+                                    <th scope="col">Người nhận</th>
+                                    <th scope="col">Tổng tiền</th>
+                                    <th scope="col">Trạng thái</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>mdo</td>
-                                    <td>mdo</td>
-                                    <td><a href="#" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
-                                </tr>
+                                @foreach (var x in lstorder)
+                                {
+                                    <tr>
+                                        <td>@x.ID_HoaDon</td>
+                                        <td>@x.NgayMua.ToString("d/M/yyyy")</td>
+                                        <td>@x.TenNguoiNhan</td>
+                                        <td>@x.TongTien</td>
+                                        <td>@(x.TrangThai == 1 ? "Hoàn Tất" : "Thất bại")</td>
+                                        <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                    </tr>
+                                }
+
 
                             </tbody>
                         </table>
+                    </div>
                     </div>
                 </div>
             </div>

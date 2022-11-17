@@ -5,6 +5,7 @@ namespace WebNewBook.API.Repository.IService
     {
         Task<List<HoaDon>> GetOrdersAsync(string makhachhang);
         Task<List<HoaDonCT>> GetOrderDetailAsync(string mahoadon);
+        Task<HoaDon?> GetOrderByIdAsync(string id);
 
     }
 }
