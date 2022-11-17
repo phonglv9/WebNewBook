@@ -274,8 +274,8 @@
 										 <span class="col-md-3" > <img src="~/img/voucher.png " style="width: 120px;"></span> 
 										 <span class="col-md-2"><h4>@item.ID_Voucher</h4></span> 
 										 <span class="col-md-2"><b>@item.TenPhatHanh</b></span> 
-										 <span class="col-md-5">Mã giảm: @item.MenhGia cho đơn hàng từ @item.MenhGia 
-										 từ ngày @item.NgayBatDau đến @item.NgayHetHan</span> 
+										 <span class="col-md-5">Mã giảm: @item.MenhGia.ToString("#,##0").Replace(',', '.')đ cho đơn hàng từ @item.MenhGia.ToString("#,##0").Replace(',', '.')đ
+										 từ ngày @item.NgayBatDau.ToString("dd/MM/yyyy") đến @item.NgayHetHan.ToString("dd/MM/yyyy")</span> 
 										 
 										 
 									  
