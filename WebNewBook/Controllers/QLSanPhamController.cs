@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace WebNewBook.Controllers
 {
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public class QLSanPhamController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -115,11 +115,20 @@ namespace WebNewBook.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(SanPhamAPI sanPhamAPI, string[] SelectedSachs)
+        public async Task<IActionResult> Create(SanPhamAPI sanPhamAPI, string[] SelectedSachs, IFormFile file)
         {
             sanPhamAPI.SanPham.ID_SanPham = "SP" + Guid.NewGuid().ToString();
             sanPhamAPI.Sachs = SelectedSachs;
+            sanPhamAPI.SanPham.HinhAnh = file.FileName;
             string error = "";
+            if (SelectedSachs.Length == 0)
+            {
+                error = "Sách hoặc bộ sách không hợp lệ!";
+
+                ViewBag.Sachs = await GetSelectListItems();
+                ViewBag.Error = error;
+                return View(sanPhamAPI);
+            }
             if (ModelState.IsValid)
             {
                 double giaBan = 0;
@@ -149,10 +158,11 @@ namespace WebNewBook.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(SanPhamAPI sanPhamAPI)
+        public async Task<IActionResult> Update(SanPhamAPI sanPhamAPI, IFormFile file)
         {
             var sachs = await GetSachs(sanPhamAPI.SanPham.ID_SanPham);
             sanPhamAPI.Sachs = sachs.Select(c => c.ID_Sach);
+            sanPhamAPI.SanPham.HinhAnh = file.FileName;
             string error = "";
             if (ModelState.IsValid)
             {
@@ -200,7 +210,54 @@ namespace WebNewBook.Controllers
             }
 
             return BadRequest();
+        }
 
+        private static string UpLoadFile(IFormFile file, string newname)
+        {
+            try
+            {
+                if (newname == null) newname = file.FileName;
+                string path = Path.Combine(Directory.GetCurrentDirectory(), "File");
+                CreateIfMissing(path);
+                string pathfile = Path.Combine(Directory.GetCurrentDirectory(), "File", newname);
+                string pathfile_Db = Path.Combine("File", newname);
+                var supportedtypes = new[] { "jpg", "png" };
+                var fileext = System.IO.Path.GetExtension(file.FileName).Substring(1);
+                if (!supportedtypes.Contains(fileext.ToLower()))
+                {
+                    return null;
+                }
+                else
+                {
+                    using (var stream = new FileStream(pathfile, FileMode.Create))
+                    {
+                        file.CopyToAsync(stream);
+                    }
+                    return pathfile;
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+                return "lỗi";
+            }
+        }
+
+        private static void CreateIfMissing(string path)
+        {
+            try
+            {
+                bool a = Directory.Exists(path);
+                if (!a)
+                {
+                    Directory.CreateDirectory(path);
+                }
+            }
+            catch (Exception ex)
+            {
+                ex.ToString();
+
+            }
         }
     }
 }

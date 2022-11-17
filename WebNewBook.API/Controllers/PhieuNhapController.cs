@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 
@@ -6,6 +7,8 @@ namespace WebNewBook.API.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "NhanVien")]
     public class PhieuNhapController : Controller
     {
         private readonly IPhieuNhapService phieuNhapService;
@@ -42,34 +45,5 @@ namespace WebNewBook.API.Controllers
 
             return Ok();
         }
-
-        [HttpPut]
-        public async Task<ActionResult> UpdatePhieuNhapAsync(PhieuNhap nv)
-        {
-            try
-            {
-                await phieuNhapService.UpdatePhieuNhapAsync(nv);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                throw new Exception(e.Message);
-            }
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> DeletePhieuNhapAsync(string id)
-        {
-            try
-            {
-                await phieuNhapService.DeletePhieuNhapAsync(id);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
-        }
-
     }
 }

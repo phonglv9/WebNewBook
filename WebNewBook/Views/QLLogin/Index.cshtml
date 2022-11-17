@@ -11,17 +11,21 @@
             <div class="col-md-4">
                 @if (ViewBag.nhanVien)
                 {
-                <h3>Nhân viên</h3>
+                    <h3>Nhân viên</h3>
                 }
                 else
                 {
-                <h3>Khách hàng</h3>
+                    <h3>Khách hàng</h3>
+                }
+                @if (!string.IsNullOrEmpty(ViewBag.Error))
+                {
+                    <h1 class="text-danger">@ViewBag.Error</h1>
                 }
                 <form asp-action="Index" method="post" enctype="multipart/form-data">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Email" class="col-sm-2 col-form-label">Email</label>
-                        <input asp-for="Email" class="form-control"/>
+                        <input asp-for="Email" class="form-control" />
                         <span asp-validation-for="Email" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -30,7 +34,7 @@
                         <span asp-validation-for="Password" class="text-danger"></span>
                     </div>
                     <div class="form-group" hidden>
-                        <input asp-for="NhanVien" class="form-control" value=@ViewBag.nhanVien/>
+                        <input asp-for="NhanVien" class="form-control" value=@ViewBag.nhanVien />
                     </div>
                     <button type="submit" class="btn btn-primary">Đăng nhập</button>
                 </form>

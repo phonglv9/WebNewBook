@@ -11,7 +11,7 @@
 }
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create" method="post" enctype="multipart/form-data">
+        <form enctype="multipart/form-data" asp-action="Create" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="SanPham.TenSanPham" class="control-label">Tên sản phẩm</label>
@@ -25,14 +25,13 @@
                 </select>
             </div>
             <div class="form-group">
-                <label asp-for="SanPham.HinhAnh" class="control-label">Hình ảnh</label>
-                <input type="file" asp-for="SanPham.HinhAnh" accept=".jpg, .png, .jpeg, .gif, .jfif, .bmp, .tif, .tiff|image/*" />
-                <span asp-validation-for="SanPham.HinhAnh" class="text-danger"></span>
+                <label class="control-label">Hình ảnh</label>
+                <input type="file" name="file" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="SanPham.SoLuong" class="control-label">Số lượng</label>
                 <input asp-for="SanPham.SoLuong" class="form-control" />
-                <span asp-validation-for="SanPham.HinhAnh" class="text-danger"></span>
+                <span asp-validation-for="SanPham.SoLuong" class="text-danger"></span>
             </div>
             <div class="form-group" hidden>
                 <input asp-for="SanPham.GiaBan" class="form-control" value="0"/>
@@ -49,7 +48,8 @@
             </div>
             <input asp-for="SanPham.ID_SanPham" value="SP" hidden />
             <input asp-for="SLChuaDoi" value="0" hidden />
-            <button type="submit" class="btn btn-primary">Nhập sản phẩm</button>
+            <input asp-for="SanPham.HinhAnh" value="0" hidden />
+            <button onclick="GetFileName()" type="submit" class="btn btn-primary">Nhập sản phẩm</button>
         </form>
     </div>
 </div>
