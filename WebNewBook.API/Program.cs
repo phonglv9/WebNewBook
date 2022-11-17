@@ -41,7 +41,7 @@ builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true)
 
 builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Password=Ph@16158;Integrated Security=True;Database=WebNewBook"));
 
-builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=LoginFinalASM;User ID=hung;Password=hung;"));
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Password=Ph@16158;Integrated Security=True;Database=WebNewBook"));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {

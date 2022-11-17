@@ -52,12 +52,25 @@ namespace WebNewBook.Controllers
                 return data;
             
         }
+        //public JsonResult RemoveVoucher()
+        //{
+        //    HttpContext.Session.Remove("idVoucher");
+        //    return Json("Thành công");
+        //}
+        public IActionResult RemoveVoucher()
+        {
+            HttpContext.Session.Remove("idVoucher");
+            HttpContext.Session.Remove("amoutVoucher");
+            return RedirectToAction("CheckOut");
+        }
         public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, string messageVC)
         {
+            var idVoucher = HttpContext.Session.GetString("idVoucher");
             double tongTien = Convert.ToDouble( HttpContext.Session.GetString("amout"));
             double menhGiaVC = Convert.ToDouble( HttpContext.Session.GetString("amoutVoucher"));
             double menhGiaDK = Convert.ToDouble(HttpContext.Session.GetString("menhgiadk"));
             ViewBag.MessageVC = messageVC;
+            
             var khachHang = await GetKhachHang();
             //Khi khách hàng đã đăng nhập
             if (!string.IsNullOrEmpty(khachHang.ID_KhachHang))
@@ -87,6 +100,7 @@ namespace WebNewBook.Controllers
 
                                 VoucherPaymentVM VoucherPayment = new VoucherPaymentVM();
                                 VoucherPayment.ID_Voucher = VoucherCTs.Id;
+                                VoucherPayment.TenPhatHanh = Vouchers.TenPhatHanh;
                                 VoucherPayment.MenhGia = Vouchers.MenhGia;
                                 VoucherPayment.MenhGiaDieuKien = Vouchers.MenhGiaDieuKien;
                                 VoucherPayment.NgayBatDau = VoucherCTs.NgayBatDau;
@@ -128,6 +142,7 @@ namespace WebNewBook.Controllers
                 {
                    tongTien = tongTien - menhGiaVC;
                    ViewBag.MenhGiaVC = menhGiaVC;
+                   ViewBag.IDVoucher = idVoucher;
                 }
             
 
@@ -359,20 +374,20 @@ namespace WebNewBook.Controllers
                             HttpResponseMessage responseVoucher = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VouCher/{voucherCT.MaVoucher}");
                             string jsonData2 = responseVoucher.Content.ReadAsStringAsync().Result;
                             voucher = JsonConvert.DeserializeObject<Voucher>(jsonData2);
-                            if (tongTien >= voucher.MenhGiaDieuKien && ngayHienTai >= voucher.StartDate && ngayHienTai <= voucher.EndDate)
+                            if (tongTien >= voucher.MenhGiaDieuKien && ngayHienTai >= voucherCT.NgayBatDau && ngayHienTai <= voucherCT.NgayHetHan)
                             {
-                                //tongTien = tongTien - voucher.MenhGia;
+                                
                                 HttpContext.Session.SetString("idVoucher", maVoucher.ToString());
                                 HttpContext.Session.SetString("amoutVoucher", voucher.MenhGia.ToString());
                                 HttpContext.Session.SetString("menhgiadk", voucher.MenhGiaDieuKien.ToString());
                                 //HttpContext.Session.SetString("amout", tongTien.ToString());
-                                return RedirectToAction("CheckOut");
-                            }else if (voucher.TrangThai == 2 || voucherCT.TrangThai == 2)
+                              
+                            }else if (voucherCT.TrangThai == 2)
                             {
                                 ViewBag.MessageVC = "Voucher đã hết hiệu lực";
-                            }else if (ngayHienTai < voucher.StartDate)
+                            }else if (ngayHienTai < voucherCT.NgayBatDau)
                             {
-                                ViewBag.MessageVC = "Voucher chưa phát hàng, bạn có thể sử dụng vào lúc"+voucher.StartDate;
+                                ViewBag.MessageVC = "Voucher chưa phát hàng, bạn có thể sử dụng vào lúc"+ voucherCT.NgayBatDau;
                             }
                             else if (ngayHienTai > voucher.EndDate )
                             {
