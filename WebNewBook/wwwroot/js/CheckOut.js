@@ -109,7 +109,7 @@ $(document).ready(function () {
         validatePhonenumber();
         validateRadio();
         if (
-            fullnameError == true && emailError == true && adressError == true && phonenumberError == true && 
+            fullnameError == true && emailError == true && adressError == true && phonenumberError == true 
         ){
             return true;
         } else {
