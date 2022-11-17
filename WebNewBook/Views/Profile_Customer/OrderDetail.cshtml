@@ -1,4 +1,7 @@
-﻿
+﻿@{
+  var lstOrderdetail=  ViewBag.lstOrder;
+    var orderbyid =  ViewBag.hoadonById ;
+}
     <link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
     <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
@@ -22,10 +25,10 @@
                     <div style="font-size: 13px;">
                         <h6>Chi tiết đơn hàng</h6>
                         <p><small class="rounded-pill p-1 bg-primary text-white ">Đơn hàng đang sử lý</small></p>
-                        <p>Mã đơn hàng : <span class="fw-bold">10202002</span></p>
-                        <p>Ngày mua : <span class="fw-bold">10202002</span></p>
-                        <p>Tổng tiền : <span class="fw-bold">10202002</span></p>
-                        <p>Ghi chú : <span>(Không có) </span></p>
+                    <p>Mã đơn hàng : <span class="fw-bold">@orderbyid.ID_HoaDon</span></p>
+                     <p>Ngày mua : <span class="fw-bold">@orderbyid.NgayMua.ToString("d/M/yyyy")</span></p>
+                    <p>Tổng tiền : <span class="fw-bold">@orderbyid.TongTien</span></p>
+                    <p>Ghi chú : <span>@orderbyid.GhiChu </span></p>
 
                     </div>
 
@@ -43,38 +46,40 @@
 
                     </div>
                 </div>
-                <div class="bg-white mb-1  p-3">
-                    <div class="row  " style="font-size: 13px;">
-                        <div class="col-4">
-                            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
-                                <p class="card-header fw-bold">THÔNG TIN NGƯỜI NHẬN</p>
-                                <div class="card-body">
-                                    <p>Name</p>
-                                    <p>Address</p>
-                                    <p>Tel</p>
-                                </div>
+                <div class="bg-white ">
+                <div class="row p-2">
+                    <div class="col-sm-4">
+                        <div class="card  h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">THÔNG TIN NGƯỜI NHẬN</h5>
+                                <p>@orderbyid.TenNguoiNhan</p>
+                                <p>@orderbyid.DiaChiGiaoHang</p>
+                                <p>Tel: <span>@orderbyid.SDT</span> </p>
                             </div>
                         </div>
-                        <div class="col-4">
-                            <div class="card text-bg-light mb-3" style="max-width: 120rem;">
-                                <p class="card-header fw-bold">PHƯƠNG THỨC VẬN CHUYỂN</p>
-                                <div class="card-body">
-                                    <p>Name</p>
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-4">
-                            <div class="card text-bg-light mb-3" style="max-width: 18rem;">
-                                <p class="card-header fw-bold">PHƯƠNG THỨC VẬN CHUYỂN</p>
-                                <div class="card-body">
-                                    <p>Name</p>
-
-                                </div>
-                            </div>
-                        </div>
-
                     </div>
+                    <div class="col-sm-4">
+                        <div class="card  h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">PHƯƠNG THỨC VẬN CHUYỂN</h5>
+                                <p>Giao hàng tiêu chuẩn</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card  h-100">
+                            <div class="card-body">
+                                <h5 class="card-title">PHƯƠNG THỨC THANH TOÁN</h5>
+                         
+                                <p>Thanh toán khi nhận được hàng</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+
+
 
 
                 </div>

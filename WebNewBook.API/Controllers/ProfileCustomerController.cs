@@ -38,5 +38,16 @@ namespace WebNewBook.API.Controllers
             var model = await _profileCustomerService.GetOrderDetailAsync(mahoadon);
             return model;
         }
+        /// <summary>
+        /// Gọi Order theo Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("GetOrderById/{id}")]
+        public async Task<HoaDon> GetOrderById(string id)
+        {
+            var model = await _profileCustomerService.GetOrderByIdAsync(id);
+            return model;
+        }
     }
 }

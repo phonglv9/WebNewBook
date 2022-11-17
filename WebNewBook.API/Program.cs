@@ -10,10 +10,6 @@ using WebNewBook.API.Data;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.API.Repository.Service;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
 using WebNewBook.Model;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using static WebNewBook.API.Repository.Service.SendMailConfig;
@@ -41,7 +37,7 @@ builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true)
 
 builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-98PG69Q\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook"));
 
-builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=LoginFinalASM;User ID=hung;Password=hung;"));
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=DESKTOP-98PG69Q\\SQLEXPRESS;Initial Catalog=LoginWebNewBook;User ID=cuonglvph13705;Password=123;"));
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
@@ -64,6 +60,7 @@ builder.Services.AddScoped<ISanPhamService, SanPhamService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<IBookSevice, BookService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
+builder.Services.AddScoped<IFpointService, FpointService>();
 builder.Services.AddScoped<IProfileCustomerService, ProfileCustomerService>();
 builder.Services.AddScoped<IGioHangService, GioHangService>();
 builder.Services.AddScoped<IHoaDonService, HoaDonService>();
