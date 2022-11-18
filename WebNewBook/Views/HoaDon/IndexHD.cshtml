@@ -38,6 +38,7 @@
                                 <th>Tên sản phẩm</th>
                                 <th>Ngày mua</th>
                                 <th>số lượng</th>
+                                <th>Trạng Thái</th>
                                 <th>Chi Tiết</th>
                             </tr>
                         </thead>
@@ -51,6 +52,31 @@
                                     <td>@a.sanPham.TenSanPham</td>
                                     <td>@a.hoaDon.NgayMua</td>
                                     <td>@a.hoaDonCT.SoLuong</td>
+                                        <td>
+                                            @if (@a.hoaDon.TrangThai==0){
+                                                <h4>Không tồn tại</h4>
+                                            }
+                                            else if (@a.hoaDon.TrangThai == 1)
+                                            {
+                                                <h4>Đặt hàng</h4>
+                                            }
+                                            else if (@a.hoaDon.TrangThai == 2)
+                                            {
+                                                <h4>Đã thanh toán</h4>
+                                            }
+                                            else if (@a.hoaDon.TrangThai == 3)
+                                            {
+                                                <h4>Đơn hàng thanh toán thất bại</h4>
+                                            }
+                                            else if (@a.hoaDon.TrangThai == 4)
+                                            {
+                                                <h4>Trả hàng</h4>
+                                            }
+                                            else  
+                                            {
+                                                <h4>Thành công </h4>
+                                            }
+                                        </td>
                                     <td><a asp-action="ChiTiet" asp-route-id="@a.hoaDonCT.ID_HDCT">Chi Tiết</a> </td>
 
                                 </tr>
