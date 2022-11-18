@@ -36,8 +36,8 @@
                     <hr>
                     <div class="fst-italic">
                     <p>F-point : <a asp-action="FpointHistory">@Model.DiemTichLuy </a>đ</p>
-                        <p>Số đơn hàng thành công năm 2022:      <span class="fw-semibold mx-5">@ViewBag.soLuongOrder</span></p>
-                    <p>Số tiền đã thanh toán 2022:         <span class="fw-semibold mx-5">@ViewBag.tongTienOrder</span></p>
+                        <p>Số đơn hàng thành công năm @DateTime.Now.Year:      <span class="fw-semibold mx-5">@ViewBag.soLuongOrder</span></p>
+                    <p>Số tiền đã thanh toán @DateTime.Now.Year:         <span class="fw-semibold mx-5">@ViewBag.tongTienOrder</span></p>
 
                     </div>
                 </div>
