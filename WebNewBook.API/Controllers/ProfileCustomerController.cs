@@ -49,5 +49,11 @@ namespace WebNewBook.API.Controllers
             var model = await _profileCustomerService.GetOrderByIdAsync(id);
             return model;
         }
+        [HttpGet("GetListOrder/{mahoadon}")]
+        public async Task<List<ViewHoaDon>> GetListOrderDetail(string mahoadon)
+        {
+            var model = await _profileCustomerService.GetListOrder(mahoadon);
+            return model;
+        } 
     }
 }
