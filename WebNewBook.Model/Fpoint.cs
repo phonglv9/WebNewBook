@@ -13,9 +13,9 @@ namespace WebNewBook.Model
         public string Id { get; set; }
         public string NameHanhDong { get; set; }
         public DateTime CreatDate { get; set; }
-        public int Hanhdong { get; set; }
+        public int? Hanhdong { get; set; }
         public double Diemtichluy { get; set; }
-        public int TrangThai { get; set; }
+        public int? TrangThai { get; set; }
         [ForeignKey("KhachHang")]
         public string? MaKhachHang { get; set; }
         public virtual KhachHang? KhachHang { get; set; }

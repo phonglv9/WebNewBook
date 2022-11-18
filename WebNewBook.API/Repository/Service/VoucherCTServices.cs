@@ -291,5 +291,34 @@ namespace WebNewBook.API.Repository.Service
                 throw ex;
             }
         }
+        public async Task UpdateVoucherByPayment(string idVoucherCT)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(idVoucherCT))
+                {
+                    var voucherCT =  _dbcontext.VoucherCTs.Where(c=>c.Id == idVoucherCT).FirstOrDefault();
+                    if (voucherCT != null)
+                    {
+                        voucherCT.NgaySuDung = DateTime.Now;
+                        voucherCT.TrangThai = 2;
+                        _dbcontext.Update(voucherCT);
+                        await _dbcontext.SaveChangesAsync();
+                    }
+                   
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+        }
+        public async Task <List<VoucherCT>> ListVoucherCTByPayment(string id)
+        {
+            var dateNow = DateTime.Now;
+            var listVCCT = await _dbcontext.VoucherCTs.Where(C => C.MaKhachHang == id && dateNow >= C.NgayBatDau && dateNow <= C.NgayHetHan).ToListAsync();
+            return listVCCT;
+        }
     }
 }

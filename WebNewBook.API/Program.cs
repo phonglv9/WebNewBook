@@ -9,6 +9,11 @@ using System.Text.Json.Serialization;
 using WebNewBook.API.Data;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.API.Repository.Service;
+using Microsoft.AspNetCore.Identity;
+using WebNewBook.Model;
+using Microsoft.AspNetCore.Identity.UI.Services;
+using static WebNewBook.API.Repository.Service.SendMailConfig;
+using NETCore.MailKit.Core;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("LoginContextConnection") ?? throw new InvalidOperationException("Connection string 'LoginContextConnection' not found.");
@@ -30,12 +35,16 @@ builder.Services.AddControllers(options =>
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
 
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-KBU829B\\SQLEXPRESS;Initial Catalog=datn;Persist Security Info=True;User ID=sa;Password=1"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Password=Ph@16158;Integrated Security=True;Database=WebNewBook"));
 
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Password=Ph@16158;Integrated Security=True;Database=WebNewBook"));
 
-
-
-//builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=LoginFinalASM;User ID=hung;Password=hung;"));
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
+    options.User.RequireUniqueEmail = true;
+})
+    .AddEntityFrameworkStores<LoginContext>().AddDefaultTokenProviders()
+    .AddDefaultUI(); ;
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<LoginContext>();
 
@@ -51,8 +60,15 @@ builder.Services.AddScoped<ISanPhamService, SanPhamService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<IBookSevice, BookService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
+builder.Services.AddScoped<IFpointService, FpointService>();
+builder.Services.AddScoped<IProfileCustomerService, ProfileCustomerService>();
 builder.Services.AddScoped<IGioHangService, GioHangService>();
 builder.Services.AddScoped<IHoaDonService, HoaDonService>();
+builder.Services.AddScoped<ITheLoaiService, TheLoaiService>();
+builder.Services.AddScoped<ITacGiaService, TacGiaService>();
+builder.Services.AddScoped<INhaXuatBanService, NhaXuatBanService>();
+
+builder.Services.AddTransient<IEmailService, SendMailConfig>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>
 {
     var secret = Encoding.UTF8.GetBytes(configuration["Jwt:Key"]);

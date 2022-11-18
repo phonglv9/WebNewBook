@@ -1,11 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
+using WebNewBook.API.Book;
 using WebNewBook.Model;
 
 namespace WebNewBook.Controllers
 {
+    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "NhanVien")]
     public class QLPhieuNhapController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -15,6 +21,24 @@ namespace WebNewBook.Controllers
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7266/");
             phieuNhaps = new List<PhieuNhap>();
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
+        }
+
+        private async Task<List<BookModel>> GetSachs()
+        {
+            List<BookModel> sachs = new List<BookModel>();
+            HttpResponseMessage responseGet = await _httpClient.GetAsync("api/Book/GetlistBook");
+            if (responseGet.IsSuccessStatusCode)
+            {
+                string jsonData = responseGet.Content.ReadAsStringAsync().Result;
+                sachs = JsonConvert.DeserializeObject<List<BookModel>>(jsonData);
+            };
+            return sachs ?? new List<BookModel>();
         }
 
         public async Task<List<PhieuNhap>?> Get()
@@ -37,13 +61,12 @@ namespace WebNewBook.Controllers
             return View();
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewBag.Sachs = new List<SelectListItem>
-            {
-                new SelectListItem {Text = "Shyju", Value = "1"},
-                new SelectListItem {Text = "Sean", Value = "2"}
-            };
+            var sachs = await GetSachs();
+            var selectItems = new List<SelectListItem>();
+            selectItems = sachs.Select(s => new SelectListItem { Text = s.TenSach, Value = s.ID_Sach }).ToList();
+            ViewBag.Sachs = selectItems;
             return View();
         }
 
@@ -62,6 +85,7 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(PhieuNhap phieuNhap)
         {
+            phieuNhap.MaNhanVien = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
             if (ModelState.IsValid)
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(phieuNhap), Encoding.UTF8, "application/json");
@@ -73,49 +97,11 @@ namespace WebNewBook.Controllers
                 }
             }
 
-            ViewBag.Sachs = new List<SelectListItem>
-            {
-                new SelectListItem {Text = "Shyju", Value = "1"},
-                new SelectListItem {Text = "Sean", Value = "2"}
-            };
+            var sachs = await GetSachs();
+            var selectItems = new List<SelectListItem>();
+            selectItems = sachs.Select(s => new SelectListItem { Text = s.TenSach, Value = s.ID_Sach }).ToList();
+            ViewBag.Sachs = selectItems;
             return View(phieuNhap);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Update(PhieuNhap phieuNhap)
-        {
-            if (ModelState.IsValid)
-            {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(phieuNhap), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await _httpClient.PutAsync("phieunhap", content);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
-            }
-            return View(phieuNhap);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Delete(string ID)
-        {
-            List<PhieuNhap>? phieuNhaps = new List<PhieuNhap>();
-            phieuNhaps = await Get();
-
-            PhieuNhap? phieuNhap = phieuNhaps?.FirstOrDefault(c => c.ID_PhieuNhap == ID);
-            if (phieuNhaps != null)
-            {
-                HttpResponseMessage response = await _httpClient.DeleteAsync("phieunhap/" + ID);
-                if (response.IsSuccessStatusCode)
-                {
-                    return RedirectToAction("Index");
-                }
-                return BadRequest(response);
-            }
-
-            return BadRequest();
-
         }
     }
 }

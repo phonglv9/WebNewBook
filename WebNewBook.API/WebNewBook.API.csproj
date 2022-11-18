@@ -17,22 +17,33 @@
   <ItemGroup>
     <Compile Include="Repository\IService\IBookSevice.cs" />
     <Compile Include="Repository\IService\ICustomerService.cs" />
+    <Compile Include="Repository\IService\IFpointService.cs" />
     <Compile Include="Repository\IService\IGioHangService.cs" />
     <Compile Include="Repository\IService\IHoaDonService.cs" />
     <Compile Include="Repository\IService\IHomeService.cs" />
     <Compile Include="Repository\IService\INhanVienService.cs" />
+    <Compile Include="Repository\IService\INhaXuatBanService.cs" />
     <Compile Include="Repository\IService\IPhieuNhapService.cs" />
+    <Compile Include="Repository\IService\IProfileCustomerService.cs" />
     <Compile Include="Repository\IService\ISanPhamService.cs" />
+    <Compile Include="Repository\IService\ITacGiaService.cs" />
+    <Compile Include="Repository\IService\ITheLoaiService.cs" />
     <Compile Include="Repository\IService\IVoucherCTServices.cs" />
     <Compile Include="Repository\IService\IVoucherService.cs" />
     <Compile Include="Repository\Service\BookService.cs" />
     <Compile Include="Repository\Service\CustomerService.cs" />
+    <Compile Include="Repository\Service\FpointService.cs" />
     <Compile Include="Repository\Service\GioHangService.cs" />
     <Compile Include="Repository\Service\HoaDonService.cs" />
     <Compile Include="Repository\Service\HomeService.cs" />
     <Compile Include="Repository\Service\NhanVienService.cs" />
+    <Compile Include="Repository\Service\NhaXuatBanService.cs" />
     <Compile Include="Repository\Service\PhieuNhapService.cs" />
+    <Compile Include="Repository\Service\ProfileCustomerService.cs" />
     <Compile Include="Repository\Service\SanPhamService.cs" />
+    <Compile Include="Repository\Service\SendMailConfig.cs" />
+    <Compile Include="Repository\Service\TacGiaService.cs" />
+    <Compile Include="Repository\Service\TheLoaiService.cs" />
     <Compile Include="Repository\Service\VoucherCTServices.cs" />
     <Compile Include="Repository\Service\VoucherService.cs" />
   </ItemGroup>
@@ -55,6 +66,8 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="MimeKit" Version="3.4.2" />
+    <PackageReference Include="NETCore.MailKit" Version="2.1.0" />
     <PackageReference Include="OfficeOpenXml.Core.ExcelPackage" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
     <PackageReference Include="System.Text.Encoding.CodePages" Version="6.0.0" />
