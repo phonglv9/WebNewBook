@@ -199,5 +199,14 @@ namespace WebNewBook.API.Repository.Service
             return HoaDonChiTiet;
         }
 
+        public async  Task<HoaDon?> Updatetrangthai(string id,int name)
+        {
+            var a = dbcontext.HoaDons.Where(a=>a.ID_HoaDon==id).FirstOrDefault();
+            a.TrangThai = name;
+            dbcontext.Update(a);
+            await dbcontext.SaveChangesAsync();
+            return a;
+
+        }
     }
 }

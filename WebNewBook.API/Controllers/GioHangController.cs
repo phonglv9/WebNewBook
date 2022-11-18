@@ -28,5 +28,18 @@ namespace WebNewBook.API.Controllers
             return await _GioHangService.GetSanPham(id);
 
         }
+        [HttpPost]
+        public async Task<ActionResult> AddNhanVienAsync(GioHang nv)
+        {
+            try
+            {
+                await _GioHangService.AddGioHangAsync(nv);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
     }
 }

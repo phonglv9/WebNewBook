@@ -12,5 +12,6 @@ namespace WebNewBook.API.Repository.IService
         Task UpdateSLSanPhamVNPay(string id);
         Task<List<ViewHoaDon>> GetListHoaDon();
         Task<ViewHoaDonCT> GetListid(string id);
+        Task<HoaDon?> Updatetrangthai(string id,int name);
     }
 }

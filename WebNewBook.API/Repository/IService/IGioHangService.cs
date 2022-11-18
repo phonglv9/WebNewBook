@@ -7,5 +7,6 @@ namespace WebNewBook.API.Repository.IService
 	{
         Task<List<HomeVM>> VM();
         Task<SanPham> GetSanPham(string id);
+        Task AddGioHangAsync(GioHang par);
     }
 }

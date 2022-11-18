@@ -14,6 +14,12 @@ namespace WebNewBook.API.Repository.Service
             _dbContext = dbContext;
         }
 
+        public async Task AddGioHangAsync(GioHang par)
+        {
+            _dbContext.Add(par);
+            await _dbContext.SaveChangesAsync();
+        }
+
         public async Task<SanPham> GetSanPham( string ID)
         { 
             
