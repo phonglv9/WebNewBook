@@ -84,12 +84,16 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> OrderDetail(string id)
         {
-          
+
+            double thanhtien=0;
+         
             HttpClient _httpClient = new HttpClient();
             List<HoaDonCT> lsthoaDonCTs = new List<HoaDonCT>();
+            List<ViewHoaDon> lstviewHoaDons= new List<ViewHoaDon>();
             HoaDon hoaDon = new HoaDon();
             HttpResponseMessage responseOrderbyId = _httpClient.GetAsync("https://localhost:7266/api/ProfileCustomer/GetOrderById/" + id).Result;
             HttpResponseMessage responseOrderdetail = _httpClient.GetAsync("https://localhost:7266/api/ProfileCustomer/GetOrderdetail/" + id).Result;
+            HttpResponseMessage responseListOrderdetail = _httpClient.GetAsync("https://localhost:7266/api/ProfileCustomer/GetListOrder/" + id).Result;
             if (responseOrderdetail.IsSuccessStatusCode)
             {
                 string jsondata = responseOrderdetail.Content.ReadAsStringAsync().Result;
@@ -100,8 +104,23 @@ namespace WebNewBook.Controllers
                 string jsondata = responseOrderbyId.Content.ReadAsStringAsync().Result;
                 hoaDon = JsonConvert.DeserializeObject<HoaDon>(jsondata);
             }
+            if (responseListOrderdetail.IsSuccessStatusCode)
+            {
+                string jsondata = responseListOrderdetail.Content.ReadAsStringAsync().Result;
+                lstviewHoaDons = JsonConvert.DeserializeObject<List<ViewHoaDon>>(jsondata);
+            }
             ViewBag.lstOrder = lsthoaDonCTs;
             ViewBag.hoadonById = hoaDon;
+            ViewBag.lstviewHoadon = lstviewHoaDons;
+        
+            foreach (var x in lstviewHoaDons.Select(c => c.hoaDonCT))
+            {
+                thanhtien += x.GiaBan * x.SoLuong;
+              
+            }
+            ViewBag.thanhtien = thanhtien;
+            ViewBag.tongtien = lstviewHoaDons.FirstOrDefault(c => c.hoaDon.ID_HoaDon == id).hoaDon.TongTien;
+            ViewBag.chietkhau =( ViewBag.thanhtien) - (ViewBag.tongtien);
             return View();
         }
     }
