@@ -123,5 +123,11 @@ namespace WebNewBook.Controllers
             ViewBag.chietkhau =( ViewBag.thanhtien) - (ViewBag.tongtien);
             return View();
         }
+        [HttpPost]
+        public int UpdateAccount(KhachHang khachHang)
+        {
+
+            return 1;
+        }
     }
 }
