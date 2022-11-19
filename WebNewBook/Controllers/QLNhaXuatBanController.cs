@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Text;
 using WebNewBook.Model;
+using X.PagedList;
 
 namespace WebNewBook.Controllers
 {
@@ -31,19 +33,99 @@ namespace WebNewBook.Controllers
             };
             return nhaXuatBans;
         }
-        public async Task<IActionResult> Index(string? timKiem, int trangThai)
+       
+        public async Task<IActionResult> Index(string? timKiem, int ?trangThai, int?page,string mess)
         {
+            ViewBag.TimKiem = timKiem;
+            ViewBag.TrangThai = trangThai;
+            ViewBag.message = mess;
+           var pageNumber = page ?? 1;
             List<NhaXuatBan>? nhaXuatBans = new List<NhaXuatBan>();
             nhaXuatBans = await GetNXB();
             if (!string.IsNullOrEmpty(timKiem))
             {
                 timKiem = timKiem.ToLower();
-                nhaXuatBans = nhaXuatBans.Where(c => c.TenXuatBan.ToLower().Contains(timKiem)).ToList();
+               
+                 nhaXuatBans = nhaXuatBans.Where(c => c.TenXuatBan.ToLower().Contains(timKiem)).ToList();
                
             }
-            ViewBag.NhaXuatBan = nhaXuatBans;
+            if (trangThai != 0)
+            {         
+            switch (trangThai)
+            {
+                case 1:
+                    nhaXuatBans = nhaXuatBans.Where(c => c.TrangThai == 1).ToList();
+
+                        break;
+                       
+                       
+                case 2:
+                    nhaXuatBans = nhaXuatBans.Where(c => c.TrangThai == 2).ToList();
+                        break;
+                        
+                default:
+                        nhaXuatBans = nhaXuatBans.ToList();
+                        break;
+            }
+            }
+            ViewBag.NXB = nhaXuatBans.ToPagedList(pageNumber, 5);
             return View();
             
         }
+        public async Task<IActionResult> AddNBX(NhaXuatBan nhaXuatBan)
+        {
+            nhaXuatBan.ID_NXB = "NXB" + DateTime.Now.Ticks;
+            nhaXuatBan.TrangThai = 1;
+            if (nhaXuatBan != null)
+            {
+                
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(nhaXuatBan), Encoding.UTF8, "application/json");
+                    var response = await _httpClient.PostAsync("NhaXuatBan", content);
+                    
+                       
+                       if (response.IsSuccessStatusCode)
+                        {
+                           
+                            return RedirectToAction("Index", new { mess = 1 });
+                        }
+                        else
+                        {
+                           
+                            return RedirectToAction("Index", new { mess = 2 });
+                        }
+                  
+                
+                
+            }
+            else
+            {
+                
+                return RedirectToAction("Index", new { mess = 2 });
+            }
+
+
+        }
+        public async Task<IActionResult> RemoveNXB(string id)
+        {
+            if (!string.IsNullOrEmpty(id))
+            {
+                HttpResponseMessage response = await _httpClient.PostAsync("NhaXuatBan/" + id, null);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", new { mess = 1 });
+                }
+                else
+                {
+                    return RedirectToAction("Index", new { mess = 2 });
+                }
+            }
+            else
+            {
+                
+                return RedirectToAction("Index", new { mess = 2 });
+            }
+
+        }
     }
+           
 }

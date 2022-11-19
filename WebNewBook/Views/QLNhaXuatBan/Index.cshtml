@@ -1,36 +1,68 @@
-﻿@using WebNewBook.Model
-@model NhaXuatBan
+﻿@using WebNewBook.Model;
+@using X.PagedList;
+@using X.PagedList.Mvc.Core;
+@model NhaXuatBan;
 
 @{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var mess ="";
+    var color = "";
+    @if (ViewBag.message == "1")
+    {
+        mess = "Thành công";
+        color = "success";
+    }
+    if (ViewBag.message == "2")
+    {
+        mess = "Thất bại";
+        color = "danger";
+    }
+}
+@section Scripts{
+	<script>
+      $("#selectNXB").change(function (){
+       
+          var $form = $(this).closest('form');
+            $form.find('button[type=submit]').click();
+         
+     });
+     setTimeout(function(){
+			$('#msNXB').fadeOut('slow');
+		},1500)
+	</script>
+	
 }
 
 <div class="container py-3" style="background-color: #f1f1f1;">
-    <h3 style="font-weight: 700;">Sản phẩm</h3>
+    <h3 style="font-weight: 700; text-align:center;">Nhà Xuất Bản</h3>
     <div class="container" style="background-color: rgb(255, 255, 255);">
         <div class="py-3">
             <h6>
-                <div class="row">
+                <div>
+                    <form asp-action="Index" class="row">
                     <div class="col-5 mb-3">
-                        <input type="text" class="form-control" placeholder="Mời bạn nhập tên nhà xuất bản để tìm kiếm">
+                        <input type="text" name="timKiem" class="form-control" placeholder="Mời bạn nhập tên nhà xuất bản để tìm kiếm">
                     </div>
                       <div class="col-2">
                         <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
                     </div>
                     <div class="col-5 mb-3">
-                        <select class="form-select" aria-label="Default select example">
+                        <select id="selectNXB" name="trangThai" class="form-select" aria-label="Default select example">
+                            
                             <option selected>Chọn trạng thái</option>
+                            <option value="0">Tất cả</option>
                             <option value="1">Hoạt động</option>
-                            <option value="0">Không hoạt động</option>
+                            <option value="2">Vô hiệu hóa</option>
+                          
                         </select>
                     </div>
-                  
+                  </form>
                    
                     <div class="col-3">
                         <!-- Button trigger modal -->
-                        <a type="button" class="btn btn-primary"asp-action="Create">
-                            <i class="fa-solid fa-address-book"></i> Thêm sản phẩm
-                        </a>
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNXB">
+                            <i class="fa-solid fa-address-book"></i> Thêm nhà xuất bản
+                        </button>
                     </div>
                 </div>
             </h6>
@@ -39,7 +71,13 @@
     <br>
     <div class="container " style="background-color: rgb(255, 255, 255);">
         <div class="py-3">
+                @if (mess != ""){
+            <div class="alert alert-@color" id="msNXB" role="alert">
+                    @mess
+            </div>
+            }
             <p>
+               @if( ViewBag.NXB!=null)  {<span>Trang @( ViewBag.NXB.PageCount <  ViewBag.NXB.PageNumber ? 0 :  ViewBag.NXB.PageNumber) / @ViewBag.NXB.PageCount</span>}
                 <table class="table">
                     <thead class="table-secondary">
                         <tr>
@@ -49,10 +87,11 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in  ViewBag.NhaXuatBan)
+                          @if(ViewBag.NXB.Count == 0){<tr><th>Không có sản phẩm</th></tr>}else{
+                        @foreach (var item in  ViewBag.NXB)
                         {
-                            var trangThai = item.TrangThai == 0 ? "Hoạt động" : "Vô hiệu hóa";
-                          
+                            var trangThai = item.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
+                        
                             <tr>
                                 <th scope="row">@item.TenXuatBan</th>                          
                                 <td>@trangThai</td>
@@ -61,7 +100,7 @@
                             </tr>
 
                              <!-- Modal Delete-->
-                            <form action="/QLNhaXuatBan/Delete?id=@item.ID_NXB" method="post" enctype="multipart/form-data">
+                            <form action="/QLNhaXuatBan/RemoveNXB?id=@item.ID_NXB" method="post" enctype="multipart/form-data">
                                 <div class="modal fade" id="delete-@item.ID_NXB" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
@@ -91,11 +130,47 @@
                                 </div>
                             </form>
                         }
+                        }
+                        
                     </tbody>
+                    
                 </table>
+                
+                    @Html.PagedListPager((IPagedList)ViewBag.NXB, page => Url.Action("Index","QLNhaXuatBan",new {timKiem = ViewBag.TimKiem, trangThai =ViewBag.TrangThai, page = page}),new X.PagedList.Web.Common.PagedListRenderOptions{LiElementClasses = new string[] { "page-item" },PageClasses = new string[] { "page-link" }})
+               
             </p>
         </div>
     </div>
 </div>
 
 
+     <form class="needs-validation was-validated" onsubmit = "return(validate());">
+                    <div class="col-3">
+                       
+                        <!-- Modal -->
+                        <div class="modal fade" id="modalNXB" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="staticBackdropLabel">Thêm nhà xuất bản</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <input asp-for="@Model.ID_NXB" type="hidden" class="form-control">
+                                        <input asp-for="@Model.TrangThai" type="hidden" value="1" class="form-control">
+                                        <div class="mb-3 row">
+                                            <label for="" class="col-sm-2 col-form-label">Họ tên NXB</label>
+                                            <div class="col-sm-10">
+                                                <input asp-for="@Model.TenXuatBan" type="text"  class="form-control" required>
+
+                                            </div>
+                                        </div>                                      
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button asp-action="AddNBX" type="submit" class="btn btn-primary">Thêm</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+</form>
