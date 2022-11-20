@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
+using System.Text;
 using WebNewBook.Model;
 
 namespace WebNewBook.Controllers
@@ -126,8 +127,26 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public int UpdateAccount(KhachHang khachHang)
         {
+            KhachHang model = new KhachHang();
+            HttpClient _httpClient = new HttpClient();
+            string Id_khachang = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
+            HttpResponseMessage response1 = _httpClient.GetAsync("https://localhost:7266/api/Customer/" + Id_khachang).Result;
 
-            return 1;
+            if (response1.IsSuccessStatusCode)
+            {
+                string jsondata = response1.Content.ReadAsStringAsync().Result;
+                model = JsonConvert.DeserializeObject<KhachHang>(jsondata);
+            }
+            model.MatKhau = khachHang.MatKhau;
+            model.HoVaTen = khachHang.HoVaTen;
+            StringContent content = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+            HttpResponseMessage response2 = _httpClient.PutAsync("https://localhost:7266/api/Customer/", content).Result;
+            if (response2.IsSuccessStatusCode)
+            {
+                return 1;
+               
+            }
+            return 0;
         }
     }
 }
