@@ -56,7 +56,7 @@ namespace WebNewBook.API.Controllers
             }
         }
 
-        [HttpDelete("{id}")]
+        [HttpPost("{id}")]
         public async Task<ActionResult> DeleteTacGiaAsync(string id)
         {
             try

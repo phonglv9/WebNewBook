@@ -8,11 +8,11 @@ using X.PagedList;
 
 namespace WebNewBook.Controllers
 {
-    public class QLNhaXuatBanController : Controller
+    public class QLDanhMucController : Controller
     {
         private readonly HttpClient _httpClient;
 
-        public QLNhaXuatBanController()
+        public QLDanhMucController()
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7266/");
@@ -22,10 +22,10 @@ namespace WebNewBook.Controllers
             base.OnActionExecuting(context);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
         }
-        private async Task<List<NhaXuatBan>?> GetNXB()
+        private async Task<List<DanhMucSach>?> GetDM()
         {
-            List<NhaXuatBan> nhaXuatBans = new List<NhaXuatBan>();
-            HttpResponseMessage responseGet = await _httpClient.GetAsync("api/NhaXuatBan");
+            List<DanhMucSach> nhaXuatBans = new List<DanhMucSach>();
+            HttpResponseMessage responseGet = await _httpClient.GetAsync("api/Danhmuc");
             if (responseGet.IsSuccessStatusCode)
             {
                 string jsonData = responseGet.Content.ReadAsStringAsync().Result;
@@ -33,44 +33,44 @@ namespace WebNewBook.Controllers
             };
             return nhaXuatBans;
         }
-       
-        public async Task<IActionResult> Index(string? timKiem, int ?trangThai, int?page,string mess)
+
+        public async Task<IActionResult> Index(string? timKiem, int? trangThai, int? page, string mess)
         {
             ViewBag.TimKiem = timKiem;
             ViewBag.TrangThai = trangThai;
             ViewBag.message = mess;
-           var pageNumber = page ?? 1;
+            var pageNumber = page ?? 1;
             List<NhaXuatBan>? nhaXuatBans = new List<NhaXuatBan>();
             nhaXuatBans = await GetNXB();
             if (!string.IsNullOrEmpty(timKiem))
             {
                 timKiem = timKiem.ToLower();
-               
-                 nhaXuatBans = nhaXuatBans.Where(c => c.TenXuatBan.ToLower().Contains(timKiem)).ToList();
-               
+
+                nhaXuatBans = nhaXuatBans.Where(c => c.TenXuatBan.ToLower().Contains(timKiem)).ToList();
+
             }
             if (trangThai != 0)
-            {         
-            switch (trangThai)
             {
-                case 1:
-                    nhaXuatBans = nhaXuatBans.Where(c => c.TrangThai == 1).ToList();
+                switch (trangThai)
+                {
+                    case 1:
+                        nhaXuatBans = nhaXuatBans.Where(c => c.TrangThai == 1).ToList();
 
                         break;
-                       
-                       
-                case 2:
-                    nhaXuatBans = nhaXuatBans.Where(c => c.TrangThai == 0).ToList();
+
+
+                    case 2:
+                        nhaXuatBans = nhaXuatBans.Where(c => c.TrangThai == 0).ToList();
                         break;
-                        
-                default:
+
+                    default:
                         nhaXuatBans = nhaXuatBans.ToList();
                         break;
-            }
+                }
             }
             ViewBag.NXB = nhaXuatBans.ToPagedList(pageNumber, 5);
             return View();
-            
+
         }
         public async Task<IActionResult> AddNBX(NhaXuatBan nhaXuatBan)
         {
@@ -78,28 +78,28 @@ namespace WebNewBook.Controllers
             nhaXuatBan.TrangThai = 1;
             if (nhaXuatBan != null)
             {
-                
-                    StringContent content = new StringContent(JsonConvert.SerializeObject(nhaXuatBan), Encoding.UTF8, "application/json");
-                    var response = await _httpClient.PostAsync("api/NhaXuatBan", content);
-                    
-                       
-                       if (response.IsSuccessStatusCode)
-                        {
-                           
-                            return RedirectToAction("Index", new { mess = 1 });
-                        }
-                        else
-                        {
-                           
-                            return RedirectToAction("Index", new { mess = 2 });
-                        }
-                  
-                
-                
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(nhaXuatBan), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("api/NhaXuatBan", content);
+
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    return RedirectToAction("Index", new { mess = 1 });
+                }
+                else
+                {
+
+                    return RedirectToAction("Index", new { mess = 2 });
+                }
+
+
+
             }
             else
             {
-                
+
                 return RedirectToAction("Index", new { mess = 2 });
             }
 
@@ -152,11 +152,11 @@ namespace WebNewBook.Controllers
             }
             else
             {
-                
+
                 return RedirectToAction("Index", new { mess = 2 });
             }
 
         }
     }
-           
+
 }
