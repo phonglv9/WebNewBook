@@ -14,6 +14,7 @@ using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.Controllers
 {
+    
     public class QLLoginController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -23,9 +24,9 @@ namespace WebNewBook.Controllers
             _httpClient.BaseAddress = new Uri("https://localhost:7266/");
         }
 
-        public IActionResult Index(bool nhanVien)
+        public IActionResult Index()
         {
-            ViewBag.nhanVien = nhanVien;
+         
             return View();
         }
 

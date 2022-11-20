@@ -168,7 +168,7 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public async Task<IActionResult> Pay(HoaDon hoaDon, string payment)
         {
-         
+                
             double tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout"));                             
             var idVoucher = HttpContext.Session.GetString("idVoucher");
             hoaDon.TongTien = tongTien;

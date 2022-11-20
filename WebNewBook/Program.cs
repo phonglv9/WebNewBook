@@ -15,8 +15,9 @@ builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 builder.Services.AddSession();
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, config =>
 {
+    
     config.Cookie.Name = "MyCookie";
-    config.LoginPath = "/QLLogin/Index";
+    config.LoginPath = "/Admin/Index";
     config.ReturnUrlParameter = "itworkingggggg";
 });
 

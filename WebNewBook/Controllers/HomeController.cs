@@ -173,12 +173,12 @@ namespace WebNewBook.Controllers
 
 
 
-
+          
             #region Tìm kiếm           
             if (!String.IsNullOrEmpty(search) && !(iddanhmuc == "Tất cả sách"))
             {
-
-                productStore = await productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc && c.sanPhams.TenSanPham.Contains(search)).ToListAsync();
+                search = search.ToLower();
+                productStore = await productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc && c.sanPhams.TenSanPham.ToLower().Contains(search)).ToListAsync();
                 if (productStore.Count == 0)
                 {
                     ViewBag.TextSearch = $"Không tìm thấy kết quả {search} trong danh mục";
@@ -190,7 +190,8 @@ namespace WebNewBook.Controllers
 
             if (!String.IsNullOrEmpty(search))
             {
-                productStore = await productStore.Where(c => c.sanPhams.TenSanPham.Contains(search)).ToListAsync();
+                search = search.ToLower();
+                productStore = await productStore.Where(c => c.sanPhams.TenSanPham.ToLower().Contains(search)).ToListAsync();
 
                 if (productStore.Count == 0 || productStore == null)
                 {

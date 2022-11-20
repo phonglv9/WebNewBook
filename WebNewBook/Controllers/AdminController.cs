@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.IdentityModel.Tokens.Jwt;
@@ -10,6 +11,7 @@ using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.Controllers
 {
+    
     public class AdminController : Controller
     {
         private readonly HttpClient _httpClient;
