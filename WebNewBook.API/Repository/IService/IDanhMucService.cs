@@ -7,7 +7,7 @@ namespace WebNewBook.API.Repository.IService
         Task AddDanhMucAsync(DanhMucSach danhMucSach);
         Task DeleteDanhMucAsync(string id);
         Task<IEnumerable<DanhMucSach>> GetDM();
-        Task GetNhaXuatBanAsync(string id);
+        Task<DanhMucSach?> GetDanhMucAsync(string id);
         Task UpdateDanhMucAsync(DanhMucSach danhMucSach);
     }
 }

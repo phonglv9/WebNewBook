@@ -1,4 +1,5 @@
-﻿using WebNewBook.API.Data;
+﻿using Microsoft.EntityFrameworkCore;
+using WebNewBook.API.Data;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 
@@ -43,9 +44,9 @@ namespace WebNewBook.API.Repository.Service
             return await dbcontext.DanhMucSachs.ToListAsync();
         }
 
-        public async Task<DanhMucSach?> GetNhaXuatBanAsync(string id)
+        public async Task<DanhMucSach?> GetDanhMucAsync(string id)
         {
-            return await dbcontext.DanhMucSachs.FirstOrDeafultAsync(c => c.ID_NXB == id) ?? null;
+            return await dbcontext.DanhMucSachs.FirstOrDefaultAsync(c => c.ID_DanhMuc == id) ?? null;
         }
 
         public async Task UpdateDanhMucAsync(DanhMucSach danhMucSach)

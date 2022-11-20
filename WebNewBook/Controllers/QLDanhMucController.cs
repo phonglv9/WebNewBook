@@ -24,14 +24,14 @@ namespace WebNewBook.Controllers
         }
         private async Task<List<DanhMucSach>?> GetDM()
         {
-            List<DanhMucSach> nhaXuatBans = new List<DanhMucSach>();
-            HttpResponseMessage responseGet = await _httpClient.GetAsync("api/Danhmuc");
+            List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
+            HttpResponseMessage responseGet = await _httpClient.GetAsync("api/DanhMucSach");
             if (responseGet.IsSuccessStatusCode)
             {
                 string jsonData = responseGet.Content.ReadAsStringAsync().Result;
-                nhaXuatBans = JsonConvert.DeserializeObject<List<NhaXuatBan>>(jsonData);
+                danhMucSaches = JsonConvert.DeserializeObject<List<DanhMucSach>>(jsonData);
             };
-            return nhaXuatBans;
+            return danhMucSaches;
         }
 
         public async Task<IActionResult> Index(string? timKiem, int? trangThai, int? page, string mess)
@@ -40,13 +40,13 @@ namespace WebNewBook.Controllers
             ViewBag.TrangThai = trangThai;
             ViewBag.message = mess;
             var pageNumber = page ?? 1;
-            List<NhaXuatBan>? nhaXuatBans = new List<NhaXuatBan>();
-            nhaXuatBans = await GetNXB();
+            List<DanhMucSach>? danhMucSaches = new List<DanhMucSach>();
+            danhMucSaches = await GetDM();
             if (!string.IsNullOrEmpty(timKiem))
             {
                 timKiem = timKiem.ToLower();
 
-                nhaXuatBans = nhaXuatBans.Where(c => c.TenXuatBan.ToLower().Contains(timKiem)).ToList();
+                danhMucSaches = danhMucSaches.Where(c => c.TenDanhMuc.ToLower().Contains(timKiem)).ToList();
 
             }
             if (trangThai != 0)
@@ -54,33 +54,33 @@ namespace WebNewBook.Controllers
                 switch (trangThai)
                 {
                     case 1:
-                        nhaXuatBans = nhaXuatBans.Where(c => c.TrangThai == 1).ToList();
+                        danhMucSaches = danhMucSaches.Where(c => c.TrangThai == 1).ToList();
 
                         break;
 
 
                     case 2:
-                        nhaXuatBans = nhaXuatBans.Where(c => c.TrangThai == 0).ToList();
+                        danhMucSaches = danhMucSaches.Where(c => c.TrangThai == 0).ToList();
                         break;
 
                     default:
-                        nhaXuatBans = nhaXuatBans.ToList();
+                        danhMucSaches = danhMucSaches.ToList();
                         break;
                 }
             }
-            ViewBag.NXB = nhaXuatBans.ToPagedList(pageNumber, 5);
+            ViewBag.DM = danhMucSaches.ToPagedList(pageNumber, 15);
             return View();
 
         }
-        public async Task<IActionResult> AddNBX(NhaXuatBan nhaXuatBan)
+        public async Task<IActionResult> AddDM(DanhMucSach danhMucSach)
         {
-            nhaXuatBan.ID_NXB = "NXB" + DateTime.Now.Ticks;
-            nhaXuatBan.TrangThai = 1;
-            if (nhaXuatBan != null)
+            danhMucSach.ID_DanhMuc = "DM" + DateTime.Now.Ticks;
+            danhMucSach.TrangThai = 1;
+            if (danhMucSach != null)
             {
 
-                StringContent content = new StringContent(JsonConvert.SerializeObject(nhaXuatBan), Encoding.UTF8, "application/json");
-                var response = await _httpClient.PostAsync("api/NhaXuatBan", content);
+                StringContent content = new StringContent(JsonConvert.SerializeObject(danhMucSach), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PostAsync("api/DanhMucSach", content);
 
 
                 if (response.IsSuccessStatusCode)
@@ -105,13 +105,13 @@ namespace WebNewBook.Controllers
 
 
         }
-        public async Task<IActionResult> UpdateNXB(NhaXuatBan nhaXuatBan)
+        public async Task<IActionResult> UpdateDM(DanhMucSach danhMucSach)
         {
-            if (nhaXuatBan != null)
+            if (danhMucSach != null)
             {
 
-                StringContent content = new StringContent(JsonConvert.SerializeObject(nhaXuatBan), Encoding.UTF8, "application/json");
-                var response = await _httpClient.PutAsync("api/NhaXuatBan", content);
+                StringContent content = new StringContent(JsonConvert.SerializeObject(danhMucSach), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PutAsync("api/DanhMucSach", content);
 
 
                 if (response.IsSuccessStatusCode)
@@ -136,11 +136,11 @@ namespace WebNewBook.Controllers
 
 
         }
-        public async Task<IActionResult> RemoveNXB(string id)
+        public async Task<IActionResult> RemoveDM(string id)
         {
             if (!string.IsNullOrEmpty(id))
             {
-                HttpResponseMessage response = await _httpClient.PostAsync("api/NhaXuatBan/" + id, null);
+                HttpResponseMessage response = await _httpClient.PostAsync("api/DanhMucSach/" + id, null);
                 if (response.IsSuccessStatusCode)
                 {
                     return RedirectToAction("Index", new { mess = 1 });
