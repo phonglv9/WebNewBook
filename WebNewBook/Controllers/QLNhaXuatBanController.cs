@@ -60,7 +60,7 @@ namespace WebNewBook.Controllers
                        
                        
                 case 2:
-                    nhaXuatBans = nhaXuatBans.Where(c => c.TrangThai == 2).ToList();
+                    nhaXuatBans = nhaXuatBans.Where(c => c.TrangThai == 0).ToList();
                         break;
                         
                 default:
@@ -100,6 +100,37 @@ namespace WebNewBook.Controllers
             else
             {
                 
+                return RedirectToAction("Index", new { mess = 2 });
+            }
+
+
+        }
+        public async Task<IActionResult> UpdateNXB(NhaXuatBan nhaXuatBan)
+        {
+            if (nhaXuatBan != null)
+            {
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(nhaXuatBan), Encoding.UTF8, "application/json");
+                var response = await _httpClient.PutAsync("NhaXuatBan", content);
+
+
+                if (response.IsSuccessStatusCode)
+                {
+
+                    return RedirectToAction("Index", new { mess = 1 });
+                }
+                else
+                {
+
+                    return RedirectToAction("Index", new { mess = 2 });
+                }
+
+
+
+            }
+            else
+            {
+
                 return RedirectToAction("Index", new { mess = 2 });
             }
 

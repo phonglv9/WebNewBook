@@ -33,6 +33,7 @@
 	
 }
 
+
 <div class="container py-3" style="background-color: #f1f1f1;">
     <h3 style="font-weight: 700; text-align:center;">Nhà Xuất Bản</h3>
     <div class="container" style="background-color: rgb(255, 255, 255);">
@@ -82,7 +83,7 @@
                     <thead class="table-secondary">
                         <tr>
                             <th scope="col">Tên nhà xuất bản </th>
-                            <th scope="col">Trạng thái</th>
+                            <th scope="col" >Trạng thái</th>
                             <th colspan="2" style="text-align: center ;">Thao tác</th>
                         </tr>
                     </thead>
@@ -90,40 +91,55 @@
                           @if(ViewBag.NXB.Count == 0){<tr><th>Không có sản phẩm</th></tr>}else{
                         @foreach (var item in  ViewBag.NXB)
                         {
-                            var trangThai = item.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
+                             var trangThai = item.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
                         
                             <tr>
-                                <th scope="row">@item.TenXuatBan</th>                          
-                                <td>@trangThai</td>
-                                <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_NXB"><i class="fa-solid fa-pen"></i></a></td>
-                                <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_NXB"><i class="fa-solid fa-trash"></i></button></td>
+                                <td>@item.TenXuatBan</td>                          
+                                <td>                                 
+                                       @trangThai              
+                                </td>
+
+                                
+                               
+                                <td><button class="btn border bg-primary" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_NXB"><i class="fa-solid fa-pen"></i></button></td>
+                                 <td> <form >
+                                        @if (item.TrangThai==1)
+                                        {
+                                            <button type="submit" class="btn border bg-danger" style="color : white ; font-size : 10px" asp-action="RemoveNXB"  asp-route-Id="@item.ID_NXB">Vô hiệu hóa </button>
+                                        }
+                                        @if (item.TrangThai == 0)
+                                        {
+                                            <button type="submit" class="btn border bg-success" style="color : white; font-size : 10px" asp-action="RemoveNXB" asp-route-Id="@item.ID_NXB">Hoạt động </button>
+                                        }
+                                      
+                                </form>       
+                                </td>
                             </tr>
 
                              <!-- Modal Delete-->
-                            <form action="/QLNhaXuatBan/RemoveNXB?id=@item.ID_NXB" method="post" enctype="multipart/form-data">
+                            <form method="post" asp-action="UpdateNXB" enctype="multipart/form-data">
                                 <div class="modal fade" id="delete-@item.ID_NXB" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel">Đổi trạng thái sản phẩm</h5>
+                                                <h5 class="modal-title" id="staticBackdropLabel">Sửa nhà xuất bản</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="mb-3 row">
-                                                    <label for="ID_SanPham" class="col-sm-2 col-form-label">ID</label>
-                                                    <input for="ID_SanPham" class="form-control" name="ID" value="@item.ID_NXB" disabled/>
+                                                    <label  class="col-sm-2 col-form-label">ID</label>
+                                                    <input  class="form-control"  value="@item.ID_NXB" disabled/>
+                                                    <input  class="form-control" asp-for="TrangThai" value="@item.TrangThai" hidden/>
+                                                    <input  class="form-control" asp-for="ID_NXB" value="@item.ID_NXB" hidden/>
                                                 </div>
                                                 <div class="mb-3 row">
-                                                    <label for="TenSanPham" class="control-label">Tên sản phẩm</label>
-                                                    <input for="TenSanPham" class="form-control" name="nhanVien" value="@item.TenXuatBan" disabled/>
+                                                    <label  class="control-label">Tên nhà xuất bản</label>
+                                                    <input class="form-control" asp-for="TenXuatBan" value="@item.TenXuatBan"/>
                                                 </div>                                              
-                                                <div class="mb-3 row">
-                                                    <label for="Quyen" class="control-label">Trạng thái</label>
-                                                    <input for="Quyen" class="form-control" name="soLuongNhap" value="@trangThai" disabled/>
-                                                </div>
+                                               
                                             </div>
                                             <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Đổi trạng thái</button>
+                                                <button type="submit" class="btn btn-primary">Sửa</button>
                                             </div>
                                         </div>
                                     </div>
