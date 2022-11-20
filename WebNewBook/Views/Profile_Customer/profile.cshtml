@@ -7,7 +7,33 @@
 <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
 <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
 
+
+<style>
+    .loading {
+        background: rgba(0, 0, 0, .5);
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 999;
+    }
+
+    .spinner-center {
+        top: 50%;
+        left: 50%;
+        position: absolute;
+    }
+</style>
+
+
+
+
+
 <div style="background-color: #f1f1f1;">
+    <div id="load" style="display : block" class="loading">
+        <div class="spinner-border text-primary spinner-center" role="status"></div>
+    </div>
     <div class="row  p-1 ">
         <div class="col-3 mx-2">
             <div class="list-group">
@@ -73,7 +99,7 @@
                     <div class="row mb-3">
                         <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Mật khẩu hiện tại</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm" id="Passwork" placeholder="Mật khẩu hiện tại" required>
+                            <input type="text" value="@modelCustome.MatKhau" class="form-control form-control-sm" id="Passwork" placeholder="Mật khẩu hiện tại" required>
                         </div>
                         <div class="invalid-feedback">
                             yêu cầu nhập mật khẩu cũ
@@ -82,7 +108,7 @@
                     <div class="row mb-3">
                         <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Mật khẩu mới</label>
                         <div class="col-sm-9">
-                            <input type="text" class="form-control form-control-sm" id="Passworknew" placeholder="Mật khẩu mới" required>
+                            <input type="text" value="@modelCustome.MatKhau" class="form-control form-control-sm" id="Passworknew" placeholder="Mật khẩu mới" required>
                         </div>
                         <div class="invalid-feedback">
                             yêu cầu nhập khẩu mới
@@ -104,9 +130,23 @@
             </form>
         </div>
     </div>
+    <div class="toast-container position-fixed bottom-0 end-0 p-3">
+        <div id="liveToast" class="toast  text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
+            <div class="toast-header">
 
+                <strong class="me-auto">Thông báo</strong>
+                <small>Bây giờ</small>
+                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+            </div>
+            <div class="toast-body">
+                Thành Công
+            </div>
+        </div>
+    </div>
 
 </div>
+
+
 
 
 
@@ -123,67 +163,93 @@
 
 
 
+        document.getElementById("load").style.display = 'none';
+        var nhanPaswoeek = $("#NhaplaiPasswork").val();
+        console.log(nhanPaswoeek)
+        document.getElementById("check_doimatkhau").onclick = function () {
+            var check = document.getElementById("check_doimatkhau")
+
+            if (check.checked == true) {
+                //mở
+                document.getElementById("Passwork").value = "";
+                document.getElementById("Passworknew").value = "";
+                document.getElementById("NhaplaiPasswork").value = "";
+
+                document.getElementById("list_passwork").style.display = 'block';
+            } if (check.checked == false) {
+                // đóng
+                document.getElementById("Passwork").value = nhanPaswoeek
+                document.getElementById("Passworknew").value = nhanPaswoeek
+                document.getElementById("NhaplaiPasswork").value = nhanPaswoeek
+
+
+
+                document.getElementById("list_passwork").style.display = 'none';
+            }
+        }
+
+
+
 
         $(function () {
 
-            var name = $("#HoVaTen").val();
-            var PassPrevious = $("#Passwork").val();
-            var Passnew = $("#Passworknew").val();
-            var PassNewRe = $("#NhaplaiPasswork").val();
-            var nhanPaswoeek = PassNewRe;
-            var Id = $("#ID_KhachHang").val(); 
-            console.log(name)
-            console.log(PassPrevious)
-            console.log(Passnew)
-            console.log(PassNewRe)
-            document.getElementById("check_doimatkhau").onclick = function () {
-                var check = document.getElementById("check_doimatkhau")
 
-                if (check.checked == true) {
-                    //mở
-                    PassPrevious="";
-                    Passnew="";
-                    document.getElementById("NhaplaiPasswork").value = "";
-                    document.getElementById("list_passwork").style.display = 'block';
-                } if (check.checked == false) {
-                    // đóng
-                    PassPrevious = nhanPaswoeek
-                    Passnew = nhanPaswoeek
-                    PassNewRe = nhanPaswoeek
-                    document.getElementById("list_passwork").style.display = 'none';
-                }
-            }
-
-
-
+            var Passcu = $("#Passwork").val();
             //Hủy voucher
             $("#btnluu").click(function () {
+                var name = $("#HoVaTen").val();
+                var PassPrevious = $("#Passwork").val();
+                var Passnew = $("#Passworknew").val();
+                var PassNewRe = $("#NhaplaiPasswork").val();
+                if (!name == "" && !PassPrevious == "" && !Passnew == "" && !PassNewRe == "") {
+                    if (name.length > 5) {
+                        if (PassNewRe.length > 5 && Passnew.length > 5 && PassPrevious.length > 5) {
+                            if (Passcu == PassPrevious) {
+                                if (Passnew == PassNewRe) {
 
-                console.log(name)
-                console.log(PassPrevious)
-                console.log(Passnew)
-                console.log(PassNewRe)
+                                    $.ajax({
+                                        type: "post",
+                                        data: {
+
+                                            HoVaTen: name,
+                                            MatKhau: PassNewRe
+                                        },
+                                        url: "/profile_customer/UpdateAccount",
+                                        success: function (response) {
+                                            if (response == 1) {
+                                                const toastLiveExample = document.getElementById('liveToast')
+                                                const toast = new bootstrap.Toast(toastLiveExample)
+                                                toast.show()
+
+                                                setTimeout(function () {
+                                                    document.getElementById("load").style.display = 'block';
+                                                    window.location.reload(1);
 
 
-                if (!name && !PassPrevious && !Passnew && !PassNewRe) {
-                    console.log(name)
-                    console.log(PassPrevious)
-                    console.log(Passnew)
-                    console.log(PassNewRe)
+                                                }, 2000);
+                                            }
+                                            if (response == 0) {
+                                                alert("thất bại");
+                                            }
+                                        }
+                                    });
+                                } else {
+                                    alert("Mật khẩu mới nhập lại không khớp")
+                                }
 
-                    $.ajax({
-                        type: "post",
-                        data: {
-                            Id: Id,
-                            hovaten: name,
-                            matkhau: PassNewRe
-                        },
-                        url: "/profile_customer/UpdateAccount",
-                        success: function (response) {
-                            alert("thành công");
-
+                            } else {
+                                alert("Nhập sai Passwork")
+                            }
+                        } else {
+                            alert("Mật khẩu phải trên 5 kí tự")
                         }
-                    });
+
+                    }
+                    else {
+                        alert("Họ và tên phải trên 5 kí tự")
+                    }
+
+
                 } else {
                     alert("Nhập đủ các ô trống")
                 }
