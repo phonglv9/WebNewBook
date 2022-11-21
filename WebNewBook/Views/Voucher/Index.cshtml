@@ -7,8 +7,8 @@
 @using WebNewBook.Model
 @model Voucher
 <style>
-    td{
-        font-size :13px;
+    td {
+        font-size: 13px;
     }
 </style>
 <div class="container py-3" style="background-color: #f1f1f1;">
@@ -45,146 +45,110 @@
                                                 aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <div>
-                                            <nav>
-                                                <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                                    <button class="nav-link active" id="nav-thongtin-tab"
-                                                            data-bs-toggle="tab" data-bs-target="#nav-thongtin"
-                                                            type="button" role="tab" aria-controls="nav-thongtin"
-                                                            aria-selected="true">
-                                                        Thông tin
-                                                    </button>
-                                                    <button class="nav-link" id="nav-apdung-tab"
-                                                            data-bs-toggle="tab" data-bs-target="#nav-apdung"
-                                                            type="button" role="tab" aria-controls="nav-apdung"
-                                                            aria-selected="false">
-                                                        Áp dụng
-                                                    </button>
-
-                                                </div>
-                                            </nav>
-                                            <form asp-action="Add">
+                                        <form>
+                                            <div class="row">
                                                 <input type="hidden" asp-for="Id" value="null" />
                                                 <input type="hidden" asp-for="MaNhanVien" value="null" />
-                                                <div class="tab-content" id="nav">
-                                                    <div class="tab-pane fade show active my-3" id="nav-thongtin"
-                                                         role="tabpanel" aria-labelledby="nav-thongtin-tab">
-                                                        <div class="row ">
-                                                            <div class="col-6 ">
-                                                                <div class="mb-3 row ">
-                                                                    <label for="" class="col-sm-4 col-form-label">
-                                                                        Tên đợt phát hành
-                                                                    </label>
-                                                                    <div class="col-sm-8">
-                                                                        <input asp-for="TenPhatHanh" type="text" class="form-control">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="mb-3 row">
-                                                                    <label for="" class="col-sm-4 col-form-label">
-                                                                        Mệnh giá
-                                                                    </label>
-                                                                    <div class="col-sm-8">
-                                                                        <input asp-for="MenhGia" type="number" class="form-control">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="mb-3 row">
-                                                                    <label for="" class="col-sm-4 col-form-label">
-                                                                        Tình trạng
-                                                                    </label>
-                                                                    <div class="col-sm-8">
-                                                                        <div class="form-check form-switch">
-                                                                            <input class="form-check-input"
-                                                                                   type="checkbox" role="switch"
-                                                                                   id="flexSwitchCheckCheckedDisabled">
-                                                                            <label class="form-check-label"
-                                                                                   for="flexSwitchCheckCheckedDisabled">
-                                                                                Kích hoạt hoặc chưa kích hoạt
-                                                                            </label>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-6">
-                                                                <!-- <div class="mb-3 row">
-                                                                    <label for="" class="col-sm-3 col-form-label">Địa chỉ</label>
-                                                                    <div class="col-sm-9">
-                                                                        <input type="text" class="form-control">
-                                                                    </div>
-                                                                </div> -->
-                                                                <div class="mb-3 row">
-                                                                    <label for="" class="col-sm-3 col-form-label">
-                                                                        Tổng tiền hàng
-                                                                    </label>
-                                                                    <div class="col-sm-9">
-                                                                        <input asp-for="MenhGiaDieuKien" type="number" class="form-control">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="mb-3 row">
-                                                                    <label class="col-sm-3 col-form-label">
-                                                                        Ghi chú
-                                                                    </label>
-                                                                    <div class="col-sm-9">
-                                                                        <input asp-for="GhiChu" type="text" class="form-control">
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="row">
-                                                            <div class=" offset-10">
-                                                                <button type="submit" style="font-size: 12px;"
-                                                                        class="btn btn-success col-1">
-                                                                    <i class="fa-solid fa-square-check"></i>Lưu
-                                                                </button>
-                                                            </div>
+
+
+                                                <div class="col-6">
+                                                    <div class="mb-3 row ">
+                                                        <label for="" class="col-sm-4 col-form-label">
+                                                            Tên đợt phát hành
+                                                        </label>
+                                                        <div class="col-sm-8">
+                                                            <input asp-for="TenPhatHanh" type="text" class="form-control">
                                                         </div>
                                                     </div>
-                                                    <div class="tab-pane fade  active" id="nav-apdung" role="tabpanel"
-                                                         aria-labelledby="nav-apdung-tab">
-
-                                                        <div class="my-3">
-                                                            <p>Thời gian áp dụng</p>
-                                                            <div class="mb-3 row">
-
-                                                                <div class="col-sm-3">
-                                                                    <input asp-for="StartDate" type="date" class="form-control">
-                                                                </div>
-
-                                                                đến
-
-
-                                                                <div class="col-sm-3">
-                                                                    <input asp-for="EndDate" type="date" class="form-control">
-                                                                </div>
-                                                            </div>
-
-                                                            <p>Phạm vi áp dụng</p>
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="radio" name="chon"
-                                                                       id="addkhachhang" checked>
-                                                                <label class="form-check-label" for="addkhachhang">
-                                                                    Toàn bộ khách hàng
-                                                                </label>
-                                                            </div>
-                                                            <div class="form-check ">
-                                                                <input class="form-check-input" type="radio" name="chon"
-                                                                       id="theonhom">
-                                                                <label class="form-check-label" for="theonhom">
-                                                                    Nhóm khách hàng
-
-                                                                </label>
-
-                                                            </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="" class="col-sm-4 col-form-label">
+                                                            Mệnh giá
+                                                        </label>
+                                                        <div class="col-sm-8">
+                                                            <input asp-for="MenhGia" type="number" class="form-control">
                                                         </div>
                                                     </div>
 
                                                 </div>
-                                            </form>
+                                                <div class="col-6">
 
-                                        </div>
+                                                    <div class="mb-3 row">
+                                                        <label for="" class="col-sm-3 col-form-label">
+                                                            Tổng tiền hàng
+                                                        </label>
+                                                        <div class="col-sm-9">
+                                                            <input asp-for="MenhGiaDieuKien" type="number" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-3 row">
+                                                        <label class="col-sm-3 col-form-label">
+                                                            Ghi chú
+                                                        </label>
+                                                        <div class="col-sm-9">
+                                                            <input asp-for="GhiChu" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-7 row">                                                   
+                                                    <label for="" class="col-3 col-form-label">
+                                                        Thời gian áp dụng
+                                                    </label>
+                                                    <div class="offset-2 col-sm-8 mx-3 mb-3 row">
+                                                        <div class="col-sm-5">
+                                                            <input asp-for="StartDate" type="date" class="form-control">
+                                                         
+                                                        </div>
+                                                           -
+                                                        <div class="col-sm-5">
+                                                            <input asp-for="EndDate" type="date" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-6 row">
+                                                    <label for="" class="col-5 col-form-label">
+                                                       Hình thức 
+                                                    </label>
+                                                    <div class="col-sm-7 mb-3 row">
+                                                        <div onclick="ChonHinhThuc()" class="col-sm-5 form-check">
+                                                            <input class="form-check-input" type="radio" name="chon"
+                                                                   checked id="Tang">
+                                                            <label class="form-check-label" for="Tang">
+                                                               Tặng
+                                                            </label>
+                                                        </div>
+                                                        <div onclick="ChonHinhThuc()" class="col-sm-5 form-check ">
+                                                            <input class="form-check-input"  type="radio" name="chon"
+                                                                   id="DoiDiem">
+                                                            <label class="form-check-label" for="DoiDiem">
+                                                                Đổi điểm
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                  
+                                                </div>
+
+                                                <div id="Div_diem" hidden class="col-7">
+                                                    <div class="mb-3 row ">
+                                                        <label for="" class="col-sm-3 col-form-label">
+                                                           Điểm
+                                                        </label>
+                                                        <div class="mx-4 col-sm-7">
+                                                            <input asp-for="TenPhatHanh" type="text" class="form-control">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                        <button type="button" class="btn btn-primary">Lưu</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
             </h6>
         </div>
     </div>
@@ -227,3 +191,21 @@
         </div>
     </div>
 </div>
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+
+    function ChonHinhThuc() {
+        var tang = document.getElementById("Tang")
+        var doi = document.getElementById("DoiDiem")
+
+        if (tang.checked == true) {
+            document.getElementById("Div_diem").hidden = true
+        }
+        if (doi.checked == true) {
+            document.getElementById("Div_diem").hidden = false
+
+        }
+    }
+
+</script>
