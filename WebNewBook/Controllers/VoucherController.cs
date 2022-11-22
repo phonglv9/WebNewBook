@@ -44,6 +44,7 @@ namespace WebNewBook.Controllers
         public async Task<int> Add(Voucher voucher)
         {
             voucher.MaNhanVien= User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
+            voucher.Id = "1";
             HttpResponseMessage response = _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/Voucher", voucher).Result;
             if (response.IsSuccessStatusCode)
             {
