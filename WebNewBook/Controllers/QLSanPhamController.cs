@@ -5,7 +5,6 @@ using Newtonsoft.Json;
 using System.Text;
 using WebNewBook.Model;
 using WebNewBook.Model.APIModels;
-using WebNewBook.API.Book;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -41,17 +40,18 @@ namespace WebNewBook.Controllers
             return sanPhams;
         }
 
-        private async Task<List<BookModel>> GetSachs()
+        private async Task<List<Sach>> GetSachs()
         {
-            List<BookModel> sachs = new List<BookModel>();
-            HttpResponseMessage responseGet = await _httpClient.GetAsync("api/Book/GetlistBook");
+            List<Sach> sachs = new List<Sach>();
+            HttpResponseMessage responseGet = await _httpClient.GetAsync("book");
             if (responseGet.IsSuccessStatusCode)
             {
                 string jsonData = responseGet.Content.ReadAsStringAsync().Result;
-                sachs = JsonConvert.DeserializeObject<List<BookModel>>(jsonData);
+                sachs = JsonConvert.DeserializeObject<List<Sach>>(jsonData);
             };
-            return sachs ?? new List<BookModel>();
+            return sachs ?? new List<Sach>();
         }
+
 
         private async Task<List<SelectListItem>> GetSelectListItems()
         {
@@ -59,7 +59,7 @@ namespace WebNewBook.Controllers
             var listItem = new List<SelectListItem>();
             sachs.ForEach(s =>
             {
-                listItem.Add(new SelectListItem { Text = s.TenSach + " - " + s.GiaBan, Value = s.TenSach + " @ " + s.GiaBan });
+                listItem.Add(new SelectListItem { Text = s.TenSach + " - " + s.GiaBan, Value = s.ID_Sach + " @ " + s.GiaBan });
             });
             return listItem;
         }

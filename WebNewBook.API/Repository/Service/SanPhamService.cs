@@ -27,7 +27,7 @@ namespace WebNewBook.API.Repository.Service
             var sachID = Sachs.Select(c => c.Substring(0, c.IndexOf("@") - 1));
             foreach (var item in spcts)
             {
-                if (item.SanPhamCTs.Select(c => c.MaSach).ToArray().Intersect(sachID).Count() == item.SanPhamCTs.Count() && item.SanPhamCTs.Count() == sachID.Count())
+                if ((item.SanPhamCTs.Select(c => c.MaSach).ToArray().Intersect(sachID).Count() == item.SanPhamCTs.Count() && item.SanPhamCTs.Count() == sachID.Count()) || dbcontext.SanPhams.ToList().Exists(c => c.ID_SanPham == par.ID_SanPham && c.TenSanPham == par.TenSanPham))
                 {
                     throw new Exception("Đã tồn tại sản phẩm!");
                 }
@@ -40,12 +40,11 @@ namespace WebNewBook.API.Repository.Service
                 sanPhamCT.ID_SanPhamCT = Guid.NewGuid().ToString();
                 sanPhamCT.MaSanPham = par.ID_SanPham;
                 sanPhamCT.MaSach = item.Substring(0, item.IndexOf("@") - 1);
-                sanPhamCT.SoLuong = par.SoLuong;
                 dbcontext.Add(sanPhamCT);
 
                 Sach? sach = dbcontext.Sachs.FirstOrDefault(c => c.ID_Sach == item.Substring(0, item.IndexOf("@") - 1));
-                sach.SoLuongKho -= par.SoLuong;
-                if (sach.SoLuongKho < 0)
+                sach.SoLuong -= par.SoLuong;
+                if (sach.SoLuong < 0)
                 {
                     throw new Exception("Hết sách rồi!");
                 }
@@ -91,7 +90,7 @@ namespace WebNewBook.API.Repository.Service
             if (/*!dbcontext.SanPhams.ToList().Exists(c => c.TenSanPham == par.TenSanPham && c.ID_SanPham != par.ID_SanPham)*/true)
             {
                 dbcontext.Update(par);
-                int sl = dbcontext.SanPhamCTs.FirstOrDefault(c => c.MaSanPham == par.ID_SanPham).SoLuong;
+                int sl = dbcontext.SanPhams.AsNoTracking<SanPham>().FirstOrDefault(c => c.ID_SanPham == par.ID_SanPham).SoLuong;
                 if (sl != par.SoLuong)
                 {
                     int change = sl - par.SoLuong;
@@ -101,19 +100,13 @@ namespace WebNewBook.API.Repository.Service
                     foreach (var item in sachs)
                     {
                         Sach sach = dbcontext.Sachs.ToList().FirstOrDefault(c => c.ID_Sach == item.ID_Sach);
-                        sach.SoLuongKho += change;
+                        sach.SoLuong += change;
 
-                        if (sach.SoLuongKho < 0)
+                        if (sach.SoLuong < 0)
                         {
                             throw new Exception("Hết sách rồi!");
                         }
                         dbcontext.Update(sach);
-                    }
-
-                    foreach (var item in dbcontext.SanPhamCTs.Where(c => c.MaSanPham == par.ID_SanPham))
-                    {
-                        item.SoLuong = par.SoLuong;
-                        dbcontext.Update(item);
                     }
                 }
             }
