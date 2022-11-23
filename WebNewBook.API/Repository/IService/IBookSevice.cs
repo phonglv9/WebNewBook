@@ -1,14 +1,14 @@
-﻿using WebNewBook.API.Book;
+﻿using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 
 namespace WebNewBook.API.Repository.IService
 {
     public interface IBookSevice
     {
-        Task<List<BookModel>> GetListBook();
-        Task<Sach> CreateBook(CreateBookModel input);
-        Task<string> UpdateBook(UpdateBook input);
-        Task<string> DeteleBook(string ID);
+        Task<IEnumerable<Sach>> GetListBook();
+        Task CreateBook(SachAPI input);
+        Task UpdateBook(SachAPI input);
+        Task DeteleBook(string ID);
 
         
     }

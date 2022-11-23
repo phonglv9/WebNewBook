@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using WebNewBook.API.Book;
+using WebNewBook.API.ModelsAPI;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.API.Repository.Service;
 using WebNewBook.Model;
 
 namespace WebNewBook.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class BookController : ControllerBase
     {
@@ -17,46 +17,55 @@ namespace WebNewBook.API.Controllers
         {
             _BookService = BookService;
         }
-        /// <summary>
-        /// lấy danh sách 
-        /// </summary>
-        /// <returns></returns>
-        [HttpGet("GetlistBook")]
-        public async Task<List<BookModel>> GetlistBook()
+
+        [HttpGet]
+        public async Task<List<Sach>> GetlistBook()
         {
             var Model = await _BookService.GetListBook();
-            return Model;
+            return Model.ToList();
         }
-        /// <summary>
-        /// Thêm mới sách
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        [HttpPost("CreateBook")]
-        public async Task<Sach> CreateEvent(CreateBookModel input)
-        {   
-            return await _BookService.CreateBook(input);
-        }
-        /// <summary>
-        /// Sửa sách
-        /// </summary>
-        /// <param name="input"></param>
-        /// <returns></returns>
-        [HttpPost("UpdateBook")]
-        public async Task<string> UpdateBook(UpdateBook input)
+
+        [HttpPost]
+        public async Task<ActionResult> CreateEvent(SachAPI input)
         {
-            return await _BookService.UpdateBook(input);
+            try
+            {
+                await _BookService.CreateBook(input);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
-        /// <summary>
-        /// Xoá sách
-        /// </summary>
-        /// <param name="ID"></param>
-        /// <returns></returns>
-        [HttpPost("DeleteNews/{ID}")]
+
+        [HttpPut]
+        public async Task<ActionResult> UpdateBook(SachAPI input)
+        {
+            try
+            {
+                await _BookService.UpdateBook(input);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
+        [HttpPut("update_status")]
         //[Authorize]
-        public async Task<string> DeleteNews(string ID)
+        public async Task<ActionResult> DeleteNews(SachAPI sach)
         {
-            return await _BookService.DeteleBook(ID);
+            try
+            {
+                await _BookService.UpdateBook(sach);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
     }
 }

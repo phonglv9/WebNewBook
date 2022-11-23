@@ -26,9 +26,7 @@ namespace WebNewBook.Model
         public double GiaBan { get; set; }
         public string? MoTa { get; set; }
         public int SoLuong { get; set; }
-        public int IsActive { get; set; }
-        public int SoLuongKho { get; set; }
-        [Range(0, 1)]
+        //public int SoLuongKho { get; set; }
         public int TrangThai { get; set; }
         public virtual NhaXuatBan? NhaXuatBan { get; set; }
         public virtual ICollection<SachCT>? SachCTs { get; set; }

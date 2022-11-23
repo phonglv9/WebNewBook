@@ -20,7 +20,6 @@ namespace WebNewBook.API.Repository.Service
             dbcontext.Add(par);
             Sach sach = dbcontext.Sachs.FirstOrDefault(c => c.ID_Sach == par.MaSach);
             sach.SoLuong += par.SoLuongNhap;
-            sach.SoLuongKho += par.SoLuongNhap;
             dbcontext.Update(sach);
             await dbcontext.SaveChangesAsync();
         }
