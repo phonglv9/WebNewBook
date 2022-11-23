@@ -103,7 +103,9 @@ ul, ol {
     -webkit-transition: 0.2s all;
     transition: 0.2s all;
 }
-
+#btn-voucher{
+    margin-top:10px;
+}
 .primary-btn:hover, .primary-btn:focus {
   opacity: 0.9;
   color: #FFF;
@@ -2264,4 +2266,7 @@ input[type=number]::-webkit-outer-spin-button {
     -moz-appearance: none;
     appearance: none;
     margin: 0;
+}
+input[type='button'].btn-toggle {
+    background-color: red;
 }

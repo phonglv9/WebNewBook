@@ -18,13 +18,23 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                string a;
-                Random random = new Random();
-                voucher.Id = "MPHVC" + random.Next().ToString();
+              
+                dynamic checkTrung;
+                
+                do
+                {
+                    Random random = new Random();
+                    string id = "MPHVC" + random.Next().ToString();
+                     checkTrung = _dbcontext.Vouchers.Where(c => c.Id == id).FirstOrDefault();
+                    voucher.Id = id;
+                } while (checkTrung!=null);
+
+
+
+               
                 voucher.SoLuong = 0;
                 voucher.Createdate = DateTime.Now;
-
-                voucher.MaNhanVien = "NV01";
+           //     voucher.MaNhanVien = "NV01";
                 voucher.TrangThai = 1;
                 _dbcontext.Add(voucher);
                 await _dbcontext.SaveChangesAsync();

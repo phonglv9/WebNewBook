@@ -8,5 +8,6 @@ namespace WebNewBook.API.Repository.IService
         Task AddVouCherAsync(Voucher voucher);
         Task UpdateVouCherAsync(Voucher voucher);
         Task DeleteVouCherAsync(string id);
+       
     }
 }

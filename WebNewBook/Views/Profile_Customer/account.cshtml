@@ -1,5 +1,7 @@
 ﻿@{
-   var  Model = ViewBag.KhachHang;
+    var  Model = ViewBag.KhachHang;
+    var lstorder = ViewBag.lstOrder;
+  
 }
     <link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
@@ -10,7 +12,7 @@
             <div class="col-3 mx-2">
                 <div class="list-group">
                     <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
-                    <a asp-action="account" class="list-group-item list-group-item-action ">
+                <a asp-action="account" class="list-group-item list-group-item-action  active">
                         Bảng điều khiển tài khoản
                     </a>
                     <a asp-action="profile" class="list-group-item list-group-item-action ">Thông tin tài khoản</a>
@@ -34,43 +36,40 @@
                     <hr>
                     <div class="fst-italic">
                     <p>F-point : <a asp-action="FpointHistory">@Model.DiemTichLuy </a>đ</p>
-                        <p>Số đơn hàng thành công năm 2022:      <span class="fw-semibold mx-5">2</span></p>
-                        <p>Số tiền đã thanh toán 2022:         <span class="fw-semibold mx-5">20.000 đ</span></p>
+                        <p>Số đơn hàng thành công năm @DateTime.Now.Year:      <span class="fw-semibold mx-5">@ViewBag.soLuongOrder</span></p>
+                    <p>Số tiền đã thanh toán @DateTime.Now.Year:         <span class="fw-semibold mx-5">@ViewBag.tongTienOrder</span></p>
 
                     </div>
                 </div>
                 <br>
                 <div>
-                    <h5>NHỮNG ĐƠN HÀNG GẦN ĐÂY <a href="#" style="padding-left: 350px ; font-size: 12px; " class="ms-5">Xem thêm</a></h5>
+                <h5>NHỮNG ĐƠN HÀNG GẦN ĐÂY <a asp-action="order" style="padding-left: 500px ; font-size: 12px; " class="ms-5">Xem thêm</a></h5>
                     <hr>
                     <div>
                         <table class="table table-borderless">
                             <thead>
                                 <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
+                                    <th scope="col">Đơn Hàng #</th>
+                                    <th scope="col">Ngày</th>
+                                    <th scope="col">Người nhận</th>
+                                    <th scope="col">Tổng tiền</th>
+                                    <th scope="col">Trạng thái</th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach (var x in lstorder)
+                                {
                                 <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>mdo</td>
+                                    <td>@x.ID_HoaDon</td>
+                                    <td>@x.NgayMua.ToString("d/M/yyyy")</td>
+                                    <td>@x.TenNguoiNhan</td>
+                                    <td>@x.TongTien</td>
+                                    <td>@(x.TrangThai==1?"Hoàn Tất":"Thất bại")</td>
+                                    
                                 </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>twitter</td>
-                                </tr>
+                            }
+                               
+                         
                             </tbody>
                         </table>
                     </div>

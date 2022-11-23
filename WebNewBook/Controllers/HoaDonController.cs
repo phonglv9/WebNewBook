@@ -50,5 +50,20 @@ namespace WebNewBook.Controllers
 
             return View("IndexHDCT", lissttl);
         }
+        public async Task<IActionResult> Sua(string id, int name)
+        {
+            HoaDon lissttl = new HoaDon();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string data = response.Content.ReadAsStringAsync().Result;
+                lissttl = JsonConvert.DeserializeObject<HoaDon>(data);
+            }
+
+            
+            ViewBag.datahdct = lissttl;
+
+            return RedirectToAction(nameof(Index));
+        }
     }
 }

@@ -173,12 +173,12 @@ namespace WebNewBook.Controllers
 
 
 
-
+          
             #region Tìm kiếm           
             if (!String.IsNullOrEmpty(search) && !(iddanhmuc == "Tất cả sách"))
             {
-
-                productStore = await productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc && c.sanPhams.TenSanPham.Contains(search)).ToListAsync();
+                search = search.ToLower();
+                productStore = await productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc && c.sanPhams.TenSanPham.ToLower().Contains(search)).ToListAsync();
                 if (productStore.Count == 0)
                 {
                     ViewBag.TextSearch = $"Không tìm thấy kết quả {search} trong danh mục";
@@ -190,7 +190,8 @@ namespace WebNewBook.Controllers
 
             if (!String.IsNullOrEmpty(search))
             {
-                productStore = await productStore.Where(c => c.sanPhams.TenSanPham.Contains(search)).ToListAsync();
+                search = search.ToLower();
+                productStore = await productStore.Where(c => c.sanPhams.TenSanPham.ToLower().Contains(search)).ToListAsync();
 
                 if (productStore.Count == 0 || productStore == null)
                 {
@@ -311,7 +312,7 @@ namespace WebNewBook.Controllers
                     lsttheLoai = theLoais.Where(c => c.ID_TheLoai == a.ToString()).ToList();
                     var TentheLoai = theLoais.Where(c => c.ID_TheLoai == a.ToString()).Select(v => v.TenTL).FirstOrDefault();
                     ViewBag.TheLoai = lsttheLoai;
-                    ViewBag.listTL = modelHomeDM.Where(a => a.theLoai.TenTL == TentheLoai).ToList();
+                   
                 }
             }
 
@@ -328,8 +329,12 @@ namespace WebNewBook.Controllers
                     ViewBag.DanhMuc = danhMucSaches.ToList();
 
                 
-                
             };
+            var sp = modelHomeDM.Where(a => a.sanPhams.ID_SanPham == id).FirstOrDefault();
+               var listDM= modelHomeDM.Where(b=>b.danhMucSach.TenDanhMuc==sp.danhMucSach.TenDanhMuc).ToList();
+            ViewBag.listDM = listDM;
+
+
 
 
             //TÁC GIẢ

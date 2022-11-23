@@ -17,10 +17,15 @@ namespace WebNewBook.Model
         public string TenPhatHanh { get; set; }
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
+        //hinh thuc 1 : đổi điểm
+        // Hình thức 2 : Tặng voucher
+        // hình thức 3 : In vouher
+        public int HinhThuc { get; set; }
+        public int? DiemDoi { get; set; }
         public int? SoLuong { get; set; }
         public double MenhGia { get; set; }
         public double MenhGiaDieuKien { get; set; }
-        public string GhiChu { get; set; } = String.Empty;
+        public string GhiChu { get; set; } 
         public int TrangThai { get; set; }
         [ForeignKey("NhanVien")]
         public string MaNhanVien { get; set; }

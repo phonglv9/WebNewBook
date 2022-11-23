@@ -1,4 +1,4 @@
-(function ($) {
+﻿(function ($) {
 	"use strict"
 
 	// Mobile Nav toggle
@@ -129,25 +129,25 @@
 	let priceInputMin = document.getElementById('price-min');
 	if (priceInputMax != null) {
 		priceInputMax.addEventListener('input', function () {
-			if (priceInputMax.value > 999) {
+			if (priceInputMax.value > 999000) {
 
-				priceInputMax.value = 999;
+				priceInputMax.value = 999000;
 			}
-			if (priceInputMax.value < 1) {
-				priceInputMax.style.borderColor = "red";
-				priceInputMax.value = 1;
+			if (priceInputMax.value < 1000) {
+				
+				priceInputMax.value = 1000;
 			}
 		})
 	}
 	if (priceInputMin != null) {
 		priceInputMin.addEventListener('input', function () {
-			if (priceInputMin.value > 999) {
-				priceInputMin.style.borderColor = "red";
-				priceInputMin.value = 999;
+			if (priceInputMin.value > 999000) {
+				
+				priceInputMin.value = 999000;
 			}
-			if (priceInputMin.value < 1) {
+			if (priceInputMin.value < 1000) {
 
-				priceInputMin.value = 1;
+				priceInputMin.value = 1000;
 			}
 		});
 	}
@@ -192,6 +192,7 @@
 
 		});
 	}
+	//thêm mới vào giỏ hàng
 	$(".add-to-cart-btn").click(function () {
 
 		var idsp = $(this).attr("value");
@@ -201,16 +202,105 @@
 				SoLuong: 1
 			},
 			function (data) {
-				$('.messCart').text(data);
+				if (data == "Số lượng không có sẵn") {
+					$('.messErorr').html('<div class="alert alert-danger text-center" role="alert"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' + data + '</div >');
+                } else {
+					$('.messCart').append(data);
+                }
+				
 				setTimeout(function () {
 					location.reload();
 				}, 1000)
 
 			});
-
-
-
 	});
+	
+	//Sửa số lượng cart
+	//$('#numberCart').change(function () {
+	//	let idProduct = $(this).attr("data-idProduct");
+	//	let soLuongmoi = numberCart.value;
+	//	$.post("/GioHang/SuaSoLuong",
+	//		{
+	//			id: idProduct,
+	//			soluongmoi: soLuongmoi
+	//		},
+	//		function (data) {
+
+	//			if (data.mess == null) {
+				
+	//				location.reload();
+
+	//			} else {
+	//				$('#messNumberCart').text(data.mess);
+					
+	//				setTimeout(function () {
+	//					location.reload();
+	//				}, 1000)
+					
+	//			}
+
+	//		});
+	//});
+
+	//$("#CartUpdateMax").click(function () {
+
+	//	let idProduct = $(this).attr("data-idProduct");
+	
+	//	let soLuong = $(this).attr("data-soLuong");
+	//	$.post("/GioHang/SuaSoLuong2",
+	//		{
+	//			id: idProduct,
+				
+	//			soLuong: soLuong
+	//		},
+	//		function () {
+				
+	//				location.reload();
+				
+
+	//		});
+
+
+
+	//});
+	//$("#CartUpdateMin").click(function () {
+
+	//	let idProduct = $(this).attr("data-idProduct");
+		
+	//	$.post("/GioHang/SuaSoLuong2",
+	//		{
+	//			id: idProduct,
+				
+	//			soLuong: -1
+	//		},
+	//		function () {
+
+	//			location.reload();
+
+
+	//		});
+
+
+
+	//});
+
+	//$('#numberCart').on("input", function () {
+		
+	//	if (numberCart.value > 100) {
+
+	//		numberCart.value = 100;
+	//	}
+	//	if (numberCart.value < 1) {
+
+	//		numberCart.value = 1;
+	//	}
+	//});
+
+
+
+
+
+
 	$('.dropdown').hover(function () {
 		$(this).toggleClass('open');
 	});
