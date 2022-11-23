@@ -194,7 +194,7 @@
                 <li class="active"><a href="/Home">Trang chủ</a></li>
 
                 @if (Model != null)
-                    @foreach (var item in Model)
+                    @foreach (var item in Model.Take(10))
                     {
                         <li><a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})">@item.TenDanhMuc</a></li>
                     }
