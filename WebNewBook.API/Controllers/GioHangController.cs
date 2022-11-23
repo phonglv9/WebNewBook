@@ -22,27 +22,33 @@ namespace WebNewBook.API.Controllers
             return await _GioHangService.VM();
 
         }
+        [HttpGet("GetLitsGH")]
+        public async Task<List<GioHang>> GetGH()
+        {
+            return await _GioHangService.GetlistGH();
+
+        }
         [HttpGet("SanPham/{id}")]
         public async Task<SanPham> Getsp(string id)
         {
             return await _GioHangService.GetSanPham(id);
 
         }
-        [HttpGet("Addgiohang")]
-        public async Task<SanPham> Getsp(List<GioHang> lstGioHang)
-
+        [HttpGet("Xoakhoigio/{id}")]
+        public async Task<string> deleteCart(string id)
         {
-            var n = lstGioHang;
-            SanPham a=new SanPham();
-            return  a;
+             await _GioHangService.XoakhoiGioHang(id);
+            return "Thành Công";
 
         }
-        [HttpPost]
-        public async Task<ActionResult> AddNhanVienAsync(GioHang nv)
+        [HttpGet("Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}")]
+        public async Task<ActionResult> Addgiohang(string HinhAnh,int SoLuongs,string emailKH,string idsp)
         {
+            
+          
             try
             {
-                await _GioHangService.AddGioHangAsync(nv);
+                await _GioHangService.AddGioHangAsync(HinhAnh, SoLuongs, emailKH, idsp);
                 return Ok();
             }
             catch (Exception e)
@@ -50,5 +56,6 @@ namespace WebNewBook.API.Controllers
                 return BadRequest(e.Message);
             }
         }
+       
     }
 }

@@ -6,13 +6,13 @@
 		public string Tensp { get; set; }
         public double DonGia { get; set; }
         public int Soluong { get; set; }
-        public double ThanhTien
-        {
-            get
-            {
-                return Soluong * DonGia;
-            }
-        }
+        public double ThanhTien { get; set; }
+        //{
+        //    get
+        //    {
+        //        return Soluong * DonGia;
+        //    }
+        //}
 
 
     }

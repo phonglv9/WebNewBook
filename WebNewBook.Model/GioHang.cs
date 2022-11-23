@@ -15,6 +15,8 @@ namespace WebNewBook.Model
         [Required]
         public string HinhAnh { get; set; }
         [Required]
+        public string idsp { get; set; }
+        [Required]
         public string TenSP { get; set; }
         [Required]
         public string emailKH { get; set; }

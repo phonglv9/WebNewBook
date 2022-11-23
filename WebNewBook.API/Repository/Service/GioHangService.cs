@@ -1,4 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto;
+using System.Collections.Generic;
 using WebNewBook.API.Data;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.API.Repository.IService;
@@ -11,13 +13,52 @@ namespace WebNewBook.API.Repository.Service
         private readonly dbcontext _dbContext;
         public GioHangService(dbcontext dbContext)
         {
+            
+
             _dbContext = dbContext;
         }
 
-        public async Task AddGioHangAsync(GioHang par)
+        public async Task<int> AddGioHangAsync(string HinhAnh, int SoLuongs, string emailKH, string idsp)
         {
-            _dbContext.Add(par);
+            var listsp = _dbContext.SanPhams.ToList();
+            var listgh = _dbContext.GioHangs.ToList();
+            GioHang giohangs = new GioHang();
+            giohangs.ID_GioHang= "GH" + Guid.NewGuid().ToString();
+            giohangs.HinhAnh = HinhAnh;
+            giohangs.SoLuong = 0;
+            giohangs.emailKH = emailKH;
+            giohangs.idsp = idsp;
+            giohangs.TenSP = listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.TenSanPham).FirstOrDefault();
+            giohangs.DonGia= listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.GiaBan).FirstOrDefault();
+              if (listgh.Exists(c => c.idsp == idsp))
+            {
+                var giohang= listgh.SingleOrDefault(c=>c.idsp== idsp);
+                if (SoLuongs!=null)
+                {
+                    
+                    giohang.SoLuong+= SoLuongs;
+                    _dbContext.Update(giohang);
+                    
+                    return await _dbContext.SaveChangesAsync();
+
+                    
+                }
+
+
+            }
+            else
+            {
+                giohangs.SoLuong += SoLuongs;
+            }
+            _dbContext.Add(giohangs);
             await _dbContext.SaveChangesAsync();
+            return 1;
+        }
+
+        public async Task<List<GioHang>> GetlistGH()
+        {
+            var listgh= await _dbContext.GioHangs.ToListAsync();
+            return listgh;
         }
 
         public async Task<SanPham> GetSanPham( string ID)
@@ -56,5 +97,14 @@ namespace WebNewBook.API.Repository.Service
                        }).ToList();
             return homeVMs;
         }
-	}
+
+        public async Task<string> XoakhoiGioHang(string id)
+        {
+            var listgh = _dbContext.GioHangs.ToList();
+            var giohang = listgh.SingleOrDefault(c => c.idsp ==id );
+            _dbContext.Remove(giohang);
+            await _dbContext.SaveChangesAsync();
+            return "xoa thành công";
+        }
+    }
 }
