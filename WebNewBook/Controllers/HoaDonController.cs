@@ -60,7 +60,7 @@ namespace WebNewBook.Controllers
                 lissttl = JsonConvert.DeserializeObject<HoaDon>(data);
             }
 
-
+            
             ViewBag.datahdct = lissttl;
 
             return RedirectToAction(nameof(Index));

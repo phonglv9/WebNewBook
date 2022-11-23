@@ -83,14 +83,11 @@
                                         <form asp-controller="HoaDon" asp-action="Sua" method="post">
 
                                             @* <input name="dd" type="hidden" value=" @item.hoaDon.ID_HoaDon">*@
-                                            <p>
-                                                <select type="hidden" name="id">
+                                            <div>
+                                                <button type="submit" class="btn btn-primary">Save </button>
 
-                                                    <option value="@a.hoaDon.ID_HoaDon"></option>
-
-                                                </select>
-
-                                                <div>
+                                            </div>
+                                            <div>
                                                     <select class="form-select" name="name" aria-label="Default select example">
                                                         <option value="0">Không tồn tại</option>
                                                         <option value="1">Đặt hàng</option>
@@ -100,11 +97,14 @@
                                                         <option value="5">Thành công</option>
 
                                                     </select>
-
-                                                    <button type="submit" class="btn btn-primary">Save </button>
-                                                </div>
+                                            </div>
+                                            <div>
+                                                <input name="id" type="hidden" value="@a.hoaDon.ID_HoaDon">
                                                 
-                                            </p>
+                                            </div>
+                                                    
+                                               
+                                           
 
                                         </form>
                                     </td>

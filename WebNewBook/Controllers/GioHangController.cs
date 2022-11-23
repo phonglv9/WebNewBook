@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
 using System.Text.Json;
@@ -20,8 +21,8 @@ namespace WebNewBook.Controllers
             _httpClient.BaseAddress = baseAdress;
 
             //ListData();
-            //CreateGioHang();
-            Giohangs();
+            
+         // Giohangs();
 
         }
 
@@ -41,36 +42,21 @@ namespace WebNewBook.Controllers
             return modelHome;
 
         }
-        [HttpPost]
-        public async Task<IActionResult> CreateGioHang()
+      
+        
+
+        public async Task<IActionResult> Index(string? mess)
         {
-            GioHang GioHangs = new GioHang();
-            foreach (var a in Giohangs()) {
-                List<GioHang> lstGioHang = new List<GioHang>();
-                
-                GioHangs.ID_GioHang = "GH" + Guid.NewGuid().ToString();
-                GioHangs.HinhAnh = "gsdfgsdg";
-                GioHangs.TenSP = a.Tensp;
-                GioHangs.DonGia = a.DonGia;
-                GioHangs.SoLuong = a.Soluong;
-                GioHangs.TrangThai = true;
-                GioHangs.TongDonGia = a.ThanhTien;
-                GioHangs.emailKH = User.Identity.Name;
-                lstGioHang.Add(GioHangs);
-                  }
+            ViewBag.MessUpdateCart = mess;
+            var cart = Giohangs();
+            var tongTien = cart.Sum(a => a.ThanhTien);
+            ViewBag.giohang = cart;
+            ViewBag.thanhtien = tongTien;
+            ViewBag.soluong = cart.Sum(a => a.Soluong);
+            HttpContext.Session.SetString("amout", tongTien.ToString());
+            CreateGioHang();
 
-            if (ModelState.IsValid)
-            {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(GioHangs), Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await _httpClient.PostAsync("GioHang", content);
-
-                if (response.IsSuccessStatusCode)
-                {
-                    return View("Payment/CheckOut");
-                }
-            }
-
-            return View("");
+            return View("Index");
         }
         public List<CartItem> Giohangs()
         {
@@ -94,20 +80,42 @@ namespace WebNewBook.Controllers
 
         }
 
-        public async Task<IActionResult> Index(string? mess)
+        [HttpPost]
+        public async Task<IActionResult> CreateGioHang()
         {
-            ViewBag.MessUpdateCart = mess;
-            var cart = Giohangs();
-            var tongTien = cart.Sum(a => a.ThanhTien);
-            ViewBag.giohang = cart;
-            ViewBag.thanhtien = tongTien;
-            ViewBag.soluong = cart.Sum(a => a.Soluong);
-            HttpContext.Session.SetString("amout", tongTien.ToString());
+            if (!string.IsNullOrEmpty(User.Identity.Name))
+            {
+                List<GioHang> lstGioHang = new List<GioHang>();
+                GioHang GioHangs = new GioHang();
+                foreach (var a in Giohangs())
+                {
+                    
 
-            return View("Index");
+                    GioHangs.ID_GioHang = "GH" + Guid.NewGuid().ToString();
+                    GioHangs.HinhAnh = "gsdfgsdg";
+                    GioHangs.TenSP = a.Tensp;
+                    GioHangs.DonGia = a.DonGia;
+                    GioHangs.SoLuong = a.Soluong;
+                    GioHangs.TrangThai = true;
+                    GioHangs.TongDonGia = a.ThanhTien;
+                    GioHangs.emailKH = User.Identity.Name;
+                    lstGioHang.Add(GioHangs);
+                }
+
+                GioHang modelHome = new GioHang();
+                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/GioHang/Addgiohang"+GioHangs).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonData = response.Content.ReadAsStringAsync().Result;
+                    modelHome = JsonConvert.DeserializeObject<GioHang>(jsonData);
+
+
+                };
+            }
+
+
+            return View("");
         }
-
-
 
 
         public IActionResult AddToCart(string id, int SoLuong)

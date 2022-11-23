@@ -28,6 +28,15 @@ namespace WebNewBook.API.Controllers
             return await _GioHangService.GetSanPham(id);
 
         }
+        [HttpGet("Addgiohang")]
+        public async Task<SanPham> Getsp(List<GioHang> lstGioHang)
+
+        {
+            var n = lstGioHang;
+            SanPham a=new SanPham();
+            return  a;
+
+        }
         [HttpPost]
         public async Task<ActionResult> AddNhanVienAsync(GioHang nv)
         {

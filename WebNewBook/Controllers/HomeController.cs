@@ -311,7 +311,7 @@ namespace WebNewBook.Controllers
                     lsttheLoai = theLoais.Where(c => c.ID_TheLoai == a.ToString()).ToList();
                     var TentheLoai = theLoais.Where(c => c.ID_TheLoai == a.ToString()).Select(v => v.TenTL).FirstOrDefault();
                     ViewBag.TheLoai = lsttheLoai;
-                    ViewBag.listTL = modelHomeDM.Where(a => a.theLoai.TenTL == TentheLoai).ToList();
+                   
                 }
             }
 
@@ -328,8 +328,12 @@ namespace WebNewBook.Controllers
                     ViewBag.DanhMuc = danhMucSaches.ToList();
 
                 
-                
             };
+            var sp = modelHomeDM.Where(a => a.sanPhams.ID_SanPham == id).FirstOrDefault();
+               var listDM= modelHomeDM.Where(b=>b.danhMucSach.TenDanhMuc==sp.danhMucSach.TenDanhMuc).ToList();
+            ViewBag.listDM = listDM;
+
+
 
 
             //TÁC GIẢ
