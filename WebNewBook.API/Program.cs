@@ -34,6 +34,7 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-98PG69Q\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook"));
 
 
 builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-KBU829B\\SQLEXPRESS;Initial Catalog=datn1;Persist Security Info=True;User ID=sa;Password=1"));
@@ -69,6 +70,7 @@ builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 builder.Services.AddScoped<ITheLoaiService, TheLoaiService>();
 builder.Services.AddScoped<ITacGiaService, TacGiaService>();
 builder.Services.AddScoped<INhaXuatBanService, NhaXuatBanService>();
+builder.Services.AddScoped<IDanhMucService, DanhMucService>();
 
 builder.Services.AddTransient<IEmailService, SendMailConfig>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>

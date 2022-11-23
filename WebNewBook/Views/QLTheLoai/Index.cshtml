@@ -1,7 +1,7 @@
 ﻿@using WebNewBook.Model;
 @using X.PagedList;
 @using X.PagedList.Mvc.Core;
-@model NhaXuatBan;
+@model TheLoai;
 
 @{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -20,14 +20,14 @@
 }
 @section Scripts{
 	<script>
-      $("#selectNXB").change(function (){
+      $("#selectTL").change(function (){
        
           var $form = $(this).closest('form');
             $form.find('button[type=submit]').click();
          
      });
      setTimeout(function(){
-			$('#msNXB').fadeOut('slow');
+			$('#msTL').fadeOut('slow');
 		},1500)
 	</script>
 	
@@ -35,20 +35,20 @@
 
 
 <div class="container py-3" style="background-color: #f1f1f1;">
-    <h3 style="font-weight: 700; text-align:center;">Nhà Xuất Bản</h3>
+    <h3 style="font-weight: 700; text-align:center;">Thể Loại</h3>
     <div class="container" style="background-color: rgb(255, 255, 255);">
         <div class="py-3">
             <h6>
                 <div>
                     <form asp-action="Index" class="row">
                     <div class="col-5 mb-3">
-                        <input type="text" name="timKiem" class="form-control" placeholder="Mời bạn nhập tên nhà xuất bản để tìm kiếm">
+                        <input type="text" name="timKiem" class="form-control" placeholder="Mời bạn nhập tên thể loại để tìm kiếm">
                     </div>
                       <div class="col-2">
                         <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
                     </div>
                     <div class="col-5 mb-3">
-                        <select id="selectNXB" name="trangThai" class="form-select" aria-label="Default select example">
+                        <select id="selectTL" name="trangThai" class="form-select" aria-label="Default select example">
                             
                             <option selected>Chọn trạng thái</option>
                             <option value="0">Tất cả</option>
@@ -61,8 +61,8 @@
                    
                     <div class="col-3">
                         <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNXB">
-                            <i class="fa-solid fa-address-book"></i> Thêm nhà xuất bản
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalTL">
+                            <i class="fa-solid fa-address-book"></i> Thêm thể loại
                         </button>
                     </div>
                 </div>
@@ -73,43 +73,45 @@
     <div class="container " style="background-color: rgb(255, 255, 255);">
         <div class="py-3">
                 @if (mess != ""){
-            <div class="alert alert-@color" id="msNXB" role="alert">
+            <div class="alert alert-@color" id="msTL" role="alert">
                     @mess
             </div>
             }
             <p>
-               @if( ViewBag.NXB!=null)  {<span>Trang @( ViewBag.NXB.PageCount <  ViewBag.NXB.PageNumber ? 0 :  ViewBag.NXB.PageNumber) / @ViewBag.NXB.PageCount</span>}
+               @if( ViewBag.TL!=null)  {<span>Trang @( ViewBag.TL.PageCount <  ViewBag.TL.PageNumber ? 0 :  ViewBag.TL.PageNumber) / @ViewBag.TL.PageCount</span>}
                 <table class="table">
                     <thead class="table-secondary">
                         <tr>
-                            <th scope="col">Tên nhà xuất bản </th>
+                            <th scope="col">Tên danh mục </th>
+                            <th scope="col" >Danh mục</th>
                             <th scope="col" >Trạng thái</th>
                             <th colspan="2" style="text-align: center ;">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
-                          @if(ViewBag.NXB.Count == 0){<tr><th>Không có sản phẩm</th></tr>}else{
-                        @foreach (var item in  ViewBag.NXB)
+                          @if(ViewBag.TL.Count == 0){<tr><th>Không có </th></tr>}else{
+                        @foreach (var item in  ViewBag.TL)
                         {
                              var trangThai = item.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
                         
                             <tr>
-                                <td>@item.TenXuatBan</td>                          
+                                <td>@item.TenTL</td>  
+                                  <td>@item.MaDanhMuc</td>
                                 <td>                                 
                                        @trangThai              
                                 </td>
 
                                 
                                
-                                <td><button class="btn border bg-primary" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_NXB"><i class="fa-solid fa-pen"></i></button></td>
+                                <td><button class="btn border bg-primary" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_TheLoai"><i class="fa-solid fa-pen"></i></button></td>
                                  <td> <form >
                                         @if (item.TrangThai==1)
                                         {
-                                            <button type="submit" class="btn border bg-danger" style="color : white ; font-size : 10px" asp-action="RemoveNXB"  asp-route-Id="@item.ID_NXB">Vô hiệu hóa </button>
+                                            <button type="submit" class="btn border bg-danger" style="color : white ; font-size : 10px" asp-action="RemoveTL"  asp-route-Id="@item.ID_TheLoai">Vô hiệu hóa </button>
                                         }
                                         @if (item.TrangThai == 0)
                                         {
-                                            <button type="submit" class="btn border bg-success" style="color : white; font-size : 10px" asp-action="RemoveNXB" asp-route-Id="@item.ID_NXB">Hoạt động </button>
+                                            <button type="submit" class="btn border bg-success" style="color : white; font-size : 10px" asp-action="RemoveTL" asp-route-Id="@item.ID_TheLoai">Hoạt động </button>
                                         }
                                       
                                 </form>       
@@ -117,24 +119,24 @@
                             </tr>
 
                              <!-- Modal Delete-->
-                            <form method="post" asp-action="UpdateNXB" enctype="multipart/form-data">
-                                <div class="modal fade" id="delete-@item.ID_NXB" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <form method="post" asp-action="UpdateTL" enctype="multipart/form-data">
+                                <div class="modal fade" id="delete-@item.ID_TheLoai" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel">Sửa nhà xuất bản</h5>
+                                                <h5 class="modal-title" id="staticBackdropLabel">Sửa thể loại</h5>
                                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                             </div>
                                             <div class="modal-body">
                                                 <div class="mb-3 row">
                                                     <label  class="col-sm-2 col-form-label">ID</label>
-                                                    <input  class="form-control"  value="@item.ID_NXB" disabled/>
+                                                    <input  class="form-control"  value="@item.ID_TheLoai" disabled/>
                                                     <input  class="form-control" asp-for="TrangThai" value="@item.TrangThai" hidden/>
-                                                    <input  class="form-control" asp-for="ID_NXB" value="@item.ID_NXB" hidden/>
+                                                    <input  class="form-control" asp-for="ID_TheLoai" value="@item.ID_TheLoai" hidden/>
                                                 </div>
                                                 <div class="mb-3 row">
-                                                    <label  class="control-label">Tên nhà xuất bản</label>
-                                                    <input class="form-control" asp-for="TenXuatBan" value="@item.TenXuatBan"/>
+                                                    <label  class="control-label">Tên thể loại</label>
+                                                    <input class="form-control" asp-for="TenTL" value="@item.TenTL"/>
                                                 </div>                                              
                                                
                                             </div>
@@ -152,7 +154,7 @@
                     
                 </table>
                 
-                    @Html.PagedListPager((IPagedList)ViewBag.NXB, page => Url.Action("Index","QLNhaXuatBan",new {timKiem = ViewBag.TimKiem, trangThai =ViewBag.TrangThai, page = page}),new X.PagedList.Web.Common.PagedListRenderOptions{LiElementClasses = new string[] { "page-item" },PageClasses = new string[] { "page-link" }})
+                    @Html.PagedListPager((IPagedList)ViewBag.TL, page => Url.Action("Index","QLNhaXuatBan",new {timKiem = ViewBag.TimKiem, trangThai =ViewBag.TrangThai, page = page}),new X.PagedList.Web.Common.PagedListRenderOptions{LiElementClasses = new string[] { "page-item" },PageClasses = new string[] { "page-link" }})
                
             </p>
         </div>
@@ -164,26 +166,26 @@
                     <div class="col-3">
                        
                         <!-- Modal -->
-                        <div class="modal fade" id="modalNXB" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                        <div class="modal fade" id="modalTL" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title" id="staticBackdropLabel">Thêm nhà xuất bản</h5>
+                                        <h5 class="modal-title" id="staticBackdropLabel">Thêm thể loại</h5>
                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                     </div>
                                     <div class="modal-body">
-                                        <input asp-for="@Model.ID_NXB" type="hidden" class="form-control">
+                                        <input asp-for="@Model.ID_TheLoai" type="hidden" class="form-control">
                                         <input asp-for="@Model.TrangThai" type="hidden" value="1" class="form-control">
                                         <div class="mb-3 row">
-                                            <label for="" class="col-sm-2 col-form-label">Họ tên NXB</label>
+                                            <label for="" class="col-sm-2 col-form-label">Tên danh mục</label>
                                             <div class="col-sm-10">
-                                                <input asp-for="@Model.TenXuatBan" type="text"  class="form-control" required>
+                                                <input asp-for="@Model.TenTL" type="text"  class="form-control" required>
 
                                             </div>
                                         </div>                                      
                                     </div>
                                     <div class="modal-footer">
-                                        <button asp-action="AddNBX" type="submit" class="btn btn-primary">Thêm</button>
+                                        <button asp-action="AddTL" type="submit" class="btn btn-primary">Thêm</button>
                                     </div>
                                 </div>
                             </div>

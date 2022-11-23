@@ -18,8 +18,7 @@ namespace WebNewBook.Component
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var headers = await _headerService.GetDMAsync();
-            List<CartItem> data = new List<CartItem>();
-            //var opt = new JsonSerializerOptions() { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, WriteIndented = true };
+            List<CartItem> data = new List<CartItem>();    
             var jsonData = Request.Cookies["Cart"];
             if (jsonData != null)
             {

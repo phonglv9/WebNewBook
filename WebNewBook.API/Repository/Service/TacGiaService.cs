@@ -23,7 +23,18 @@ namespace WebNewBook.API.Repository.Service
             TacGia? tg = dbcontext.TacGias.FirstOrDefault(c => c.ID_TacGia == id) ?? null;
             if (tg != null)
             {
-                dbcontext.TacGias.Remove(tg);
+                if (tg.TrangThai == 1)
+                {
+                    tg.TrangThai = 0;
+                    dbcontext.TacGias.Update(tg);
+                    await dbcontext.SaveChangesAsync();
+                }
+                else
+                {
+                    tg.TrangThai = 1;
+                    dbcontext.TacGias.Update(tg);
+                    await dbcontext.SaveChangesAsync();
+                }
                 await dbcontext.SaveChangesAsync();
             }
         }

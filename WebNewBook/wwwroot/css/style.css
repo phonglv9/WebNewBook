@@ -2267,3 +2267,6 @@ input[type=number]::-webkit-outer-spin-button {
     appearance: none;
     margin: 0;
 }
+input[type='button'].btn-toggle {
+    background-color: red;
+}

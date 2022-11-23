@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Thế giới sách</title>
+    <title>Quản lý WebNewBook</title>
 
     <!-- Custom fonts for this template-->
     <link href="~/admin/lib/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
@@ -49,7 +49,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                    <!-- Topbar Search -->
+                 @*   <!-- Topbar Search -->
                     <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -60,13 +60,13 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </form>*@
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
+                        @*<li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
@@ -87,10 +87,10 @@
                                     </div>
                                 </form>
                             </div>
-                        </li>
+                        </li>*@
 
                         <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
+                     @*   <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
@@ -138,10 +138,10 @@
                                 </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
-                        </li>
+                        </li>*@
 
                         <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
+                      @*  <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
@@ -213,30 +213,30 @@
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                             </div>
                         </li>
-
-                        <div class="topbar-divider d-none d-sm-block"></div>
+*@
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            @if (User.Identity.IsAuthenticated)
+                            @if (User.IsInRole("Admin"))
                             {
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Login</span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Đăng xuất</span>
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
+                                  
                                     <a class="dropdown-item" href="#">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Thông tin tài khoản
                                     </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a asp-action="Logout" asp-controller="QLLogin" class="dropdown-item">
+                                    <a asp-action="Logout" asp-controller="Admin" class="dropdown-item">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Đăng xuất
                                     </a>
                                 </div>
+                             
                             }
                             else
                             {
@@ -247,13 +247,10 @@
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
-                                    <a asp-action="Index" asp-controller="QLLogin" asp-route-nhanVien="false" class="dropdown-item">
-                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Khách hàng
-                                    </a>
-                                    <div class="dropdown-divider"></div>
-                                    <a asp-action="Index" asp-controller="QLLogin" asp-route-nhanVien="true" class="dropdown-item">
-                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                  
+                                    
+                                    <a asp-action="Index" asp-controller="Admin" asp-route-nhanVien="true" class="dropdown-item">
+                                       <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                         Nhân viên
                                     </a>
                                 </div>
@@ -267,7 +264,7 @@
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
 
-                    @RenderBody();
+                    @RenderBody()
 
                 </div>
                 <!-- /.container-fluid -->
@@ -323,7 +320,7 @@
 
     <!-- Custom scripts for all pages-->
     <script src="~/admin/lib/js/sb-admin-2.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script src="~/fontawesome-free-6.2.0-web/js/fontawesome.min.js"></script>
     <script src="~/fontawesome-free-6.2.0-web/js/all.min.js"></script>
     <script src="~/lib/chosen/chosen.jquery.min.js"></script>

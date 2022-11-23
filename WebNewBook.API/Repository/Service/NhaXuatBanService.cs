@@ -23,8 +23,19 @@ namespace WebNewBook.API.Repository.Service
             NhaXuatBan? nxb = dbcontext.NhaXuatBans.FirstOrDefault(c => c.ID_NXB == id) ?? null;
             if (nxb != null)
             {
-                dbcontext.NhaXuatBans.Remove(nxb);
-                await dbcontext.SaveChangesAsync();
+                if (nxb.TrangThai == 1)
+                {
+                    nxb.TrangThai = 0;
+                    dbcontext.NhaXuatBans.Update(nxb);
+                    await dbcontext.SaveChangesAsync();
+                }
+                else
+                {
+                    nxb.TrangThai = 1;
+                    dbcontext.NhaXuatBans.Update(nxb);
+                    await dbcontext.SaveChangesAsync();
+                }
+              
             }
         }
 

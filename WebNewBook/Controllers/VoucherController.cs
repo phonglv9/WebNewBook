@@ -38,20 +38,20 @@ namespace WebNewBook.Controllers
             ViewBag.lstvoucher = Getvoucher;
             return View();
         }
-        public async Task<IActionResult> Add(Voucher voucher)
+
+
+        /// Tạo đợt phát hành 
+        public async Task<int> Add(Voucher voucher)
         {
-
-
-            using (var httpClient = new HttpClient())
+            voucher.MaNhanVien= User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
+            voucher.Id = "1";
+            HttpResponseMessage response = _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/Voucher", voucher).Result;
+            if (response.IsSuccessStatusCode)
             {
-                StringContent content = new StringContent(JsonConvert.SerializeObject(voucher), Encoding.UTF8, "application/json");
-                using (var response = await httpClient.PostAsync("https://localhost:7266/api/Voucher", content))
-                {
-                    string apiResponse = await response.Content.ReadAsStringAsync();
-                    voucher = JsonConvert.DeserializeObject<Voucher>(apiResponse);
-                }
+                return 1;
             }
-            return RedirectToAction("Index");
+            return 0;
+          
         }
 
         public async Task<IActionResult> Detail(string Id, VoucherModel voucherModel)
@@ -276,7 +276,7 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public int PhatHanhVoucher(string GetId, VoucherCT voucherCT)
         {
-            var lstid = Get_Id(GetId);  
+            var lstid = Get_Id(GetId);
             List<VoucherCT> voucherCTList = new List<VoucherCT>();
             foreach (var id in lstid)
             {
@@ -287,12 +287,12 @@ namespace WebNewBook.Controllers
                 cT.NgayBatDau = voucherCT.NgayBatDau;
                 voucherCTList.Add(cT);
             }
-        //    StringContent content = new StringContent(JsonConvert.SerializeObject(voucherCTList));
+            //    StringContent content = new StringContent(JsonConvert.SerializeObject(voucherCTList));
             HttpResponseMessage response = _httpClient.PutAsJsonAsync<List<VoucherCT>>(_httpClient.BaseAddress + "/VoucherCT/PhatHanhVoucher/", voucherCTList).Result;
             if (response.IsSuccessStatusCode)
             {
 
-                return 1; 
+                return 1;
 
             }
             return 0;

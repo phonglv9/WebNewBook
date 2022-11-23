@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 
@@ -6,34 +7,34 @@ namespace WebNewBook.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class NhaXuatBanController : Controller
+    public class DanhMucSachController : ControllerBase
     {
-        private readonly INhaXuatBanService nhaXuatBanService;
-        public NhaXuatBanController(INhaXuatBanService nhaXuatBanService)
+        private readonly IDanhMucService _danhMucService;
+        public DanhMucSachController(IDanhMucService danhMucService)
         {
-            this.nhaXuatBanService = nhaXuatBanService;
+            this._danhMucService = danhMucService;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<NhaXuatBan>> GetNhaXuatBanAsync()
+        public async Task<IEnumerable<DanhMucSach>> GetDMAsync()
         {
-            var nxb = await nhaXuatBanService.GetNhaXuatBanAsync();
+            var nxb = await _danhMucService.GetDM();
             return nxb;
         }
 
         [HttpGet("{id}")]
-        public async Task<NhaXuatBan?> GetNhaXuatBanAsync(string id)
+        public async Task<DanhMucSach?> GetNhaXuatBanAsync(string id)
         {
-            var tl = await nhaXuatBanService.GetNhaXuatBanAsync(id);
+            var tl = await _danhMucService.GetDanhMucAsync(id);
             return tl;
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddNhaXuatBanAsync(NhaXuatBan nxb)
+        public async Task<ActionResult> AddDanhMucAsync(DanhMucSach danhMuc)
         {
             try
             {
-                await nhaXuatBanService.AddNhaXuatBanAsync(nxb);
+                await _danhMucService.AddDanhMucAsync(danhMuc);
                 return Ok();
             }
             catch (Exception e)
@@ -43,11 +44,11 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateNhaXuatBanAsync(NhaXuatBan nxb)
+        public async Task<ActionResult> UpdateDanhMucAsync(DanhMucSach danhMucSach)
         {
             try
             {
-                await nhaXuatBanService.UpdateNhaXuatBanAsync(nxb);
+                await _danhMucService.UpdateDanhMucAsync(danhMucSach);
                 return Ok();
             }
             catch (Exception e)
@@ -61,7 +62,7 @@ namespace WebNewBook.API.Controllers
         {
             try
             {
-                await nhaXuatBanService.DeleteNhaXuatBanAsync(id);
+                await _danhMucService.DeleteDanhMucAsync(id);
                 return Ok();
             }
             catch (Exception e)
