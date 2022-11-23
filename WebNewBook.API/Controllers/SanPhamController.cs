@@ -52,11 +52,11 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> UpdateSanPhamAsync(SanPham sp)
+        public async Task<ActionResult> UpdateSanPhamAsync(SanPhamAPI sp)
         {
             try
             {
-                await sanPhamService.UpdateSanPhamAsync(sp);
+                await sanPhamService.UpdateSanPhamAsync(sp.SanPham);
                 return Ok();
             }
             catch (Exception e)
@@ -87,6 +87,20 @@ namespace WebNewBook.API.Controllers
         //    }
         //    return View(nhanVien);
         //}
+
+        [HttpPut("update_status")]
+        public async Task<ActionResult> UpdateSanPhamAsync(SanPham sp)
+        {
+            try
+            {
+                await sanPhamService.UpdateSanPhamAsync(sp);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
         private static async Task<string> UpLoadFile(IFormFile file, string sDirectory, string newname)
         {

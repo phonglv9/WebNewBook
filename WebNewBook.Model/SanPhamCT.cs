@@ -17,7 +17,6 @@ namespace WebNewBook.Model
         public string MaSanPham { get; set; }
         [ForeignKey("Sach")]
         public string MaSach { get; set; }
-        public int SoLuong { get; set; }
         public int TrangThai { get; set; }
         public virtual SanPham? SanPham { get; set; }
         public virtual Sach? Sach { get; set; }

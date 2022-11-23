@@ -16,8 +16,7 @@ namespace WebNewBook.Model
         [ForeignKey("PhieuGiamGiaSP")]
         public string? MaPhieuGiamGiaSP { get; set; }
         public string TenSanPham { get; set; }
-        public int SoLuong { get; set; } // 100(sp) - 30///
-                                          //70
+        public int SoLuong { get; set; } 
         public double GiaBan { get; set; }
         public string HinhAnh { get; set; }
         public int TrangThai { get; set; }
