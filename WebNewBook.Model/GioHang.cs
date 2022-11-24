@@ -15,16 +15,16 @@ namespace WebNewBook.Model
         [Required]
         public string HinhAnh { get; set; }
         [Required]
-        public string idsp { get; set; }
+        public string Maasp { get; set; }
         [Required]
-        public string TenSP { get; set; }
+        public string Tensp { get; set; }
         [Required]
         public string emailKH { get; set; }
         [Required]
         public double DonGia { get; set; }
-        public double? TongDonGia { get; set; }
+        public double? ThanhTien { get; set; }
         [Required]
-        public int SoLuong { get; set; }
+        public int Soluong { get; set; }
         public int? TongSoLuong { get; set; }
         public bool TrangThai { get; set; }
     }
