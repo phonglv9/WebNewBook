@@ -26,6 +26,6 @@ namespace WebNewBook.Model
         [Required]
         public int Soluong { get; set; }
         public int? TongSoLuong { get; set; }
-        public bool TrangThai { get; set; }
+       
     }
 }
