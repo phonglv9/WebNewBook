@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
-using WebNewBook.API.Book;
 using WebNewBook.Model;
 
 namespace WebNewBook.Controllers
@@ -29,16 +28,16 @@ namespace WebNewBook.Controllers
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
         }
 
-        private async Task<List<BookModel>> GetSachs()
+        private async Task<List<Sach>> GetSachs()
         {
-            List<BookModel> sachs = new List<BookModel>();
+            List<Sach> sachs = new List<Sach>();
             HttpResponseMessage responseGet = await _httpClient.GetAsync("api/Book/GetlistBook");
             if (responseGet.IsSuccessStatusCode)
             {
                 string jsonData = responseGet.Content.ReadAsStringAsync().Result;
-                sachs = JsonConvert.DeserializeObject<List<BookModel>>(jsonData);
+                sachs = JsonConvert.DeserializeObject<List<Sach>>(jsonData);
             };
-            return sachs ?? new List<BookModel>();
+            return sachs ?? new List<Sach>();
         }
 
         public async Task<List<PhieuNhap>?> Get()
