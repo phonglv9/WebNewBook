@@ -25,18 +25,18 @@ namespace WebNewBook.API.Repository.Service
             GioHang giohangs = new GioHang();
             giohangs.ID_GioHang= "GH" + Guid.NewGuid().ToString();
             giohangs.HinhAnh = HinhAnh;
-            giohangs.SoLuong = 0;
+            giohangs.Soluong = 0;
             giohangs.emailKH = emailKH;
-            giohangs.idsp = idsp;
-            giohangs.TenSP = listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.TenSanPham).FirstOrDefault();
+            giohangs.Maasp = idsp;
+            giohangs.Tensp = listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.TenSanPham).FirstOrDefault();
             giohangs.DonGia= listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.GiaBan).FirstOrDefault();
-              if (listgh.Exists(c => c.idsp == idsp))
+              if (listgh.Exists(c => c.Maasp == idsp&&c.emailKH==emailKH))
             {
-                var giohang= listgh.SingleOrDefault(c=>c.idsp== idsp);
+                var giohang= listgh.SingleOrDefault(c=>c.Maasp== idsp);
                 if (SoLuongs!=null)
                 {
                     
-                    giohang.SoLuong+= SoLuongs;
+                    giohang.Soluong+= SoLuongs;
                     _dbContext.Update(giohang);
                     
                     return await _dbContext.SaveChangesAsync();
@@ -48,7 +48,7 @@ namespace WebNewBook.API.Repository.Service
             }
             else
             {
-                giohangs.SoLuong += SoLuongs;
+                giohangs.Soluong += SoLuongs;
             }
             _dbContext.Add(giohangs);
             await _dbContext.SaveChangesAsync();
@@ -58,6 +58,7 @@ namespace WebNewBook.API.Repository.Service
         public async Task<List<GioHang>> GetlistGH()
         {
             var listgh= await _dbContext.GioHangs.ToListAsync();
+           
             return listgh;
         }
 
@@ -67,6 +68,33 @@ namespace WebNewBook.API.Repository.Service
             var b =  _dbContext.SanPhams.SingleOrDefault(a=>a.ID_SanPham==ID);
 
             return  b ;
+        }
+
+        public async Task<int> Updatenumber(string id, int soluongmoi, string namekh)
+        {
+            var listsp = _dbContext.SanPhams.ToList();
+            var listgh = _dbContext.GioHangs.ToList();
+            var giohang = listgh.SingleOrDefault(c => c.Maasp == id && c.emailKH==namekh);
+            var Sanpham = listsp.SingleOrDefault(c => c.ID_SanPham == id);
+            if (soluongmoi != 0)
+            {
+                if (soluongmoi <= Sanpham.SoLuong)
+                {
+                    giohang.Soluong = soluongmoi;
+                    giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
+                    _dbContext.Update(giohang);
+                    await _dbContext.SaveChangesAsync();
+                    return 1;
+                }
+                else
+                {
+                    return  2 ;
+                }
+            }
+         
+            
+            return 0;
+
         }
 
         public async Task<List<HomeVM>> VM()
@@ -98,10 +126,10 @@ namespace WebNewBook.API.Repository.Service
             return homeVMs;
         }
 
-        public async Task<string> XoakhoiGioHang(string id)
+        public async Task<string> XoakhoiGioHang(string id,string namekh)
         {
             var listgh = _dbContext.GioHangs.ToList();
-            var giohang = listgh.SingleOrDefault(c => c.idsp ==id );
+            var giohang = listgh.SingleOrDefault(c => c.Maasp ==id&&c.emailKH==namekh );
             _dbContext.Remove(giohang);
             await _dbContext.SaveChangesAsync();
             return "xoa thành công";

@@ -7,8 +7,9 @@ namespace WebNewBook.API.Repository.IService
 	{
         Task<List<HomeVM>> VM();
         Task<SanPham> GetSanPham(string id);
-       Task<string>XoakhoiGioHang(string id);
+       Task<string>XoakhoiGioHang(string id,string namekh);
         Task<int> AddGioHangAsync(string HinhAnh, int SoLuongs, string emailKH, string idsp);
         Task<List<GioHang>> GetlistGH();
+        Task<int> Updatenumber(string id,int soluongmoi, string namekh);
     }
 }
