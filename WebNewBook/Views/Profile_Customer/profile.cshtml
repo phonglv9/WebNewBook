@@ -8,25 +8,6 @@
 <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
 
 
-<style>
-    .loading {
-        background: rgba(0, 0, 0, .5);
-        width: 100%;
-        height: 100%;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 999;
-    }
-
-    .spinner-center {
-        top: 50%;
-        left: 50%;
-        position: absolute;
-    }
-</style>
-
-
 
 
 
@@ -130,20 +111,6 @@
             </form>
         </div>
     </div>
-    <div class="toast-container position-fixed bottom-0 end-0 p-3">
-        <div id="liveToast" class="toast  text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
-            <div class="toast-header">
-
-                <strong class="me-auto">Thông báo</strong>
-                <small>Bây giờ</small>
-                <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">
-                Thành Công
-            </div>
-        </div>
-    </div>
-
 </div>
 
 
@@ -217,9 +184,7 @@
                                         url: "/profile_customer/UpdateAccount",
                                         success: function (response) {
                                             if (response == 1) {
-                                                const toastLiveExample = document.getElementById('liveToast')
-                                                const toast = new bootstrap.Toast(toastLiveExample)
-                                                toast.show()
+                                               
 
                                                 setTimeout(function () {
                                                     document.getElementById("load").style.display = 'block';
