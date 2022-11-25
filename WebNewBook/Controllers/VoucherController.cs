@@ -11,6 +11,7 @@ using System.Net.Http;
 using System.Text;
 using WebNewBook.Model;
 using WebNewBook.ViewModel;
+using X.PagedList;
 
 namespace WebNewBook.Controllers
 {
@@ -26,8 +27,9 @@ namespace WebNewBook.Controllers
         }
 
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int? page)
         {
+            var pageNumber = page ?? 1;
             List<Voucher> Getvoucher = new List<Voucher>();
             HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Voucher").Result;
             if (response.IsSuccessStatusCode)
@@ -35,7 +37,7 @@ namespace WebNewBook.Controllers
                 string jsondata = response.Content.ReadAsStringAsync().Result;
                 Getvoucher = JsonConvert.DeserializeObject<List<Voucher>>(jsondata);
             }
-            ViewBag.lstvoucher = Getvoucher;
+            ViewBag.lstvoucher = Getvoucher.Where(c=>c.TrangThai==1).ToPagedList(pageNumber, 10);
             return View();
         }
 
@@ -43,6 +45,7 @@ namespace WebNewBook.Controllers
         /// Tạo đợt phát hành 
         public async Task<int> Add(Voucher voucher)
         {
+      
             voucher.MaNhanVien= User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
             voucher.Id = "1";
             HttpResponseMessage response = _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/Voucher", voucher).Result;
@@ -79,6 +82,19 @@ namespace WebNewBook.Controllers
 
             return View(voucherModel);
         }
+
+
+        public async Task<IActionResult> Delete(string Id)
+        {
+          
+
+            HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/Voucher/" + Id, null).Result;
+            return RedirectToAction("Index");
+        }
+
+
+
+
         public async Task<IActionResult> CreateListvoucher(int quantityVoucher, int sizeVoucher, string startTextVoucher, string endTextVoucher, string maVoucher)
         {
 
@@ -247,19 +263,7 @@ namespace WebNewBook.Controllers
             var content = stream.ToArray();
             return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "file_mau" + ".xlsx");
         }
-        public async Task<IActionResult> Delete(string Id)
-        {
-            StringContent content = new StringContent(JsonConvert.SerializeObject(Id));
-
-            HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/Voucher/" + Id, null).Result;
-            if (response.IsSuccessStatusCode)
-            {
-                string jsondata = response.Content.ReadAsStringAsync().Result;
-
-            }
-            return RedirectToAction("Index");
-        }
-
+ 
 
         public List<string> Get_Id(string getId)
         {
