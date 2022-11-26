@@ -25,7 +25,7 @@ namespace WebNewBook.Model
         public double? ThanhTien { get; set; }
         [Required]
         public int Soluong { get; set; }
-        public int? TongSoLuong { get; set; }
+       
        
     }
 }

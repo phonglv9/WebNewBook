@@ -169,11 +169,11 @@ namespace WebNewBook.API.Repository.Service
                           join f in listsanphamct on d.ID_SanPham equals f.MaSanPham
                           join g in listsach on f.MaSach equals g.ID_Sach
                           join h in listsachct on g.ID_Sach equals h.MaSach
-                          //join j in listtheloai on h.MaTheLoai equals j.ID_TheLoai
-                          //join k in listtacgia on h.MaTacGia equals k.ID_TacGia
-                          //join l in listnhaxuatban on g.MaNXB equals l.ID_NXB
-                          //join z in listphieunhap on g.ID_Sach equals z.MaSach
-                          //join x in listnhanvien on z.MaNhanVien equals x.ID_NhanVien
+                          join j in listtheloai on h.MaTheLoai equals j.ID_TheLoai
+                          join k in listtacgia on h.MaTacGia equals k.ID_TacGia
+                          join l in listnhaxuatban on g.MaNXB equals l.ID_NXB
+                          join z in listphieunhap on g.ID_Sach equals z.MaSach
+                          join x in listnhanvien on z.MaNhanVien equals x.ID_NhanVien
                           select new ViewHoaDonCT()
                           {
                               //hoaDon = a,
@@ -184,11 +184,11 @@ namespace WebNewBook.API.Repository.Service
                               sanPhamCT = f,
                               sach = g,
                               sachCT = h,
-                              //theLoai = j,
-                              //tacGia = k,
-                              //nhaXuatBan = l,
-                              //phieuNhap = z,
-                              //nhanVien = x,
+                              theLoai = j,
+                              tacGia = k,
+                              nhaXuatBan = l,
+                              phieuNhap = z,
+                              nhanVien = x,
                           }
 
 
