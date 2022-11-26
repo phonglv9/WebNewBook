@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
@@ -35,15 +36,34 @@ namespace WebNewBook.Controllers
             };
             return theLoais;
         }
-
+        private async Task<List<DanhMucSach>?> GetDanhMuc()
+        {
+            List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
+            HttpResponseMessage responseGet = await _httpClient.GetAsync("api/DanhMucSach");
+            if (responseGet.IsSuccessStatusCode)
+            {
+                string jsonData = responseGet.Content.ReadAsStringAsync().Result;
+                danhMucSaches = JsonConvert.DeserializeObject<List<DanhMucSach>>(jsonData);
+            };
+            return danhMucSaches;
+        }
+        //GET: Saches/Create
+        public class MultiDropDownListViewModel
+        {
+            public string? Id { get; set; }
+            public string ?Name { get; set; }
+            public List<SelectListItem>? ItemList { get; set; }
+        }
         public async Task<IActionResult> Index(string? timKiem, int? trangThai, int? page, string mess)
         {
             ViewBag.TimKiem = timKiem;
             ViewBag.TrangThai = trangThai;
             ViewBag.message = mess;
             var pageNumber = page ?? 1;
-            List<TheLoai>? theLoais = new List<TheLoai>();
-            theLoais = await GetTL();
+          
+            MultiDropDownListViewModel model = new();
+            var  theLoais = await GetTL();
+            var danhMucs = await GetDanhMuc();
             if (!string.IsNullOrEmpty(timKiem))
             {
                 timKiem = timKiem.ToLower();
@@ -70,6 +90,8 @@ namespace WebNewBook.Controllers
                         break;
                 }
             }
+           
+            ViewBag.DanhMuc = model.ItemList = danhMucs.Select(x => new SelectListItem { Text = x.TenDanhMuc, Value = x.ID_DanhMuc.ToString() }).ToList();
             ViewBag.TL = theLoais.ToPagedList(pageNumber, 15);
             return View();
 

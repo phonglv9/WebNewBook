@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using WebNewBook.API.Data;
+using WebNewBook.API.ModelsAPI;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 

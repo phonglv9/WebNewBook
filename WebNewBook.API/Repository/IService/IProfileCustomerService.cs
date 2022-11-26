@@ -1,4 +1,5 @@
-﻿using WebNewBook.Model;
+﻿using WebNewBook.API.ModelsAPI;
+using WebNewBook.Model;
 namespace WebNewBook.API.Repository.IService
 {
     public interface IProfileCustomerService

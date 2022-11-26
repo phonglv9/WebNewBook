@@ -154,7 +154,7 @@ namespace WebNewBook.Controllers
 
 
         public IActionResult AddToCart(string id, int SoLuong)
-        {
+           {
             if (User.Identity.Name == null)
             {
                 SanPham modelHome = new SanPham();

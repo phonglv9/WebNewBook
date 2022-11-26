@@ -7,6 +7,7 @@ using System.Net.Http;
 using WebNewBook.Model;
 using WebNewBook.Models;
 using X.PagedList;
+using WebNewBook.API.ModelsAPI;
 
 namespace WebNewBook.Controllers
 {
