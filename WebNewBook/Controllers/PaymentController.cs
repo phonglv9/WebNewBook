@@ -105,6 +105,11 @@ namespace WebNewBook.Controllers
         }
         public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, string messageVC)
         {
+            if ( Giohangs().Count <= 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+          
             var idVoucher = HttpContext.Session.GetString("idVoucher");
             double tongTien = Convert.ToDouble( HttpContext.Session.GetString("amout"));
             double menhGiaVC = Convert.ToDouble( HttpContext.Session.GetString("amoutVoucher"));
