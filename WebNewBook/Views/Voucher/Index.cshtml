@@ -18,24 +18,32 @@
         <div class="py-3">
             <h6>
                 <div class="row">
-                    <form action="" class="col-12 row" >
-                        <div class="col-5 ">
-                            <input type="text" class="form-control" placeholder="Mã phát hành,...">
+                    <form action="" class="col-12 row">
+                        <div class="col-3 ">
+                            <input type="text" name="search" class="form-control" placeholder="Mã phát hành,Tên phát hành...">
                         </div>
-                        <div class="col-5">
-                            <select name="status" class="form-select" aria-label="Default select example">
+                        <div class="col-2 ">
+                            <input type="date" name="startdate" class="form-control">
+                        </div>
+                        -
+                        <div class="col-2 ">
+                            <input type="date" name="enddate" class="form-control">
+                        </div>
+                        <div class="col-2">
+                            <select name="type" class="form-select" aria-label="Default select example">
                                 <option selected>Chọn Hình thức</option>
-                                <option value="2">Tặng</option>
                                 <option value="1">Đổi điểm</option>
+                                <option value="2">Tặng</option>
+
                             </select>
                         </div>
                         <div class="col-2">
-                            <button type="submit" class="btn btn-secondary"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
+                            <button type="submit" asp-action="Index" class="btn btn-secondary"><i class="fa-solid fa-magnifying-glass"></i> Tìm kiếm</button>
                         </div>
                     </form>
                     <div class="col-3 my-3">
                         <!-- Button trigger modal -->
-                        <button  type="button" class="btn btn-primary "
+                        <button type="button" class="btn btn-primary "
                                 data-bs-toggle="modal" data-bs-target="#staticBackdrop">
                             <i class="fa-solid fa-plus"></i> Thêm đợt phát hành
                         </button>
@@ -141,7 +149,7 @@
                                                             Điểm <span class="text-danger">*</span>
                                                         </label>
                                                         <div class="mx-4 col-sm-7">
-                                                            <input asp-for="DiemDoi" type="text" class="form-control">
+                                                            <input asp-for="DiemDoi" type="number" class="form-control">
                                                         </div>
                                                     </div>
                                                 </div>
@@ -192,14 +200,14 @@
                                 <td>@x.EndDate.ToString("d/M/yyyy")</td>
                                 <td>@x.SoLuong</td>
                                 <td>@x.MenhGia</td>
-                                <td>@(x.HinhThuc ==1 ?"Đổi điểm":"Tặng" )</td>
-                           
+                                <td>@(x.HinhThuc == 1 ? "Đổi điểm" : "Tặng")</td>
+
                                 <td>
                                     <button data-bs-toggle="modal" data-bs-target="#updateVoucher_@x.Id" class="btn btn-secondary"><i class="fa-solid fa-circle-info"></i></button>
                                     <a class="btn btn-dark" asp-action="Detail" asp-route-Id="@x.Id"><i class="fa-solid fa-arrow-right"></i></a>
                                     <a class="btn btn-danger" asp-action="Delete" asp-route-Id="@x.Id"><i class="fa-solid fa-trash"></i></a>
                                 </td>
-                                
+
                             </tr>
 
                             <div class="modal fade " id="updateVoucher_@x.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -310,11 +318,11 @@
                                     </div>
                                 </div>
                             </div>
-                           
+
                         }
                     </tbody>
                 </table>
-                   @Html.PagedListPager((IPagedList)lstvoucher, page => Url.Action("Index","Voucher",new { page = page}),new X.PagedList.Web.Common.PagedListRenderOptions{LiElementClasses = new string[] { "page-item" },PageClasses = new string[] { "page-link" }})
+                @Html.PagedListPager((IPagedList)lstvoucher, page => Url.Action("Index","Voucher",new { page = page,    search=    ViewBag.Search,  startdate= ViewBag.Startdate,    enddate=  ViewBag.Enddate , type=  ViewBag.Type }),new X.PagedList.Web.Common.PagedListRenderOptions{LiElementClasses = new string[] { "page-item" },PageClasses = new string[] { "page-link" }})
             </p>
         </div>
     </div>
@@ -335,7 +343,7 @@
 
     }
     function ChonHinhThuc() {
-      
+
 
         if (tang.checked == true) {
             document.getElementById("Div_diem").hidden = true
@@ -347,9 +355,11 @@
     }
 
     $(function () {
-    
+
         var tang = document.getElementById("Tang");
         var doiDiem = document.getElementById("DoiDiem");
+
+        //Phát hành Voucher
         $("#btnAddPhatHanh").click(function () {
             var tenPhatHanh = $("#TenPhatHanh").val()
             var menhGia = $("#MenhGia").val()
@@ -371,22 +381,21 @@
             if (ghiChu == "") {
                 ghiChu = "(Không có)"
             }
-            Swal.fire({
-                title: 'Bạn có chắc chắn muốn thêm không?',
 
-                showCancelButton: true,
-                confirmButtonText: 'Save',
+            if (((tenPhatHanh && menhGia && menhGiaDK && startDate && enddate) != "") && (doiDiem.checked == true ? (diemdoi != "" ? true : false) : true)) {
+                if (tenPhatHanh.length > 6) {
+                    if (menhGia >= 1000 && menhGiaDK >= 1000) {
+                        if (menhGia <= 1000000) {
+                            if (startDate >= today) {
+                                if (startDate <= enddate) {
+                                    Swal.fire({
+                                        title: 'Bạn có chắc chắn muốn thêm không?',
+                                        showCancelButton: true,
+                                        confirmButtonText: 'Save',
 
-            }).then((result) => {
-                /* Read more about isConfirmed, isDenied below */
-                if (result.isConfirmed) {
-                    if (((tenPhatHanh && menhGia && menhGiaDK && startDate && enddate) != "") && (doiDiem.checked == true ? (diemdoi != "" ? true : false) : true)) {
-                        if (tenPhatHanh.length > 6) {
-                            if (menhGia >= 1000 && menhGiaDK >= 1000) {
-                                if (menhGia <= 1000000) {
-                                    if (startDate >= today) {
-                                        if (startDate <= enddate) {
-
+                                    }).then((result) => {
+                                        /* Read more about isConfirmed, isDenied below */
+                                        if (result.isConfirmed) {
                                             $.ajax({
                                                 type: "POST",
                                                 data: {
@@ -447,32 +456,34 @@
                                                         })
 
                                                     }
+
                                                 }
                                             });
-                                        } else {
-                                            alert("Thời san kết thúc không được trước ngày bắt đầu")
                                         }
-                                    } else {
-                                        alert("Ngày bắt đầu không được trước ngày hôm nay")
-                                    }
-
+                                    })
                                 } else {
-                                    alert("Mệnh giá voucher không được vượt quá 1.000.000 đ")
+                                    alert("Thời san kết thúc không được trước ngày bắt đầu")
                                 }
-
                             } else {
-                                alert("Số tiền phải lớn hơn hoặc bằng 1.000 đ")
+                                alert("Ngày bắt đầu không được trước ngày hôm nay")
                             }
 
                         } else {
-                            alert("Tên Phát hành phải trên 6 kí tự")
+                            alert("Mệnh giá voucher không được vượt quá 1.000.000 đ")
                         }
+
                     } else {
-                        alert("Không được để trống ô có *")
+                        alert("Số tiền phải lớn hơn hoặc bằng 1.000 đ")
                     }
+
+                } else {
+                    alert("Tên Phát hành phải trên 6 kí tự")
                 }
-            })
-       
+            } else {
+                alert("Không được để trống ô có *")
+            }
+
+
         });
     });
 
