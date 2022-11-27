@@ -1,6 +1,7 @@
 ﻿using ClosedXML.Excel;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -15,6 +16,7 @@ using X.PagedList;
 
 namespace WebNewBook.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class VoucherController : Controller
     {
         Uri baseAdress = new Uri("https://localhost:7266/api");
@@ -27,8 +29,14 @@ namespace WebNewBook.Controllers
         }
 
 
-        public async Task<IActionResult> Index(int? page)
+        public async Task<IActionResult> Index(int? page,string search, DateTime? startdate, DateTime? enddate, int? type)
         {
+
+            ViewBag.Search = search;
+            ViewBag.Startdate = startdate;
+            ViewBag.Enddate = enddate;
+            ViewBag.Type = type;
+
             var pageNumber = page ?? 1;
             List<Voucher> Getvoucher = new List<Voucher>();
             HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Voucher").Result;
@@ -37,7 +45,14 @@ namespace WebNewBook.Controllers
                 string jsondata = response.Content.ReadAsStringAsync().Result;
                 Getvoucher = JsonConvert.DeserializeObject<List<Voucher>>(jsondata);
             }
-            ViewBag.lstvoucher = Getvoucher.Where(c=>c.TrangThai==1).ToPagedList(pageNumber, 10);
+            if (enddate !=null)
+            {
+                enddate = enddate.Value.AddDays(1);
+            }
+            ViewBag.lstvoucher = Getvoucher.Where(c=>c.TrangThai==1 &&((!string.IsNullOrEmpty(search)  ? c.Id.StartsWith(search) :true ) || (!string.IsNullOrEmpty(search) ? c.TenPhatHanh.Contains(search) : true)) 
+                                                                    && (startdate.HasValue? c.StartDate>=startdate.Value:true)
+                                                                    && (enddate.HasValue? c.EndDate <=enddate.Value :true)
+                                                                    && (type !=null ? c.HinhThuc==type :true)).OrderByDescending(c => c.Createdate).ToPagedList(pageNumber, 10);
             return View();
         }
 
