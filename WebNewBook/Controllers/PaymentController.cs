@@ -279,7 +279,8 @@ namespace WebNewBook.Controllers
                     if (payment == "1")
                     {
                         StringContent contentHDCT2 = new StringContent(JsonConvert.SerializeObject(listHoaDonCTs), Encoding.UTF8, "application/json");
-                        await _httpClient.PostAsync("/Payment/UpdateSoLuongSP", contentHDCT2);
+                        await _httpClient.PostAsync("api/Payment/UpdateSoLuongSP", contentHDCT2);
+                        
                         if (!string.IsNullOrEmpty(hoaDon.MaGiamGia))
                         {
                             await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{hoaDon.MaGiamGia}", null);

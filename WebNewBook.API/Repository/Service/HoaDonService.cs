@@ -16,15 +16,16 @@ namespace WebNewBook.API.Repository.Service
         }
         public async Task AddHoaDon(HoaDon hoaDon)
         {
-            if (hoaDon != null)
+            if (hoaDon.MaKhachHang != "KHNOLOGIN" && hoaDon.TrangThai == 1)
             {
+                var customer = dbcontext.KhachHangs.FirstOrDefault(c => c.ID_KhachHang == hoaDon.MaKhachHang);
+                customer.DiemTichLuy = customer.DiemTichLuy + Convert.ToInt32(hoaDon.TongTien) / 100;
+                dbcontext.KhachHangs.Update(customer);
+            }
+                
                 dbcontext.HoaDons.Add(hoaDon);
                 dbcontext.SaveChanges();
-            }
-            else
-            {
-                throw null;
-            }
+            
         }
         public async Task AddHoaDonCT(List<HoaDonCT> hoaDonCTs)
         {
@@ -94,10 +95,15 @@ namespace WebNewBook.API.Repository.Service
         }
         public async Task UpdateTrangThai(string id)
         {
-            var hoaDon = dbcontext.HoaDons.Where(c => c.ID_HoaDon == id).FirstOrDefault();
-            if (hoaDon != null)
+            var hoaDon = dbcontext.HoaDons.FirstOrDefault(c => c.ID_HoaDon == id);
+            var customer = dbcontext.KhachHangs.FirstOrDefault(c => c.ID_KhachHang == hoaDon.MaKhachHang);
+            if (hoaDon != null && customer != null)
             {
                 hoaDon.TrangThai = 2;
+               customer.DiemTichLuy = customer.DiemTichLuy + Convert.ToInt32(hoaDon.TongTien) / 100;
+              dbcontext.KhachHangs.Update(customer);
+                  
+                
                 dbcontext.HoaDons.Update(hoaDon);
                 await dbcontext.SaveChangesAsync();
 
