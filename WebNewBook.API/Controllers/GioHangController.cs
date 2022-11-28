@@ -34,11 +34,18 @@ namespace WebNewBook.API.Controllers
             return await _GioHangService.GetSanPham(id);
 
         }
-        [HttpGet("Xoakhoigio/{id}")]
-        public async Task<string> deleteCart(string id)
+        [HttpGet("Xoakhoigio/{id}/{namekh}")]
+        public async Task<string> deleteCart(string id, string namekh)
         {
-             await _GioHangService.XoakhoiGioHang(id);
+             await _GioHangService.XoakhoiGioHang(id, namekh);
             return "Thành Công";
+
+        }
+        [HttpGet("Updatenumber/{id}/{soluongmoi}/{namekh}")]
+        public async Task<int> Updatenumber(string id,int soluongmoi,string namekh)
+        {
+
+            return await _GioHangService.Updatenumber(id, soluongmoi, namekh); ;
 
         }
         [HttpGet("Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}")]

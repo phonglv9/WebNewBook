@@ -15,6 +15,7 @@ namespace WebNewBook.API.Repository.Service
 
         public async Task AddTheLoaiAsync(TheLoai par)
         {
+            par.MaDanhMuc = "DM638050907525310311";
             dbcontext.Add(par);
             await dbcontext.SaveChangesAsync();
         }

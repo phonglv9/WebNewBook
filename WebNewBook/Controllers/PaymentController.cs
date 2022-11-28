@@ -42,21 +42,61 @@ namespace WebNewBook.Controllers
 
         public List<CartItem> Giohangs()
         {
-           
-                List<CartItem> data = new List<CartItem>();
+            List<CartItem> data = new List<CartItem>();
+            if (User.Identity.Name == null)
+            {
+
+
+
                 var jsonData = Request.Cookies["Cart"];
                 if (jsonData != null)
                 {
                     data = JsonConvert.DeserializeObject<List<CartItem>>(jsonData);
                 }
-                return data;
-            
+                else if (data == null)
+                {
+
+                    return data;
+
+
+
+                }
+            }
+            else
+            {
+                List<GioHang> gioHangs = new List<GioHang>();
+                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "api/GioHang/GetLitsGH").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonData1 = response.Content.ReadAsStringAsync().Result;
+                    gioHangs = JsonConvert.DeserializeObject<List<GioHang>>(jsonData1);
+                    foreach (var a in gioHangs)
+                    {
+                        CartItem b = new CartItem();
+                        if (User.Identity.Name == a.emailKH)
+                        {
+                            b.DonGia = a.DonGia;
+                            b.Maasp = a.Maasp;
+                            b.Soluong = a.Soluong;
+                            b.Tensp = a.Tensp;
+                            b.ThanhTien = a.Soluong * a.DonGia;
+                            data.Add(b);
+
+
+                        }
+                    }
+                    return data;
+
+                };
+
+
+            }
+
+         return data;
+
         }
-        //public JsonResult RemoveVoucher()
-        //{
-        //    HttpContext.Session.Remove("idVoucher");
-        //    return Json("Thành công");
-        //}
+
+
         public IActionResult RemoveVoucher()
         {
             HttpContext.Session.Remove("idVoucher");
@@ -65,6 +105,11 @@ namespace WebNewBook.Controllers
         }
         public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, string messageVC)
         {
+            if ( Giohangs().Count <= 0)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+          
             var idVoucher = HttpContext.Session.GetString("idVoucher");
             double tongTien = Convert.ToDouble( HttpContext.Session.GetString("amout"));
             double menhGiaVC = Convert.ToDouble( HttpContext.Session.GetString("amoutVoucher"));
@@ -113,26 +158,14 @@ namespace WebNewBook.Controllers
                          }
                        
                     }
-
-
                     ViewBag.ListVoucher = voucherPaymentVMs;
-
-
-
-
-
-
-
-
-
-
-
                 }
 
 
             }
             ViewBag.Cart = Giohangs();
 
+            var x = Giohangs();
 
             //Voucher
             if (menhGiaVC != 0 && menhGiaDK != 0  )
@@ -144,11 +177,9 @@ namespace WebNewBook.Controllers
                    ViewBag.MenhGiaVC = menhGiaVC;
                    ViewBag.IDVoucher = idVoucher;
                 }
-            
-
 
             }
-            HttpContext.Session.SetString("amout", tongTien.ToString());
+            HttpContext.Session.SetString("amout2", tongTien.ToString());
             ViewBag.TongTien = tongTien;          
             if (!string.IsNullOrEmpty(idHoaDon))
             {
@@ -168,8 +199,9 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public async Task<IActionResult> Pay(HoaDon hoaDon, string payment)
         {
-                
-            double tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout"));                             
+        
+            var tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout2"));
+
             var idVoucher = HttpContext.Session.GetString("idVoucher");
             hoaDon.TongTien = tongTien;
             hoaDon.MaGiamGia = idVoucher;
@@ -245,7 +277,7 @@ namespace WebNewBook.Controllers
                     if (payment == "1")
                     {
                         StringContent contentHDCT2 = new StringContent(JsonConvert.SerializeObject(listHoaDonCTs), Encoding.UTF8, "application/json");
-                        await _httpClient.PostAsync("api/Payment/UpdateSoLuongSP", contentHDCT2);
+                        await _httpClient.PostAsync("/Payment/UpdateSoLuongSP", contentHDCT2);
                         if (!string.IsNullOrEmpty(hoaDon.MaGiamGia))
                         {
                             await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{hoaDon.MaGiamGia}", null);
@@ -398,6 +430,10 @@ namespace WebNewBook.Controllers
                             {
                                 var dkVoucher = voucher.MenhGiaDieuKien - tongTien;
                                 ViewBag.MessageVC = "Số tiền bạn mua không đủ điều kiện để dùng, bạn cần mua thêm " +dkVoucher+"đ";
+                            }
+                            else
+                            {
+                                ViewBag.MessageVC = "Mã giảm giá không hợp lệ";
                             }
 
 

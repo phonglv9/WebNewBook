@@ -107,7 +107,7 @@ $(document).ready(function () {
         validateEmail();
         validateAdress();
         validatePhonenumber();
-        validateRadio();
+        
         if (
             fullnameError == true && emailError == true && adressError == true && phonenumberError == true 
         ){

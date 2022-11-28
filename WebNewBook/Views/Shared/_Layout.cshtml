@@ -1,4 +1,8 @@
-﻿<!DOCTYPE html>
+﻿@{ if (User.IsInRole("Admin"))
+    {
+        Context.Response.Redirect("/Admin/Index");
+    } }
+<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
@@ -30,7 +34,7 @@
     </head>
 	<body>	
 		
-
+		
 		@await Component.InvokeAsync("HeaderList")
 		
 		
@@ -46,7 +50,7 @@
 
 
 		@await Component.InvokeAsync("FooterList")
-		
+
 
 		<!-- jQuery Plugins -->
 		<script src="~/js/jquery.min.js"></script>
@@ -59,6 +63,7 @@
 
 
 		<script src="~/lib/jquery/dist/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.7/chosen.jquery.min.js" asp-append-version="true"></script>
 		<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 		<script src="~/js/site.js" asp-append-version="true"></script>
 		@await RenderSectionAsync("Scripts", required: false)

@@ -72,23 +72,23 @@
 							<div class="form-group">
 								   <label>Tên người nhận</label>
 								<input asp-for="TenNguoiNhan" class="input" type="text" value="@khachHang.HoVaTen" name="TenNguoiNhan" id="fullname" >
-							<span id="fullnamecheck" class="text-danger"></span>
+							<label id="fullnamecheck" class="text-danger"></label>
 							</div>							
 							<div class="form-group">
 								   <label>Email</label>
 							<input asp-for="Email" class="input" type="text" value="@khachHang.Email" name="email" id="email"  >
-								<span id="emailcheck" class="text-danger"></span>
+								<label id="emailcheck" class="text-danger"></label>
 							</div>
 							<div class="form-group">
 								   <label>Địa chỉ giao hàng</label>
 								<input asp-for="DiaChiGiaoHang" class="input" type="text"value="@khachHang.DiaChi" name="DiaChiGiaoHang" id="adress" >
-								<span id="adresscheck" class="text-danger"></span>
+								<label id="adresscheck" class="text-danger"></label>
 							</div>
 						
 							<div class="form-group">
 								   <label>Số điện thoại</label>
 							<input asp-for="SDT" class="input" type="text"  name="SDT"value="@khachHang.SDT"  id="phonenumber">
-								<span id="phonenumbercheck" class="text-danger"></span>
+								<label id="phonenumbercheck" class="text-danger"></label>
 							</div>
 							<div class="form-group">
 
@@ -97,11 +97,17 @@
 								  
 								
 								   <label>Voucher đang được áp dụng</label>
-									<div class="id-voucher" style="height: 40px;bottom: 20px;padding: 3px 15px;width: 100%;background-color:#FFB3234D;color:#FFB323;width: 156px;">
-									<span style="font-size:20px">	@ViewBag.IDVoucher  <a href="@Url.Action("RemoveVoucher","Payment")" class=" btn btn-danger"><i class="fa fa-times"  aria-hidden="true"></i></a></span>
+									@*<div class="id-voucher row" style="height: 40px;bottom: 20px;padding: 3px 15px;width: 100%;background-color:#FFB3234D;color:#FFB323;width: 156px;">
+									<span style="font-size:20px" class="col-8">	@ViewBag.IDVoucher </span>
+									 <a href="@Url.Action("RemoveVoucher","Payment")" class="btn btn-danger col-2"><i class="fa fa-times"  aria-hidden="true"></i></a>
 									  
-									  </div>
-							
+									  </div>*@
+									<div class="alert alert-warning" role="alert">
+										<div class="">
+										<span style="font-size:20px ; color: #d71a00">	@ViewBag.IDVoucher </span>
+										  <a href="@Url.Action("RemoveVoucher","Payment")" class="btn btn-danger col-2"><i class="fa fa-times"  aria-hidden="true"></i></a>
+										</div>
+									</div>
 
 								
 								}else{
@@ -266,7 +272,11 @@
 									  <a  class="list-group-item list-group-item-action active row">
 										Danh sách voucher của bạn
 									  </a>
-									  <div style="overflow-y: scroll;"> 
+									  <div style="overflow-y: scroll;">
+										 
+									
+							
+									
 									  @foreach( var item in ViewBag.ListVoucher){
 										
 									  <a asp-action="ApDungVoucher" asp-route-maVoucher="@item.ID_Voucher" class="list-group-item list-group-item-action flex-column align-items-start row "> 
@@ -283,6 +293,14 @@
 									  </a>
 
 										}
+										
+									@if(ViewBag.ListVoucher.Count == 0 || ViewBag.ListVoucher == null ){
+										<div class="alert alert-secondary" role="alert">
+										  <h4 class="alert-heading">Bạn hiện chưa có mã giảm giá nào !</h4>
+										
+										  <p class="mb-0">(╥﹏╥)</p>
+										</div>
+									}
 									</div>
 											
 									</div>

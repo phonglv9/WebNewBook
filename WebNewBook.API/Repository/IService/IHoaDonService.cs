@@ -1,4 +1,5 @@
-﻿using WebNewBook.Model;
+﻿using WebNewBook.API.ModelsAPI;
+using WebNewBook.Model;
 
 namespace WebNewBook.API.Repository.IService
 {
@@ -11,7 +12,7 @@ namespace WebNewBook.API.Repository.IService
         Task UpdateSLSanPham(List<HoaDonCT> hoaDonCTs);
         Task UpdateSLSanPhamVNPay(string id);
         Task<List<ViewHoaDon>> GetListHoaDon();
-        Task<ViewHoaDonCT> GetListid(string id);
+        Task<List<ViewHoaDonCT>> GetHDCT(string id);
         Task<HoaDon?> Updatetrangthai(string id,int name);
     }
 }

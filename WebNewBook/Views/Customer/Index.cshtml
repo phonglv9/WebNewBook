@@ -6,6 +6,8 @@
 @using WebNewBook.Model
 @model KhachHang
 
+
+
 <div class="container py-3" style="background-color: #f1f1f1;">
     <h3 style="font-weight: 700;">Danh sách khách hàng</h3>
     <div class="container " style="background-color: rgb(255, 255, 255);">
@@ -160,7 +162,7 @@
                             <th scope="col">Ngày Sinh</th>
                             <th scope="col">Điểm tích lũy</th>
                             <th scope="col">Trạng thái</th>
-                            <th colspan="2" style="text-align: center ;">Thao tác</th>
+                            <th scope="col" style="text-align: center ;">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -175,21 +177,22 @@
                                 <td>@x.NgaySinh.ToString("d/M/yyyy")</td>
                                 <td>@x.DiemTichLuy</td>
                                 <td>@(x.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa")  </td>
+                          
                                 <td>
-                                    <button data-bs-toggle="modal" data-bs-target="#updateCustomer_@x.ID_KhachHang" class="btn border bg-primary"><i class="fa-solid fa-pen"></i></button>
-                                </td>
-                                <td>
-                                    <form>
+                                    <button data-bs-toggle="modal" data-bs-target="#updateCustomer_@x.ID_KhachHang" class="btn btn-secondary"><i class="fa-solid fa-circle-info"></i></button>
+                                  
+                                      
                                         @if (x.TrangThai==1)
                                         {
-                                            <button type="submit" class="btn border bg-danger" style="color : white ; font-size : 10px" asp-action="Delete" asp-route-Id="@x.ID_KhachHang">Vô hiệu hóa </button>
+                                        <a type="submit" class="btn   btn-danger" asp-action="Delete" asp-route-Id="@x.ID_KhachHang"><i class="fa-solid fa-lock"></i></a>
                                         }
                                         @if (x.TrangThai == 0)
                                         {
-                                            <button type="submit" class="btn border bg-success" style="color : white; font-size : 10px" asp-action="Delete" asp-route-Id="@x.ID_KhachHang">Hoạt động </button>
+                                        <a type="submit" class="btn btn-success" asp-action="Delete" asp-route-Id="@x.ID_KhachHang"><i class="fa-solid fa-lock-open"></i></a>
+                                          
                                         }
                                       
-                                    </form>
+                                  
                                   
                                 </td>
 
@@ -264,24 +267,7 @@
 </div>
 
 
-<div class="toast fade show"
-     role="alert"
-     aria-live="assertive"
-     aria-atomic="true">
-    <div class="toast-header">
 
-        <rect width="100%" height="100%" fill="#007aff"></rect>
-
-
-        <strong class="me-auto">Thông báo</strong>
-
-        <button type="button"
-                class="btn-close"
-                data-bs-dismiss="toast"
-                aria-label="Close"></button>
-    </div>
-    <div class="toast-body bg-primary text-light">Thêm khách hàng thành công !</div>
-</div>
 <script >
   
 
