@@ -7,6 +7,7 @@ using WebNewBook.Model;
 using WebNewBook.Model.APIModels;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.Filters;
+using X.PagedList;
 
 namespace WebNewBook.Controllers
 {
@@ -63,11 +64,19 @@ namespace WebNewBook.Controllers
             });
             return listItem;
         }
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? timKiem , int? trangThai, int? page, string mess)
         {
+            timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
             List<SanPham>? lstSanPham = new List<SanPham>();
             lstSanPham = await Get();
+            lstSanPham = (trangThai == 1 || trangThai == 0) ? lstSanPham.Where(c => c.TenSanPham.Contains(timKiem) && c.TrangThai == trangThai).ToList() : lstSanPham.Where(c => c.TenSanPham.Contains(timKiem)).ToList();
             ViewBag.SanPham = lstSanPham;
+            ViewBag.TimKiem = timKiem;
+            ViewBag.TrangThai = trangThai;
+            ViewBag.message = mess;
+            var pageNumber = page ?? 1;
+            ViewBag.NXB = lstSanPham.ToPagedList(pageNumber, 5);
+
             return View();
         }
 

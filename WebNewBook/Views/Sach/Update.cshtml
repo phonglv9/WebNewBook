@@ -42,8 +42,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="MaNXB" class="control-label">Nhà xuất bản</label>
-                <input asp-for="MaNXB" class="form-control" />
-                <span asp-validation-for="MaNXB" class="text-danger"></span>
+                <select asp-for="MaNXB" class="form-control" asp-items="ViewBag.NXBs"></select>
             </div>
             <div class="form-group">
                 <label asp-for="GiaBan" class="control-label">Giá bán</label>

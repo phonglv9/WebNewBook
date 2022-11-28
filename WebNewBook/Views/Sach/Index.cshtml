@@ -11,20 +11,24 @@
         <div class="py-3">
             <h6>
                 <div class="row">
+                   <form asp-action="Index" class="row">
                     <div class="col-5 mb-3">
-                        <input type="email" class="form-control" placeholder="Tên sách">
+                        <input type="text" name="timKiem" class="form-control" placeholder="Mời bạn nhập tên sách để tìm kiếm">
                     </div>
-                    <div class="col-5 mb-3">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Chọn trạng thái</option>
-                            <option value="1">Hoạt động</option>
-                            <option value="0">Không hoạt động</option>
-                        </select>
-                    </div>
-                    <div class="col-2">
+                      <div class="col-2">
                         <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
                     </div>
-                    <p>@*10000 thành viên*@</p>
+                    <div class="col-5 mb-3">
+                        <select id="selectNXB" name="trangThai" class="form-select" aria-label="Default select example">
+                            
+                            <option selected>Chọn trạng thái</option>
+                            <option value="2">Tất cả</option>
+                            <option value="0">Hoạt động</option>
+                            <option value="1">Vô hiệu hóa</option>
+                          
+                        </select>
+                    </div>
+                  </form>
                     <div class="col-3">
                         <!-- Button trigger modal -->
                         <a type="button" class="btn btn-primary"asp-action="Create">
@@ -70,7 +74,7 @@
                             </tr>
 
                              <!-- Modal Delete-->
-                            <form action="/Sach/Delete?id=@item.ID_Sach" method="post" enctype="multipart/form-data">
+                            <form asp-action="Delete" asp-route-id="@item.ID_Sach" method="post" enctype="multipart/form-data">
                                 <div class="modal fade" id="delete-@item.ID_Sach" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">

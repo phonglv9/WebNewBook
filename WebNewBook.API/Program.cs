@@ -14,6 +14,7 @@ using WebNewBook.Model;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using static WebNewBook.API.Repository.Service.SendMailConfig;
 using NETCore.MailKit.Core;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("LoginContextConnection") ?? throw new InvalidOperationException("Connection string 'LoginContextConnection' not found.");
@@ -35,17 +36,12 @@ builder.Services.AddControllers(options =>
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
 
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-KBU829B\\SQLEXPRESS;Initial Catalog=datn1;Persist Security Info=True;User ID=sa;Password=1"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=FinalASM;User ID=hung;Password=hung;"));
 
-builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=DESKTOP-KBU829B\\SQLEXPRESS;Initial Catalog=datn1;Persist Security Info=True;User ID=sa;Password=1"));
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=LoginFinalASM;User ID=hung;Password=hung;"));
 
-
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
-{
-    options.User.RequireUniqueEmail = true;
-})
-    .AddEntityFrameworkStores<LoginContext>().AddDefaultTokenProviders()
-    .AddDefaultUI(); ;
+builder.Services.AddIdentityCore<IdentityUser>()
+    .AddEntityFrameworkStores<LoginContext>().AddDefaultTokenProviders().AddDefaultUI();
 //builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
 //    .AddEntityFrameworkStores<LoginContext>();
 

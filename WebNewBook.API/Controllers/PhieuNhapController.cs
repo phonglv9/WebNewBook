@@ -5,10 +5,10 @@ using WebNewBook.Model;
 
 namespace WebNewBook.API.Controllers
 {
+    //[Authorize(Roles = "Admin")]
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "NhanVien")]
+    //[Authorize(Roles = "NhanVien")]
     public class PhieuNhapController : Controller
     {
         private readonly IPhieuNhapService phieuNhapService;
