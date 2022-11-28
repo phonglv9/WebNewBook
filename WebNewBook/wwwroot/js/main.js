@@ -214,6 +214,41 @@
 
 			});
 	});
+	$(".add-to-cart-btn-ct").click(function () {
+
+		var idsp = $(this).attr("value");
+		$.post("/GioHang/AddToCartCT",
+			{
+				id: idsp,
+				SoLuong: 1
+			},
+			function (data) {
+				if (data == "Số lượng không có sẵn") {
+					$('.messErorr').html('<div class="alert alert-danger text-center" role="alert"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' + data + '</div >');
+				} else {
+					$('.messCart').append(data);
+				}
+
+				setTimeout(function () {
+					location.reload();
+				}, 1000)
+
+			});
+	});
+	
+	//$(".fa-close").click(function () {
+
+	//	var id = $(this).attr("data-id");
+	//	$.post("/GioHang/XoaKhoiGio",
+	//		{
+	//			id: id
+				
+	//		},
+	//		function (data) {
+				
+
+	//		});
+	//});
 	
 	//Sửa số lượng cart
 	//$('#numberCart').change(function () {

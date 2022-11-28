@@ -4,6 +4,21 @@
     ViewBag.Title = "Cart";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
+@{
+    
+    var mess = "";
+    var color = "";
+    @if (ViewBag.MessUpdateCart == "1")
+    {
+        mess = "Số lượng không được quá 100";
+        color = "success";
+    }
+    if (ViewBag.MessUpdateCart == "2")
+    {
+        mess = "Số lượng không có sẵn";
+        color = "danger";
+    }
+}
 <!-- BREADCRUMB -->
 <div id="breadcrumb">
     <!-- container -->
@@ -26,7 +41,6 @@
 
 <div class="section">
 
-
     <div class="container">
         @if (ViewBag.giohang == null || ViewBag.giohang.Count == 0)
         {
@@ -38,9 +52,9 @@
             
                 <h3 class="text-black">Giỏ hàng của bạn</h3>
                 <br />
-                @if(ViewBag.MessUpdateCart != null)
+                @if(ViewBag.MessUpdateCart != null && mess != null)
               {<div class="alert alert-danger" role="alert">
-             @ViewBag.MessUpdateCart
+                        @mess
             </div>
                  }
                 <table class="table table-hover">

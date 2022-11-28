@@ -19,10 +19,11 @@ namespace WebNewBook.Controllers
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = baseAdress;
+            
 
             //ListData();
-            
-         // Giohangs();
+
+            // Giohangs();
 
         }
 
@@ -47,6 +48,7 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Index(string? mess)
         {
+            Giohangs();
             ViewBag.MessUpdateCart = mess;
             var cart = Giohangs();
             var tongTien = cart.Sum(a => a.ThanhTien);
@@ -124,7 +126,7 @@ namespace WebNewBook.Controllers
         //        GioHang GioHangs = new GioHang();
         //        foreach (var a in Giohangs())
         //        {
-                    
+
 
         //            GioHangs.ID_GioHang = "GH" + Guid.NewGuid().ToString();
         //            GioHangs.HinhAnh = "gsdfgsdg";
@@ -152,7 +154,104 @@ namespace WebNewBook.Controllers
         //    return View("");
         //}
 
+        public IActionResult AddToCartCT(string id, int SoLuong)
+        {
+            if (User.Identity.Name == null)
+            {
+                SanPham modelHome = new SanPham();
+                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/SanPham/{id}").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonData = response.Content.ReadAsStringAsync().Result;
+                    modelHome = JsonConvert.DeserializeObject<SanPham>(jsonData);
 
+
+                };
+
+
+                var myCart = Giohangs();
+                var item = myCart.SingleOrDefault(c => c.Maasp == id);
+
+                if (item == null)
+                {
+
+                    item = new CartItem
+                    {
+                        Maasp = id,
+                        Tensp = modelHome.TenSanPham,
+                        DonGia = modelHome.GiaBan,
+                        Soluong = SoLuong,
+                        ThanhTien = SoLuong * modelHome.GiaBan
+
+
+                    };
+                    myCart.Add(item);
+
+
+
+                }
+                else if (myCart.Exists(c => c.Maasp == id))
+                {
+                    //if (SoLuong + item.Soluong > 100 || SoLuong>100) {
+                        if (SoLuong >= modelHome.SoLuong || item.Soluong >= modelHome.SoLuong)
+                        {
+
+                            return RedirectToAction("Index", new { mess = 2 });
+                        }
+                        else
+                        {
+                            item.Soluong += SoLuong;
+                            item.ThanhTien = item.Soluong * item.DonGia;
+
+                        }
+                        return RedirectToAction("Index", new { mess = 1 });
+                    //}
+                    
+
+
+                }
+                else
+                {
+                    item.Soluong++;
+                    item.ThanhTien = item.Soluong * item.DonGia;
+                }
+                var opt = new CookieOptions() { Expires = new DateTimeOffset(DateTime.Now.AddDays(3)) };
+
+                var json = System.Text.Json.JsonSerializer.Serialize(myCart);
+                Response.Cookies.Append("Cart", json, opt);
+
+
+
+            }
+            else
+            {
+
+
+                SanPham modelHome = new SanPham();
+                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/SanPham/{id}").Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string jsonData = response.Content.ReadAsStringAsync().Result;
+                    modelHome = JsonConvert.DeserializeObject<SanPham>(jsonData);
+
+
+                };
+
+                string HinhAnh = "dsfgsdfg";
+                int SoLuongs = SoLuong;
+                string emailKH = User.Identity.Name;
+                string idsp = id;
+
+
+
+                HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}").Result;
+
+
+
+
+            }
+            return RedirectToAction("Index");
+        }
         public IActionResult AddToCart(string id, int SoLuong)
            {
             if (User.Identity.Name == null)
@@ -353,39 +452,7 @@ namespace WebNewBook.Controllers
 
 
         }
-        //public IActionResult SuaSoLuong2(string id, int soLuong)
-        //{
-        //    SanPham sanPham = new SanPham();
-        //    HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/SanPham/{id}").Result;
-        //    if (response.IsSuccessStatusCode)
-        //    {
-        //        string jsonData = response.Content.ReadAsStringAsync().Result;
-        //        sanPham = JsonConvert.DeserializeObject<SanPham>(jsonData);
-
-
-        //    };
-
-        //    var myCart = Giohangs();
-        //    var item = myCart.SingleOrDefault(c => c.Maasp == id);
-        //    if (item != null)
-        //    {
-
-
-
-
-        //    }
-
-
-        //    var json = System.Text.Json.JsonSerializer.Serialize(myCart);
-        //    Response.Cookies.Append("Cart", json, new Microsoft.AspNetCore.Http.CookieOptions
-        //    {
-        //        Expires = DateTimeOffset.Now.AddDays(3)
-        //    });
-
-        //    return RedirectToAction("Index");
-
-
-        //}
+      
         public IActionResult XoaKhoiGio(string id)
         {
             if(User.Identity.Name == null)
@@ -409,7 +476,33 @@ namespace WebNewBook.Controllers
                 HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Xoakhoigio/{id}/{namekh}").Result;
                 return RedirectToAction("Index");
             }
-            return RedirectToAction("Index");
+           
+
+        }
+        public IActionResult XoaKhoiGioHome(string id)
+        {
+            if (User.Identity.Name == null)
+            {
+                var myCart = Giohangs();
+                var item = myCart.SingleOrDefault(c => c.Maasp == id);
+                if (item != null)
+                {
+                    myCart.Remove(item);
+
+                }
+
+                var json = System.Text.Json.JsonSerializer.Serialize(myCart);
+                Response.Cookies.Append("Cart", json);
+                return RedirectToAction("Index");
+
+            }
+            else
+            {
+                var namekh = User.Identity.Name;
+                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Xoakhoigio/{id}/{namekh}").Result;
+                return RedirectToAction("Index");
+            }
+
 
         }
     }

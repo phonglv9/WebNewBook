@@ -25,11 +25,11 @@ namespace WebNewBook.API.Controllers
 
             return await _hoaDonService.GetListHoaDon();
         }
-        [HttpGet("{id}")]
-        public async Task<ViewHoaDonCT> getlistid(string id)
+        [HttpGet("getlistid/{id}")]
+        public async Task<List<ViewHoaDonCT>> getlistid(string id)
         {
 
-            return await _hoaDonService.GetListid(id);
+            return await _hoaDonService.GetHDCT(id);
         }
         [HttpGet("UpdateTT/{id}/{name}")]
         public async Task<HoaDon?> UpdateTT(string id,int name)
