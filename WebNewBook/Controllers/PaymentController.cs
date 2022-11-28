@@ -179,6 +179,7 @@ namespace WebNewBook.Controllers
                 }
 
             }
+         
             HttpContext.Session.SetString("amout2", tongTien.ToString());
             ViewBag.TongTien = tongTien;          
             if (!string.IsNullOrEmpty(idHoaDon))
@@ -237,6 +238,7 @@ namespace WebNewBook.Controllers
                 hoaDon.NgayMua = DateTime.Now;
                 if (payment == "1")
                 {
+                   
                     hoaDon.TrangThai = 1;
                 }
                 else
@@ -283,8 +285,6 @@ namespace WebNewBook.Controllers
                             await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{hoaDon.MaGiamGia}", null);
                       
                         }
-                       
-
                         HttpContext.Session.Clear();
                         Response.Cookies.Delete("Cart");
                         ViewBag.SuccessMessage = "Đặt hàng thành công";
