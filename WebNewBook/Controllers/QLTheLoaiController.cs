@@ -176,7 +176,6 @@ namespace WebNewBook.Controllers
             }
             else
             {
-
                 return RedirectToAction("Index", new { mess = 2 });
             }
 

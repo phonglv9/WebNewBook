@@ -59,9 +59,9 @@ namespace WebNewBook.Controllers
                     case 2:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 2).ToList();
                         break;
-                    case 3:
-                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 3).ToList();
-                        break;
+                    //case 3:
+                    //    lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 3).ToList();
+                    //    break;
 
                     case 4:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 4).ToList();
@@ -75,7 +75,16 @@ namespace WebNewBook.Controllers
                         break;
                 }
             }
-            ViewBag.DataHD = lissttl.ToPagedList(pageNumber, 5);
+            List<ViewHoaDon> lissttl2 = new List<ViewHoaDon>();
+            foreach(var item in lissttl)
+            {
+                if (item.hoaDon.TrangThai != 3)
+                {
+                    lissttl2.Add(item);
+                }
+            }
+
+            ViewBag.DataHD = lissttl2.ToPagedList(pageNumber, 5);
                
                 //ViewBag.dataNew = lissttl.ToPagedList((int)page, (int)pagesize);
                 return View("IndexHD");

@@ -124,7 +124,8 @@
 														<h3 class="product-name"><a asp-controller="Home" asp-action="ProductDetaill" asp-route-id="@a.Maasp">@a.Tensp</a></h3>
 													<h4 class="product-price"><span class="qty">@a.Soluong x</span> @a.DonGia.ToString("#,##0").Replace(',', '.')đ</h4>
 										</div>
-										<button class="delete"><i class="fa fa-close"></i></button>
+                                                    <form asp-controller="GioHang" asp-action="XoaKhoiGioHome" asp-route-id="@a.Maasp"><button class="delete"><i class="fa fa-close" data-id="@a.Maasp"></i></button></form>
+                                                    
 									</div>
 									}
 									

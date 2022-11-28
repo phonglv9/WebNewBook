@@ -95,7 +95,7 @@
 						}	
 						</ul>
 						<br>
-					<form asp-controller="GioHang" asp-action="AddToCart" asp-route-id="@ViewBag.test.sanPhams.ID_SanPham ">
+					<form asp-controller="GioHang" asp-action="AddToCartCT" asp-route-id="@ViewBag.test.sanPhams.ID_SanPham ">
 						<div class="add-to-cart">
 							<div class="qty-label">
 								Số lượng
@@ -105,7 +105,7 @@
 									<span class="qty-down">-</span>
 								</div>
 							</div>
-							<button data-toggle="modal" data-target="#exampleModalCart" type="submit" @* onclick="addtocart(${@ViewBag.test.sanPhams.ID_SanPham})"*@ class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+							<button data-toggle="modal" data-target="#exampleModalCart" type="submit" @* onclick="addtocart(${@ViewBag.test.sanPhams.ID_SanPham})"*@ class="add-to-cart-btn" @*value="@ViewBag.test.sanPhams.ID_SanPham"*@><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
 						</div></form>
 
 
