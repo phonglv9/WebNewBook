@@ -63,6 +63,21 @@ namespace WebNewBook.API.Controllers
                 return BadRequest(e.Message);
             }
         }
-       
+        [HttpPost("DeleteCarts/{email}")]
+        public async Task<ActionResult> XoaGioHangKH(string email)
+        {
+
+
+            try
+            {
+                await _GioHangService.XoaGioHangKH(email);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }

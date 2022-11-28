@@ -16,10 +16,12 @@ namespace WebNewBook.API.Repository.Service
         }
         public async Task AddHoaDon(HoaDon hoaDon)
         {
+            //Khi đặt hàng thành công
             if (hoaDon.MaKhachHang != "KHNOLOGIN" && hoaDon.TrangThai == 1)
             {
                 var customer = dbcontext.KhachHangs.FirstOrDefault(c => c.ID_KhachHang == hoaDon.MaKhachHang);
                 customer.DiemTichLuy = customer.DiemTichLuy + Convert.ToInt32(hoaDon.TongTien) / 100;
+
                 dbcontext.KhachHangs.Update(customer);
             }
                 

@@ -286,8 +286,12 @@ namespace WebNewBook.Controllers
                             await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{hoaDon.MaGiamGia}", null);
                       
                         }
-                        HttpContext.Session.Clear();
-                        Response.Cookies.Delete("Cart");
+                       
+                            await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{khachHang.Email}", null);
+                            HttpContext.Session.Clear();
+                            Response.Cookies.Delete("Cart");
+                        
+                       
                         ViewBag.SuccessMessage = "Đặt hàng thành công";
                         return View();
                     }
