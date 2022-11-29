@@ -286,8 +286,15 @@ namespace WebNewBook.Controllers
                             await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{hoaDon.MaGiamGia}", null);
                       
                         }
-                       
-                            await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{khachHang.Email}", null);
+                        if (khachHang.ID_KhachHang != "KHNOLOGIN")
+                        {
+
+                        
+                        int fpoint = Convert.ToInt32(hoaDon.TongTien) / 100;
+                            
+                            await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{hoaDon.ID_HoaDon}/{fpoint}/{khachHang.ID_KhachHang}", null);
+                        }
+                        await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{khachHang.Email}", null);
                             HttpContext.Session.Clear();
                             Response.Cookies.Delete("Cart");
                         
@@ -346,6 +353,12 @@ namespace WebNewBook.Controllers
                     }
 
                     string paymentUrl = vnpay.CreateRequestUrl(VNPayConfig.vnp_Url, VNPayConfig.vnp_HashSecret);
+                    HttpContext.Session.SetString("emailCustomer", khachHang.Email.ToString());
+                    //set mã khách hàng gửi sang cổng thanh toán 
+                    if (khachHang.ID_KhachHang != "KHNOLOGIN")
+                    {
+                        HttpContext.Session.SetString("idCustomer", khachHang.ID_KhachHang.ToString());
+                    }
                     return Redirect(paymentUrl);
                 }
             }
@@ -355,6 +368,8 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> VNPayReturn([FromQuery] VNPayReturn request)
         {
+            var emailCustomer = HttpContext.Session.GetString("emailCustomer");
+            var idCustomer = HttpContext.Session.GetString("idCustomer");
             var Infoid = request.vnp_OrderInfo;
             var getIdHoaDon = (from t in Infoid
                                where char.IsDigit(t)
@@ -381,7 +396,14 @@ namespace WebNewBook.Controllers
 
 
             }
-            
+
+
+            if (idCustomer != "KHNOLOGIN")
+            {
+                int fpoint = Convert.ToInt32(request.vnp_Amount) / 10000;
+                await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{idHoaDon}/{fpoint}/{idCustomer}", null);
+            }
+            await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{emailCustomer}", null);
             HttpContext.Session.Clear();
             Response.Cookies.Delete("Cart");
             ViewBag.Message = request.message;
