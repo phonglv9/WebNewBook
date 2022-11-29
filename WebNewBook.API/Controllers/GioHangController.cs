@@ -41,27 +41,23 @@ namespace WebNewBook.API.Controllers
             return "Thành Công";
 
         }
-        [HttpGet("Updatenumber/{id}/{soluongmoi}/{namekh}")]
-        public async Task<int> Updatenumber(string id,int soluongmoi,string namekh)
+        [HttpGet("Updatenumber/{id}/{soluongmoi}/{namekh}/{update}")]
+        public async Task<int> Updatenumber(string id,int soluongmoi,string namekh, string update)
         {
 
-            return await _GioHangService.Updatenumber(id, soluongmoi, namekh); ;
+            return await _GioHangService.Updatenumber(id, soluongmoi, namekh,update); 
 
         }
         [HttpGet("Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}")]
-        public async Task<ActionResult> Addgiohang(string HinhAnh,int SoLuongs,string emailKH,string idsp)
+        public async Task<int> Addgiohang(string HinhAnh,int SoLuongs,string emailKH,string idsp)
         {
             
           
-            try
-            {
-                await _GioHangService.AddGioHangAsync(HinhAnh, SoLuongs, emailKH, idsp);
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                return BadRequest(e.Message);
-            }
+            
+            
+                
+                return await _GioHangService.AddGioHangAsync(HinhAnh, SoLuongs, emailKH, idsp); 
+           
         }
        
     }

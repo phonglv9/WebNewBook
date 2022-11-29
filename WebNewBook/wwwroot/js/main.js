@@ -111,6 +111,7 @@
 
 		down.on('click', function () {
 			var value = parseInt($input.val()) - 1;
+		
 			value = value < 1 ? 1 : value;
 			$input.val(value);
 			$input.change();
@@ -118,7 +119,19 @@
 		})
 
 		up.on('click', function () {
+
 			var value = parseInt($input.val()) + 1;
+
+			if (value > 100) {
+				$('.messErorr').html("số lượng ko được quá 100");
+				$('.add-to-cart-btn').hide();
+
+			}
+			
+			else {
+				$('.add-to-cart-btn').show();
+				$('.messErorr').hide();
+			}
 			$input.val(value);
 			$input.change();
 
@@ -204,7 +217,12 @@
 			function (data) {
 				if (data == "Số lượng không có sẵn") {
 					$('.messErorr').html('<div class="alert alert-danger text-center" role="alert"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' + data + '</div >');
-                } else {
+				}
+				else if (data == "Số lượng trong giỏ không thể vượt 100") {
+					$('.messErorr').html('<div class="alert alert-danger text-center" role="alert"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' + data + '</div >');
+
+				}
+				else {
 					$('.messCart').append(data);
                 }
 				
@@ -213,6 +231,28 @@
 				}, 1000)
 
 			});
+	});
+	$("#getvalue").keyup(function () {
+		
+		var valua = $(this).val();
+		if (valua > 100) {
+			$('.add-to-cart-btn').hide();
+			/*$('.messErorr').("số lượng ko được quá 100");*/
+			alert("số lượng ko được quá 100");
+			
+
+		}
+		else if (valua <= 0) {
+			$('.add-to-cart-btn').hide();
+			/*$('.messErorr').html("số lượng ko được nhỏ hơn 1");*/
+			alert("số lượng ko được nhỏ hơn 1");
+			
+		}
+		else if (0<= valua <= 100) {
+			$('.add-to-cart-btn').show();
+			
+        }
+		
 	});
 	$(".add-to-cart-btn-ct").click(function () {
 
@@ -225,7 +265,9 @@
 			function (data) {
 				if (data == "Số lượng không có sẵn") {
 					$('.messErorr').html('<div class="alert alert-danger text-center" role="alert"> <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>' + data + '</div >');
-				} else {
+				}
+				
+				else {
 					$('.messCart').append(data);
 				}
 

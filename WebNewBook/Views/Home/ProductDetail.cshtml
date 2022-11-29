@@ -63,8 +63,8 @@
 				<div class="col-md-5">
 					<div class="product-details">
 					<h2 class="product-name">
-						@if (ViewBag.test != null)
-							@ViewBag.test.sanPhams.TenSanPham
+						@if (ViewBag.SanphamCT != null)
+							@ViewBag.SanphamCT.sanPhams.TenSanPham
 
 
 
@@ -73,9 +73,9 @@
 						<div>
 
 							<h3 class="product-price">  
-							@if (ViewBag.test != null)
+							@if (ViewBag.SanphamCT != null)
 							{
-								@ViewBag.test.sanPhams.GiaBan
+								@ViewBag.SanphamCT.sanPhams.GiaBan
 							}
 							<del class="product-old-price"></del></h3>
 
@@ -95,17 +95,18 @@
 						}	
 						</ul>
 						<br>
-					<form asp-controller="GioHang" asp-action="AddToCartCT" asp-route-id="@ViewBag.test.sanPhams.ID_SanPham ">
+					<form asp-controller="GioHang" asp-action="AddToCartCT" asp-route-id="@ViewBag.SanphamCT.sanPhams.ID_SanPham ">
 						<div class="add-to-cart">
 							<div class="qty-label">
 								Số lượng
-								<div class="input-number">
-									<input name="SoLuong" type="number" value="1">
+								<div  class="input-number">
+									<input id="getvalue" name="SoLuong" type="number" value="1">
+									
 									<span class="qty-up">+</span>
 									<span class="qty-down">-</span>
 								</div>
 							</div>
-							<button data-toggle="modal" data-target="#exampleModalCart" type="submit" @* onclick="addtocart(${@ViewBag.test.sanPhams.ID_SanPham})"*@ class="add-to-cart-btn" @*value="@ViewBag.test.sanPhams.ID_SanPham"*@><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+							<button data-toggle="modal" data-target="#exampleModalCart" type="submit" @* onclick="addtocart(${@ViewBag.SanphamCT.sanPhams.ID_SanPham})"*@ class="add-to-cart-btn" @*value="@ViewBag.SanphamCT.sanPhams.ID_SanPham"*@><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
 						</div></form>
 
 
@@ -143,8 +144,8 @@
 								<div class="row">
 									<div class="col-md-12">
 										<p>
-										@if (ViewBag.test != null)
-											@ViewBag.test.sach.MoTa
+										@if (ViewBag.SanphamCT != null)
+											@ViewBag.SanphamCT.sach.MoTa
 
 										</p>
 									</div>
@@ -159,26 +160,26 @@
 								<div class="col-md-6">
 									
 										
-									@if (ViewBag.test != null){
+									@if (ViewBag.SanphamCT != null){
 									
 									<table class="table table-hover ">
 										<tbody>
 
 											<tr>
 												<td>Tên sách :</td>
-											<td class="col-2">@ViewBag.test.sach.TenSach</td>
+											<td class="col-2">@ViewBag.SanphamCT.sach.TenSach</td>
 											</tr>
 											<tr>
 												<td>Số trang :</td>
-												<td> @ViewBag.test.sach.SoTrang</td>
+												<td> @ViewBag.SanphamCT.sach.SoTrang</td>
 											</tr>
 											<tr>
 												<td>Tái bản :</td>
-												<td> @ViewBag.test.sach.TaiBan</td>
+												<td> @ViewBag.SanphamCT.sach.TaiBan</td>
 											</tr>
 											<tr>
 												<td>Số lượng : :</td>
-												<td>@ViewBag.test.sach.SoLuong</td>
+												<td>@ViewBag.SanphamCT.sach.SoLuong</td>
 											</tr>
 												
 										</tbody>

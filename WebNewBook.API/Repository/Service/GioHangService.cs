@@ -32,14 +32,27 @@ namespace WebNewBook.API.Repository.Service
             giohangs.DonGia= listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.GiaBan).FirstOrDefault();
               if (listgh.Exists(c => c.Maasp == idsp&&c.emailKH==emailKH))
             {
-                var giohang= listgh.SingleOrDefault(c=>c.Maasp== idsp);
-                if (SoLuongs!=null)
+                var giohang = listgh.SingleOrDefault(c => c.Maasp == idsp);
+                var sanpham= listsp.SingleOrDefault(c => c.ID_SanPham == idsp);
+                if (SoLuongs + giohang.Soluong > 100 || SoLuongs > 100)
+                {
+                    return 1;
+
+                }
+                else if (SoLuongs >= sanpham.SoLuong || giohang.Soluong >= sanpham.SoLuong)
+                {
+
+                    return 2;
+                }
+               
+                else 
                 {
                     
                     giohang.Soluong+= SoLuongs;
                     _dbContext.Update(giohang);
-                    
-                    return await _dbContext.SaveChangesAsync();
+
+                    await _dbContext.SaveChangesAsync();
+                    return 3;
 
                     
                 }
@@ -52,7 +65,7 @@ namespace WebNewBook.API.Repository.Service
             }
             _dbContext.Add(giohangs);
             await _dbContext.SaveChangesAsync();
-            return 1;
+            return 3;
         }
 
         public async Task<List<GioHang>> GetlistGH()
@@ -70,32 +83,71 @@ namespace WebNewBook.API.Repository.Service
             return  b ;
         }
 
-        public async Task<int> Updatenumber(string id, int soluongmoi, string namekh)
+        public async Task<int> Updatenumber(string id, int soluongmoi, string namekh,string update)
         {
             var listsp = _dbContext.SanPhams.ToList();
             var listgh = _dbContext.GioHangs.ToList();
-            var giohang = listgh.SingleOrDefault(c => c.Maasp == id && c.emailKH==namekh);
+            var giohang = listgh.SingleOrDefault(c => c.Maasp == id && c.emailKH == namekh);
             var Sanpham = listsp.SingleOrDefault(c => c.ID_SanPham == id);
-            if (soluongmoi != 0)
-            {
-                if (soluongmoi <= Sanpham.SoLuong)
+            if (soluongmoi != 0) {
+               
+                if (soluongmoi != 0)
                 {
-                    giohang.Soluong = soluongmoi;
-                    giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
-                    _dbContext.Update(giohang);
-                    await _dbContext.SaveChangesAsync();
-                    return 1;
-                }
-                else
-                {
-                    return  2 ;
+                    if (soluongmoi <= Sanpham.SoLuong)
+                    {
+                        giohang.Soluong = soluongmoi;
+                        giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
+                        _dbContext.Update(giohang);
+                        await _dbContext.SaveChangesAsync();
+                        return 3;
+                    }
+                    else
+                    {
+                        return 2;
+                    }
                 }
             }
+            else
+            {
+                if (update == "1") {
+                    giohang.Soluong = giohang.Soluong+1;
+                    giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
+                    if (giohang.Soluong > 100)
+                    {
+                      
+                        return 1;
+                    }
+                    else if (giohang.Soluong > Sanpham.SoLuong)
+                    {
+                      
+                        return 2;
+                    }
+                }
+                else if(update == "2")
+                {
+                    giohang.Soluong = giohang.Soluong - 1;
+                    giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
+                    if (giohang.Soluong <= 0)
+                    {
+
+                        giohang.Soluong = 1;
+                        giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
+
+                    }
+                }
+                _dbContext.Update(giohang);
+                await _dbContext.SaveChangesAsync();
+                return 3;
+
+            }
+           
          
             
             return 0;
 
         }
+
+       
 
         public async Task<List<HomeVM>> VM()
 		{

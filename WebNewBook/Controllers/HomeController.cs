@@ -292,7 +292,7 @@ namespace WebNewBook.Controllers
 
 
             };
-            ViewBag.test = modelHome;
+            ViewBag.SanphamCT = modelHome;
 
             //Thể loại
             List<TheLoai> theLoais = new List<TheLoai>();
