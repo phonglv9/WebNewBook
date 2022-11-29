@@ -184,7 +184,17 @@ namespace WebNewBook.API.Repository.Service
             var giohang = listgh.SingleOrDefault(c => c.Maasp ==id&&c.emailKH==namekh );
             _dbContext.Remove(giohang);
             await _dbContext.SaveChangesAsync();
+
+
             return "xoa thành công";
+        }
+        //phóng code
+        public async Task XoaGioHangKH(string email)
+        {
+            var listgh = _dbContext.GioHangs.Where(c=>c.emailKH == email).ToList();
+   
+            _dbContext.RemoveRange(listgh);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }

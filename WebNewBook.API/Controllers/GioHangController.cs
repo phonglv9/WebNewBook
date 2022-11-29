@@ -59,6 +59,21 @@ namespace WebNewBook.API.Controllers
                 return await _GioHangService.AddGioHangAsync(HinhAnh, SoLuongs, emailKH, idsp); 
            
         }
-       
+        [HttpPost("DeleteCarts/{email}")]
+        public async Task<ActionResult> XoaGioHangKH(string email)
+        {
+
+
+            try
+            {
+                await _GioHangService.XoaGioHangKH(email);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
+
     }
 }

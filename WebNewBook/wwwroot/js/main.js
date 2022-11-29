@@ -206,8 +206,7 @@
 		});
 	}
 	//thêm mới vào giỏ hàng
-	$(".add-to-cart-btn").click(function () {
-
+	$(".add-to-cart-btn").click(function (){
 		var idsp = $(this).attr("value");
 		$.post("/GioHang/AddToCart",
 			{
@@ -224,7 +223,7 @@
 				}
 				else {
 					$('.messCart').append(data);
-                }
+				}
 				
 				setTimeout(function () {
 					location.reload();
@@ -291,6 +290,7 @@
 
 	//		});
 	//});
+	
 	
 	//Sửa số lượng cart
 	//$('#numberCart').change(function () {

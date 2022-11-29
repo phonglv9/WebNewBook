@@ -15,24 +15,35 @@ namespace WebNewBook.API.Repository.Service
 
         public async Task AddTheLoaiAsync(TheLoai par)
         {
-            par.MaDanhMuc = "DM638050907525310311";
+            
             dbcontext.Add(par);
             await dbcontext.SaveChangesAsync();
         }
 
         public async Task DeleteTheLoaiAsync(string id)
         {
-            TheLoai? tl = dbcontext.TheLoais.FirstOrDefault(c=>c.ID_TheLoai == id) ?? null;
+            TheLoai? tl = dbcontext.TheLoais.FirstOrDefault(c => c.ID_TheLoai == id) ?? null;
             if (tl != null)
             {
-                dbcontext.TheLoais.Remove(tl);
+                if (tl.TrangThai == 1)
+                {
+                    tl.TrangThai = 0;
+                    dbcontext.TheLoais.Update(tl);
+                    await dbcontext.SaveChangesAsync();
+                }
+                else
+                {
+                    tl.TrangThai = 1;
+                    dbcontext.TheLoais.Update(tl);
+                    await dbcontext.SaveChangesAsync();
+                }
                 await dbcontext.SaveChangesAsync();
             }
         }
 
         public async Task<IEnumerable<TheLoai>> GetTheLoaiAsync()
         {
-            return await dbcontext.TheLoais.ToListAsync();
+            return await dbcontext.TheLoais.Include(c=>c.DanhMucSach).ToListAsync();
         }
 
         public async Task<TheLoai?> GetTheLoaiAsync(string id)
