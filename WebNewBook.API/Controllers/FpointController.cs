@@ -34,7 +34,7 @@ namespace WebNewBook.API.Controllers
         /// <param name="diemtichluy"></param>
         /// <param name="makh"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("{id}/{diemtichluy}/{makh}")]
         public async Task<ActionResult> AddFpointAsync(string id , string diemtichluy , string makh)
         {
             try
