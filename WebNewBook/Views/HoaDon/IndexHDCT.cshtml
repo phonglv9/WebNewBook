@@ -1,0 +1,13 @@
+﻿@using WebNewBook.API.ModelsAPI;
+@model List<ViewHoaDonCT> ;
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<h1>Hóa đơn Chi tiết</h1>
+@*@if (ViewBag.datahdct!=null){
+   
+}*@
+@foreach (var a in Model){
+    <h2> @a.KhachHang.SDT</h2>
+}

@@ -164,20 +164,21 @@ namespace WebNewBook.API.Repository.Service
             var listsanpham = dbcontext.SanPhams.ToList();
             var listsanphamct = dbcontext.SanPhamCTs.ToList();
             var listsach = dbcontext.Sachs.ToList();
-            var listsachct = dbcontext.SachCTs.ToList();
-            var listtheloai = dbcontext.TheLoais.ToList();
-            var listtacgia = dbcontext.TacGias.ToList();
+            //var listsachct = dbcontext.SachCTs.ToList();
+           /// var listtheloai = dbcontext.TheLoais.ToList();
+            //var listtacgia = dbcontext.TacGias.ToList();
             var listnhaxuatban = dbcontext.NhaXuatBans.ToList();
-            var listphieunhap = dbcontext.PhieuNhaps.ToList();
-            var listnhanvien = dbcontext.NhanViens.ToList();
+            //var listphieunhap = dbcontext.PhieuNhaps.ToList();
+            //var listnhanvien = dbcontext.NhanViens.ToList();
 
-            var viewhdCT = (from a in listkhachhang join b in listhoadon on a.ID_KhachHang equals b.MaKhachHang
+            var viewhdCT = ( from a in listkhachhang join  b in listhoadon on a.ID_KhachHang equals b.MaKhachHang
                             join c in listhoadonct on b.ID_HoaDon equals c.MaHoaDon
-                            join q in listsanpham on c.MaSanPham equals q.ID_SanPham
+                             join q in listsanpham on c.MaSanPham equals q.ID_SanPham
                             join w in listsanphamct on q.ID_SanPham equals w.MaSanPham
                             join e in listsach on w.MaSach equals e.ID_Sach
-                            join r in listsachct on e.ID_Sach equals r.MaSach
-                            join t in listtheloai on r.MaTheLoai equals t.ID_TheLoai
+                            //join r in listsachct on e.ID_Sach equals r.MaSach
+                            join h in listnhaxuatban on e.MaNXB equals h.ID_NXB
+
                             select new ViewHoaDonCT()
                             {
                                 KhachHang = a,
@@ -186,24 +187,25 @@ namespace WebNewBook.API.Repository.Service
                                 sanPham = q,
                                 sanPhamCT = w,
                                 sach=e,
-                                sachCT=r,
-                                theLoai=t,
+                                nhaXuatBan = h,
+                                
                             }
 
                          ).ToList();
             var HoaDonChiTiet = viewhdCT.Where(a => a.hoaDonCT.MaHoaDon == id).ToList();
-
-
-            return  HoaDonChiTiet;
+           var listhdct = viewhdCT.GroupBy(c => c.hoaDonCT.MaHoaDon==id).ToList();
+            
+            
+            return HoaDonChiTiet;
         }
 
-        public async  Task<HoaDon?> Updatetrangthai(string id,int name)
+        public async  void UpdatetrangthaiHD(string id,int name)
         {
             var a = dbcontext.HoaDons.Where(a=>a.ID_HoaDon==id).FirstOrDefault();
             a.TrangThai = name;
             dbcontext.Update(a);
             await dbcontext.SaveChangesAsync();
-            return a;
+            
 
         }
     }

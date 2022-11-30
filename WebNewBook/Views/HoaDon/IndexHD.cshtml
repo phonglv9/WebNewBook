@@ -140,27 +140,30 @@
                                             <h6 >Thành công </h6>
                                         }
                                     </td>
-                                    <td><a asp-action="ChiTiet" asp-route-id="@a.hoaDonCT.ID_HDCT">Chi Tiết</a> </td>
+                                    <td><a asp-controller="HoaDon" asp-action="ChiTiet" asp-route-id="@a.hoaDonCT.MaHoaDon">Chi Tiết</a> </td>
                                     <td>
                                         <form asp-controller="HoaDon" asp-action="Sua" method="post">
 
                                             @* <input name="dd" type="hidden" value=" @item.hoaDon.ID_HoaDon">*@
-                                            <div>
-                                                <button type="submit" class="btn btn-primary">Lưu </button>
+                                           <div class="editindex">
+                                              
+                                                <div class="combobox-HD">
+                                                    <select class="form-select" name="name" aria-label="Default select example">
+                                                        <option value="#">Tất cả</option>
+                                                        <option value="0">Không tồn tại</option>
+                                                        <option value="1">Đặt hàng</option>
+                                                        <option value="2">Đã thanh toán</option>
+                                                        @*<option value="3">Đơn hàng thanh toán thất bại</option>*@
+                                                        <option value="4">Trả hàng</option>
+                                                        <option value="5">Thành công</option>
 
-                                            </div>
-                                            <div>
-                                                <select class="form-select" name="name" aria-label="Default select example">
-                                                    <option value="#">Tất cả</option>
-                                                    <option value="0">Không tồn tại</option>
-                                                    <option value="1">Đặt hàng</option>
-                                                    <option value="2">Đã thanh toán</option>
-                                                    @*<option value="3">Đơn hàng thanh toán thất bại</option>*@
-                                                    <option value="4">Trả hàng</option>
-                                                    <option value="5">Thành công</option>
+                                                    </select>
+                                                </div>
+                                                <div>
+                                                    <button type="submit" class="btn btn-primary">Lưu </button>
 
-                                                </select>
-                                            </div>
+                                                </div>
+                                           </div>
                                             <div>
                                                 <input name="id" type="hidden" value="@a.hoaDon.ID_HoaDon">
 

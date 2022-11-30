@@ -2290,5 +2290,13 @@ input[type='button'].btn-toggle {
 td {
     font-size: 13px;
 }
+.editindex{
+    display:flex;
+}
+.combobox-HD {
+    margin-right:10px;
+}
+
+
 
 

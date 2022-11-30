@@ -225,6 +225,7 @@ namespace WebNewBook.Controllers
                     {
                         return RedirectToAction("Index");
                     }
+
                    
                     return RedirectToAction("Index", new { mess = mess });
                 };
@@ -327,10 +328,24 @@ namespace WebNewBook.Controllers
                     string idsp = id;
 
 
+                    int mess = 0;
 
                     HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}").Result;
+                    if (response1.IsSuccessStatusCode)
+                    {
+                        string jsonData = response1.Content.ReadAsStringAsync().Result;
+                        mess = JsonConvert.DeserializeObject<int>(jsonData);
+                        if (mess == 1)
+                        {
+                            return Json("Số lượng trong giỏ không thể vượt 100");
+                        }
+                        else if(mess == 2)
+                        {
+                            return Json("Số lượng không có sẵn");
+                        }
 
-
+                       
+                    };
 
 
                 }
