@@ -9,6 +9,7 @@ using Newtonsoft.Json;
 using System.Globalization;
 using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using WebNewBook.Model;
 using WebNewBook.ViewModel;
@@ -29,7 +30,7 @@ namespace WebNewBook.Controllers
         }
 
 
-        public async Task<IActionResult> Index(int? page,string search, DateTime? startdate, DateTime? enddate, int? type)
+        public async Task<IActionResult> Index(int? page, string search, DateTime? startdate, DateTime? enddate, int? type)
         {
 
             ViewBag.Search = search;
@@ -45,14 +46,14 @@ namespace WebNewBook.Controllers
                 string jsondata = response.Content.ReadAsStringAsync().Result;
                 Getvoucher = JsonConvert.DeserializeObject<List<Voucher>>(jsondata);
             }
-            if (enddate !=null)
+            if (enddate != null)
             {
                 enddate = enddate.Value.AddDays(1);
             }
-            ViewBag.lstvoucher = Getvoucher.Where(c=>c.TrangThai==1 &&((!string.IsNullOrEmpty(search)  ? c.Id.StartsWith(search) :true ) || (!string.IsNullOrEmpty(search) ? c.TenPhatHanh.Contains(search) : true)) 
-                                                                    && (startdate.HasValue? c.StartDate>=startdate.Value:true)
-                                                                    && (enddate.HasValue? c.EndDate <=enddate.Value :true)
-                                                                    && (type !=null ? c.HinhThuc==type :true)).OrderByDescending(c => c.Createdate).ToPagedList(pageNumber, 10);
+            ViewBag.lstvoucher = Getvoucher.Where(c => c.TrangThai == 1 && ((!string.IsNullOrEmpty(search) ? c.Id.StartsWith(search) : true) || (!string.IsNullOrEmpty(search) ? c.TenPhatHanh.Contains(search) : true))
+                                                                    && (startdate.HasValue ? c.StartDate >= startdate.Value : true)
+                                                                    && (enddate.HasValue ? c.EndDate <= enddate.Value : true)
+                                                                    && (type != null ? c.HinhThuc == type : true)).OrderByDescending(c => c.Createdate).ToPagedList(pageNumber, 10);
             return View();
         }
 
@@ -60,8 +61,8 @@ namespace WebNewBook.Controllers
         /// Tạo đợt phát hành 
         public async Task<int> Add(Voucher voucher)
         {
-      
-            voucher.MaNhanVien= User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
+
+            voucher.MaNhanVien = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
             voucher.Id = "1";
             HttpResponseMessage response = _httpClient.PostAsJsonAsync(_httpClient.BaseAddress + "/Voucher", voucher).Result;
             if (response.IsSuccessStatusCode)
@@ -69,7 +70,7 @@ namespace WebNewBook.Controllers
                 return 1;
             }
             return 0;
-          
+
         }
 
         public async Task<IActionResult> Detail(string Id, VoucherModel voucherModel)
@@ -90,8 +91,8 @@ namespace WebNewBook.Controllers
                 string jsondata_2 = response_2.Content.ReadAsStringAsync().Result;
                 List<VoucherCT> voucherCTs = new List<VoucherCT>();
                 voucherCTs = JsonConvert.DeserializeObject<List<VoucherCT>>(jsondata_2);
-                ViewBag.lstvoucherCT0 = voucherCTs.Where(c => c.TrangThai == 0).ToList();
-                ViewBag.lstvoucherCT1 = voucherCTs.Where(c => c.TrangThai == 1).ToList();
+                ViewBag.lstvoucherCT0 = voucherCTs.Where(c => c.TrangThai == 0).OrderByDescending(c => c.CreateDate).ToList();
+                ViewBag.lstvoucherCT1 = voucherCTs.OrderByDescending(c => c.CreateDate).ToList();
 
             }
 
@@ -101,7 +102,7 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Delete(string Id)
         {
-          
+
 
             HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/Voucher/" + Id, null).Result;
             return RedirectToAction("Index");
@@ -110,16 +111,18 @@ namespace WebNewBook.Controllers
 
 
 
-        public async Task<IActionResult> CreateListvoucher(int quantityVoucher, int sizeVoucher, string startTextVoucher, string endTextVoucher, string maVoucher)
+        public async Task<int> CreateListvoucher(int quantityVoucher, int sizeVoucher, string startTextVoucher, string endTextVoucher, string maVoucher)
         {
 
             HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + "/VoucherCT/AddAutomatically?quantityVoucher=" + quantityVoucher + "&sizeVoucher=" + sizeVoucher + "&startTextVoucher=" + startTextVoucher + "&endTextVoucher=" + endTextVoucher + "&maVoucher=" + maVoucher, null).Result;
             if (response.IsSuccessStatusCode)
             {
                 string jsondata = response.Content.ReadAsStringAsync().Result;
+                return 1;
 
             }
-            return RedirectToAction("Index");
+            return 0;
+           
         }
 
 
@@ -142,7 +145,7 @@ namespace WebNewBook.Controllers
                 {
                     using (var stream = new FileStream(pathfile, FileMode.Create))
                     {
-                        file.CopyToAsync(stream);
+                        file.CopyTo(stream);
                     }
                     return pathfile;
                 }
@@ -176,49 +179,27 @@ namespace WebNewBook.Controllers
 
             try
             {
-
-                //var filesPath =Path.Combine(Directory.GetCurrentDirectory() + "/File");
-                //if (!System.IO.Directory.Exists(filesPath))
-                //{
-                //    Directory.CreateDirectory(filesPath);
-                //}
-
-
-
-                //var fileName = Path.GetFileName(file.FileName);
-                //var filePath = Path.Combine(filesPath, fileName);
-
-                //using (var stream = new FileStream(filesPath, FileMode.Create))
-                //{
-                //    await file.CopyToAsync(stream);
-                //}
-
-                string extension = Path.GetExtension(file.FileName);
-                string image = file.FileName;
-                string path = UpLoadFile(file, image);
-
-                using (var httpClient = new HttpClient())
+                if (file !=null)
                 {
+                    string extension = Path.GetExtension(file.FileName);
+                    string image = file.FileName;
+                    string path = UpLoadFile(file, image);
 
-                    await using var stream = System.IO.File.OpenRead(path);
-                    using var request = new HttpRequestMessage(HttpMethod.Post, "file");
-                    using var content = new MultipartFormDataContent {
-                    { new StreamContent(stream), "file", path }
-                };
-                    var response = await httpClient.PostAsync("https://localhost:7266/api/VoucherCT/AddImportExcer?Phathanh=" + maPhathanh, content);
+                    using var httpClient = new HttpClient()
+                    {
+                        Timeout = TimeSpan.FromDays(1)
+                    };
+                    httpClient.DefaultRequestHeaders.Add("User-Agent", "dotnet-http-client");
+                    using var content = new MultipartFormDataContent();
+                    using var stream = System.IO.File.OpenRead(path);
+                    content.Add(new StreamContent(stream), "file", Path.GetFileName(path));
+                    var url = "https://localhost:7266/api/VoucherCT/AddImportExcer?Phathanh=" + maPhathanh;
+                    using var response = await httpClient.PostAsync(url, content);
+                    Console.WriteLine($"Status: {response.StatusCode}; Msg: {await response.Content.ReadAsStringAsync()}");
+
                 }
 
-
-
-                //string pathFile = file.FileName;
-                //HttpClient httpClient = new HttpClient();
-                //MultipartFormDataContent form = new MultipartFormDataContent();
-                //HttpResponseMessage response = await httpClient.PostAsync("PostUrl", form);
-                //response.EnsureSuccessStatusCode();
-                //httpClient.Dispose();
-                //string sd = response.Content.ReadAsStringAsync().Result;
-
-                return RedirectToAction("Index");
+                return  Redirect("https://localhost:7047/Voucher/Detail/"+maPhathanh);
             }
             catch (Exception e)
             {
@@ -226,30 +207,46 @@ namespace WebNewBook.Controllers
                 return View(e.Message);
             }
         }
-        public async Task<IActionResult> Create(VoucherModel voucherModel)
+        public async Task<int> Create(VoucherCT voucherCT)
         {
 
 
             try
             {
-
-                using (var httpClient = new HttpClient())
+                List<VoucherCT> GetvoucherCT = new List<VoucherCT>();
+                HttpResponseMessage response_voucher = _httpClient.GetAsync(_httpClient.BaseAddress + "/VoucherCT/Addvoucher").Result;
+                if (response_voucher.IsSuccessStatusCode)
                 {
-
-                    StringContent content = new StringContent(JsonConvert.SerializeObject(voucherModel.voucherCT), Encoding.UTF8, "application/json");
-                    using (var response = await httpClient.PostAsync("https://localhost:7266/api/VoucherCT/AddManually", content))
+                    string jsondata = response_voucher.Content.ReadAsStringAsync().Result;
+                    GetvoucherCT = JsonConvert.DeserializeObject<List<VoucherCT>>(jsondata);
+                    foreach (var x in GetvoucherCT)
                     {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        voucherModel = JsonConvert.DeserializeObject<VoucherModel>(apiResponse);
+                        if (x.Id== voucherCT.Id)
+                        {
+                            return 2;
+                        }
                     }
                 }
-                return RedirectToAction("Index");
-                //   return RedirectToAction("Detail"+"/"+voucherModel.voucherCT.MaVoucher);
+
+                StringContent content = new StringContent(JsonConvert.SerializeObject(voucherCT), Encoding.UTF8, "application/json");
+                HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + "/VoucherCT/AddManually", content).Result;
+                if (response.IsSuccessStatusCode)
+                {
+                    string apiResponse = await response.Content.ReadAsStringAsync();
+                    voucherCT = JsonConvert.DeserializeObject<VoucherCT>(apiResponse);
+                    return 1;
+                }
+                Console.WriteLine($"Status: {response.StatusCode}; Msg: {await response.Content.ReadAsStringAsync()}");
+                return 0;
+
+
+
+
             }
             catch (Exception e)
             {
 
-                return RedirectToAction("Index");
+                return 0;
             }
 
 
@@ -278,7 +275,7 @@ namespace WebNewBook.Controllers
             var content = stream.ToArray();
             return File(content, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "file_mau" + ".xlsx");
         }
- 
+
 
         public List<string> Get_Id(string getId)
         {
@@ -296,6 +293,39 @@ namespace WebNewBook.Controllers
         public int PhatHanhVoucher(string GetId, VoucherCT voucherCT)
         {
             var lstid = Get_Id(GetId);
+             var id_0= lstid[0];
+               VoucherCT GetVoucherCTID = new VoucherCT();
+            HttpResponseMessage response_VoucherCTId = _httpClient.GetAsync(_httpClient.BaseAddress + "/VoucherCT/" + id_0).Result;
+            if (response_VoucherCTId.IsSuccessStatusCode)
+            {
+                string jsondata = response_VoucherCTId.Content.ReadAsStringAsync().Result;
+                GetVoucherCTID = JsonConvert.DeserializeObject<VoucherCT>(jsondata);
+              
+
+                Voucher Getvoucher = new Voucher();
+                HttpResponseMessage response_VoucherId = _httpClient.GetAsync(_httpClient.BaseAddress + "/Voucher/"+GetVoucherCTID.MaVoucher).Result;
+                if (response_VoucherId.IsSuccessStatusCode)
+                {
+                    string jsondata1 = response_VoucherId.Content.ReadAsStringAsync().Result;
+                    Getvoucher = JsonConvert.DeserializeObject<Voucher>(jsondata1);
+                    if (Getvoucher.StartDate > voucherCT.NgayBatDau)
+                    {
+                        return 2;
+                    }
+                    if (Getvoucher.EndDate < voucherCT.NgayBatDau)
+                    {
+                        return 3;
+                    }
+
+                }
+            }
+
+
+           
+  
+
+
+
             List<VoucherCT> voucherCTList = new List<VoucherCT>();
             foreach (var id in lstid)
             {
@@ -306,7 +336,7 @@ namespace WebNewBook.Controllers
                 cT.NgayBatDau = voucherCT.NgayBatDau;
                 voucherCTList.Add(cT);
             }
-            //    StringContent content = new StringContent(JsonConvert.SerializeObject(voucherCTList));
+
             HttpResponseMessage response = _httpClient.PutAsJsonAsync<List<VoucherCT>>(_httpClient.BaseAddress + "/VoucherCT/PhatHanhVoucher/", voucherCTList).Result;
             if (response.IsSuccessStatusCode)
             {

@@ -45,7 +45,7 @@
                     data-bs-toggle="tab" data-bs-target="#nav-list"
                     type="button" role="tab" aria-controls="nav-list"
                     aria-selected="false">
-                Danh sách Voucher phát hành
+                Danh sách Voucher
             </button>
             <button class="nav-link" id="nav-history-tab"
                     data-bs-toggle="tab" data-bs-target="#nav-history"
@@ -84,7 +84,7 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Thêm Voucher</button>
+                                    <button type="button" id="Add1Voucher" class="btn btn-primary">Thêm Voucher</button>
                                 </div>
                             </form>
 
@@ -103,28 +103,28 @@
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <form asp-action="CreateListvoucher">
-                                <input name="maVoucher" type="hidden" value="@Model.Voucher.Id" />
+                                <input name="maVoucher" id="maVoucher" type="hidden" value="@Model.Voucher.Id" />
                                 <div class="modal-body">
                                     <div class="form-floating mb-3">
-                                        <input name="sizeVoucher" type="number" class="form-control" id="Dodai" placeholder="Độ dài mã voucher">
-                                        <label for="Dodai">Độ dài mã voucher</label>
+                                        <input name="sizeVoucher" type="number" class="form-control" id="sizeVoucher" placeholder="Độ dài mã voucher">
+                                        <label for="sizeVoucher">Độ dài mã voucher</label>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input name="startTextVoucher" type="text" class="form-control" id="ktstart" placeholder="Kí tự bắt đầu">
-                                        <label for="ktstart">Kí tự bắt đầu</label>
+                                        <input name="startTextVoucher" type="text" class="form-control" id="startTextVoucher" placeholder="Kí tự bắt đầu">
+                                        <label for="startTextVoucher">Kí tự bắt đầu</label>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input name="endTextVoucher" type="text" class="form-control" id="ktend" placeholder="Kí tự kết thúc">
-                                        <label for="ktend">Kí tự kết thúc</label>
+                                        <input name="endTextVoucher" type="text" class="form-control" id="endTextVoucher" placeholder="Kí tự kết thúc">
+                                        <label for="endTextVoucher">Kí tự kết thúc</label>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input name="quantityVoucher" type="number" class="form-control" id="quantity" placeholder="Số lượng voucher">
-                                        <label for="quantity">Số lượng voucher</label>
+                                        <input name="quantityVoucher" type="number" class="form-control" id="quantityVoucher" placeholder="Số lượng voucher">
+                                        <label for="quantityVoucher">Số lượng voucher</label>
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                    <button type="submit" class="btn btn-primary">Thêm</button>
+                                    <button type="button" id="AddListVoucher" class="btn btn-primary">Thêm</button>
                                 </div>
                             </form>
 
@@ -214,7 +214,7 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <h1 class="modal-title fs-5" id="phathanh">Phát hành</h1>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"  aria-label="Close"></button>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
 
@@ -244,7 +244,7 @@
                                 <div id="Div_diem" hidden class="mb-3 row">
                                     <label for="" class="col-sm-4 col-form-label">Điểm</label>
                                     <div class="col-sm-8">
-                                        <input id="diemdoi" type="number" class="form-control" >
+                                        <input id="diemdoi" type="number" class="form-control">
                                     </div>
                                 </div>
 
@@ -260,7 +260,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button id="btnDong" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <button id="btnPhatHanh" type="button" data-bs-dismiss="modal" class="btn btn-primary">Phát Hành</button>
+                                <button id="btnPhatHanh" type="button"  class="btn btn-primary">Phát Hành</button>
                             </div>
                         </div>
                     </div>
@@ -325,10 +325,9 @@
                             }
 
                             <td>@x.Diemdoi</td>
-                            @*    <td>@(x.TrangThai==0?"Chưa phát Hành": "Đã phát hành")</td>*@
                             @if (@x.TrangThai == 0)
                             {
-                                <td class="text-danger fs-6 fst-italic">Chưa Phát hành</td>
+                                <td class="text-warning fs-6 fst-italic">Chưa Phát hành</td>
                             }
                             else
                             {
@@ -418,11 +417,19 @@
                                 @*    <td>@(x.TrangThai==0?"Chưa phát Hành": "Đã phát hành")</td>*@
                                 @if (@x.TrangThai == 0)
                                 {
-                                    <td class="text-danger fs-6 fst-italic">Chưa Phát hành</td>
+                                    <td class="text-warning fs-6 fst-italic">Chưa Phát hành</td>
                                 }
-                                else
+                                @if (x.TrangThai == 1)
+                                {
+                                    <td class="text-primary fs-6 fst-italic">Đã Phát hành</td>
+                                }
+                                @if (x.TrangThai == 2)
                                 {
                                     <td class="text-success fs-6 fst-italic">Đã Phát hành</td>
+                                }
+                                @if (x.TrangThai == 3)
+                                {
+                                    <td class="text-danger fs-6 fst-italic">Đã Hủy</td>
                                 }
                             </tr>
                         }
@@ -439,19 +446,6 @@
 </div>
 
 
-<div class="toast-container position-fixed bottom-0 end-0 p-3">
-    <div id="liveToast" class="toast  text-bg-primary" role="alert" aria-live="assertive" aria-atomic="true" data-bs-delay="2000">
-        <div class="toast-header">
-
-            <strong class="me-auto">Thông báo</strong>
-            <small>Bây giờ</small>
-            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-        </div>
-        <div class="toast-body">
-            Thành Công
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 @section Scripts{
@@ -501,34 +495,34 @@
             }
         }
 
-        document.getElementById("SoluongPhatHanh").onclick = function(){
+        document.getElementById("SoluongPhatHanh").onclick = function () {
             var checkboxes = document.getElementsByName('NameOK');
-           var soluong =0;
-             for (var i = 0; i < checkboxes.length; i++) {
-                  if(checkboxes[i].checked==true){
-                   soluong ++;  
-                  }
+            var soluong = 0;
+            for (var i = 0; i < checkboxes.length; i++) {
+                if (checkboxes[i].checked == true) {
+                    soluong++;
                 }
-               
+            }
+
             document.getElementById("SoluongVoucher").value = soluong
-          
+
 
         }
 
 
-        function ChonHinhThuc(){
-            var tang =     document.getElementById("Tang")
-            var doi=     document.getElementById("DoiDiem")
-          
-            if(tang.checked==true){
-                document.getElementById("Div_diem").hidden=true
+        function ChonHinhThuc() {
+            var tang = document.getElementById("Tang")
+            var doi = document.getElementById("DoiDiem")
+
+            if (tang.checked == true) {
+                document.getElementById("Div_diem").hidden = true
             }
             if (doi.checked == true) {
-                document.getElementById("Div_diem").hidden=false
-                 
+                document.getElementById("Div_diem").hidden = false
+
             }
         }
-        
+
 
 
         $(function () {
@@ -538,7 +532,7 @@
             var tang = document.getElementById("Tang");
             var doiDiem = document.getElementById("DoiDiem");
 
-            
+
 
             // phát hành voucher
             $("#btnPhatHanh").click(function () {
@@ -553,45 +547,310 @@
                 });
                 commaSeparatedIds = arrItem.toString();
                 arrItem = [];
-                var diemdoi=null
-                var ngayPhatHanh=$("#ngayphathanh").val()
-                var hinhthuc =0;
-                if (tang.checked==true) {
+                var diemdoi = null
+                var ngayPhatHanh = $("#ngayphathanh").val()
+            
+                var hinhthuc = 0;
+                if (tang.checked == true) {
 
                 }
                 if (doiDiem.checked == true) {
-                     hinhthuc=1;
-                     diemdoi= $("#diemdoi").val()
+                    hinhthuc = 1;
+                    diemdoi = $("#diemdoi").val()
                 }
-                $.ajax({
-                    type: "POST",
-                    data:
-                    {
-                        GetId: commaSeparatedIds,
-                        HinhThuc : hinhthuc,
-                        NgayBatDau : ngayPhatHanh,
-                        Diemdoi : diemdoi
-                    },
-                    url: "/Voucher/PhatHanhVoucher",
-                    success: function (response) {
-                        if (response == 1) {
-                       
-                            const toastLiveExample = document.getElementById('liveToast')
-                            const toast = new bootstrap.Toast(toastLiveExample)
-                            toast.show()
-                        
-                            setTimeout(function () {
+             
+                if (ngayPhatHanh != "") {
+                    $.ajax({
+                        type: "POST",
+                        data:
+                        {
+                            GetId: commaSeparatedIds,
+                            HinhThuc: hinhthuc,
+                            NgayBatDau: ngayPhatHanh,
+                            Diemdoi: diemdoi
+                        },
+                        url: "/Voucher/PhatHanhVoucher",
+                        success: function (response) {
+                            if (response == 1) {
+
+                                Swal.fire({
+                                    text: "Phát hành Thành công !",
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                    position: 'bottom-end',
+                                    width: 300,
+
+                                    height: 50,
+                                    color: '#66a15a',
+                                    background: '#ffffff',
+
+                                }).then((result) => {
+                                    /* Read more about handling dismissals below */
+                                    if (result.dismiss === Swal.DismissReason.timer) {
+                                        console.log('I was closed by the timer')
+                                    }
+                                })
+
+                                setTimeout(function () {
                                     document.getElementById("load").style.display = 'block';
-                                window.location.reload(1);
-                             
+                                    window.location.reload(1);
 
-                            }, 2000);
 
-                        } else {
-                            alert("Thất Bại");
+                                }, 2000);
+
+                            } if (response == 0) {
+                                Swal.fire({
+                                    text: "Phát hành thất bại !",
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                    position: 'bottom-end',
+                                    width: 300,
+
+                                    height: 50,
+                                    color: '#66a15a',
+                                    background: '#ffffff',
+
+                                }).then((result) => {
+                                    /* Read more about handling dismissals below */
+                                    if (result.dismiss === Swal.DismissReason.timer) {
+                                        console.log('I was closed by the timer')
+                                    }
+                                })
+                            }
+                            if (response == 2) {
+                                Swal.fire({
+                                    text: "Ngày phát hành không được bé hơn ngày bắt đầu của đợt phát hành !",
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                    position: 'bottom-end',
+                                    width: 300,
+
+                                    height: 50,
+                                    color: '#66a15a',
+                                    background: '#ffffff',
+
+                                }).then((result) => {
+                                    /* Read more about handling dismissals below */
+                                    if (result.dismiss === Swal.DismissReason.timer) {
+                                        console.log('I was closed by the timer')
+                                    }
+                                })
+                            }
+                            if (response == 3) {
+                                Swal.fire({
+                                    text: "Ngày phát hành không được lớn hơn ngày kết thúc của đợt phát hành !",
+                                    timer: 2000,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                    position: 'bottom-end',
+                                    width: 300,
+                                    height: 50,
+                                    color: '#66a15a',
+                                    background: '#ffffff',
+
+                                }).then((result) => {
+                                    /* Read more about handling dismissals below */
+                                    if (result.dismiss === Swal.DismissReason.timer) {
+                                        console.log('I was closed by the timer')
+                                    }
+                                })
+                            }
                         }
+                    });
+                } else {
+                    alert("Không được để trống")
+                }
+
+            });
+            // Thêm 1 voucher
+            $("#Add1Voucher").click(function () {
+                var id = $("#voucherCT_Id").val();
+                var maVoucher = $("#voucherCT_MaVoucher").val();
+                var ngayHethan = $("#voucherCT_NgayHetHan").val();
+                console.log(ngayHethan)
+                if (id != "") {
+                    if (id.length > 5) {
+                        $.ajax({
+                            type: "POST",
+                            data:
+                            {
+                                Id: id,
+                                MaVoucher: maVoucher,
+                                NgayHetHan: ngayHethan
+                            },
+                            url: "/Voucher/Create",
+                            success: function (response) {
+                                if (response == 1) {
+                                    Swal.fire({
+                                        text: "Thêm Thành công !",
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                        position: 'bottom-end',
+                                        width: 300,
+
+                                        height: 50,
+                                        Color: '#66a15a',
+                                        background: '#ffffff',
+
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            console.log('I was closed by the timer')
+                                        }
+                                    })
+
+                                    setTimeout(function () {
+
+                                        window.location.reload(1);
+                                        document.getElementById("load").style.display = 'block';
+
+                                    }, 3000);
+
+                                }
+                                if (response == 2) {
+                                    Swal.fire({
+                                        text: "Mã Voucher đã bị trùng !",
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                        position: 'bottom-end',
+                                        width: 300,
+
+                                        height: 50,
+                                        color: '#66a15a',
+                                        background: '#ffffff',
+
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            console.log('I was closed by the timer')
+                                        }
+                                    })
+                                }
+                                if (response == 0) {
+                                    Swal.fire({
+                                        text: "Thêm thất bại !",
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                        position: 'bottom-end',
+                                        width: 300,
+
+                                        height: 50,
+                                        color: '#66a15a',
+                                        background: '#ffffff',
+
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            console.log('I was closed by the timer')
+                                        }
+                                    })
+                                }
+
+                            }
+                        });
+                    } else {
+                        alert("Mã Voucher Phải lớn hơn hoặc bằng 6 kí tự")
                     }
-                });
+
+                } else {
+                    alert("Không được để trống")
+                }
+
+            });
+
+            // Thêm nhiều voucher
+            $("#AddListVoucher").click(function () {
+                var size = $("#sizeVoucher").val();
+                var ktstart = $("#startTextVoucher").val();
+                var ktend = $("#endTextVoucher").val();
+                var quantity = $("#quantityVoucher").val();
+                var mavoucher = $("#maVoucher").val();
+
+                if (size != "" && ktstart != "" && ktend != "" && quantity != "") {
+                    if (size > 5) {
+                        if (quantity > 0) {
+                            $.ajax({
+                                type: "POST",
+                                data:
+                                {
+                                    sizeVoucher: size,
+                                    startTextVoucher: ktstart,
+                                    endTextVoucher: ktend,
+                                    quantityVoucher: quantity,
+                                    maVoucher: mavoucher
+                                },
+                                url: "/Voucher/CreateListvoucher",
+                                success: function (response) {
+                                    if (response == 1) {
+                                        Swal.fire({
+                                            text: "Thêm Thành công !",
+                                            timer: 1500,
+                                            timerProgressBar: true,
+                                            showConfirmButton: false,
+                                            position: 'bottom-end',
+                                            width: 300,
+
+                                            height: 50,
+                                            Color: '#66a15a',
+                                            background: '#ffffff',
+
+                                        }).then((result) => {
+                                            /* Read more about handling dismissals below */
+                                            if (result.dismiss === Swal.DismissReason.timer) {
+                                                console.log('I was closed by the timer')
+                                            }
+                                        })
+
+                                        setTimeout(function () {
+
+                                            window.location.reload(1);
+                                            document.getElementById("load").style.display = 'block';
+
+                                        }, 3000);
+
+                                    }
+
+                                    if (response == 0) {
+                                        Swal.fire({
+                                            text: "Thêm thất bại !",
+                                            timer: 1500,
+                                            timerProgressBar: true,
+                                            showConfirmButton: false,
+                                            position: 'bottom-end',
+                                            width: 300,
+
+                                            height: 50,
+                                            color: '#66a15a',
+                                            background: '#ffffff',
+
+                                        }).then((result) => {
+                                            /* Read more about handling dismissals below */
+                                            if (result.dismiss === Swal.DismissReason.timer) {
+                                                console.log('I was closed by the timer')
+                                            }
+                                        })
+                                    }
+
+                                }
+                            });
+                        } else {
+                            alert("Số lượng voucher phải lớn hơn 0")
+                        }
+
+                    } else {
+                        alert("Độ dài Voucher phải lớn hơn 5")
+                    }
+
+                } else {
+                    alert("Không được để trống")
+                }
+
             });
 
 
@@ -609,31 +868,70 @@
                 });
                 commaSeparatedIds = arrItem.toString();
                 arrItem = [];
+                Swal.fire({
+                    title: 'Bạn có chắc chắn muốn Hủy Vouccher không?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Có',
 
+                }).then((result) => {
+                    /* Read more about isConfirmed, isDenied below */
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            type: "POST",
+                            data: { timCkeckBox: commaSeparatedIds },
+                            url: "/Voucher/HuyVoucher",
+                            success: function (response) {
+                                if (response == 1) {
+                                    Swal.fire({
+                                        text: "Hủy thành công !",
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                        position: 'bottom-end',
+                                        width: 300,
 
-                $.ajax({
-                    type: "POST",
-                    data: { timCkeckBox: commaSeparatedIds },
-                    url: "/Voucher/HuyVoucher",
-                    success: function (response) {
-                        if (response == 1) {
-                            const toastLiveExample = document.getElementById('liveToast')
-                            const toast = new bootstrap.Toast(toastLiveExample)
-                            toast.show()
+                                        height: 50,
+                                        color: '#66a15a',
+                                        background: '#ffffff',
 
-                            setTimeout(function () {
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            console.log('I was closed by the timer')
+                                        }
+                                    })
 
-                                window.location.reload(1);
-                                document.getElementById("load").style.display = 'block';
+                                    setTimeout(function () {
 
-                            }, 3000);
+                                        window.location.reload(1);
+                                        document.getElementById("load").style.display = 'block';
 
-                        } else {
-                            alert("Thất Bại");
-                        }
+                                    }, 3000);
 
+                                } else {
+                                    Swal.fire({
+                                        text: "Hủy thất bại !",
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                        position: 'bottom-end',
+                                        width: 300,
+                                        height: 50,
+                                        color: '#66a15a',
+                                        background: '#ffffff',
+
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            console.log('I was closed by the timer')
+                                        }
+                                    })
+                                }
+
+                            }
+                        });
                     }
-                });
+                })
             });
         });
 

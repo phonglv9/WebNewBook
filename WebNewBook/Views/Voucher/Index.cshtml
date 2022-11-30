@@ -203,14 +203,14 @@
                                 <td>@(x.HinhThuc == 1 ? "Đổi điểm" : "Tặng")</td>
 
                                 <td>
-                                    <button data-bs-toggle="modal" data-bs-target="#updateVoucher_@x.Id" class="btn btn-secondary"><i class="fa-solid fa-circle-info"></i></button>
+                                    <button data-bs-toggle="modal" data-bs-target="#@x.Id" name="ModalUpdate" class="btn btn-secondary"><i class="fa-solid fa-circle-info"></i></button>
                                     <a class="btn btn-dark" asp-action="Detail" asp-route-Id="@x.Id"><i class="fa-solid fa-arrow-right"></i></a>
                                     <a class="btn btn-danger" asp-action="Delete" asp-route-Id="@x.Id"><i class="fa-solid fa-trash"></i></a>
                                 </td>
 
                             </tr>
 
-                            <div class="modal fade " id="updateVoucher_@x.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal fade " id="@x.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl ">
                                     <div class="modal-content">
                                         <div class="modal-header">
@@ -219,7 +219,7 @@
                                         </div>
                                         <form>
                                             <div class="row p-3">
-                                                <input type="hidden" value="@x.Id" asp-for="Id" value="null" />
+                                                <input type="hidden" value="@x.Id" asp-for="Id" />
                                                 <input type="hidden" asp-for="MaNhanVien" value="@x.MaNhanVien" />
 
 
@@ -281,16 +281,15 @@
                                                         Hình thức <span class="text-danger">*</span>
                                                     </label>
                                                     <div class="col-sm-7 mb-3 row">
-                                                        <div onclick="ChonHinhThuc()" class="col-sm-5 form-check">
-                                                            <input class="form-check-input" type="radio" name="chon"
+                                                        <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check">
+                                                            <input class="form-check-input" type="radio" id="chonTang_@x.Id"
                                                                checked id="Tang">
                                                             <label class="form-check-label" for="Tang">
                                                                 Tặng
                                                             </label>
                                                         </div>
-                                                        <div onclick="ChonHinhThuc()" class="col-sm-5 form-check ">
-                                                            <input class="form-check-input" type="radio" name="chon"
-                                                               id="DoiDiem">
+                                                        <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check ">
+                                                            <input class="form-check-input" type="radio" id="chonDoi_@x.Id">
                                                             <label class="form-check-label" for="DoiDiem">
                                                                 Đổi điểm
                                                             </label>
@@ -299,7 +298,7 @@
 
                                                 </div>
 
-                                                <div id="Div_diem" hidden class="col-7">
+                                                <div id="Div_diem_@x.Id" hidden class="col-7">
                                                     <div class="mb-3 row ">
                                                         <label for="" class="col-sm-3 col-form-label">
                                                             Điểm <span class="text-danger">*</span>
@@ -459,8 +458,8 @@
 
                                                 }
                                             });
-                                        }
-                                    })
+                                        }// ngặc hỏi
+                                    })// ngoặc hỏi
                                 } else {
                                     alert("Thời san kết thúc không được trước ngày bắt đầu")
                                 }
@@ -485,7 +484,17 @@
 
 
         });
-    });
+
+
+        // Cập nhật đợt phát hành
+
+        $(document.getElementsByName("ModalUpdate")).click(function (){
+
+           
+
+        });
+
+        });
 
 
 </script>

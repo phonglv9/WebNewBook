@@ -36,10 +36,16 @@ namespace WebNewBook.API.Repository.Service
                 lengthVoucher = lengthVoucher - startTextVoucher.Length - endTextVoucher.Length;
                 for (int i = 0; i < quantityVoucher; i++)
                 {
+                    dynamic checkTrung;
+                    do
+                    {
+                        string ktRandom = RandomVoucher(lengthVoucher);
+                        string idVoucher = startTextVoucher + ktRandom + endTextVoucher;
+                        checkTrung = _dbcontext.VoucherCTs.FirstOrDefault(c=>c.Id== idVoucher);
+                        voucherCT.Id = idVoucher;
+                    } while (checkTrung != null);
 
-                    string ktRandom = RandomVoucher(lengthVoucher);
-                    string idVoucher = startTextVoucher + ktRandom + endTextVoucher;
-                    voucherCT.Id = idVoucher;
+                   
                     voucherCT.NgayBatDau = null;
                     voucherCT.TrangThai = 0;
                     voucherCT.NgayHetHan = ngayKetThuc;
@@ -319,6 +325,11 @@ namespace WebNewBook.API.Repository.Service
             var dateNow = DateTime.Now;
             var listVCCT = await _dbcontext.VoucherCTs.Where(C => C.MaKhachHang == id && dateNow >= C.NgayBatDau && dateNow <= C.NgayHetHan).ToListAsync();
             return listVCCT;
+        }
+
+        public async Task<IEnumerable<VoucherCT>> GetAddVoucherCT()
+        {
+            return await _dbcontext.VoucherCTs.ToListAsync();
         }
     }
 }
