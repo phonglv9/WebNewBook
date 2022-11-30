@@ -20,7 +20,7 @@ namespace WebNewBook.Controllers
         {
             client = new HttpClient();
             client.BaseAddress = link;
-            ChiTiet("HDCT1");
+            //ChiTiet("HDCT1");
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
@@ -43,7 +43,7 @@ namespace WebNewBook.Controllers
             if (!string.IsNullOrEmpty(timkiem))
             {
                 timkiem = timkiem.ToLower();
-                lissttl = lissttl.Where(a => a.hoaDon.KhachHang.HoVaTen.ToLower().Contains(timkiem)).ToList();
+                lissttl = lissttl.Where(a => a.hoaDon.ID_HoaDon.ToLower().Contains(timkiem)).ToList();
                 
             }
             if (trangThai != null)
@@ -93,33 +93,35 @@ namespace WebNewBook.Controllers
         }
         public async Task<IActionResult> ChiTiet(string id)
         {
-            ViewHoaDonCT lissttl = new ViewHoaDonCT();
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/{id}").Result;
+            List<ViewHoaDonCT> lissttlhdct = new List<ViewHoaDonCT>();
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/getlistid/{id}").Result;
             if (response.IsSuccessStatusCode)
             {
                 string data = response.Content.ReadAsStringAsync().Result;
-                lissttl = JsonConvert.DeserializeObject<ViewHoaDonCT>(data);
+                lissttlhdct = JsonConvert.DeserializeObject<List<ViewHoaDonCT>>(data);
+                ViewBag.datahdct = lissttlhdct;
+                
             }
 
+            ViewHoaDonCT a = new ViewHoaDonCT();
+           
 
-            ViewBag.datahdct = lissttl;
-
-            return View("IndexHDCT", lissttl);
+            return View("IndexHDCT", lissttlhdct);
         }
         public async Task<IActionResult> Sua(string id, int name)
         {
-            HoaDon lissttl = new HoaDon();
+            //HoaDon lissttl = new HoaDon();
             HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}").Result;
-            if (response.IsSuccessStatusCode)
-            {
-                string data = response.Content.ReadAsStringAsync().Result;
-                lissttl = JsonConvert.DeserializeObject<HoaDon>(data);
-            }
+            //if (response.IsSuccessStatusCode)
+            //{
+            //    string data = response.Content.ReadAsStringAsync().Result;
+            //    lissttl = JsonConvert.DeserializeObject<HoaDon>(data);
+            //}
 
             
-            ViewBag.datahdct = lissttl;
+            //ViewBag.datahdct = lissttl;
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Index");
         }
     }
 }

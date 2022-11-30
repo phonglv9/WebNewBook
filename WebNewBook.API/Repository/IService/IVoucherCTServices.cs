@@ -5,6 +5,7 @@ namespace WebNewBook.API.Repository.IService
     {
         Task<IEnumerable<VoucherCT>> GetVoucherOfCustomer(string maCustomer);
         Task<IEnumerable<VoucherCT>> GetVoucherChuaphathanhAsync();
+        Task<IEnumerable<VoucherCT>> GetAddVoucherCT();
         Task<IEnumerable<VoucherCT>> GetVoucherDaphathanhAsync();
         Task<VoucherCT?> GetVoucherByIdAsync(string id);
         Task<IEnumerable<VoucherCT?>> GetVoucherByMaVoucherAsync(string id);

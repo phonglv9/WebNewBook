@@ -26,6 +26,7 @@ namespace WebNewBook.API.Controllers
         {
             var nv = await nhanVienService.GetNhanVienAsync(id);
             return nv;
+
         }
 
         [HttpPost]
