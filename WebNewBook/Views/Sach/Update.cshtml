@@ -33,17 +33,11 @@
             </div>
             <div class="form-group">
                 <label class="control-label">Hình ảnh</label>
-                <input type="file" name="file" class="form-control" />
-            </div>
-            <div class="form-group">
-                <label asp-for="SoLuong" class="control-label">Số lượng</label>
-                <input asp-for="SoLuong" class="form-control" />
-                <span asp-validation-for="SoLuong" class="text-danger"></span>
+                <input type="file" name="file" class="form-control" accept=".jpg, .png, .jpeg, .gif, .jfif, .bmp, .tif, .tiff|image/*"/>
             </div>
             <div class="form-group">
                 <label asp-for="MaNXB" class="control-label">Nhà xuất bản</label>
-                <input asp-for="MaNXB" class="form-control" />
-                <span asp-validation-for="MaNXB" class="text-danger"></span>
+                <select asp-for="MaNXB" class="form-control" asp-items="ViewBag.NXBs"></select>
             </div>
             <div class="form-group">
                 <label asp-for="GiaBan" class="control-label">Giá bán</label>
@@ -68,6 +62,7 @@
             <input asp-for="ID_Sach" hidden />
             <input asp-for="HinhAnh" hidden />
             <input asp-for="TrangThai" hidden />
+            <input asp-for="SoLuong" hidden />
             <button onclick="GetFileName()" type="submit" class="btn btn-primary">Nhập sản phẩm</button>
         </form>
     </div>

@@ -1,13 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.API.Controllers
 {
-    //[Authorize(Roles = "Admin")]
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "Admin")]
     public class SanPhamController : Controller
     {
         private readonly ISanPhamService sanPhamService;

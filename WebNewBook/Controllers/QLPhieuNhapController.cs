@@ -10,11 +10,17 @@ using WebNewBook.Model;
 namespace WebNewBook.Controllers
 {
     [Authorize(Roles = "Admin")]
-    [Authorize(Roles = "NhanVien")]
+    //[Authorize(Roles = "NhanVien")]
     public class QLPhieuNhapController : Controller
     {
         private readonly HttpClient _httpClient;
         private List<PhieuNhap> phieuNhaps;
+        public class PhieuNhapViewModel
+        {
+            public PhieuNhap PhieuNhap { get; set; }
+            public string Sach { get; set; }
+        }
+
         public QLPhieuNhapController()
         {
             _httpClient = new HttpClient();
@@ -31,7 +37,7 @@ namespace WebNewBook.Controllers
         private async Task<List<Sach>> GetSachs()
         {
             List<Sach> sachs = new List<Sach>();
-            HttpResponseMessage responseGet = await _httpClient.GetAsync("api/Book/GetlistBook");
+            HttpResponseMessage responseGet = await _httpClient.GetAsync("book");
             if (responseGet.IsSuccessStatusCode)
             {
                 string jsonData = responseGet.Content.ReadAsStringAsync().Result;
@@ -56,7 +62,15 @@ namespace WebNewBook.Controllers
         {
             List<PhieuNhap>? lstPhieuNhap = new List<PhieuNhap>();
             lstPhieuNhap = await Get();
-            ViewBag.PhieuNhap = lstPhieuNhap;
+            var sach = await GetSachs();
+            List<PhieuNhapViewModel> phieuNhapViewModels = new List<PhieuNhapViewModel>();
+            lstPhieuNhap.ForEach(c =>
+            {
+                var book = sach.FirstOrDefault(x => x.ID_Sach == c.MaSach);
+                PhieuNhapViewModel phieuNhapViewModel = new PhieuNhapViewModel { PhieuNhap = c, Sach = book.TenSach + " - Tái bản: " + book.TaiBan };
+                phieuNhapViewModels.Add(phieuNhapViewModel);
+            });
+            ViewBag.PhieuNhap = phieuNhapViewModels;
             return View();
         }
 
@@ -64,7 +78,7 @@ namespace WebNewBook.Controllers
         {
             var sachs = await GetSachs();
             var selectItems = new List<SelectListItem>();
-            selectItems = sachs.Select(s => new SelectListItem { Text = s.TenSach, Value = s.ID_Sach }).ToList();
+            selectItems = sachs.Select(s => new SelectListItem { Text = s.TenSach + " - Tai ban: " + s.TaiBan, Value = s.ID_Sach }).ToList();
             ViewBag.Sachs = selectItems;
             return View();
         }
@@ -85,6 +99,7 @@ namespace WebNewBook.Controllers
         public async Task<IActionResult> Create(PhieuNhap phieuNhap)
         {
             phieuNhap.MaNhanVien = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
+            phieuNhap.ID_PhieuNhap = "PN" + Guid.NewGuid().ToString();
             if (ModelState.IsValid)
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(phieuNhap), Encoding.UTF8, "application/json");

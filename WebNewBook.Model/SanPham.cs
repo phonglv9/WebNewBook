@@ -18,6 +18,7 @@ namespace WebNewBook.Model
         public string TenSanPham { get; set; }
         public int SoLuong { get; set; } 
         public double GiaBan { get; set; }
+        public double GiaGoc { get; set; }
         public string HinhAnh { get; set; }
         public int TrangThai { get; set; }
         public virtual PhieuGiamGiaSP? PhieuGiamGiaSP { get; set; }

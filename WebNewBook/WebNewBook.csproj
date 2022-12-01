@@ -32,12 +32,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebNewBook.API\WebNewBook.API.csproj" />
-    <ProjectReference Include="..\WebNewBook.Model\WebNewBook.Model.csproj" />
+    <Folder Include="File\" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="File\" />
+    <ProjectReference Include="..\WebNewBook.API\WebNewBook.API.csproj" />
+    <ProjectReference Include="..\WebNewBook.Model\WebNewBook.Model.csproj" />
   </ItemGroup>
 
   <ItemGroup>

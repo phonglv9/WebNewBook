@@ -26,7 +26,6 @@ namespace WebNewBook.Controllers
 
         public IActionResult Index()
         {
-         
             return View();
         }
 

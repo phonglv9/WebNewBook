@@ -1,8 +1,36 @@
 ﻿@using WebNewBook.Model
+@using X.PagedList
+@using X.PagedList.Mvc.Core
 @model SanPham
 
 @{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+    var mess ="";
+    var color = "";
+    @if (ViewBag.message == "1")
+    {
+        mess = "Thành công";
+        color = "success";
+    }
+    if (ViewBag.message == "2")
+    {
+        mess = "Thất bại";
+        color = "danger";
+    }
+}
+@section Scripts{
+	<script>
+      $("#selectNXB").change(function (){
+       
+          var $form = $(this).closest('form');
+            $form.find('button[type=submit]').click();
+         
+     });
+     setTimeout(function(){
+			$('#msNXB').fadeOut('slow');
+		},1500)
+	</script>
+	
 }
 
 <div class="container py-3" style="background-color: #f1f1f1;">
@@ -11,20 +39,24 @@
         <div class="py-3">
             <h6>
                 <div class="row">
+                    <form asp-action="Index" class="row">
                     <div class="col-5 mb-3">
-                        <input type="email" class="form-control" placeholder="Số điện thoại, Họ và tên,...">
+                        <input type="text" name="timKiem" class="form-control" placeholder="Mời bạn nhập tên sản phẩm để tìm kiếm">
                     </div>
-                    <div class="col-5 mb-3">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Chọn trạng thái</option>
-                            <option value="1">Hoạt động</option>
-                            <option value="0">Không hoạt động</option>
-                        </select>
-                    </div>
-                    <div class="col-2">
+                      <div class="col-2">
                         <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
                     </div>
-                    <p>@*10000 thành viên*@</p>
+                    <div class="col-5 mb-3">
+                        <select id="selectNXB" name="trangThai" class="form-select" aria-label="Default select example">
+                            
+                            <option selected>Chọn trạng thái</option>
+                            <option value="2">Tất cả</option>
+                            <option value="0">Hoạt động</option>
+                            <option value="1">Vô hiệu hóa</option>
+                          
+                        </select>
+                    </div>
+                  </form>
                     <div class="col-3">
                         <!-- Button trigger modal -->
                         <a type="button" class="btn btn-primary"asp-action="Create">
@@ -52,6 +84,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @if(ViewBag.SanPham.Count == 0){<tr><th>Không có sản phẩm</th></tr>}else{
                         @foreach (var item in ViewBag.SanPham)
                         {
                             var trangThai = item.TrangThai == 0 ? "Hoạt động" : "Vô hiệu hóa";
@@ -110,9 +143,11 @@
                                 </div>
                             </form>
                         }
+                    }
                     </tbody>
                 </table>
-            </p>
+@*                 @Html.PagedListPager((IPagedList)ViewBag.SanPham, page => Url.Action("Index","QLSanPham",new {timKiem = ViewBag.TimKiem, trangThai =ViewBag.TrangThai, page = page}),new X.PagedList.Web.Common.PagedListRenderOptions{LiElementClasses = new string[] { "page-item" },PageClasses = new string[] { "page-link" }})
+*@            </p>
         </div>
     </div>
 </div>
