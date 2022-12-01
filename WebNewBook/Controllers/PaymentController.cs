@@ -239,12 +239,13 @@ namespace WebNewBook.Controllers
                 if (payment == "1")
                 {
                    
+
                     hoaDon.TrangThai = 1;
                 }
                 else
                 {
 
-                    //Thanh toán thất bại:
+                    //Trạng thái chờ thanh toán:
 
                     hoaDon.TrangThai = 3;
                 }
