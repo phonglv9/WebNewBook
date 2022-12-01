@@ -51,7 +51,7 @@
                                 <select id="selectHD" name="trangThai" class="form-select" aria-label="Default select example">
                                     <option selected>Chọn trạng thái</option>
                                     <option value="10">Tất cả</option>
-                                    <option value="0">Không tồn tại</option>
+                                    <option value="6">Không tồn tại</option>
                                     <option value="1">Đặt hàng</option>
                                     <option value="2">Đã thanh toán</option>
                                    @* <option value="3">Đơn hàng thanh toán thất bại</option>*@
@@ -85,10 +85,10 @@
                         <tr>
                             <th>Mã hóa đơn</th>
                             <th>Tên khách hàng</th>
-                            <th>Tổng tiền </th>
-                            <th>Tên sản phẩm</th>
+                          
+                           
                             <th>Ngày mua</th>
-                            <th>số lượng</th>
+                            <th>Tổng tiền </th>
                             <th>Trạng Thái</th>
                             <th>Chi Tiết</th>
                             <th>Chức Năng</th>
@@ -105,42 +105,63 @@
                         {
                             @foreach (var a in ViewBag.DataHD)
                             {
+                                var coler = "black";
+                                @if (@a.hoaDon.TrangThai == 1)
+                                {
+                                    coler = "Green2";
+
+                                }
+                                else if (@a.hoaDon.TrangThai == 2)
+                                {
+
+                                    coler = "#00CCFF";
+                                }
+                                else if (@a.hoaDon.TrangThai == 5)
+                                {
+
+                                    coler = "#FF6666";
+                                }
+                                
                                 
 
                                 <tr>
                                     <td>@a.hoaDon.ID_HoaDon</td>
                                     <td>@a.KhachHang.HoVaTen</td>
-                                    <td>@a.hoaDon.TongTien</td>
-                                    <td>@a.sanPham.TenSanPham</td>
+                                   
+                                  
                                     <td>@a.hoaDon.NgayMua</td>
-                                    <td>@a.hoaDonCT.SoLuong</td>
+                                    <td>@a.hoaDon.TongTien</td>
+                                  
                                     <td>
-                                        @if (@a.hoaDon.TrangThai == 0)
-                                        {
-                                            <h6 >Không tồn tại</h6>
-                                        }
-                                        else if (@a.hoaDon.TrangThai == 1)
-                                        {
-                                            <h6 >Đặt hàng</h6>
-                                        }
-                                        else if (@a.hoaDon.TrangThai == 2)
-                                        {
-                                            <h6 >Đã thanh toán</h6>
-                                        }
-                                       @* else if (@a.hoaDon.TrangThai == 3)
-                                        {
-                                            <h6 >Đơn hàng thanh toán thất bại</h6>
-                                        }*@
-                                        else if (@a.hoaDon.TrangThai == 4)
-                                        {
-                                            <h6 >Trả hàng</h6>
-                                        }
-                                        else
-                                        {
-                                            <h6 >Thành công </h6>
-                                        }
+                                        <font color="@coler">
+                                            @if (@a.hoaDon.TrangThai == 6)
+                                            {
+                                                <p>Không tồn tại</p>
+                                            }
+                                            else if (@a.hoaDon.TrangThai == 1)
+                                            {
+                                                <p>Đặt hàng</p>
+                                            }
+                                            else if (@a.hoaDon.TrangThai == 2)
+                                            {
+                                                <p>Đã thanh toán</p>
+                                            }
+                                            @* else if (@a.hoaDon.TrangThai == 3)
+                                    {
+                                    <h6 >Đơn hàng thanh toán thất bại</h6>
+                                    }*@
+                                            else if (@a.hoaDon.TrangThai == 4)
+                                            {
+                                                <p>Trả hàng</p>
+                                            }
+                                            else if (@a.hoaDon.TrangThai == 5)
+                                            {
+                                                <p>Thành công </p>
+                                            }
+                                         </font>
+                                      
                                     </td>
-                                    <td><a asp-controller="HoaDon" asp-action="ChiTiet" asp-route-id="@a.hoaDonCT.MaHoaDon">Chi Tiết</a> </td>
+                                    <td><a asp-controller="HoaDon" asp-action="ChiTiet" asp-route-id="@a.hoaDon.ID_HoaDon">Chi Tiết</a> </td>
                                     <td>
                                         <form asp-controller="HoaDon" asp-action="Sua" method="post">
 
@@ -150,7 +171,7 @@
                                                 <div class="combobox-HD">
                                                     <select class="form-select" name="name" aria-label="Default select example">
                                                         <option value="#">Tất cả</option>
-                                                        <option value="0">Không tồn tại</option>
+                                                        <option value="6">Không tồn tại</option>
                                                         <option value="1">Đặt hàng</option>
                                                         <option value="2">Đã thanh toán</option>
                                                         @*<option value="3">Đơn hàng thanh toán thất bại</option>*@

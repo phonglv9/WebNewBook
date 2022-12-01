@@ -99,8 +99,14 @@ namespace WebNewBook.Controllers
             {
                 string data = response.Content.ReadAsStringAsync().Result;
                 lissttlhdct = JsonConvert.DeserializeObject<List<ViewHoaDonCT>>(data);
-                ViewBag.datahdct = lissttlhdct;
+                ViewBag.Namekh = lissttlhdct.Where(c=>c.hoaDon.ID_HoaDon==id).Select(c=>c.KhachHang.HoVaTen).FirstOrDefault();
+                ViewBag.sdtkh = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.SDT).FirstOrDefault();
+                ViewBag.ghichu = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.GhiChu).FirstOrDefault();
+                ViewBag.diachi = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.DiaChiGiaoHang).FirstOrDefault();
+                ViewBag.ngaymua = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.NgayMua).FirstOrDefault();
+                ViewBag.tongtien= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TongTien).FirstOrDefault() ;
                 
+
             }
 
             ViewHoaDonCT a = new ViewHoaDonCT();
@@ -110,16 +116,9 @@ namespace WebNewBook.Controllers
         }
         public async Task<IActionResult> Sua(string id, int name)
         {
-            //HoaDon lissttl = new HoaDon();
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}").Result;
-            //if (response.IsSuccessStatusCode)
-            //{
-            //    string data = response.Content.ReadAsStringAsync().Result;
-            //    lissttl = JsonConvert.DeserializeObject<HoaDon>(data);
-            //}
-
             
-            //ViewBag.datahdct = lissttl;
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}").Result;
+           
 
             return RedirectToAction("Index");
         }
