@@ -116,11 +116,11 @@ namespace WebNewBook.API.Repository.Service
 
             return await _dbContext.TheLoais.ToListAsync();
         }
-        public async Task<List<DanhMucSach>> GetDanhMucs()
+        public async Task<List<DanhMucSach>> GetDanhMucNavBar()
         {
 
 
-            return await _dbContext.DanhMucSachs.ToListAsync();
+            return await _dbContext.DanhMucSachs.Include(c=>c.TheLoais).ToListAsync();
         }
         public async Task<List<TacGia>> GetTacGias()
         {

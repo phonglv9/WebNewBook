@@ -45,7 +45,7 @@ namespace WebNewBook.API.Controllers
         [HttpGet("DanhMuc")]
         public async Task<List<DanhMucSach>> GetDM()
         {
-            return await _homeService.GetDanhMucs();
+            return await _homeService.GetDanhMucNavBar();
 
         }
         [HttpGet("TacGia")]

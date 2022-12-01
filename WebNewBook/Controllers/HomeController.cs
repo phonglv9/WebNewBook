@@ -59,6 +59,20 @@ namespace WebNewBook.Controllers
 
             return View(modelHome);
         }
+        //public JsonResult GetOderSell()
+        //{
+        //    //Model home
+        //   List<TheLoai> theLoais = new List<TheLoai>();
+        //    HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;
+        //    if (responseTL.IsSuccessStatusCode)
+        //    {
+        //        string jsonData = responseTL.Content.ReadAsStringAsync().Result;
+        //        theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
+
+               
+        //    };
+        //    return Json(theLoais);
+        //}
 
         public async Task<IActionResult> Product(string search, string currentFilter, string iddanhmuc, string idtheloai, string idtacgia, string sortOrder, int? pageNumber, int pageSize, double priceMin, double priceMax)
         {

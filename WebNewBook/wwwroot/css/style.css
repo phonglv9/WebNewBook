@@ -646,10 +646,12 @@ textarea.input {
   padding: 20px 0px;
 }
 
-.main-nav>li>a:hover, .main-nav>li>a:focus, .main-nav>li.active>a {
-  color: #2c55a5;
-  background-color: transparent;
-}
+    .nav .open > a, .nav .open > a:focus, .nav .open > a:hover.main-nav > li > a:hover, .main-nav > li > a:focus, .main-nav > li.active > a {
+       
+        border-radius: 10px !important;
+        
+        
+    }
 
 .main-nav>li>a:after {
   content: "";

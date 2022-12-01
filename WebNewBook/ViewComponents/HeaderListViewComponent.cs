@@ -24,6 +24,7 @@ namespace WebNewBook.Component
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var headers = await _headerService.GetDMAsync();
+            ViewBag.NavBar = headers;
             if (User.Identity.Name == null)
             {
                 
@@ -105,7 +106,7 @@ namespace WebNewBook.Component
                    
                 };
             }
-            return View(headers);
+            return View();
 
 
         }

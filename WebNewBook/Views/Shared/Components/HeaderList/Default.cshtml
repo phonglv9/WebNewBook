@@ -1,5 +1,5 @@
 ﻿@using WebNewBook.Model
-@model List<DanhMucSach>
+
 
 <!-- HEADER -->
 <header>
@@ -44,11 +44,11 @@
                 <div class="col-md-6">
                     <div class="header-search">
                         <form asp-controller="Home" asp-action="Product" method="get">
-                            @if (Model != null)
+                            @if (ViewBag.NavBar != null)
                             {
 
 
-                                <select class="input-select" asp-items="@(new SelectList(Model,"ID_DanhMuc","TenDanhMuc"))" name="iddanhmuc">
+                                <select class="input-select" asp-items="@(new SelectList(ViewBag.NavBar,"ID_DanhMuc","TenDanhMuc"))" name="iddanhmuc">
                                     <option value="Tất cả sách">Tất cả sách</option>
 
                                 </select>
@@ -195,10 +195,24 @@
             <ul class="main-nav nav navbar-nav">
                 <li class="active"><a href="/Home">Trang chủ</a></li>
 
-                @if (Model != null)
-                    @foreach (var item in Model.Take(10))
+                    @if (ViewBag.NavBar != null)
+                    @foreach (var item in ViewBag.NavBar)
                     {
-                        <li><a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})">@item.TenDanhMuc</a></li>
+                        @*<li><a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})">@item.TenDanhMuc</a></li>*@
+                        <li class="dropdown">
+                        <a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})" class="dropdown-toggle"@* data-toggle="dropdown"*@>@item.TenDanhMuc @*<b class="caret"></b>*@</a>
+                        @if (item.TheLoais != null)
+                            {
+                             foreach (var itemtl in item.TheLoais)
+                                {
+                                             
+                                <ul class="dropdown-menu">
+                                  <li><a href="@Url.Action("Product", "Home", new { idtheloai= itemtl.ID_TheLoai})">@itemtl.TenTL</a></li>
+                          
+                                </ul>
+                                }
+                            }
+                      </li>
                     }
 
             </ul>
