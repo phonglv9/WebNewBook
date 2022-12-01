@@ -23,8 +23,15 @@ namespace WebNewBook.API.Controllers
         public async Task<IEnumerable<VoucherCT>> GetVoucherAsync()
         {
             var voucher = await _voucherCTServices.GetVoucherChuaphathanhAsync();
-    
+
             return voucher;
+        }
+        [HttpGet("Addvoucher")]
+        public async Task<IEnumerable<VoucherCT>> GetAddVoucherCTAsync()
+        {
+            var voucherCT = await _voucherCTServices.GetAddVoucherCT();
+            return voucherCT;
+             
         }
         /// <summary>
         /// Lấy voucher theo id

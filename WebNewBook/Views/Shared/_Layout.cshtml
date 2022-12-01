@@ -1,8 +1,8 @@
-﻿@{ if (User.IsInRole("Admin"))
+﻿ @if (User.IsInRole("Admin"))
     {
         Context.Response.Redirect("/Admin/Index");
     } 
-	}
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>

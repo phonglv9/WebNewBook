@@ -90,7 +90,7 @@ namespace WebNewBook.Controllers
             await HttpContext.SignOutAsync();
             HttpContext.Session.Remove("idVoucher");
             HttpContext.Session.Remove("amoutVoucher");
-            return RedirectToAction("CheckOut");
+           
             return RedirectToAction("Index", "Home");
         }
         private List<Claim> DecodedToken(string token)
