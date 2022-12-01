@@ -16,6 +16,7 @@ namespace WebNewBook.Model
         public string TenPhieu { get; set; }
         public double GiaTri { get; set; }
         public double SPChoPhep { get; set; }
+        [Range(0, 1)]
         public int TheLoai { get; set; }
         public DateTime NgayBatDau { get; set; }
         public DateTime NgayHetHan { get; set; }

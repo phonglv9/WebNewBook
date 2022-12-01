@@ -106,6 +106,7 @@ namespace WebNewBook.API.Repository.Service
                         });
 
                         c.SPham.GiaBan = price;
+                        c.SPham.GiaGoc = price;
                         c.SPham.TrangThai = 0;
                         _dbcontext.Update(c.SPham);
                     });

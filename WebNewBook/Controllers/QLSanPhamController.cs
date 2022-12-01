@@ -8,6 +8,7 @@ using WebNewBook.Model.APIModels;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using X.PagedList;
+using System.IO;
 
 namespace WebNewBook.Controllers
 {
@@ -16,8 +17,10 @@ namespace WebNewBook.Controllers
     {
         private readonly HttpClient _httpClient;
         private List<SanPham> sanPhams;
-        public QLSanPhamController()
+        private IWebHostEnvironment _hostEnviroment;
+        public QLSanPhamController(IWebHostEnvironment hostEnvironment)
         {
+            this._hostEnviroment = hostEnvironment;
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7266/");
             sanPhams = new List<SanPham>();
@@ -126,10 +129,17 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SanPhamAPI sanPhamAPI, string[] SelectedSachs, IFormFile file)
         {
+            string error = "";
             sanPhamAPI.SanPham.ID_SanPham = "SP" + Guid.NewGuid().ToString();
             sanPhamAPI.Sachs = SelectedSachs;
-            sanPhamAPI.SanPham.HinhAnh = file.FileName;
-            string error = "";
+            if (file == null)
+            {
+                error = "Hình ảnh không hợp lệ";
+                ViewBag.Sachs = await GetSelectListItems();
+                ViewBag.Error = error;
+                return View(sanPhamAPI);
+            }
+            sanPhamAPI.SanPham.HinhAnh = await UpLoadFile(file);
             if (SelectedSachs.Length == 0)
             {
                 error = "Sách hoặc bộ sách không hợp lệ!";
@@ -147,6 +157,7 @@ namespace WebNewBook.Controllers
                     giaBan += double.Parse(gia);
                 }
 
+                sanPhamAPI.SanPham.GiaGoc = giaBan;
                 sanPhamAPI.SanPham.GiaBan = giaBan - giaBan*(sanPhamAPI.GiamGia/100);
 
                 StringContent content = new StringContent(JsonConvert.SerializeObject(sanPhamAPI), Encoding.UTF8, "application/json");
@@ -167,14 +178,22 @@ namespace WebNewBook.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(SanPhamAPI sanPhamAPI, IFormFile file)
+        public async Task<IActionResult> Update(SanPhamAPI sanPhamAPI, IFormFile? file)
         {
             var sachs = await GetSachs(sanPhamAPI.SanPham.ID_SanPham);
             sanPhamAPI.Sachs = sachs.Select(c => c.ID_Sach);
-            sanPhamAPI.SanPham.HinhAnh = file.FileName;
             string error = "";
+            if (file == null && sanPhamAPI.SanPham.HinhAnh == string.Empty)
+            {
+                error = "Hình ảnh không hợp lệ";
+                ViewBag.Sachs = sachs;
+                ViewBag.Error = error;
+                return View(sanPhamAPI);
+            }
+
             if (ModelState.IsValid)
             {
+                sanPhamAPI.SanPham.HinhAnh = file != null ? await UpLoadFile(file) : sanPhamAPI.SanPham.HinhAnh;
                 double giaBan = 0;
                 foreach (var item in sachs)
                 {
@@ -221,52 +240,22 @@ namespace WebNewBook.Controllers
             return BadRequest();
         }
 
-        private static string UpLoadFile(IFormFile file, string newname)
+        private async Task<string> UpLoadFile(IFormFile file)
         {
-            try
-            {
-                if (newname == null) newname = file.FileName;
-                string path = Path.Combine(Directory.GetCurrentDirectory(), "File");
-                CreateIfMissing(path);
-                string pathfile = Path.Combine(Directory.GetCurrentDirectory(), "File", newname);
-                string pathfile_Db = Path.Combine("File", newname);
-                var supportedtypes = new[] { "jpg", "png" };
-                var fileext = System.IO.Path.GetExtension(file.FileName).Substring(1);
-                if (!supportedtypes.Contains(fileext.ToLower()))
-                {
-                    return null;
-                }
-                else
-                {
-                    using (var stream = new FileStream(pathfile, FileMode.Create))
-                    {
-                        file.CopyToAsync(stream);
-                    }
-                    return pathfile;
-                }
-            }
-            catch (Exception ex)
-            {
-                ex.ToString();
-                return "lỗi";
-            }
-        }
+            string rootPath = _hostEnviroment.WebRootPath;
+            string fileName =  Path.GetFileNameWithoutExtension(file.FileName);
+            string extension = Path.GetExtension(file.FileName);
+            string path = Path.Combine(rootPath + @"\img\", fileName + extension);
 
-        private static void CreateIfMissing(string path)
-        {
-            try
+            if (!System.IO.File.Exists(path))
             {
-                bool a = Directory.Exists(path);
-                if (!a)
+                using (var fileStream = new FileStream(path, FileMode.Create))
                 {
-                    Directory.CreateDirectory(path);
-                }
+                    await file.CopyToAsync(fileStream);
+                };
             }
-            catch (Exception ex)
-            {
-                ex.ToString();
 
-            }
+            return path.Replace(rootPath + @"\img\", string.Empty);
         }
     }
 }

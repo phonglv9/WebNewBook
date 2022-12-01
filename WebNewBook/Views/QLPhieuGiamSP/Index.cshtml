@@ -1,0 +1,106 @@
+﻿@using WebNewBook.Model
+@model PhieuGiamGiaSP
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container py-3" style="background-color: #f1f1f1;">
+    <h3 style="font-weight: 700;">Nhân viên</h3>
+    <div class="container " style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <h6>
+                <div class="row">
+                    <div class="col-5 mb-3">
+                        <input type="email" class="form-control" placeholder="Tên phiếu">
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                    </div>
+                    <p>@*10000 thành viên*@</p>
+                    <div class="col-3">
+                        <!-- Button trigger modal -->
+                        <a type="button" class="btn btn-primary"asp-action="Create">
+                            <i class="fa-solid fa-address-book"></i> Thêm phiếu
+                        </a>
+                    </div>
+                </div>
+            </h6>
+        </div>
+    </div>
+    <br>
+    <div class="container " style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <p>
+                <table class="table">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Tên phiếu</th>
+                            <th scope="col">Giá trị</th>
+                            <th scope="col">Hạn mức</th>
+                            <th scope="col">Thể loại</th>
+                            <th scope="col">Ngày bắt đầu</th>
+                            <th scope="col">Ngày kết thúc</th>
+                            <th colspan="2" style="text-align: center ;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Phieu)
+                        {
+                            var theLoai = item.TheLoai == 0 ? "Phần trăm" : "Giá tiền";
+                            <tr>
+                                <th scope="row">@item.ID_PhieuGiamGiaSP</th>
+                                <td>@item.TenPhieu</td>
+                                <td>@item.GiaTri</td>
+                                <td>@item.SPChoPhep</td>
+                                <td>@theLoai</td>
+                                <td>@item.NgayBatDau</td>
+                                <td>@item.NgayHetHan</td>
+                                <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_PhieuGiamGiaSP"><i class="fa-solid fa-pen"></i></a></td>
+                                <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_PhieuGiamGiaSP"><i class="fa-solid fa-trash"></i></button></td>
+                            </tr>
+
+                             <!-- Modal Delete-->
+                            <form action="/QLNhanVien/Delete?id=@item.ID_PhieuGiamGiaSP" method="post" enctype="multipart/form-data">
+                                <div class="modal fade" id="delete-@item.ID_PhieuGiamGiaSP" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Đổi trạng thái</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3 row">
+                                                    <label for="ID_PhieuGiamGiaSP" class="col-sm-2 col-form-label">ID</label>
+                                                    <input for="ID_PhieuGiamGiaSP" class="form-control" name="ID" value="@item.ID_PhieuGiamGiaSP" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="TenPhieu" class="control-label">Tên phiếu</label>
+                                                    <input for="TenPhieu" class="form-control" name="nhanVien" value="@item.ID_PhieuGiamGiaSP" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="GiaTri" class="control-label">Giá trị</label>
+                                                    <input for="GiaTri" class="form-control" name="sach" value="@item.GiaTri" disabled/>
+                                                </div>
+                                                <div class="mb-3 row">
+                                                    <label for="SPChoPhep" class="control-label">Hạn mức</label>
+                                                    <input for="SPChoPhep" class="form-control" name="giaNhap" value="@item.SPChoPhep" disabled/>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="submit" class="btn btn-primary">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        }
+                    </tbody>
+                </table>
+            </p>
+        </div>
+    </div>
+</div>
+
+

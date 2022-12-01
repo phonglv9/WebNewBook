@@ -13,9 +13,10 @@ namespace WebNewBook.Controllers
     {
         private readonly HttpClient _httpClient;
         private List<Sach> sachs;
-
-        public SachController()
+        private IWebHostEnvironment _hostEnviroment;
+        public SachController(IWebHostEnvironment hostEnviroment)
         {
+            _hostEnviroment = hostEnviroment;
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7266/");
             sachs = new List<Sach>();
@@ -198,6 +199,7 @@ namespace WebNewBook.Controllers
 
                 #endregion
 
+                sach.HinhAnh = await UpLoadFile(file);
                 SachAPI sachAPI = new SachAPI { Sach = sach, TacGias = SelectedTacGias, TheLoais = SelectedTheLoais };
                 StringContent content = new StringContent(JsonConvert.SerializeObject(sachAPI), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await _httpClient.PostAsync("book", content);
@@ -217,11 +219,11 @@ namespace WebNewBook.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(Sach sach, string[] SelectedTacGias, string[] SelectedTheLoais, IFormFile file)
+        public async Task<IActionResult> Update(Sach sach, string[] SelectedTacGias, string[] SelectedTheLoais, IFormFile? file)
         {
             var sachCTs = await GetSachCts(sach.ID_Sach);
             string error = "";
-            if (file == null)
+            if (file == null && sach.HinhAnh == string.Empty)
             {
                 error = "Hình ảnh không hợp lệ";
                 ViewBag.Error = error;
@@ -288,6 +290,7 @@ namespace WebNewBook.Controllers
 
                 #endregion
 
+                sach.HinhAnh = file != null ? await UpLoadFile(file) : sach.HinhAnh;
                 SachAPI sachAPI = new SachAPI { Sach = sach, TacGias = SelectedTacGias, TheLoais = SelectedTheLoais };
                 StringContent content = new StringContent(JsonConvert.SerializeObject(sachAPI), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await _httpClient.PutAsync("book", content);
@@ -338,7 +341,24 @@ namespace WebNewBook.Controllers
             }
             ViewBag.Error = error;
             return BadRequest();
+        }
 
+        private async Task<string> UpLoadFile(IFormFile file)
+        {
+            string rootPath = _hostEnviroment.WebRootPath;
+            string fileName = Path.GetFileNameWithoutExtension(file.FileName);
+            string extension = Path.GetExtension(file.FileName);
+            string path = Path.Combine(rootPath + @"\img\", fileName + extension);
+
+            if (!System.IO.File.Exists(path))
+            {
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                };
+            }
+
+            return path.Replace(rootPath + @"\img\", string.Empty);
         }
     }
 }

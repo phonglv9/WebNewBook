@@ -55,7 +55,7 @@
                         @foreach (var item in ViewBag.NhanVien)
                         {
                             var chucVu = item.Quyen ? "Admin" : "Nhân viên";
-                            var trangThai = item.TrangThai == 0 ? "Hoạt động" : "Vô hiệu hóa";
+                            var trangThai = item.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
                             <tr>
                                 <th scope="row">@item.HoVaTen</th>
                                 <td>@item.Email</td>
