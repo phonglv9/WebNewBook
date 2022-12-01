@@ -4,10 +4,125 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
-<h1>Hóa đơn Chi tiết</h1>
-@*@if (ViewBag.datahdct!=null){
+
+
+<div class="container">
+    <h1>Chi tiết hóa đơn</h1>
+
+    <hr />
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Họ và tên Khách hàng</th>
+                <th scope="col">Số điện thoại khách hàng </th>
+                <th scope="col">Ghi chú </th>
+                <th scope="col">Địa chỉ </th>
+                <th scope="col">Ngày mua </th>
+                <th scope="col">Sản phẩm </th>
+                <th scope="col">Tổng tiền </th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+
+                <td>
+                    @if (ViewBag.Namekh != null)
+                    {
+
+
+                        @ViewBag.Namekh
+
+
+                    }
+                </td>
+                <td>
+                    @if (ViewBag.sdtkh != null)
+                    {
+
+
+                        @ViewBag.sdtkh
+
+
+                    }
+                </td>
+                <td>
+                    @if (ViewBag.ghichu != null)
+                    {
+
+
+                        @ViewBag.ghichu
+
+
+                    }
+                </td>
+                <td>
+                    @if (ViewBag.diachi != null)
+                    {
+
+
+                        @ViewBag.diachi
+
+
+                    }
+                </td>
+                <td>
+                    @if (ViewBag.ngaymua != null)
+                    {
+
+
+                        @ViewBag.ngaymua
+
+
+                    }
+                </td>
+                <td>
+                    @foreach (var item in Model.GroupBy(a => a.sanPham.TenSanPham))
+                    {
+                        @foreach (var n in item)
+                        {
+                            <p> @n.sanPham.TenSanPham    số lượng:x @n.hoaDonCT.SoLuong    đơn giá :@n.hoaDonCT.GiaBan </p>
+                        }
+                    }
+                </td>
+                <td>
+                    @if (ViewBag.tongtien != null)
+                    {
+
+
+                        @ViewBag.tongtien
+
+
+                    }
+                </td>
+                <td>Otto</td>
+                <td>Otto</td>
+
+            </tr>
+
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
    
-}*@
-@foreach (var a in Model){
-    <h2> @a.KhachHang.SDT</h2>
-}
+    <div>
+
+        <a asp-action="Index">Quay lại</a>
+    </div>
+</div>

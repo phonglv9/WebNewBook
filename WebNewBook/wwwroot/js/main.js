@@ -253,6 +253,20 @@
         }
 		
 	});
+	$("#timkiem").keyup(function () {
+
+		var timkiem = $(this).val();
+		$.post("/GioHang/AddToCart",
+			{
+				timkiem: timkiem,
+				
+			},
+			function (data) {
+				
+
+			});
+
+	});
 	$(".add-to-cart-btn-ct").click(function () {
 
 		var idsp = $(this).attr("value");
