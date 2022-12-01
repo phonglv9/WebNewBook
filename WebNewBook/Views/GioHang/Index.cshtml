@@ -11,6 +11,11 @@
     @if (ViewBag.MessUpdateCart == "1")
     {
         mess = "Số lượng không được quá 100";
+        color = "danger";
+    }
+     if (ViewBag.MessUpdateCart == "3")
+    {
+        mess = "Sửa số lượng thàng công";
         color = "success";
     }
     if (ViewBag.MessUpdateCart == "2")
@@ -53,7 +58,7 @@
                 <h3 class="text-black">Giỏ hàng của bạn</h3>
                 <br />
                 @if(ViewBag.MessUpdateCart != null && mess != null)
-              {<div class="alert alert-danger" role="alert">
+              {<div class="alert alert-@color" role="alert">
                         @mess
             </div>
                  }

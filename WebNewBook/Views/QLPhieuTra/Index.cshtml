@@ -1,0 +1,108 @@
+﻿
+
+@{
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+   
+    
+}
+@section Scripts{
+	@*<script>
+      $("#selectNXB").change(function (){
+       
+          var $form = $(this).closest('form');
+            $form.find('button[type=submit]').click();
+         
+     });
+     setTimeout(function(){
+			$('#msNXB').fadeOut('slow');
+		},1500)
+	</script>*@
+	
+}
+
+
+<div class="container py-3" style="background-color: #f1f1f1;">
+   
+    <div class="container" style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <h6>
+                <div>
+                    <form asp-action="Index" class="row">
+                    <div class="col-5 mb-3">
+                        <input type="text" name="timKiem" class="form-control" placeholder="Mời bạn nhập tên nhà xuất bản để tìm kiếm">
+                    </div>
+                      <div class="col-2">
+                        <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                    </div>
+                    <div class="col-5 mb-3">
+                        <select id="selectNXB" name="trangThai" class="form-select" aria-label="Default select example">
+                            
+                            <option selected>Chọn trạng thái</option>
+                            <option value="0">Tất cả</option>
+                            <option value="1">Hoạt động</option>
+                            <option value="2">Vô hiệu hóa</option>
+                          
+                        </select>
+                    </div>
+                  </form>
+                   
+                    <div class="col-3">
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalNXB">
+                            <i class="fa-solid fa-address-book"></i> Thêm nhà xuất bản
+                        </button>
+                    </div>
+                </div>
+            </h6>
+        </div>
+    </div>
+    <br>
+    <div class="container " style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+               
+            <p>
+                <table class="table">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th scope="col">Mã trả hàng</th>
+                            <th scope="col" >Người bán</th>
+                            <th scope="col" >Thời gian</th>
+                            <th scope="col" >Khách hàng</th>
+                            <th scope="col" >Cần trả khách </th>
+                            <th scope="col" >Đã trả khách </th>
+                            <th scope="col" >Trạng thái</th>
+                            <th colspan="2" style="text-align: center ;">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                      
+                        
+                            <tr>
+                                <td></td>                          
+                                <td>                                 
+                                      
+                                </td>
+
+                                
+                               
+                                <td><button class="btn border bg-primary" data-bs-toggle="modal" data-bs-target="#delete-"><i class="fa-solid fa-pen"></i></button></td>
+                                 <td> 
+                                       nút   
+                                </td>
+                            </tr>
+
+                         
+                        
+                        
+                    </tbody>
+                    
+                </table>
+                
+               
+            </p>
+        </div>
+    </div>
+</div>
+
+
+   

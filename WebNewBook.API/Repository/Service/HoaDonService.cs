@@ -16,15 +16,11 @@ namespace WebNewBook.API.Repository.Service
         }
         public async Task AddHoaDon(HoaDon hoaDon)
         {
-            if (hoaDon != null)
-            {
+            
+                
                 dbcontext.HoaDons.Add(hoaDon);
                 dbcontext.SaveChanges();
-            }
-            else
-            {
-                throw null;
-            }
+            
         }
         public async Task AddHoaDonCT(List<HoaDonCT> hoaDonCTs)
         {
@@ -94,10 +90,15 @@ namespace WebNewBook.API.Repository.Service
         }
         public async Task UpdateTrangThai(string id)
         {
-            var hoaDon = dbcontext.HoaDons.Where(c => c.ID_HoaDon == id).FirstOrDefault();
-            if (hoaDon != null)
+            var hoaDon = dbcontext.HoaDons.FirstOrDefault(c => c.ID_HoaDon == id);
+            var customer = dbcontext.KhachHangs.FirstOrDefault(c => c.ID_KhachHang == hoaDon.MaKhachHang);
+            if (hoaDon != null && customer != null)
             {
                 hoaDon.TrangThai = 2;
+               customer.DiemTichLuy = customer.DiemTichLuy + Convert.ToInt32(hoaDon.TongTien) / 100;
+              dbcontext.KhachHangs.Update(customer);
+                  
+                
                 dbcontext.HoaDons.Update(hoaDon);
                 await dbcontext.SaveChangesAsync();
 
@@ -124,28 +125,29 @@ namespace WebNewBook.API.Repository.Service
         {
             var listkhachhang = dbcontext.KhachHangs.ToList();
             var listhoadon = dbcontext.HoaDons.ToList();
-            var listhoadonct = dbcontext.HoaDonCTs.ToList();
-            var listsanpham = dbcontext.SanPhams.ToList();
-            var listsanphamct = dbcontext.SanPhamCTs.ToList();
+            //var listhoadonct = dbcontext.HoaDonCTs.ToList();
+            //var listsanpham = dbcontext.SanPhams.ToList();
+            //var listsanphamct = dbcontext.SanPhamCTs.ToList();
 
 
             var viewhd = (from a in listkhachhang
                           join b in listhoadon on a.ID_KhachHang equals b.MaKhachHang
-                          join c in listhoadonct on b.ID_HoaDon equals c.MaHoaDon
-                          join d in listsanpham on c.MaSanPham equals d.ID_SanPham
-                          join f in listsanphamct on d.ID_SanPham equals f.MaSanPham
+                          //join c in listhoadonct on b.ID_HoaDon equals c.MaHoaDon
+                          //join d in listsanpham on c.MaSanPham equals d.ID_SanPham
+                          //join f in listsanphamct on d.ID_SanPham equals f.MaSanPham
 
                           select new ViewHoaDon()
                           {
                               KhachHang = a,
                               hoaDon = b,
-                              hoaDonCT = c,
-                              sanPham = d,
-                              sanPhamCT = f,
+                             // hoaDonCT = c,
+                              //sanPham = d,
+                              //sanPhamCT = f,
 
                           }
                          ).ToList();
-            return viewhd;
+            var listGoupBy = viewhd.OrderBy(c => c.hoaDon.TrangThai).ToList();
+            return listGoupBy;
         }
 
         public async Task<List<ViewHoaDonCT>> GetHDCT(string id)
@@ -156,20 +158,21 @@ namespace WebNewBook.API.Repository.Service
             var listsanpham = dbcontext.SanPhams.ToList();
             var listsanphamct = dbcontext.SanPhamCTs.ToList();
             var listsach = dbcontext.Sachs.ToList();
-            var listsachct = dbcontext.SachCTs.ToList();
-            var listtheloai = dbcontext.TheLoais.ToList();
-            var listtacgia = dbcontext.TacGias.ToList();
+            //var listsachct = dbcontext.SachCTs.ToList();
+           /// var listtheloai = dbcontext.TheLoais.ToList();
+            //var listtacgia = dbcontext.TacGias.ToList();
             var listnhaxuatban = dbcontext.NhaXuatBans.ToList();
-            var listphieunhap = dbcontext.PhieuNhaps.ToList();
-            var listnhanvien = dbcontext.NhanViens.ToList();
+            //var listphieunhap = dbcontext.PhieuNhaps.ToList();
+            //var listnhanvien = dbcontext.NhanViens.ToList();
 
-            var viewhdCT = (from a in listkhachhang join b in listhoadon on a.ID_KhachHang equals b.MaKhachHang
+            var viewhdCT = ( from a in listkhachhang join  b in listhoadon on a.ID_KhachHang equals b.MaKhachHang
                             join c in listhoadonct on b.ID_HoaDon equals c.MaHoaDon
-                            join q in listsanpham on c.MaSanPham equals q.ID_SanPham
+                             join q in listsanpham on c.MaSanPham equals q.ID_SanPham
                             join w in listsanphamct on q.ID_SanPham equals w.MaSanPham
                             join e in listsach on w.MaSach equals e.ID_Sach
-                            join r in listsachct on e.ID_Sach equals r.MaSach
-                            join t in listtheloai on r.MaTheLoai equals t.ID_TheLoai
+                            //join r in listsachct on e.ID_Sach equals r.MaSach
+                            join h in listnhaxuatban on e.MaNXB equals h.ID_NXB
+
                             select new ViewHoaDonCT()
                             {
                                 KhachHang = a,
@@ -178,25 +181,34 @@ namespace WebNewBook.API.Repository.Service
                                 sanPham = q,
                                 sanPhamCT = w,
                                 sach=e,
-                                sachCT=r,
-                                theLoai=t,
+                                nhaXuatBan = h,
+                                
                             }
 
                          ).ToList();
             var HoaDonChiTiet = viewhdCT.Where(a => a.hoaDonCT.MaHoaDon == id).ToList();
-
-
-            return  HoaDonChiTiet;
+           //var listhdct = viewhdCT.GroupBy(c => c.hoaDonCT.MaHoaDon==id).ToList();
+            
+            
+            return HoaDonChiTiet;
         }
 
-        public async  Task<HoaDon?> Updatetrangthai(string id,int name)
+        public async  Task UpdatetrangthaiHD(string id,int name)
         {
-            var a = dbcontext.HoaDons.Where(a=>a.ID_HoaDon==id).FirstOrDefault();
-            a.TrangThai = name;
-            dbcontext.Update(a);
-            await dbcontext.SaveChangesAsync();
-            return a;
+            
 
+            try
+            {
+                var a = dbcontext.HoaDons.Where(a => a.ID_HoaDon == id).FirstOrDefault();
+                a.TrangThai = name;
+                dbcontext.Update(a);
+                 await dbcontext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
     }
 }

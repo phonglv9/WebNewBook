@@ -21,11 +21,11 @@ namespace WebNewBook.API.ModelsAPI
         public SanPhamCT sanPhamCT { get; set; } = new SanPhamCT();
         public Sach sach { get; set; } = new Sach();
         public SachCT sachCT { get; set; } = new SachCT();
-        public TheLoai theLoai { get; set; } = new TheLoai();
-        public TacGia tacGia { get; set; } = new TacGia();
+        //public TheLoai theLoai { get; set; } = new TheLoai();
+        //public TacGia tacGia { get; set; } = new TacGia();
         public NhaXuatBan nhaXuatBan { get; set; } = new NhaXuatBan();
-        public PhieuNhap phieuNhap { get; set; } = new PhieuNhap();
-        public NhanVien nhanVien { get; set; } = new NhanVien();
+        //public PhieuNhap phieuNhap { get; set; } = new PhieuNhap();
+        //public NhanVien nhanVien { get; set; } = new NhanVien();
        
     }
 }

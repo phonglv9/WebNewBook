@@ -1,7 +1,7 @@
 ﻿// Document is ready
 $(document).ready(function () {
     var regexEmail = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
-   var  regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
+   /*var  regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;*/
     // Validate fullname
     $("#fullnamecheck").hide();
     let fullnameError = true;

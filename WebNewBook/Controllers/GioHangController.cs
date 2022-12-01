@@ -1,4 +1,5 @@
 ﻿using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Wordprocessing;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Text;
@@ -19,8 +20,8 @@ namespace WebNewBook.Controllers
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = baseAdress;
-            
 
+         
             //ListData();
 
             // Giohangs();
@@ -117,42 +118,7 @@ namespace WebNewBook.Controllers
 
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> CreateGioHang()
-        //{
-        //    if (!string.IsNullOrEmpty(User.Identity.Name))
-        //    {
-        //        List<GioHang> lstGioHang = new List<GioHang>();
-        //        GioHang GioHangs = new GioHang();
-        //        foreach (var a in Giohangs())
-        //        {
-
-
-        //            GioHangs.ID_GioHang = "GH" + Guid.NewGuid().ToString();
-        //            GioHangs.HinhAnh = "gsdfgsdg";
-        //            GioHangs.TenSP = a.Tensp;
-        //            GioHangs.DonGia = a.DonGia;
-        //            GioHangs.SoLuong = a.Soluong;
-        //            GioHangs.TrangThai = true;
-        //            GioHangs.TongDonGia = a.ThanhTien;
-        //            GioHangs.emailKH = User.Identity.Name;
-        //            lstGioHang.Add(GioHangs);
-        //        }
-
-        //        GioHang modelHome = new GioHang();
-        //        HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/GioHang/Addgiohang"+GioHangs).Result;
-        //        if (response.IsSuccessStatusCode)
-        //        {
-        //            string jsonData = response.Content.ReadAsStringAsync().Result;
-        //            modelHome = JsonConvert.DeserializeObject<GioHang>(jsonData);
-
-
-        //        };
-        //    }
-
-
-        //    return View("");
-        //}
+       
 
         public IActionResult AddToCartCT(string id, int SoLuong)
         {
@@ -192,20 +158,25 @@ namespace WebNewBook.Controllers
                 }
                 else if (myCart.Exists(c => c.Maasp == id))
                 {
-                    //if (SoLuong + item.Soluong > 100 || SoLuong>100) {
-                        if (SoLuong >= modelHome.SoLuong || item.Soluong >= modelHome.SoLuong)
+                        if (SoLuong + item.Soluong > 100 || SoLuong > 100)
+                          {
+                             return RedirectToAction("Index", new { mess = 1 });
+
+                          }
+                        else if (SoLuong >= modelHome.SoLuong || item.Soluong >= modelHome.SoLuong)
                         {
 
                             return RedirectToAction("Index", new { mess = 2 });
                         }
+                       
                         else
                         {
                             item.Soluong += SoLuong;
                             item.ThanhTien = item.Soluong * item.DonGia;
 
                         }
-                        return RedirectToAction("Index", new { mess = 1 });
-                    //}
+                        
+                   
                     
 
 
@@ -243,9 +214,22 @@ namespace WebNewBook.Controllers
                 string idsp = id;
 
 
-
+                int mess = 0;
+               
                 HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}").Result;
+                if (response1.IsSuccessStatusCode)
+                {
+                    string jsonData = response1.Content.ReadAsStringAsync().Result;
+                    mess = JsonConvert.DeserializeObject<int>(jsonData);
+                    if (mess == 3)
+                    {
+                        return RedirectToAction("Index");
+                    }
 
+                   
+                    return RedirectToAction("Index", new { mess = mess });
+                };
+              
 
 
 
@@ -254,95 +238,117 @@ namespace WebNewBook.Controllers
         }
         public IActionResult AddToCart(string id, int SoLuong)
            {
-            if (User.Identity.Name == null)
+            if (!string.IsNullOrEmpty(id))
             {
-                SanPham modelHome = new SanPham();
-                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/SanPham/{id}").Result;
-                if (response.IsSuccessStatusCode)
+                if (User.Identity.Name == null)
                 {
-                    string jsonData = response.Content.ReadAsStringAsync().Result;
-                    modelHome = JsonConvert.DeserializeObject<SanPham>(jsonData);
-
-
-                };
-
-
-                var myCart = Giohangs();
-                var item = myCart.SingleOrDefault(c => c.Maasp == id);
-
-                if (item == null)
-                {
-
-                    item = new CartItem
+                    SanPham modelHome = new SanPham();
+                    HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/SanPham/{id}").Result;
+                    if (response.IsSuccessStatusCode)
                     {
-                        Maasp = id,
-                        Tensp = modelHome.TenSanPham,
-                        DonGia = modelHome.GiaBan,
-                        Soluong = SoLuong,
-                        ThanhTien = SoLuong * modelHome.GiaBan
+                        string jsonData = response.Content.ReadAsStringAsync().Result;
+                        modelHome = JsonConvert.DeserializeObject<SanPham>(jsonData);
 
 
                     };
-                    myCart.Add(item);
 
 
+                    var myCart = Giohangs();
+                    var item = myCart.SingleOrDefault(c => c.Maasp == id);
 
-                }
-                else if (myCart.Exists(c => c.Maasp == id))
-                {
-                    if (SoLuong >= modelHome.SoLuong || item.Soluong >= modelHome.SoLuong)
+                    if (item == null)
                     {
 
-                        return Json("Số lượng không có sẵn");
+                        item = new CartItem
+                        {
+                            Maasp = id,
+                            Tensp = modelHome.TenSanPham,
+                            DonGia = modelHome.GiaBan,
+                            Soluong = SoLuong,
+                            ThanhTien = SoLuong * modelHome.GiaBan
+
+
+                        };
+                        myCart.Add(item);
+
+
+
+                    }
+                    else if (myCart.Exists(c => c.Maasp == id))
+                    {
+                        if (SoLuong >= modelHome.SoLuong || item.Soluong >= modelHome.SoLuong)
+                        {
+
+                            return Json("Số lượng không có sẵn");
+                        }
+                        else if (SoLuong + item.Soluong>100 )
+                        {
+
+                            return Json("Số lượng trong giỏ không thể vượt 100");
+                        }
+                        else
+                        {
+                            item.Soluong += SoLuong;
+                            item.ThanhTien = item.Soluong * item.DonGia;
+
+                        }
+
+
                     }
                     else
                     {
-                        item.Soluong += SoLuong;
+                        item.Soluong++;
                         item.ThanhTien = item.Soluong * item.DonGia;
-
                     }
+                    var opt = new CookieOptions() { Expires = new DateTimeOffset(DateTime.Now.AddDays(3)) };
+
+                    var json = System.Text.Json.JsonSerializer.Serialize(myCart);
+                    Response.Cookies.Append("Cart", json, opt);
+
 
 
                 }
                 else
-                {
-                    item.Soluong++;
-                    item.ThanhTien = item.Soluong * item.DonGia;
+                 {
+
+
+                    SanPham modelHome = new SanPham();
+                    HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/SanPham/{id}").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string jsonData = response.Content.ReadAsStringAsync().Result;
+                        modelHome = JsonConvert.DeserializeObject<SanPham>(jsonData);
+
+
+                    };
+
+                    string HinhAnh = "dsfgsdfg";
+                    int SoLuongs = SoLuong;
+                    string emailKH = User.Identity.Name;
+                    string idsp = id;
+
+
+                    int mess = 0;
+
+                    HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}").Result;
+                    if (response1.IsSuccessStatusCode)
+                    {
+                        string jsonData = response1.Content.ReadAsStringAsync().Result;
+                        mess = JsonConvert.DeserializeObject<int>(jsonData);
+                        if (mess == 1)
+                        {
+                            return Json("Số lượng trong giỏ không thể vượt 100");
+                        }
+                        else if(mess == 2)
+                        {
+                            return Json("Số lượng không có sẵn");
+                        }
+
+                       
+                    };
+
+
                 }
-                var opt = new CookieOptions() { Expires = new DateTimeOffset(DateTime.Now.AddDays(3)) };
-
-                var json = System.Text.Json.JsonSerializer.Serialize(myCart);
-                Response.Cookies.Append("Cart", json, opt);
-
-
-               
-            }
-            else
-            {
-             
-              
-                SanPham modelHome = new SanPham();
-                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/SanPham/{id}").Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    string jsonData = response.Content.ReadAsStringAsync().Result;
-                    modelHome = JsonConvert.DeserializeObject<SanPham>(jsonData);
-
-
-                };
-
-                string HinhAnh = "dsfgsdfg";
-                int SoLuongs = SoLuong;
-                string emailKH = User.Identity.Name;
-                string idsp = id;
-               
-               
-
-                HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}" ).Result;
-               
-
-
-
             }
             return Json("Thêm vào giỏ hàng thành công");
         }
@@ -383,11 +389,17 @@ namespace WebNewBook.Controllers
                         {
                             item.Soluong = item.Soluong + 1;
                             item.ThanhTien = item.Soluong * item.DonGia;
-                            if (item.Soluong  > sanPham.SoLuong)
+                            if (item.Soluong>100)
                             {
                                 item.Soluong = item.Soluong - 1;
                                 item.ThanhTien = item.Soluong * item.DonGia;
-                                return RedirectToAction("Index", new { mess = "Số lượng không có sẵn" });
+                                return RedirectToAction("Index", new { mess = 1 });
+                            }
+                           else if (item.Soluong  > sanPham.SoLuong)
+                            {
+                                item.Soluong = item.Soluong - 1;
+                                item.ThanhTien = item.Soluong * item.DonGia;
+                                return RedirectToAction("Index", new { mess =2 });
                             }
                         }
                         else
@@ -399,7 +411,7 @@ namespace WebNewBook.Controllers
 
                                 item.Soluong = 1;
                                 item.ThanhTien = item.Soluong * item.DonGia;
-                                return RedirectToAction("Index");
+                                
                             }
                         }
 
@@ -417,36 +429,43 @@ namespace WebNewBook.Controllers
                 {
                     Expires = DateTimeOffset.Now.AddDays(3)
                 });
+                return RedirectToAction("Index", new { mess = 3 });
 
             }
             else
             {
-                int mess = 0;
-                string thongbao = "";
-                string namekh = User.Identity.Name;
-                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Updatenumber/{id}/{soluongmoi}/{namekh}").Result;
-                if (response.IsSuccessStatusCode)
+                if (soluongmoi != 0) {
+                    int mess = 0;
+                    update = "0";
+                    string namekh = User.Identity.Name;
+                    HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Updatenumber/{id}/{soluongmoi}/{namekh}/{update}").Result;
+                    if (response.IsSuccessStatusCode)
+                    {
+                        string jsonData = response.Content.ReadAsStringAsync().Result;
+                        mess = JsonConvert.DeserializeObject<int>(jsonData);
+                       
+
+                        return RedirectToAction("Index", new { mess = mess });
+
+                    };
+                }
+                else
                 {
-                    string jsonData = response.Content.ReadAsStringAsync().Result;
-                    mess = JsonConvert.DeserializeObject<int>(jsonData);
-                    if(mess == 1)
+                    int mess = 0;
+                    string namekh = User.Identity.Name;
+                    HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Updatenumber/{id}/{soluongmoi}/{namekh}/{update}").Result;
+                    if (response.IsSuccessStatusCode)
                     {
-                        thongbao= "Đã được cập nhật";
-                    }
-                    else if(mess == 2)
-                    {
-                        thongbao = "Số lượng" + soluongmoi + "không có sẵn";
+                        string jsonData = response.Content.ReadAsStringAsync().Result;
+                        mess = JsonConvert.DeserializeObject<int>(jsonData);
 
-                    }
-                    else
-                    {
-                        thongbao = "lỗi";
 
-                    }
+                        return RedirectToAction("Index", new { mess = mess });
 
-                    return RedirectToAction("Index", new { mess = thongbao });
+                    };
+                }
 
-                };
+             
             }
             return RedirectToAction("Index");
 

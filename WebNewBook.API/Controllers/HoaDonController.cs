@@ -32,11 +32,11 @@ namespace WebNewBook.API.Controllers
             return await _hoaDonService.GetHDCT(id);
         }
         [HttpGet("UpdateTT/{id}/{name}")]
-        public async Task<HoaDon?> UpdateTT(string id,int name)
+        public async Task UpdateTT(string id,int name)
         {
-            HoaDon b=new HoaDon();
-            var a= _hoaDonService.Updatetrangthai(id, name);
-            return  b;
+          
+             _hoaDonService.UpdatetrangthaiHD(id, name);
+            
         }
 
     }

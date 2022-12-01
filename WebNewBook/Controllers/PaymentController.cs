@@ -179,6 +179,7 @@ namespace WebNewBook.Controllers
                 }
 
             }
+         
             HttpContext.Session.SetString("amout2", tongTien.ToString());
             ViewBag.TongTien = tongTien;          
             if (!string.IsNullOrEmpty(idHoaDon))
@@ -237,12 +238,14 @@ namespace WebNewBook.Controllers
                 hoaDon.NgayMua = DateTime.Now;
                 if (payment == "1")
                 {
+                   
+
                     hoaDon.TrangThai = 1;
                 }
                 else
                 {
 
-                    //Thanh toán thất bại:
+                    //Trạng thái chờ thanh toán:
 
                     hoaDon.TrangThai = 3;
                 }
@@ -277,16 +280,26 @@ namespace WebNewBook.Controllers
                     if (payment == "1")
                     {
                         StringContent contentHDCT2 = new StringContent(JsonConvert.SerializeObject(listHoaDonCTs), Encoding.UTF8, "application/json");
-                        await _httpClient.PostAsync("/Payment/UpdateSoLuongSP", contentHDCT2);
+                        await _httpClient.PostAsync("api/Payment/UpdateSoLuongSP", contentHDCT2);
+                        
                         if (!string.IsNullOrEmpty(hoaDon.MaGiamGia))
                         {
                             await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{hoaDon.MaGiamGia}", null);
                       
                         }
-                       
+                        if (khachHang.ID_KhachHang != "KHNOLOGIN")
+                        {
 
-                        HttpContext.Session.Clear();
-                        Response.Cookies.Delete("Cart");
+                        
+                        int fpoint = Convert.ToInt32(hoaDon.TongTien) / 100;
+                            
+                            await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{hoaDon.ID_HoaDon}/{fpoint}/{khachHang.ID_KhachHang}", null);
+                        }
+                        await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{khachHang.Email}", null);
+                            HttpContext.Session.Clear();
+                            Response.Cookies.Delete("Cart");
+                        
+                       
                         ViewBag.SuccessMessage = "Đặt hàng thành công";
                         return View();
                     }
@@ -341,6 +354,12 @@ namespace WebNewBook.Controllers
                     }
 
                     string paymentUrl = vnpay.CreateRequestUrl(VNPayConfig.vnp_Url, VNPayConfig.vnp_HashSecret);
+                    HttpContext.Session.SetString("emailCustomer", khachHang.Email.ToString());
+                    //set mã khách hàng gửi sang cổng thanh toán 
+                    if (khachHang.ID_KhachHang != "KHNOLOGIN")
+                    {
+                        HttpContext.Session.SetString("idCustomer", khachHang.ID_KhachHang.ToString());
+                    }
                     return Redirect(paymentUrl);
                 }
             }
@@ -350,6 +369,8 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> VNPayReturn([FromQuery] VNPayReturn request)
         {
+            var emailCustomer = HttpContext.Session.GetString("emailCustomer");
+            var idCustomer = HttpContext.Session.GetString("idCustomer");
             var Infoid = request.vnp_OrderInfo;
             var getIdHoaDon = (from t in Infoid
                                where char.IsDigit(t)
@@ -376,7 +397,14 @@ namespace WebNewBook.Controllers
 
 
             }
-            
+
+
+            if (idCustomer != "KHNOLOGIN")
+            {
+                int fpoint = Convert.ToInt32(request.vnp_Amount) / 10000;
+                await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{idHoaDon}/{fpoint}/{idCustomer}", null);
+            }
+            await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{emailCustomer}", null);
             HttpContext.Session.Clear();
             Response.Cookies.Delete("Cart");
             ViewBag.Message = request.message;
