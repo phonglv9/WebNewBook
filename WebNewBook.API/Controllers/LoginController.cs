@@ -28,18 +28,14 @@ namespace WebNewBook.API.Controllers
             .Build();
         private readonly UserManager<IdentityUser> userManager;
         private readonly IUserStore<IdentityUser> userStore;
-        private readonly SignInManager<IdentityUser> signInManager;
-        private IEmailSender emailSender;
         private dbcontext _db;
         private readonly IEmailService emailService;
         private readonly IUserEmailStore<IdentityUser> emailStore;
 
-        public LoginController(UserManager<IdentityUser> userManager, IUserStore<IdentityUser> userStore, SignInManager<IdentityUser> signInManager, IEmailSender emailSender, dbcontext db, IEmailService emailService)
+        public LoginController(UserManager<IdentityUser> userManager, IUserStore<IdentityUser> userStore, dbcontext db, IEmailService emailService)
         {
             this.userManager = userManager;
             this.userStore = userStore;
-            this.signInManager = signInManager;
-            this.emailSender = emailSender;
             _db = db;
             this.emailService = emailService;
             this.emailStore = GetEmailStore();

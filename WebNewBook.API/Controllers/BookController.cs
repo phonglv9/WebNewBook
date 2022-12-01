@@ -25,6 +25,13 @@ namespace WebNewBook.API.Controllers
             return Model.ToList();
         }
 
+        [HttpGet("sachCT/{Id}")]
+        public async Task<List<SachCT>> GetSachCT(string Id)
+        {
+            var Model = await _BookService.GetSachCT(Id);
+            return Model.ToList();
+        }
+
         [HttpPost]
         public async Task<ActionResult> CreateEvent(SachAPI input)
         {
@@ -53,13 +60,12 @@ namespace WebNewBook.API.Controllers
             }
         }
 
-        [HttpPut("update_status")]
-        //[Authorize]
-        public async Task<ActionResult> DeleteNews(SachAPI sach)
+        [HttpPut("update_status/{Id}")]
+        public async Task<ActionResult> DeleteNews(string Id)
         {
             try
             {
-                await _BookService.UpdateBook(sach);
+                await _BookService.DeteleBook(Id);
                 return Ok();
             }
             catch (Exception e)
