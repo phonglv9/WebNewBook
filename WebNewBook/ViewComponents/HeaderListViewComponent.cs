@@ -68,6 +68,7 @@ namespace WebNewBook.Component
                                 c.Maasp = a.Maasp;
                                 c.Soluong = a.Soluong;
                                 c.Tensp = a.Tensp;
+                                c.hinhanh = a.HinhAnh;
                                 c.ThanhTien = a.Soluong * a.DonGia;
                                 dataGHPoup.Add(c);
 
