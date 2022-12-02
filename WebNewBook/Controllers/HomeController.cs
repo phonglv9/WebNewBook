@@ -346,7 +346,7 @@ namespace WebNewBook.Controllers
                 
             };
             var sp = modelHomeDM.Where(a => a.sanPhams.ID_SanPham == id).FirstOrDefault();
-               var listDM= modelHomeDM.Where(b=>b.danhMucSach.TenDanhMuc==sp.danhMucSach.TenDanhMuc /*&& b.sanPhams.ID_SanPham !=id*/).ToList();
+               var listDM= modelHomeDM.Where(b=>b.danhMucSach.TenDanhMuc==sp.danhMucSach.TenDanhMuc && b.sanPhams.ID_SanPham !=id).ToList();
             
             ViewBag.listDM = listDM;
 
