@@ -330,9 +330,9 @@ namespace WebNewBook.Controllers
             foreach (var id in lstid)
             {
                 VoucherCT cT = new VoucherCT();
-                cT.HinhThuc = voucherCT.HinhThuc;
+             
                 cT.Id = id;
-                cT.Diemdoi = voucherCT.Diemdoi;
+             
                 cT.NgayBatDau = voucherCT.NgayBatDau;
                 voucherCTList.Add(cT);
             }
