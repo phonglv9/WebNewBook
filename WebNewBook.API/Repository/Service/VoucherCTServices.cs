@@ -107,7 +107,10 @@ namespace WebNewBook.API.Repository.Service
                             _dbcontext.Add(lst);
                             await _dbcontext.SaveChangesAsync();
                         }
-                        _dbcontext.Vouchers.Update(SoluongVoucherCT(Phathanh));
+                        var soluongVoucherCT = _dbcontext.VoucherCTs.Count(c => c.MaVoucher == Phathanh);
+                        var model = _dbcontext.Vouchers.FirstOrDefault(c => c.Id == Phathanh);
+                        model.SoLuong = soluongVoucherCT;
+                        _dbcontext.Vouchers.Update(model);
                         await _dbcontext.SaveChangesAsync();
 
                     }
@@ -121,10 +124,9 @@ namespace WebNewBook.API.Repository.Service
         }
         public Voucher SoluongVoucherCT(string mavoucher)
         {
-            var quanttytiVoucher = _dbcontext.VoucherCTs.Count(c => c.MaVoucher == mavoucher);
             var modelVoucher = _dbcontext.Vouchers.FirstOrDefault(c => mavoucher == c.Id);
             if (modelVoucher != null)
-                modelVoucher.SoLuong = quanttytiVoucher;
+                modelVoucher.SoLuong += 1;
             return modelVoucher;
         }
         public async Task AddManuallyAsync(VoucherCT voucherCT)
@@ -232,44 +234,69 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                int i=0;
+                int i = 0;
                 var lstCustomer = _dbcontext.KhachHangs.ToList();
+
                 if (lstvoucherCTs != null)
                 {
                     foreach (var x in lstvoucherCTs)
                     {
-                        if (x.HinhThuc == 0 && lstCustomer[i]!=null)
-                        {
-                            var model = await _dbcontext.VoucherCTs.FindAsync(x.Id);
-                            model.TrangThai = 1;
+                        var model = await _dbcontext.VoucherCTs.FindAsync(x.Id);
 
-                            if (lstvoucherCTs.Count >= lstCustomer.Count)
+
+                        if (model != null)
+                        {
+                            var voucher = _dbcontext.Vouchers.Where(c => c.Id == model.MaVoucher).FirstOrDefault();
+                            if (voucher != null)
                             {
-                                model.MaKhachHang = lstCustomer[i].ID_KhachHang;
-                                i++;
+                                if (voucher.HinhThuc == 2 && lstCustomer[i] != null)
+                                {
+
+                                    model.TrangThai = 1;
+
+                                    if (lstvoucherCTs.Count >= lstCustomer.Count)
+                                    {
+                                        model.MaKhachHang = lstCustomer[i].ID_KhachHang;
+                                        i++;
+                                    }
+
+                                    model.HinhThuc = voucher.HinhThuc;
+                                    model.Diemdoi = voucher.DiemDoi;
+                                    model.NgayBatDau = x.NgayBatDau;
+                                    _dbcontext.VoucherCTs.Update(model);
+                                    await _dbcontext.SaveChangesAsync();
+                                    if (i == lstCustomer.Count)
+                                    {
+                                        //var listVoucherCT = _dbcontext.VoucherCTs.Where(c => c.MaVoucher == voucher.Id && c.TrangThai==0).ToList();
+                                        //if (listVoucherCT!= null)
+                                        //{
+                                        //    foreach (var item in lstvoucherCTs)
+                                        //    {
+                                        //        item.TrangThai = 3;
+                                        //        _dbcontext.VoucherCTs.Update(item);
+                                        //        _dbcontext.SaveChanges();
+
+                                        //    }
+                                        //}
+                                        break;
+                                    }
+                                }
+                                if (voucher.HinhThuc == 1)
+                                {
+
+                                    model.TrangThai = 1;
+                                    model.HinhThuc = voucher.HinhThuc;
+                                    model.Diemdoi = voucher.DiemDoi;
+                                    model.NgayBatDau = x.NgayBatDau;
+                                    _dbcontext.VoucherCTs.Update(model);
+                                    await _dbcontext.SaveChangesAsync();
+                                }
                             }
 
-                            model.HinhThuc = x.HinhThuc;
-                            model.Diemdoi = x.Diemdoi;
-                            model.NgayBatDau = x.NgayBatDau;
-                            _dbcontext.VoucherCTs.Update(model);
-                            await _dbcontext.SaveChangesAsync();
-                            if (i==lstCustomer.Count)
-                            {
-                                break;
-                            }
                         }
-                        if (x.HinhThuc==1)
-                        {
-                            var model = await _dbcontext.VoucherCTs.FindAsync(x.Id);
-                            model.TrangThai = 1;
-                            model.HinhThuc = x.HinhThuc;
-                            model.Diemdoi = x.Diemdoi;
-                            model.NgayBatDau = x.NgayBatDau;
-                            _dbcontext.VoucherCTs.Update(model);
-                            await _dbcontext.SaveChangesAsync();
-                        }
-                       
+
+
+
                     }
 
                 }
