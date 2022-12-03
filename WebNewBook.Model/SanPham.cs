@@ -21,7 +21,7 @@ namespace WebNewBook.Model
         public double GiaGoc { get; set; }
         public string HinhAnh { get; set; }
         public int TrangThai { get; set; }
-        public DateTime NgayTao { get; set; } = DateTime.Now;
+        public DateTime NgayTao { get; set; }
         public virtual PhieuGiamGiaSP? PhieuGiamGiaSP { get; set; }
         public virtual ICollection<HoaDonCT>? HoaDonCTs { get; set; }
         public virtual ICollection<SanPhamCT>? SanPhamCTs { get; set; }

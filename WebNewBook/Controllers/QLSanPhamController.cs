@@ -132,6 +132,7 @@ namespace WebNewBook.Controllers
             string error = "";
             sanPhamAPI.SanPham.ID_SanPham = "SP" + Guid.NewGuid().ToString();
             sanPhamAPI.Sachs = SelectedSachs;
+            sanPhamAPI.SanPham.NgayTao = DateTime.Now;
             if (file == null)
             {
                 error = "Hình ảnh không hợp lệ";
