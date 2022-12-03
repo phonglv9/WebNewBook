@@ -100,6 +100,18 @@ namespace WebNewBook.Controllers
         {
             phieuNhap.MaNhanVien = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
             phieuNhap.ID_PhieuNhap = "PN" + Guid.NewGuid().ToString();
+            var sachs = await GetSachs();
+            string error = "";
+            var selectItems = new List<SelectListItem>();
+            if (sachs.FirstOrDefault(c => c.ID_Sach == phieuNhap.MaSach).GiaBan < phieuNhap.GiaNhap)
+            {
+                error = "Giá nhập không vượt quá " + sachs.FirstOrDefault(c => c.ID_Sach == phieuNhap.MaSach).GiaBan.ToString();
+                ViewBag.Error = error;
+                selectItems = sachs.Select(s => new SelectListItem { Text = s.TenSach, Value = s.ID_Sach }).ToList();
+                ViewBag.Sachs = selectItems;
+                return View(phieuNhap);
+            }
+
             if (ModelState.IsValid)
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(phieuNhap), Encoding.UTF8, "application/json");
@@ -110,9 +122,6 @@ namespace WebNewBook.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
-            var sachs = await GetSachs();
-            var selectItems = new List<SelectListItem>();
             selectItems = sachs.Select(s => new SelectListItem { Text = s.TenSach, Value = s.ID_Sach }).ToList();
             ViewBag.Sachs = selectItems;
             return View(phieuNhap);

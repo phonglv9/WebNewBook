@@ -82,14 +82,14 @@ namespace WebNewBook.API.Repository.Service
                 {
                     _dbcontext.SaveChanges();
                     var sps = new List<SanPham>();
-                    var spCTs = _dbcontext.SanPhamCTs.Where(c => c.MaSach == input.Sach.ID_Sach);
+                    var spCTs = _dbcontext.SanPhamCTs.Where(c => c.MaSach == input.Sach.ID_Sach).ToList();
                     var spIds = _dbcontext.SanPhamCTs.Where(c => c.MaSach == input.Sach.ID_Sach).Select(c => c.MaSanPham).ToList();
                     spIds.ForEach(c =>
                     {
                         sps.Add(_dbcontext.SanPhams.FirstOrDefault(x => x.ID_SanPham == c));
                     });
 
-                    var data = from sp in sps join spCT in spCTs
+                    var data = from sp in sps join spCT in _dbcontext.SanPhamCTs.ToList()
                                on sp.ID_SanPham equals spCT.MaSanPham into tempData
                                select new
                                {

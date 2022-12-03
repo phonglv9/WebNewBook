@@ -5,6 +5,10 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+@if (!string.IsNullOrEmpty(ViewBag.Error))
+{
+    <h1 class="text-danger">@ViewBag.Error</h1>
+}
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create" method="post" enctype="multipart/form-data">

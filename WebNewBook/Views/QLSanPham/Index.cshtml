@@ -49,10 +49,10 @@
                     <div class="col-5 mb-3">
                         <select id="selectNXB" name="trangThai" class="form-select" aria-label="Default select example">
                             
-                            <option selected>Chọn trạng thái</option>
+                            <option selected disabled>Chọn trạng thái</option>
                             <option value="2">Tất cả</option>
-                            <option value="0">Hoạt động</option>
-                            <option value="1">Vô hiệu hóa</option>
+                            <option value="1">Hoạt động</option>
+                            <option value="0">Vô hiệu hóa</option>
                           
                         </select>
                     </div>
@@ -87,7 +87,7 @@
                         @if(ViewBag.SanPham.Count == 0){<tr><th>Không có sản phẩm</th></tr>}else{
                         @foreach (var item in ViewBag.SanPham)
                         {
-                            var trangThai = item.TrangThai == 0 ? "Hoạt động" : "Vô hiệu hóa";
+                            var trangThai = item.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
                             var img = item.HinhAnh ?? string.Empty;
                             <tr>
                                 <th scope="row">@item.TenSanPham</th>
