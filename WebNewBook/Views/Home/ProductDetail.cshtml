@@ -25,6 +25,8 @@
 		<!-- /BREADCRUMB -->
 
 <!-- SECTION -->
+@if (ViewBag.SanphamCT != null)
+{
 	<div class="section">
 		<!-- container -->
 		<div class="container">
@@ -34,14 +36,14 @@
 				<div class="col-md-5 col-md-push-2">
 					<div id="product-main-img">
 						<div class="product-preview">
-							<img src="~/img/product01.png" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.sanPhams.HinhAnh" alt="">
 						</div>
 
 						<div class="product-preview">
-							<img src="~/img/product01.png" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.sanPhams.HinhAnh" alt="">
 						</div>
 
-						
+
 					</div>
 				</div>
 				<!-- /Product main img -->
@@ -49,11 +51,11 @@
 				<div class="col-md-2  col-md-pull-5">
 					<div id="product-imgs">
 						<div class="product-preview">
-							<img src="~/img/product01.png" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.sanPhams.HinhAnh" alt="">
 						</div>
 
 						<div class="product-preview">
-							<img src="~/img/product01.png" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.sanPhams.HinhAnh" alt="">
 						</div>
 
 					</div>
@@ -62,8 +64,8 @@
 				<!-- Product details -->
 				<div class="col-md-5">
 					<div class="product-details">
-					<h2 class="product-name">
-						@if (ViewBag.SanphamCT != null)
+						<h2 class="product-name">
+
 							@ViewBag.SanphamCT.sanPhams.TenSanPham
 
 
@@ -72,54 +74,56 @@
 
 						<div>
 
-							<h3 class="product-price">  
-							@if (ViewBag.SanphamCT != null)
-							{
+							<h3 class="product-price">
+
+
 								@ViewBag.SanphamCT.sanPhams.GiaBan
-							}
-							<del class="product-old-price"></del></h3>
+
+								<del class="product-old-price"></del>
+							</h3>
 
 						</div>
-						
-						
+
+
 						<ul class="product-links">
 							<li>Nhà xuất bản:</li>
 							<li><a href="#">Kinh đồng</a></li>
 						</ul>
 						<ul class="product-links">
 							<li>Tác giả:</li>
-						@foreach (var item in ViewBag.TacGia)
-						{
-							<li><a href="#">@item.HoVaTen</a></li>
+							@foreach (var item in ViewBag.TacGia)
+							{
+								<li><a href="#">@item.HoVaTen</a></li>
 
-						}	
+							}
 						</ul>
 						<br>
-					<form asp-controller="GioHang" asp-action="AddToCartCT" asp-route-id="@ViewBag.SanphamCT.sanPhams.ID_SanPham ">
-						<div class="add-to-cart">
-							<div class="qty-label">
-								Số lượng
-								<div  class="input-number">
-									<input id="getvalue" name="SoLuong" type="number" value="1">
-									
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
+						<form asp-controller="GioHang" asp-action="AddToCartCT" asp-route-id="@ViewBag.SanphamCT.sanPhams.ID_SanPham ">
+							<div class="add-to-cart">
+								<div class="qty-label">
+									Số lượng
+									<div class="input-number">
+										<input id="getvalue" name="SoLuong" type="number" value="1">
+
+										<span class="qty-up">+</span>
+										<span class="qty-down">-</span>
+									</div>
 								</div>
+								<button data-toggle="modal" data-target="#exampleModalCart" type="submit" @* onclick="addtocart(${@ViewBag.SanphamCT.sanPhams.ID_SanPham})"*@ class="add-to-cart-btn" @*value="@ViewBag.SanphamCT.sanPhams.ID_SanPham"*@><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
 							</div>
-							<button data-toggle="modal" data-target="#exampleModalCart" type="submit" @* onclick="addtocart(${@ViewBag.SanphamCT.sanPhams.ID_SanPham})"*@ class="add-to-cart-btn" @*value="@ViewBag.SanphamCT.sanPhams.ID_SanPham"*@><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-						</div></form>
+						</form>
 
 
 
 						<ul class="product-links">
 							<li>Thể loại:</li>
-							@if(ViewBag.TheLoai != null)
-						@foreach (var item in ViewBag.TheLoai)
-						{
-							<li><a href="#">@item.TenTL</a></li>
+							@if (ViewBag.TheLoai != null)
+								@foreach (var item in ViewBag.TheLoai)
+								{
+									<li><a href="#">@item.TenTL</a></li>
 
-						}
-							
+								}
+
 						</ul>
 
 
@@ -144,7 +148,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										<p>
-										@if (ViewBag.SanphamCT != null)
+
 											@ViewBag.SanphamCT.sach.MoTa
 
 										</p>
@@ -157,39 +161,39 @@
 								<div class="row">
 									<div class="col-md-3">
 									</div>
-								<div class="col-md-6">
-									
-										
-									@if (ViewBag.SanphamCT != null){
-									
-									<table class="table table-hover ">
-										<tbody>
+									<div class="col-md-6">
 
-											<tr>
-												<td>Tên sách :</td>
-											<td class="col-2">@ViewBag.SanphamCT.sach.TenSach</td>
-											</tr>
-											<tr>
-												<td>Số trang :</td>
-												<td> @ViewBag.SanphamCT.sach.SoTrang</td>
-											</tr>
-											<tr>
-												<td>Tái bản :</td>
-												<td> @ViewBag.SanphamCT.sach.TaiBan</td>
-											</tr>
-											<tr>
-												<td>Số lượng : :</td>
-												<td>@ViewBag.SanphamCT.sach.SoLuong</td>
-											</tr>
-												
-										</tbody>
-									</table>
-								}
+
+
+
+										<table class="table table-hover ">
+											<tbody>
+
+												<tr>
+													<td>Tên sách :</td>
+													<td class="col-2">@ViewBag.SanphamCT.sach.TenSach</td>
+												</tr>
+												<tr>
+													<td>Số trang :</td>
+													<td> @ViewBag.SanphamCT.sach.SoTrang</td>
+												</tr>
+												<tr>
+													<td>Tái bản :</td>
+													<td> @ViewBag.SanphamCT.sach.TaiBan</td>
+												</tr>
+												<tr>
+													<td>Số lượng : :</td>
+													<td>@ViewBag.SanphamCT.sach.SoLuong</td>
+												</tr>
+
+											</tbody>
+										</table>
+
 
 									</div>
-								<div class="col-md-3">
+									<div class="col-md-3">
+									</div>
 								</div>
-							</div>
 							</div>
 							<!-- /tab2  -->
 
@@ -204,6 +208,8 @@
 		</div>
 		<!-- /container -->
 	</div>
+}
+	
 <div class="section">
 	<!-- container -->
 	<div class="container">
@@ -234,7 +240,7 @@
 												<!-- product -->
 												<div class="product">
 													<div class="product-img">
-														<img src="~/img/product01.png" alt="">
+													<img src="~/img/@a.sanPhams.HinhAnh" alt="">
 													</div>
 													<div class="product-body">
 														

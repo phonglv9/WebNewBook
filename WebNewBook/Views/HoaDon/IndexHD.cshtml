@@ -106,21 +106,13 @@
                             @foreach (var a in ViewBag.DataHD)
                             {
                                 var coler = "black";
-                                @if (@a.hoaDon.TrangThai == 1)
+                                @if (@a.hoaDon.TrangThai == 1 ||@a.hoaDon.TrangThai == 2)
                                 {
-                                    coler = "Green2";
-
-                                }
-                                else if (@a.hoaDon.TrangThai == 2)
-                                {
-
+                                    @*coler = "Green2";*@
                                     coler = "#00CCFF";
-                                }
-                                else if (@a.hoaDon.TrangThai == 5)
-                                {
 
-                                    coler = "#FF6666";
                                 }
+                               
                                 
                                 
 

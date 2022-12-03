@@ -101,6 +101,7 @@ namespace WebNewBook.Controllers
                             b.Maasp = a.Maasp;
                             b.Soluong = a.Soluong;
                             b.Tensp = a.Tensp;
+                            b.hinhanh = a.HinhAnh;
                             b.ThanhTien = a.Soluong * a.DonGia;
                              data.Add(b);
                            
@@ -147,8 +148,9 @@ namespace WebNewBook.Controllers
                         Tensp = modelHome.TenSanPham,
                         DonGia = modelHome.GiaBan,
                         Soluong = SoLuong,
+                        hinhanh=modelHome.HinhAnh,
                         ThanhTien = SoLuong * modelHome.GiaBan
-
+                        
 
                     };
                     myCart.Add(item);
@@ -208,7 +210,7 @@ namespace WebNewBook.Controllers
 
                 };
 
-                string HinhAnh = "dsfgsdfg";
+                string HinhAnh = modelHome.HinhAnh;
                 int SoLuongs = SoLuong;
                 string emailKH = User.Identity.Name;
                 string idsp = id;
@@ -265,6 +267,7 @@ namespace WebNewBook.Controllers
                             Tensp = modelHome.TenSanPham,
                             DonGia = modelHome.GiaBan,
                             Soluong = SoLuong,
+                            hinhanh = modelHome.HinhAnh,
                             ThanhTien = SoLuong * modelHome.GiaBan
 
 
@@ -322,7 +325,7 @@ namespace WebNewBook.Controllers
 
                     };
 
-                    string HinhAnh = "dsfgsdfg";
+                    string HinhAnh = modelHome.HinhAnh;
                     int SoLuongs = SoLuong;
                     string emailKH = User.Identity.Name;
                     string idsp = id;

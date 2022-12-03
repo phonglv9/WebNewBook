@@ -224,29 +224,8 @@
                                         <input type="number" id="SoluongVoucher" class="form-control" disabled>
                                     </div>
                                 </div>
-                                <div class="mb-3 row">
-                                    <label for="" class="col-sm-4 col-form-label">Hình thức</label>
-                                    <div class="col-sm-8">
-                                        <div onclick="ChonHinhThuc()" class="form-check">
-                                            <input class="form-check-input" type="radio" name="RadioDefault" id="DoiDiem">
-                                            <label class="form-check-label" for="DoiDiem">
-                                                Đổi điểm
-                                            </label>
-                                        </div>
-                                        <div onclick="ChonHinhThuc()" class="form-check">
-                                            <input class="form-check-input" type="radio" name="RadioDefault" id="Tang" checked>
-                                            <label class="form-check-label" for="Tang">
-                                                Tặng
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div id="Div_diem" hidden class="mb-3 row">
-                                    <label for="" class="col-sm-4 col-form-label">Điểm</label>
-                                    <div class="col-sm-8">
-                                        <input id="diemdoi" type="number" class="form-control">
-                                    </div>
-                                </div>
+              
+                         
 
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-4 col-form-label">Ngày Phát hành</label>
@@ -529,8 +508,7 @@
             document.getElementById("load").style.display = 'none';
             var arrItem = [];
             var commaSeparatedIds = "";
-            var tang = document.getElementById("Tang");
-            var doiDiem = document.getElementById("DoiDiem");
+         
 
 
 
@@ -547,27 +525,18 @@
                 });
                 commaSeparatedIds = arrItem.toString();
                 arrItem = [];
-                var diemdoi = null
+             
                 var ngayPhatHanh = $("#ngayphathanh").val()
             
-                var hinhthuc = 0;
-                if (tang.checked == true) {
-
-                }
-                if (doiDiem.checked == true) {
-                    hinhthuc = 1;
-                    diemdoi = $("#diemdoi").val()
-                }
-             
                 if (ngayPhatHanh != "") {
                     $.ajax({
                         type: "POST",
                         data:
                         {
                             GetId: commaSeparatedIds,
-                            HinhThuc: hinhthuc,
+                       
                             NgayBatDau: ngayPhatHanh,
-                            Diemdoi: diemdoi
+                         
                         },
                         url: "/Voucher/PhatHanhVoucher",
                         success: function (response) {

@@ -169,6 +169,7 @@ namespace WebNewBook.Controllers
             {
                 error = "Hình ảnh không hợp lệ";
                 ViewBag.Error = error;
+                ViewBag.NXBs = new SelectList(await GetNhaXuatBans(), "ID_NXB", "TenXuatBan");
                 ViewBag.TacGias = await GetSelectTacGia();
                 ViewBag.TheLoais = await GetSelectTheLoai();
                 return View(sach);
@@ -183,6 +184,7 @@ namespace WebNewBook.Controllers
                 {
                     error = "Không được để trống tác giả!";
                     ViewBag.Error = error;
+                    ViewBag.NXBs = new SelectList(await GetNhaXuatBans(), "ID_NXB", "TenXuatBan");
                     ViewBag.TacGias = await GetSelectTacGia();
                     ViewBag.TheLoais = await GetSelectTheLoai();
                     return View(sach);
@@ -192,6 +194,7 @@ namespace WebNewBook.Controllers
                 {
                     error = "Không được để trống thể loại!";
                     ViewBag.Error = error;
+                    ViewBag.NXBs = new SelectList(await GetNhaXuatBans(), "ID_NXB", "TenXuatBan");
                     ViewBag.TacGias = await GetSelectTacGia();
                     ViewBag.TheLoais = await GetSelectTheLoai();
                     return View(sach);
