@@ -14,38 +14,48 @@ namespace WebNewBook.API.Repository.Service
         {
               _dbContext = dbContext;
         }
-        public async Task<List<HomeVM>> GetHomVM()
+        public async Task<IEnumerable<HomeViewModel>> GetHomVM()
         {
 
-            var sanPham = await _dbContext.SanPhams.ToListAsync();
-            var sanPhamCT = await _dbContext.SanPhamCTs.ToListAsync();
-            var sachCT = await _dbContext.SachCTs.ToListAsync();
-            var sach = await _dbContext.Sachs.ToListAsync();
-            var theLoai = await _dbContext.TheLoais.ToListAsync();
-            var danhMuc = await _dbContext.DanhMucSachs.ToListAsync();
-            List<HomeVM> homeVMs = new List<HomeVM>();
-            homeVMs = (from a in sanPham
+            var sanPham =  _dbContext.SanPhams;
+            var sanPhamCT =  _dbContext.SanPhamCTs;
+            var sachCT =  _dbContext.SachCTs;
+            var sach =  _dbContext.Sachs;
+            var theLoai =  _dbContext.TheLoais;
+            var danhMuc =  _dbContext.DanhMucSachs;
+            var tacGia =  _dbContext.TacGias;
+           
+                var  homeVMs2 = (from a in sanPham
                        join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
                        join c in sach on b.MaSach equals c.ID_Sach
                        join d in sachCT on c.ID_Sach equals d.MaSach
                        join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
                        join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
-                       select new HomeVM()
+                       join g in tacGia on d.MaTacGia equals g.ID_TacGia
+                       select new HomeViewModel
                        {
-                           sanPhams = a,
-                           SanPhamCT = b,
-                           sach = c,
-                           sachCT = d,
-                           theLoai = e,
-                           danhMucSach = f,
+
+                           ID_SanPham = a.ID_SanPham,
+                           TenSanPham = a.TenSanPham,
+                           SoLuong = a.SoLuong,
+                           GiaBan = a.GiaBan,
+                           GiaGoc = a.GiaBan,
+                           HinhAnh = a.HinhAnh,
+                           TenDanhMuc = f.TenDanhMuc,
+                           idDanhMuc = f.ID_DanhMuc,
+                           TrangThai = a.TrangThai,
+                    
                        }).ToList();
+            List<HomeViewModel> lst = new List<HomeViewModel>();
+            foreach (var item in homeVMs2.DistinctBy(c=>c.ID_SanPham).Where(c => c.TrangThai == 1).ToList())
+            {
+                lst.Add(item);
+            }
 
 
-            
-
-            return homeVMs;
+            return lst;
         }
-        public async Task<List<HomeVM>> GetProductHome()
+        public async Task<List<ProductVM>> GetProductHome()
         {
             var sanPham = await _dbContext.SanPhams.ToListAsync();
             var sanPhamCT = await _dbContext.SanPhamCTs.ToListAsync();
@@ -54,7 +64,7 @@ namespace WebNewBook.API.Repository.Service
             var theLoai = await _dbContext.TheLoais.ToListAsync();
             var danhMuc = await _dbContext.DanhMucSachs.ToListAsync();
             var tacGia = await _dbContext.TacGias.ToListAsync();
-            List<HomeVM> homeVMs = new List<HomeVM>();
+            List<ProductVM> homeVMs = new List<ProductVM>();
             homeVMs = (from a in sanPham
                        join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
                        join c in sach on b.MaSach equals c.ID_Sach
@@ -62,7 +72,7 @@ namespace WebNewBook.API.Repository.Service
                        join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
                        join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
                        join g in tacGia on d.MaTacGia equals g.ID_TacGia
-                       select new HomeVM()
+                       select new ProductVM()
                        {
                            sanPhams = a,
                            SanPhamCT = b,
@@ -71,7 +81,7 @@ namespace WebNewBook.API.Repository.Service
                            theLoai = e,
                            danhMucSach = f,
                            tacGia = g,
-                       }).ToList();
+                       }).ToList().DistinctBy(c=>c.sanPhams.ID_SanPham).ToList();
                      
 
             return  homeVMs;

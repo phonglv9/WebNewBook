@@ -26,12 +26,12 @@ namespace WebNewBook.Controllers
         public async Task<IActionResult> Index()
         {
             //Model home
-            List<HomeVM> modelHome = new List<HomeVM>();
+            List<HomeViewModel> modelHome = new List<HomeViewModel>();
             HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/HomeVM").Result;
             if (response.IsSuccessStatusCode)
             {
                 string jsonData = response.Content.ReadAsStringAsync().Result;
-                modelHome = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
+                modelHome = JsonConvert.DeserializeObject<List<HomeViewModel>>(jsonData);
 
 
             };
@@ -43,17 +43,17 @@ namespace WebNewBook.Controllers
                 string jsonData = responseTL.Content.ReadAsStringAsync().Result;
                 theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
 
-                ViewBag.TheLoai = theLoais.ToList();
+                ViewBag.TheLoai = await theLoais.ToListAsync();
             };
             //danh muc
             List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
-            HttpResponseMessage responseDM = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
+            HttpResponseMessage responseDM =  _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
             if (responseDM.IsSuccessStatusCode)
             {
                 string jsonData = responseDM.Content.ReadAsStringAsync().Result;
                 danhMucSaches = JsonConvert.DeserializeObject<List<DanhMucSach>>(jsonData);
 
-                ViewBag.DanhMuc = danhMucSaches.ToList();
+                ViewBag.DanhMuc = await danhMucSaches.ToListAsync();
             };
 
 
@@ -322,7 +322,7 @@ namespace WebNewBook.Controllers
                 }
             }
             List<HomeVM> modelHomeDM = new List<HomeVM>();
-            HttpResponseMessage responseDM = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/HomeVM").Result;
+            HttpResponseMessage responseDM = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/Product").Result;
             if (responseDM.IsSuccessStatusCode)
             {
                 string jsonData = responseDM.Content.ReadAsStringAsync().Result;
@@ -346,7 +346,7 @@ namespace WebNewBook.Controllers
                 
             };
             var sp = modelHomeDM.Where(a => a.sanPhams.ID_SanPham == id).FirstOrDefault();
-               var listDM= modelHomeDM.Where(b=>b.danhMucSach.TenDanhMuc==sp.danhMucSach.TenDanhMuc && b.sanPhams.ID_SanPham !=id).ToList();
+               var listDM= modelHomeDM.Where(b=>b.danhMucSach.ID_DanhMuc==sp.danhMucSach.ID_DanhMuc && b.sanPhams.ID_SanPham != id).ToList();
             
             ViewBag.listDM = listDM;
 

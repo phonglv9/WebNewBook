@@ -116,10 +116,11 @@
 
 
 						<ul class="product-links">
-							<li>Thể loại:</li>
+							
 							@if (ViewBag.TheLoai != null)
 								@foreach (var item in ViewBag.TheLoai)
 								{
+									<li>Thể loại:</li>
 									<li><a href="#">@item.TenTL</a></li>
 
 								}
@@ -233,7 +234,7 @@
 							<div class="box-container">
 								<div class="products-slick" data-nav="#slick-nav-2">
 									
-											@if (ViewBag.listDM != null)
+											@*@if (ViewBag.listDM.Count)*@
 										@foreach (var a in ViewBag.listDM)
 											{
 
