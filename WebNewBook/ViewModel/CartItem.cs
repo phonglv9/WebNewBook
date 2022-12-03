@@ -6,6 +6,7 @@
 		public string Tensp { get; set; }
         public double DonGia { get; set; }
         public int Soluong { get; set; }
+        public string hinhanh { get; set; }
         public double ThanhTien { get; set; }
         //{
         //    get

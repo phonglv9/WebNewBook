@@ -57,18 +57,23 @@
 
 				<div class="products-widget-slick">
 					<div>
+						@foreach (var item in Model.Distinct()){
 						<!-- product widget -->
 						<div class="product-widget">
 							<div class="product-img">
-								<img src="./img/product07.png" alt="">
+								<img src="" alt="">
 							</div>
 							<div class="product-body">
-								<p class="product-category">Category</p>
-								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
+								<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+								<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
+								<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.') đ<del class="product-old-price"> @item.sanPhams.GiaBan</h4>
+								
 							</div>
 						</div>
-						<!-- /product widget -->						
+
+						
+						<!-- /product widget -->	
+						}
 					</div>
 				</div>
 			</div>
@@ -81,18 +86,23 @@
 
 				<div class="products-widget-slick">
 					<div>
+							@foreach (var item in Model.Distinct()){
 						<!-- product widget -->
 						<div class="product-widget">
 							<div class="product-img">
-								<img src="./img/product04.png" alt="">
+								<img src="" alt="">
 							</div>
 							<div class="product-body">
-								<p class="product-category">Category</p>
-								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
+								<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+								<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
+								<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.') đ<del class="product-old-price"> @item.sanPhams.GiaBan</h4>
+								
 							</div>
 						</div>
-						<!-- product widget -->
+
+						
+						<!-- /product widget -->	
+						}
 					</div>
 
 					
@@ -109,18 +119,23 @@
 
 				<div class="products-widget-slick">
 					<div>
+							@foreach (var item in Model.Distinct()){
 						<!-- product widget -->
 						<div class="product-widget">
 							<div class="product-img">
-								<img src="./img/product01.png" alt="">
+								<img src="" alt="">
 							</div>
 							<div class="product-body">
-								<p class="product-category">Category</p>
-								<h3 class="product-name"><a href="#">product name goes here</a></h3>
-								<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
+								<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+								<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
+								<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.') đ<del class="product-old-price"> @item.sanPhams.GiaBan</h4>
+								
 							</div>
 						</div>
-						<!-- /product widget -->
+
+						
+						<!-- /product widget -->	
+						}
 						
 				</div>
 			</div>
@@ -233,27 +248,32 @@
 						<div class="row">
 							<div class="products-tabs">
 								<!-- tab -->
-								<div id="tab1" class="tab-pane fade in active">
+								<div id="tab2" class="tab-pane fade in active">
 									<div class="box-container">
-											<div class="products-slick" data-nav="#slick-nav-2">
-										<!-- product -->
-										<div class="product">
-											<div class="product-img">
-												<img src="./img/product01.png" alt="">
-											</div>
-											<div class="product-body">
-												<p class="product-category">Category</p>
-												<h3 class="product-name"><a href="#">product name goes here</a></h3>
-												<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
+										<div class="products-slick" id="data_sell" data-nav="#slick-nav-2">
+										@foreach (var item in Model.Distinct())
+											{		
+										
+											<div class="product">
+												<div class="product-img">
+													<img src="./img/product01.png"  alt="">
+												</div>
+												<div class="product-body">
+													<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+												<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
+													<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.') đ<del class="product-old-price"> @item.sanPhams.GiaBan</del></h4>
+												
+													
+												</div>
 											
+														<div class="add-to-cart">
+																
+
+																<button class="add-to-cart-btn"type="button"data-toggle="modal" data-target="#exampleModalCart" class="add-to-cart-btn" value="@item.sanPhams.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+															</div>
 												
 											</div>
-											<div class="add-to-cart">
-												<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-											</div>
-										</div>
-										
-										<!-- /product -->
+											}
 										</div>
 									</div>
 									<div id="slick-nav-2" class="products-slick-nav"></div>
@@ -369,81 +389,43 @@
 		
 						<div class="products-widget-slick">
 							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product07.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product08.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product09.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
+									@foreach (var item in Model.Distinct()){
+						<!-- product widget -->
+						<div class="product-widget">
+							<div class="product-img">
+								<img src="" alt="">
+							</div>
+							<div class="product-body">
+								<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+								<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
+								<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.') đ<del class="product-old-price"> @item.sanPhams.GiaBan</h4>
+								
+							</div>
+						</div>
+
+						
+						<!-- /product widget -->	
+						}
 							</div>
 		
 							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product01.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product02.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product03.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
+									@foreach (var item in Model.Distinct()){
+						<!-- product widget -->
+						<div class="product-widget">
+							<div class="product-img">
+								<img src="" alt="">
+							</div>
+							<div class="product-body">
+								<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+								<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
+								<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.') đ<del class="product-old-price"> @item.sanPhams.GiaBan</h4>
+								
+							</div>
+						</div>
+
+						
+						<!-- /product widget -->	
+						}
 							</div>
 						</div>
 					</div>
@@ -456,81 +438,43 @@
 		
 						<div class="products-widget-slick">
 							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product04.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product05.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product06.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
+									@foreach (var item in Model.Distinct()){
+						<!-- product widget -->
+						<div class="product-widget">
+							<div class="product-img">
+								<img src="" alt="">
+							</div>
+							<div class="product-body">
+								<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+								<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
+								<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.') đ<del class="product-old-price"> @item.sanPhams.GiaBan</h4>
+								
+							</div>
+						</div>
+
+						
+						<!-- /product widget -->	
+						}
 							</div>
 		
 							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product07.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product08.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product09.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
+									@foreach (var item in Model.Distinct()){
+						<!-- product widget -->
+						<div class="product-widget">
+							<div class="product-img">
+								<img src="" alt="">
+							</div>
+							<div class="product-body">
+								<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+								<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
+								<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.') đ<del class="product-old-price"> @item.sanPhams.GiaBan</h4>
+								
+							</div>
+						</div>
+
+						
+						<!-- /product widget -->	
+						}
 							</div>
 						</div>
 					</div>
@@ -545,82 +489,25 @@
 		
 						<div class="products-widget-slick">
 							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product01.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product02.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product03.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
+						@foreach (var item in Model.Distinct()){
+						<!-- product widget -->
+						<div class="product-widget">
+							<div class="product-img">
+								<img src="" alt="">
 							</div>
+							<div class="product-body">
+								<p class="product-category">@item.danhMucSach.TenDanhMuc</p>
+								<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
+								<h4 class="product-price"> @item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.') đ<del class="product-old-price"> @item.sanPhams.GiaBan</h4>
+								
+							</div>
+						</div>
+
+						
+						<!-- /product widget -->	
+						}
 		
-							<div>
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product04.png" alt="">tttt t
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product05.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- /product widget -->
-								<!-- product widget -->
-								<div class="product-widget">
-									<div class="product-img">
-										<img src="./img/product06.png" alt="">
-									</div>
-									<div class="product-body">
-										<p class="product-category">Category</p>
-										<h3 class="product-name"><a href="#">product name goes here</a></h3>
-										<h4 class="product-price"> 980.00 <del class="product-old-price"> 990.00</del></h4>
-									</div>
-								</div>
-								<!-- product widget -->
-							</div>
+
 						</div>
 					</div>
 		
@@ -630,3 +517,4 @@
 			<!-- /container -->
 		</div>
 		<!-- /SECTION -->
+	</div>

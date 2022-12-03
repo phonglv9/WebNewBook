@@ -9,7 +9,7 @@ namespace WebNewBook.API.Repository.IService
         Task<List<HomeVM>> GetHomVM();
         Task<List<HomeVM>> GetProductHome();
         Task<List<TheLoai>> GetTheLoais();
-        Task<List<DanhMucSach>> GetDanhMucs();
+        Task<List<DanhMucSach>> GetDanhMucNavBar();
         Task<List<TacGia>> GetTacGias();
         Task<SanPhamChiTiet> GetProductDetail(string id);
 

@@ -59,6 +59,20 @@ namespace WebNewBook.Controllers
 
             return View(modelHome);
         }
+        //public JsonResult GetOderSell()
+        //{
+        //    //Model home
+        //   List<TheLoai> theLoais = new List<TheLoai>();
+        //    HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;
+        //    if (responseTL.IsSuccessStatusCode)
+        //    {
+        //        string jsonData = responseTL.Content.ReadAsStringAsync().Result;
+        //        theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
+
+               
+        //    };
+        //    return Json(theLoais);
+        //}
 
         public async Task<IActionResult> Product(string search, string currentFilter, string iddanhmuc, string idtheloai, string idtacgia, string sortOrder, int? pageNumber, int pageSize, double priceMin, double priceMax)
         {
@@ -273,15 +287,7 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> ProductDetaill(string id)
         {
-            List<HomeVM> modelHomeDM = new List<HomeVM>();
-            HttpResponseMessage responseDM = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/HomeVM").Result;
-            if (responseDM.IsSuccessStatusCode)
-            {
-                string jsonData = responseDM.Content.ReadAsStringAsync().Result;
-                modelHomeDM = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
-
-
-            };
+            
             //Model home
             SanPhamChiTiet modelHome = new SanPhamChiTiet();
             HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/home/ProductDetail/{id}").Result;
@@ -315,7 +321,16 @@ namespace WebNewBook.Controllers
                    
                 }
             }
+            List<HomeVM> modelHomeDM = new List<HomeVM>();
+            HttpResponseMessage responseDM = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/HomeVM").Result;
+            if (responseDM.IsSuccessStatusCode)
+            {
+                string jsonData = responseDM.Content.ReadAsStringAsync().Result;
+                modelHomeDM = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
 
+
+            };
+            //DanhMuc
             List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
             HttpResponseMessage responseDMm = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
             if (responseDMm.IsSuccessStatusCode)
@@ -331,7 +346,8 @@ namespace WebNewBook.Controllers
                 
             };
             var sp = modelHomeDM.Where(a => a.sanPhams.ID_SanPham == id).FirstOrDefault();
-               var listDM= modelHomeDM.Where(b=>b.danhMucSach.TenDanhMuc==sp.danhMucSach.TenDanhMuc).ToList();
+               var listDM= modelHomeDM.Where(b=>b.danhMucSach.TenDanhMuc==sp.danhMucSach.TenDanhMuc && b.sanPhams.ID_SanPham !=id).ToList();
+            
             ViewBag.listDM = listDM;
 
 

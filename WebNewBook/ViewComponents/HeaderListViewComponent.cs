@@ -24,6 +24,7 @@ namespace WebNewBook.Component
         public async Task<IViewComponentResult> InvokeAsync()
         {
             var headers = await _headerService.GetDMAsync();
+            ViewBag.NavBar = headers;
             if (User.Identity.Name == null)
             {
                 
@@ -67,6 +68,7 @@ namespace WebNewBook.Component
                                 c.Maasp = a.Maasp;
                                 c.Soluong = a.Soluong;
                                 c.Tensp = a.Tensp;
+                                c.hinhanh = a.HinhAnh;
                                 c.ThanhTien = a.Soluong * a.DonGia;
                                 dataGHPoup.Add(c);
 
@@ -105,7 +107,7 @@ namespace WebNewBook.Component
                    
                 };
             }
-            return View(headers);
+            return View();
 
 
         }
