@@ -35,16 +35,16 @@ namespace WebNewBook.Controllers
 
 
             };
-            //TheLoai
-            List<TheLoai> theLoais = new List<TheLoai>();
-            HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;
-            if (responseTL.IsSuccessStatusCode)
-            {
-                string jsonData = responseTL.Content.ReadAsStringAsync().Result;
-                theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
+            ////TheLoai
+            //List<TheLoai> theLoais = new List<TheLoai>();
+            //HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;
+            //if (responseTL.IsSuccessStatusCode)
+            //{
+            //    string jsonData = responseTL.Content.ReadAsStringAsync().Result;
+            //    theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
 
-                ViewBag.TheLoai = await theLoais.ToListAsync();
-            };
+            //    ViewBag.TheLoai = await theLoais.ToListAsync();
+            //};
             //danh muc
             List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
             HttpResponseMessage responseDM =  _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
@@ -55,6 +55,10 @@ namespace WebNewBook.Controllers
 
                 ViewBag.DanhMuc = await danhMucSaches.ToListAsync();
             };
+            //Sách mới
+            ViewBag.NewBook = modelHome.OrderByDescending(c => c.NgayTao).ToList();
+
+
 
 
             return View(modelHome);

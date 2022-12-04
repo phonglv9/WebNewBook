@@ -313,8 +313,8 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-
-                var model = await _dbcontext.VoucherCTs.Where(c => c.TrangThai == 1 && c.MaKhachHang == maCustomer).ToListAsync();
+                var datenow = DateTime.Now;
+                var model = await _dbcontext.VoucherCTs.Where(c => c.TrangThai == 1 && c.MaKhachHang == maCustomer && datenow <= c.NgayHetHan ).ToListAsync();
                 return model;
 
             }

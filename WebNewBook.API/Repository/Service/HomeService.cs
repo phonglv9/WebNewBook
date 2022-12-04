@@ -39,11 +39,12 @@ namespace WebNewBook.API.Repository.Service
                            TenSanPham = a.TenSanPham,
                            SoLuong = a.SoLuong,
                            GiaBan = a.GiaBan,
-                           GiaGoc = a.GiaBan,
+                           GiaGoc = a.GiaGoc,
                            HinhAnh = a.HinhAnh,
                            TenDanhMuc = f.TenDanhMuc,
                            idDanhMuc = f.ID_DanhMuc,
                            TrangThai = a.TrangThai,
+                           NgayTao = a.NgayTao,
                     
                        }).ToList();
             List<HomeViewModel> lst = new List<HomeViewModel>();

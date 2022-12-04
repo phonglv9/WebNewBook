@@ -13,6 +13,7 @@ namespace WebNewBook.API.ModelsAPI
         public int TrangThai { get; set; }
         public string idDanhMuc { get; set; }
         public string TenDanhMuc { get; set; } 
+        public DateTime NgayTao { get; set; } 
        
     }
 }

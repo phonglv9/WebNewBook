@@ -441,7 +441,7 @@ namespace WebNewBook.Controllers
                                 HttpContext.Session.SetString("idVoucher", maVoucher.ToString());
                                 HttpContext.Session.SetString("amoutVoucher", voucher.MenhGia.ToString());
                                 HttpContext.Session.SetString("menhgiadk", voucher.MenhGiaDieuKien.ToString());
-                                //HttpContext.Session.SetString("amout", tongTien.ToString());
+            
                               
                             }else if (voucherCT.TrangThai == 2)
                             {
@@ -450,7 +450,7 @@ namespace WebNewBook.Controllers
                             {
                                 ViewBag.MessageVC = "Voucher chưa phát hàng, bạn có thể sử dụng vào lúc"+ voucherCT.NgayBatDau;
                             }
-                            else if (ngayHienTai > voucher.EndDate )
+                            else if (ngayHienTai > voucherCT.NgayHetHan )
                             {
                                 ViewBag.MessageVC = "Voucher đã hết thời hạn sử dụng" ;
                             }
