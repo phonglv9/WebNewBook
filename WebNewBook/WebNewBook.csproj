@@ -44,4 +44,11 @@
     <None Include="wwwroot\js\home.js" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Views\QLLogin\Register.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

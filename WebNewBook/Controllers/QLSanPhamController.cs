@@ -203,6 +203,7 @@ namespace WebNewBook.Controllers
                 }
 
                 sanPhamAPI.SanPham.GiaBan = giaBan - giaBan * (sanPhamAPI.GiamGia / 100);
+                sanPhamAPI.SanPham.TrangThai = 1;
                 StringContent content = new StringContent(JsonConvert.SerializeObject(sanPhamAPI), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await _httpClient.PutAsync("sanpham", content);
 

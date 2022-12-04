@@ -137,7 +137,7 @@ namespace WebNewBook.Controllers
 
             if (pageSize == 0)
             {
-                pageSize = 20;
+                pageSize = 4;
             }
 
             if (search != null)

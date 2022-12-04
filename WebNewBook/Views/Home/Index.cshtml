@@ -152,7 +152,6 @@
     </div>
 </div>
 <!-- /SECTION -->
-<!-- SECTION -->
 <!-- /SECTION -->
 <div class="section">
     <!-- container -->
@@ -197,21 +196,23 @@
 
 
                                             </div>
-                                            @if(item.SoLuong < 1)
+                                            @if (item.SoLuong < 1)
                                             {
                                                 <div class="add-to-cart">
 
 
-                                                <button class="btn btn-warning" type="button"><i class="fa fa-shopping-cart"></i> Sản phẩm tạm hết hàng</button>
+                                                    <button class="btn btn-warning" type="button"><i class="fa fa-shopping-cart"></i> Sản phẩm tạm hết hàng</button>
 
                                                 </div>
-                                            }else{
-                                            <div class="add-to-cart">
+                                            }
+                                            else
+                                            {
+                                                <div class="add-to-cart">
 
 
-                                                <button class="add-to-cart-btn" type="button" data-toggle="modal" data-target="#exampleModalCart" class="add-to-cart-btn" value="@item.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+                                                    <button class="add-to-cart-btn" type="button" data-toggle="modal" data-target="#exampleModalCart" class="add-to-cart-btn" value="@item.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
 
-                                            </div>
+                                                </div>
                                             }
 
                                         </div>
@@ -255,14 +256,16 @@
                 </div>
             </div>
             <!-- /section title -->
-            <!-- Products tab & slick -->
+          <!-- Products tab & slick -->
             <div class="col-md-12">
                 <div class="row">
                     <div class="products-tabs">
                         <!-- tab -->
-                        <div id="tab2" class="tab-pane fade in active">
+                        <div id="tab1" class="tab-pane fade in active">
                             <div class="box-container">
-                                <div class="products-slick" id="data_sell" data-nav="#slick-nav-2">
+
+                                <div class="products-slick" data-nav="#slick-nav-2">
+                                    <!-- product -->
                                     @foreach (var item in Model)
                                     {
 
@@ -277,18 +280,33 @@
 
 
                                             </div>
+                                            @if (item.SoLuong < 1)
+                                            {
+                                                <div class="add-to-cart">
 
-                                            <div class="add-to-cart">
+
+                                                    <button class="btn btn-warning" type="button"><i class="fa fa-shopping-cart"></i> Sản phẩm tạm hết hàng</button>
+
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="add-to-cart">
 
 
-                                                <button class="add-to-cart-btn" type="button" data-toggle="modal" data-target="#exampleModalCart" class="add-to-cart-btn" value="@item.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-                                            </div>
+                                                    <button class="add-to-cart-btn" type="button" data-toggle="modal" data-target="#exampleModalCart" class="add-to-cart-btn" value="@item.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+
+                                                </div>
+                                            }
 
                                         </div>
                                     }
+
+                                    <!-- product /-->
                                 </div>
+
+                                <div id="slick-nav-2" class="products-slick-nav"></div>
                             </div>
-                            <div id="slick-nav-2" class="products-slick-nav"></div>
                         </div>
                         <!-- /tab -->
                     </div>
@@ -301,6 +319,21 @@
     <!-- /container -->
 </div>
 <!-- /SECTION -->
+<!--BanerVoucher-->
+
+<div class="section carousel-fixed-height">
+    <div id="carousel-fixed-height" class="container carousel slide">
+
+        <div class="carousel-inner" role="listbox">
+            <div class="item active">
+                <img src="~/img/BannerFpoint.png" style="width: 1140px;height: 358px;">
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<!--/BanerVoucher-->
 @if (ViewBag.DanhMuc != null)
     @foreach (var itemDM in ViewBag.DanhMuc)
     {
