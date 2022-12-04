@@ -14,5 +14,6 @@ namespace WebNewBook.API.Repository.IService
         Task<List<ViewHoaDon>> GetListHoaDon();
         Task<List<ViewHoaDonCT>> GetHDCT(string id);
         Task UpdatetrangthaiHD(string id,int name);
+        Task SendMailOder(string idHoaDon);
     }
 }

@@ -284,22 +284,25 @@ namespace WebNewBook.Controllers
                         
                         if (!string.IsNullOrEmpty(hoaDon.MaGiamGia))
                         {
+                          
                             await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{hoaDon.MaGiamGia}", null);
                       
                         }
                         if (khachHang.ID_KhachHang != "KHNOLOGIN")
                         {
 
-                        
-                        int fpoint = Convert.ToInt32(hoaDon.TongTien) / 100;
-                            
+                            //Tích điểm
+                            int fpoint = Convert.ToInt32(hoaDon.TongTien) / 100;                            
                             await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{hoaDon.ID_HoaDon}/{fpoint}/{khachHang.ID_KhachHang}", null);
                         }
+
+                        //Xóa giỏ hàng sau khi mua hàng
                         await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{khachHang.Email}", null);
-                            HttpContext.Session.Clear();
-                            Response.Cookies.Delete("Cart");
-                        
-                       
+
+                        //Gửi mail đơn hàng 
+                        await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/SendMailOder/{hoaDon.ID_HoaDon}", null);
+                        HttpContext.Session.Clear();
+                        Response.Cookies.Delete("Cart");
                         ViewBag.SuccessMessage = "Đặt hàng thành công";
                         return View();
                     }
@@ -405,6 +408,8 @@ namespace WebNewBook.Controllers
                 await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{idHoaDon}/{fpoint}/{idCustomer}", null);
             }
             await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{emailCustomer}", null);
+            //Gửi mail đơn hàng 
+            await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/SendMailOder/{idHoaDon}", null);
             HttpContext.Session.Clear();
             Response.Cookies.Delete("Cart");
             ViewBag.Message = request.message;

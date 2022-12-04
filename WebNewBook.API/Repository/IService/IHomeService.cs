@@ -12,6 +12,7 @@ namespace WebNewBook.API.Repository.IService
         Task<List<DanhMucSach>> GetDanhMucNavBar();
         Task<List<TacGia>> GetTacGias();
         Task<SanPhamChiTiet> GetProductDetail(string id);
+        
 
 
     }
