@@ -4,6 +4,8 @@
 
     var lstvoucherCT0 = ViewBag.lstvoucherCT0;
     var lstvoucherCT1 = ViewBag.lstvoucherCT1;
+    var lstvoucherCT2 = ViewBag.lstvoucherCT2;
+    var soluongKhachHang = ViewBag.SoluongKhachHang;
 }
 @using WebNewBook.ViewModel
 @model VoucherModel
@@ -221,11 +223,13 @@
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-4 col-form-label">Số lượng Voucher</label>
                                     <div class="col-sm-8">
+                                        <input type="number" value="@soluongKhachHang" id="soluongKhachHang" hidden />
                                         <input type="number" id="SoluongVoucher" class="form-control" disabled>
+
                                     </div>
                                 </div>
-              
-                         
+
+
 
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-4 col-form-label">Ngày Phát hành</label>
@@ -239,7 +243,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button id="btnDong" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                <button id="btnPhatHanh" type="button"  class="btn btn-primary">Phát Hành</button>
+                                <button id="btnPhatHanh" type="button" class="btn btn-primary">Phát Hành</button>
                             </div>
                         </div>
                     </div>
@@ -404,7 +408,7 @@
                                 }
                                 @if (x.TrangThai == 2)
                                 {
-                                    <td class="text-success fs-6 fst-italic">Đã Phát hành</td>
+                                    <td class="text-success fs-6 fst-italic">Đã Sử dụng</td>
                                 }
                                 @if (x.TrangThai == 3)
                                 {
@@ -420,6 +424,79 @@
         </div>
         <div class="tab-pane fade  active " id="nav-history" role="tabpanel"
              aria-labelledby="nav-history-tab">
+            <table class="table table-striped  table-hover">
+                <thead>
+                    <tr>
+                        <th>Mã Voucher</th>
+                        <th>Người sử dụng</th>
+                        <th>Ngày phát hành</th>
+                        <th>Ngày hết hạn</th>
+                        <th>Ngày sử dụng</th>
+                        <th>Điểm đổi</th>
+                        <th>Trạng thái</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (lstvoucherCT2 != null)
+                    {
+                        @foreach (var x in lstvoucherCT2)
+                        {
+                            <tr>
+
+                                <td>@x.Id</td>
+                                <td></td>
+                                @if (x.NgayBatDau != null)
+                                {
+                                    <td>@x.NgayBatDau.ToString("d/M/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+                                @if (x.NgayHetHan != null)
+                                {
+                                    <td>@x.NgayHetHan.ToString("d/M/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+                                @if (x.NgaySuDung != null)
+                                {
+                                    <td>@x.NgaySuDung.ToString("d/M/yyyy")</td>
+                                }
+                                else
+                                {
+                                    <td></td>
+                                }
+
+                                <td>@x.Diemdoi</td>
+                                @*    <td>@(x.TrangThai==0?"Chưa phát Hành": "Đã phát hành")</td>*@
+                                @if (@x.TrangThai == 0)
+                                {
+                                    <td class="text-warning fs-6 fst-italic">Chưa Phát hành</td>
+                                }
+                                @if (x.TrangThai == 1)
+                                {
+                                    <td class="text-primary fs-6 fst-italic">Đã Phát hành</td>
+                                }
+                                @if (x.TrangThai == 2)
+                                {
+                                    <td class="text-success fs-6 fst-italic">Đã Sử dụng</td>
+                                }
+                                @if (x.TrangThai == 3)
+                                {
+                                    <td class="text-danger fs-6 fst-italic">Đã Hủy</td>
+                                }
+                            </tr>
+                        }
+                    }
+
+
+
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
@@ -431,12 +508,12 @@
     <script>
 
         function showThaotac() {
-            console.log('ra')
+         
             var chon = document.getElementsByName("NameOK");
             for (var i = 0; i < chon.length; i++) {
                 document.getElementById("thaotac").style.display = 'none';
                 if (chon[i].checked == true) {
-                    console.log('vào')
+                 
                     document.getElementById("thaotac").style.display = 'block';
                     break;
                 }
@@ -445,7 +522,7 @@
 
 
         document.getElementById("click_all").onclick = function () {
-            console.log('ra')
+           
 
             var chon = document.getElementById("click_all");
 
@@ -458,7 +535,7 @@
 
                 for (var i = 0; i < checkboxes.length; i++) {
                     checkboxes[i].checked = true;
-                    console.log('vào1')
+                  
                 }
             } if (chon.checked == false) {
 
@@ -469,7 +546,7 @@
 
                 for (var i = 0; i < checkboxes.length; i++) {
                     checkboxes[i].checked = false;
-                    console.log('vào2')
+                    
                 }
             }
         }
@@ -477,6 +554,7 @@
         document.getElementById("SoluongPhatHanh").onclick = function () {
             var checkboxes = document.getElementsByName('NameOK');
             var soluong = 0;
+
             for (var i = 0; i < checkboxes.length; i++) {
                 if (checkboxes[i].checked == true) {
                     soluong++;
@@ -484,11 +562,13 @@
             }
 
             document.getElementById("SoluongVoucher").value = soluong
+            var soluongkH = document.getElementById("soluongKhachHang").value
+            var soluongcantaothem= soluongkH- soluong;
 
-
+            if (soluongkH > soluong) {
+               alert("Bạn Cần tạo thêm "+ soluongcantaothem + " Voucher mới có thể phát hành !" )      
+            }
         }
-
-
         function ChonHinhThuc() {
             var tang = document.getElementById("Tang")
             var doi = document.getElementById("DoiDiem")
@@ -508,7 +588,7 @@
             document.getElementById("load").style.display = 'none';
             var arrItem = [];
             var commaSeparatedIds = "";
-         
+
 
 
 
@@ -525,18 +605,17 @@
                 });
                 commaSeparatedIds = arrItem.toString();
                 arrItem = [];
-             
+
                 var ngayPhatHanh = $("#ngayphathanh").val()
-            
+
                 if (ngayPhatHanh != "") {
                     $.ajax({
                         type: "POST",
                         data:
                         {
                             GetId: commaSeparatedIds,
-                       
                             NgayBatDau: ngayPhatHanh,
-                         
+
                         },
                         url: "/Voucher/PhatHanhVoucher",
                         success: function (response) {
@@ -607,6 +686,9 @@
                                         console.log('I was closed by the timer')
                                     }
                                 })
+                            }
+                            if (response == 4) {
+                                alert("Bạn cần thêm mã voucher")
                             }
                             if (response == 3) {
                                 Swal.fire({
