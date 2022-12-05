@@ -34,8 +34,9 @@
                 <!-- LOGO -->
                 <div class="col-md-3">
                     <div class="header-logo">
-                        <a href="/Home" class="logo">
-                            <img src="~/img/logo.png" width="130px" alt="">
+                        <a href="/Home" class="logo" >
+                            <img src="~/img/logo_newbook.png"width="187px" alt="">
+                        @* <h3 style="color:#fff">NewBook<i class="icon-book"></i></h3> *@ 
                         </a>
                     </div>
                 </div>
@@ -84,8 +85,8 @@
                                         <a asp-action="Logout" asp-controller="QLLogin" class="dropdown-item">Đăng xuất</a>
                                     </div>
                                 }else{
-                                    <div><a asp-action="Index" asp-controller="QLLogin" asp-route-nhanVien="false"class="dropdown-item">Đăng nhập</a></div>
-                                    <div><a href="">Đăng ký</a></div>
+                                    <div><a asp-action="Login" asp-controller="QLLogin" class="dropdown-item">Đăng nhập</a></div>
+                                    <div><a asp-action="Login" asp-controller="Register">Đăng ký</a></div>
                                     <div><a href="">Quên mật khẩu</a></div>
 
 

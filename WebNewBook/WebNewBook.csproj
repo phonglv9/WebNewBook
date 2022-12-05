@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Views\Profile_Customer\OrderDetail.cshtml~RF231235.TMP" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\js\home.js" />
   </ItemGroup>
 
@@ -42,6 +46,13 @@
 
   <ItemGroup>
     <None Include="wwwroot\js\home.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\QLLogin\Register.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>

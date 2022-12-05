@@ -63,9 +63,16 @@
                                     <td>@x.ID_HoaDon</td>
                                     <td>@x.NgayMua.ToString("d/M/yyyy")</td>
                                     <td>@x.TenNguoiNhan</td>
-                                    <td>@x.TongTien</td>
-                                    <td>@(x.TrangThai==1?"Hoàn Tất":"Thất bại")</td>
-                                    
+                                    <td>@String.Format( "{0:#,##0.##}",(x.TongTien)) đ</td>
+                                    <td>@(x.TrangThai == 2 ? "Thành công" : x.Trangthai == 3 ? "Thất bại" : "Chờ duyệt")</td>
+                                      @*//Trang thái đơn hàng :
+               
+                                    //1.Đặt hàng
+                                    //2.Đã thanh toán 
+                                    //3.Đơn hàng thanh toán thất bại
+                                    //4.Trả hàng
+                                    //5.Thành công
+                                    //6.Vô hiệu hóa*@
                                 </tr>
                             }
                                

@@ -139,6 +139,8 @@ namespace WebNewBook.Controllers
                 var myCart = Giohangs();
                 var item = myCart.SingleOrDefault(c => c.Maasp == id);
 
+
+
                 if (item == null)
                 {
 
@@ -156,9 +158,21 @@ namespace WebNewBook.Controllers
                     myCart.Add(item);
 
 
+                    if (SoLuong > 100)
+                    {
+                        return RedirectToAction("Index", new { mess = 1 });
+
+                    }
+                    else if (SoLuong >= modelHome.SoLuong)
+                    {
+
+                        return RedirectToAction("Index", new { mess = 2 });
+                    }
+
+
 
                 }
-                else if (myCart.Exists(c => c.Maasp == id))
+                 else if (myCart.Exists(c => c.Maasp == id))
                 {
                         if (SoLuong + item.Soluong > 100 || SoLuong > 100)
                           {

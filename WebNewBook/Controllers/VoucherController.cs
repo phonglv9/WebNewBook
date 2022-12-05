@@ -54,6 +54,7 @@ namespace WebNewBook.Controllers
                                                                     && (startdate.HasValue ? c.StartDate >= startdate.Value : true)
                                                                     && (enddate.HasValue ? c.EndDate <= enddate.Value : true)
                                                                     && (type != null ? c.HinhThuc == type : true)).OrderByDescending(c => c.Createdate).ToPagedList(pageNumber, 10);
+          
             return View();
         }
 
@@ -93,9 +94,18 @@ namespace WebNewBook.Controllers
                 voucherCTs = JsonConvert.DeserializeObject<List<VoucherCT>>(jsondata_2);
                 ViewBag.lstvoucherCT0 = voucherCTs.Where(c => c.TrangThai == 0).OrderByDescending(c => c.CreateDate).ToList();
                 ViewBag.lstvoucherCT1 = voucherCTs.OrderByDescending(c => c.CreateDate).ToList();
+                ViewBag.lstvoucherCT2 = voucherCTs.Where(c => c.TrangThai == 2).OrderByDescending(c => c.CreateDate).ToList();
 
             }
+            HttpResponseMessage responseMessage = _httpClient.GetAsync(_httpClient.BaseAddress + "/Customer").Result;
+            List<KhachHang> lstCustomer = new List<KhachHang>();
+            if (responseMessage.IsSuccessStatusCode)
+            {
+                string jsondata_lstkhachhang = responseMessage.Content.ReadAsStringAsync().Result;
+                lstCustomer = JsonConvert.DeserializeObject<List<KhachHang>>(jsondata_lstkhachhang);
+                ViewBag.SoluongKhachHang = lstCustomer.Count();
 
+            }
             return View(voucherModel);
         }
 
@@ -122,7 +132,7 @@ namespace WebNewBook.Controllers
 
             }
             return 0;
-           
+
         }
 
 
@@ -179,7 +189,7 @@ namespace WebNewBook.Controllers
 
             try
             {
-                if (file !=null)
+                if (file != null)
                 {
                     string extension = Path.GetExtension(file.FileName);
                     string image = file.FileName;
@@ -199,7 +209,7 @@ namespace WebNewBook.Controllers
 
                 }
 
-                return  Redirect("https://localhost:7047/Voucher/Detail/"+maPhathanh);
+                return Redirect("https://localhost:7047/Voucher/Detail/" + maPhathanh);
             }
             catch (Exception e)
             {
@@ -221,7 +231,7 @@ namespace WebNewBook.Controllers
                     GetvoucherCT = JsonConvert.DeserializeObject<List<VoucherCT>>(jsondata);
                     foreach (var x in GetvoucherCT)
                     {
-                        if (x.Id== voucherCT.Id)
+                        if (x.Id == voucherCT.Id)
                         {
                             return 2;
                         }
@@ -292,59 +302,76 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public int PhatHanhVoucher(string GetId, VoucherCT voucherCT)
         {
-            var lstid = Get_Id(GetId);
-             var id_0= lstid[0];
-               VoucherCT GetVoucherCTID = new VoucherCT();
-            HttpResponseMessage response_VoucherCTId = _httpClient.GetAsync(_httpClient.BaseAddress + "/VoucherCT/" + id_0).Result;
-            if (response_VoucherCTId.IsSuccessStatusCode)
+            if (GetId != null)
             {
-                string jsondata = response_VoucherCTId.Content.ReadAsStringAsync().Result;
-                GetVoucherCTID = JsonConvert.DeserializeObject<VoucherCT>(jsondata);
-              
-
-                Voucher Getvoucher = new Voucher();
-                HttpResponseMessage response_VoucherId = _httpClient.GetAsync(_httpClient.BaseAddress + "/Voucher/"+GetVoucherCTID.MaVoucher).Result;
-                if (response_VoucherId.IsSuccessStatusCode)
+                var lstid = Get_Id(GetId);
+                var id_0 = lstid[0];
+                VoucherCT GetVoucherCTID = new VoucherCT();
+                HttpResponseMessage response_VoucherCTId = _httpClient.GetAsync(_httpClient.BaseAddress + "/VoucherCT/" + id_0).Result;
+                if (response_VoucherCTId.IsSuccessStatusCode)
                 {
-                    string jsondata1 = response_VoucherId.Content.ReadAsStringAsync().Result;
-                    Getvoucher = JsonConvert.DeserializeObject<Voucher>(jsondata1);
-                    if (Getvoucher.StartDate > voucherCT.NgayBatDau)
+                    string jsondata = response_VoucherCTId.Content.ReadAsStringAsync().Result;
+                    GetVoucherCTID = JsonConvert.DeserializeObject<VoucherCT>(jsondata);
+
+                    // check ngày
+                    Voucher Getvoucher = new Voucher();
+                    HttpResponseMessage response_VoucherId = _httpClient.GetAsync(_httpClient.BaseAddress + "/Voucher/" + GetVoucherCTID.MaVoucher).Result;
+                    if (response_VoucherId.IsSuccessStatusCode)
                     {
-                        return 2;
+                        string jsondata1 = response_VoucherId.Content.ReadAsStringAsync().Result;
+                        Getvoucher = JsonConvert.DeserializeObject<Voucher>(jsondata1);
+                        if (Getvoucher.StartDate > voucherCT.NgayBatDau)
+                        {
+                            return 2;
+                        }
+                        if (Getvoucher.EndDate < voucherCT.NgayBatDau)
+                        {
+                            return 3;
+                        }
+                        if (Getvoucher.HinhThuc == 2)
+                        {
+
+                            HttpResponseMessage responseMessage = _httpClient.GetAsync(_httpClient.BaseAddress + "/Customer").Result;
+                            List<KhachHang> lstCustome = new List<KhachHang>();
+                            if (responseMessage.IsSuccessStatusCode)
+                            {
+                                string jsondata_lstkhachhang = responseMessage.Content.ReadAsStringAsync().Result;
+                                lstCustome = JsonConvert.DeserializeObject<List<KhachHang>>(jsondata_lstkhachhang);
+                                var quantityCustomer = lstCustome.Count();
+                            
+                                if (lstid.Count() < quantityCustomer)
+                                {
+
+                                    return 4;
+                                }
+
+                            }
+                        }
+
                     }
-                    if (Getvoucher.EndDate < voucherCT.NgayBatDau)
-                    {
-                        return 3;
-                    }
+                }
+                List<VoucherCT> voucherCTList = new List<VoucherCT>();
+                foreach (var id in lstid)
+                {
+                    VoucherCT cT = new VoucherCT();
+
+                    cT.Id = id;
+
+                    cT.NgayBatDau = voucherCT.NgayBatDau;
+                    voucherCTList.Add(cT);
+                }
+
+                HttpResponseMessage response = _httpClient.PutAsJsonAsync<List<VoucherCT>>(_httpClient.BaseAddress + "/VoucherCT/PhatHanhVoucher/", voucherCTList).Result;
+                if (response.IsSuccessStatusCode)
+                {
+
+                    return 1;
 
                 }
-            }
-
-
-           
-  
-
-
-
-            List<VoucherCT> voucherCTList = new List<VoucherCT>();
-            foreach (var id in lstid)
-            {
-                VoucherCT cT = new VoucherCT();
-             
-                cT.Id = id;
-             
-                cT.NgayBatDau = voucherCT.NgayBatDau;
-                voucherCTList.Add(cT);
-            }
-
-            HttpResponseMessage response = _httpClient.PutAsJsonAsync<List<VoucherCT>>(_httpClient.BaseAddress + "/VoucherCT/PhatHanhVoucher/", voucherCTList).Result;
-            if (response.IsSuccessStatusCode)
-            {
-
-                return 1;
 
             }
             return 0;
+
         }
 
         [HttpPost]

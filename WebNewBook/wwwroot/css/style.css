@@ -296,7 +296,7 @@ textarea.input {
     padding-top: 30px;
     padding-bottom: 30px;
     background-color: #f9f9f9;
-    min-height: calc(100vh - 160px - 358px);
+/*    min-height: calc(100vh - 160px - 358px);*/
 }
 
 .section-title {
@@ -414,9 +414,9 @@ textarea.input {
 \*----------------------------*/
 
 #top-header {
-  padding-top: 10px;
-  padding-bottom: 10px;
-  background-color: darkblue;
+    padding-top: 5px;
+  padding-bottom: 5px;
+    background-color: #2c55a5;
 }
 
 .header-links li {
@@ -447,8 +447,7 @@ textarea.input {
 \*----------------------------*/
 
 #header {
-  padding-top: 15px;
-  padding-bottom: 15px;
+
   background-color: #2c55a5   ;
 }
 
@@ -581,6 +580,7 @@ textarea.input {
 .cart-dropdown .cart-list .product-widget .product-img {
   left: 0px;
   top: 0px;
+
 }
 
 .cart-dropdown .cart-list .product-widget .product-body .product-price {
@@ -878,12 +878,20 @@ textarea.input {
 }
 
 .product .product-img {
-  position: relative;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding:5px;
 }
 
-.product .product-img>img {
-  width: 100%;
-}
+    .product .product-img > img {
+        padding: 5px;
+        height: 326px;
+        width: 227px;
+        box-shadow: rgb(0 0 0 / 35%) 0px 5px 15px;
+        border-radius: 5px;
+    }
 
 .product .product-img .product-label {
   position: absolute;

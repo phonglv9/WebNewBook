@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
+using WebNewBook.ViewModel;
 
 namespace WebNewBook.Controllers
 {
@@ -31,8 +32,8 @@ namespace WebNewBook.Controllers
                 string jsondata = responseOrder.Content.ReadAsStringAsync().Result;
                 lstOrder = JsonConvert.DeserializeObject<List<HoaDon>>(jsondata);
                 ViewBag.lstOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year);
-                ViewBag.soLuongOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year && c.TrangThai==1).Count();
-                ViewBag.tongTienOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year && c.TrangThai==1).Sum(c=>c.TongTien);
+                ViewBag.soLuongOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year && c.TrangThai==2).Count();
+                ViewBag.tongTienOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year && c.TrangThai==2).Sum(c=>c.TongTien);
             }
           
           
@@ -75,14 +76,107 @@ namespace WebNewBook.Controllers
         }
         public IActionResult VoucherWallet()
         {
+            KhachHang khachHang = new KhachHang();
+            HttpClient _httpClient = new HttpClient();
+            string Id_khachang = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
+            HttpResponseMessage response1 = _httpClient.GetAsync("https://localhost:7266/api/Customer/" + Id_khachang).Result;
+
+            if (response1.IsSuccessStatusCode)
+            {
+                string jsondata = response1.Content.ReadAsStringAsync().Result;
+                khachHang = JsonConvert.DeserializeObject<KhachHang>(jsondata);
+                ViewBag.diemtichluy = khachHang.DiemTichLuy;
+            }
+
+
+            List<Voucher> lstvoucher = new List<Voucher>();
+            HttpResponseMessage response2 = _httpClient.GetAsync("https://localhost:7266/api/VouCher/").Result;
+
+            if (response2.IsSuccessStatusCode)
+            {
+                string jsondata = response2.Content.ReadAsStringAsync().Result;
+                lstvoucher = JsonConvert.DeserializeObject<List<Voucher>>(jsondata);
+                ViewBag.VoucherPhatHanh = lstvoucher.Where(c => c.HinhThuc == 1 && c.SoLuong>0 && c.TrangThai==1);
+            }
+
+            List<VoucherCT> lstvoucherCT = new List<VoucherCT>();
+            HttpResponseMessage response3 = _httpClient.GetAsync("https://localhost:7266/api/VoucherCT/VoucherKH/"+Id_khachang).Result;
+
+            if (response3.IsSuccessStatusCode)
+            {
+                string jsondata = response3.Content.ReadAsStringAsync().Result;
+                lstvoucherCT = JsonConvert.DeserializeObject<List<VoucherCT>>(jsondata);
+                ViewBag.VoucherByCuster = lstvoucherCT.Where(c=>c.TrangThai!=2);
+            }
+
+            List<VoucherPaymentVM> voucherPaymentVMs = new List<VoucherPaymentVM>();
+            foreach (var Vouchers in lstvoucher)
+            {
+                foreach (var VoucherCTs in lstvoucherCT.Where(c => c.MaVoucher == Vouchers.Id && c.TrangThai!=2))
+                {
+
+                    VoucherPaymentVM VoucherPayment = new VoucherPaymentVM();
+                    VoucherPayment.ID_Voucher = VoucherCTs.Id;
+                    VoucherPayment.TenPhatHanh = Vouchers.TenPhatHanh;
+                    VoucherPayment.MenhGia = Vouchers.MenhGia;
+                    VoucherPayment.MenhGiaDieuKien = Vouchers.MenhGiaDieuKien;
+                    VoucherPayment.NgayBatDau = VoucherCTs.NgayBatDau;
+                    VoucherPayment.NgayHetHan = VoucherCTs.NgayHetHan;
+                    voucherPaymentVMs.Add(VoucherPayment);
+                }
+
+            }
+            ViewBag.ListVoucher = voucherPaymentVMs;
+
+
             return View();
         }
+
+        public  int DoiVoucher(string id)
+        {
+
+            HttpClient _httpClient = new HttpClient();
+            string Id_khachang = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
+            HttpResponseMessage response = _httpClient.PutAsync("https://localhost:7266/api/VoucherCT/DoiVoucherAccount?maph=" + id+"&makh="+ Id_khachang, null).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return 1;
+            }
+            return 0;
+        }
+
+
         public IActionResult FpointHistory()
         {
-            // tích điểm point : 0
-            // nạp point : 1
+            List<Fpoint> lstfpoints = new List<Fpoint>();
+            HttpClient _httpClient = new HttpClient();
+            string Id_khachang = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
+            HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7266/api/Fpoint").Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string jsondata = response.Content.ReadAsStringAsync().Result;
+                lstfpoints = JsonConvert.DeserializeObject<List<Fpoint>>(jsondata);
+            }
+
+            ViewBag.lstfpoin = lstfpoints.Where(c=>c.MaKhachHang==Id_khachang);
+
+
+            KhachHang khachHang = new KhachHang();
+            HttpResponseMessage response_khachang = _httpClient.GetAsync("https://localhost:7266/api/Customer/" + Id_khachang).Result;
+
+            if (response_khachang.IsSuccessStatusCode)
+            {
+                string jsondata1 = response_khachang.Content.ReadAsStringAsync().Result;
+                khachHang = JsonConvert.DeserializeObject<KhachHang>(jsondata1);
+            }
+
+            ViewBag.Diemtichluy = khachHang.DiemTichLuy;
+
+
             return View();
         }
+
 
         public async Task<IActionResult> OrderDetail(string id)
         {

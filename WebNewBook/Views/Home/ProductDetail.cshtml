@@ -3,26 +3,7 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!-- BREADCRUMB -->
 
-		<div id="breadcrumb">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<div class="col-md-12">
-						<ul class="breadcrumb-tree">
-							<li><a href="#">Home</a></li>
-							<li><a href="#">Book</a></li>
-							
-						</ul>
-					</div>
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div>
-		<!-- /BREADCRUMB -->
 
 <!-- SECTION -->
 @if (ViewBag.SanphamCT != null)
@@ -116,10 +97,11 @@
 
 
 						<ul class="product-links">
-							<li>Thể loại:</li>
+							
 							@if (ViewBag.TheLoai != null)
 								@foreach (var item in ViewBag.TheLoai)
 								{
+									<li>Thể loại:</li>
 									<li><a href="#">@item.TenTL</a></li>
 
 								}
@@ -233,7 +215,7 @@
 							<div class="box-container">
 								<div class="products-slick" data-nav="#slick-nav-2">
 									
-											@if (ViewBag.listDM != null)
+											@*@if (ViewBag.listDM.Count)*@
 										@foreach (var a in ViewBag.listDM)
 											{
 

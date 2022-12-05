@@ -41,11 +41,11 @@ namespace WebNewBook.API.Repository.Service
                     {
                         string ktRandom = RandomVoucher(lengthVoucher);
                         string idVoucher = startTextVoucher + ktRandom + endTextVoucher;
-                        checkTrung = _dbcontext.VoucherCTs.FirstOrDefault(c=>c.Id== idVoucher);
+                        checkTrung = _dbcontext.VoucherCTs.FirstOrDefault(c => c.Id == idVoucher);
                         voucherCT.Id = idVoucher;
                     } while (checkTrung != null);
 
-                   
+
                     voucherCT.NgayBatDau = null;
                     voucherCT.TrangThai = 0;
                     voucherCT.NgayHetHan = ngayKetThuc;
@@ -313,8 +313,8 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-
-                var model = await _dbcontext.VoucherCTs.Where(c => c.TrangThai == 1 && c.MaKhachHang == maCustomer).ToListAsync();
+                var datenow = DateTime.Now;
+                var model = await _dbcontext.VoucherCTs.Where(c => c.TrangThai == 1 && c.MaKhachHang == maCustomer && datenow <= c.NgayHetHan).ToListAsync();
                 return model;
 
             }
@@ -330,7 +330,7 @@ namespace WebNewBook.API.Repository.Service
             {
                 if (!string.IsNullOrEmpty(idVoucherCT))
                 {
-                    var voucherCT =  _dbcontext.VoucherCTs.Where(c=>c.Id == idVoucherCT).FirstOrDefault();
+                    var voucherCT = _dbcontext.VoucherCTs.Where(c => c.Id == idVoucherCT).FirstOrDefault();
                     if (voucherCT != null)
                     {
                         voucherCT.NgaySuDung = DateTime.Now;
@@ -338,7 +338,7 @@ namespace WebNewBook.API.Repository.Service
                         _dbcontext.Update(voucherCT);
                         await _dbcontext.SaveChangesAsync();
                     }
-                   
+
                 }
             }
             catch (Exception ex)
@@ -347,7 +347,7 @@ namespace WebNewBook.API.Repository.Service
                 throw ex;
             }
         }
-        public async Task <List<VoucherCT>> ListVoucherCTByPayment(string id)
+        public async Task<List<VoucherCT>> ListVoucherCTByPayment(string id)
         {
             var dateNow = DateTime.Now;
             var listVCCT = await _dbcontext.VoucherCTs.Where(C => C.MaKhachHang == id && dateNow >= C.NgayBatDau && dateNow <= C.NgayHetHan).ToListAsync();
@@ -357,6 +357,42 @@ namespace WebNewBook.API.Repository.Service
         public async Task<IEnumerable<VoucherCT>> GetAddVoucherCT()
         {
             return await _dbcontext.VoucherCTs.ToListAsync();
+        }
+
+     
+
+        public async Task DoiDiemVoucher(string id, string maKh)
+        {
+            try
+            {
+                if (id != null && maKh != null)
+                {
+                    
+                    var lstVoucherCT = _dbcontext.VoucherCTs.Where(c => c.TrangThai == 0 && c.MaVoucher == id  && c.MaKhachHang==null).ToList();
+                    Voucher Voucher = _dbcontext.Vouchers.Where(c => c.Id == id).FirstOrDefault();
+                    var Customer = _dbcontext.KhachHangs.Where(c => c.ID_KhachHang == maKh).FirstOrDefault();
+                    if (  Voucher != null && Customer!=null)
+                    {
+                        VoucherCT voucherCT = lstVoucherCT[0];
+                        voucherCT.MaKhachHang = maKh;
+                        voucherCT.NgayBatDau = DateTime.Now;
+                        voucherCT.TrangThai = 1;
+                        voucherCT.HinhThuc = Voucher.HinhThuc;
+                        voucherCT.Diemdoi = Voucher.DiemDoi;
+                        Customer.DiemTichLuy = (int)(Customer.DiemTichLuy - Voucher.DiemDoi);
+                        _dbcontext.VoucherCTs.Update(voucherCT);
+                        _dbcontext.KhachHangs.Update(Customer);
+                    }
+                    await _dbcontext.SaveChangesAsync();
+
+                }
+            }
+            catch (Exception e)
+            {
+
+                throw e;
+            }
+          
         }
     }
 }

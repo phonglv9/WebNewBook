@@ -110,16 +110,16 @@ namespace WebNewBook.API.Controllers
                         values: new { userId = userId, code = code, pw = Input.ConfirmPassword, sdt = Input.SDT, hoten = Input.HoVaTen, diaChi = Input.DiaChi, ngaySinh = Input.NgaySinh.ToString() },
                         protocol: Request.Scheme,
                         Request.Host.ToString());
-
+                //Set gửi mail
                 var email = new MimeMessage();
-                email.From.Add(MailboxAddress.Parse("hungldph13592@fpt.edu.vn"));
+                email.From.Add(MailboxAddress.Parse("phonglvph16158@fpt.edu.vn"));
                 email.To.Add(MailboxAddress.Parse(Input.Email));
                 email.Subject = "Confirm";
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." };
 
                 using var smtp = new MailKit.Net.Smtp.SmtpClient();
                 smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                smtp.Authenticate("hungldph13592@fpt.edu.vn", "");
+                smtp.Authenticate("phonglvph16158@fpt.edu.vn", "nhập mật khẩu ở đây");
                 smtp.Send(email);
                 smtp.Disconnect(true);
                 return Ok();

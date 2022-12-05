@@ -24,7 +24,7 @@ namespace WebNewBook.Controllers
             _httpClient.BaseAddress = new Uri("https://localhost:7266/");
         }
 
-        public IActionResult Index()
+        public IActionResult Login()
         {
             return View();
         }
@@ -56,7 +56,7 @@ namespace WebNewBook.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(UserDTO user)
+        public async Task<IActionResult> Login(UserDTO user)
         {
             string error = "";
             if (ModelState.IsValid)
@@ -78,7 +78,7 @@ namespace WebNewBook.Controllers
                 error = await response.Content.ReadAsStringAsync();
                 error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
             }
-            ViewBag.nhanVien = user.NhanVien;
+           
             ViewBag.Error = error;
             return View();
         }

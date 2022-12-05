@@ -211,12 +211,13 @@ namespace WebNewBook.Controllers
             {
 
                 //Trang thái đơn hàng :
-                //0.Không tồn tại
+               
                 //1.Đặt hàng
                 //2.Đã thanh toán 
                 //3.Đơn hàng thanh toán thất bại
                 //4.Trả hàng
-                //5.Thành công         
+                //5.Thành công
+                //6.Vô hiệu hóa
 
                 var lstCart = Giohangs();
                 ViewBag.SuccessMessage = "";
@@ -284,22 +285,25 @@ namespace WebNewBook.Controllers
                         
                         if (!string.IsNullOrEmpty(hoaDon.MaGiamGia))
                         {
+                          
                             await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{hoaDon.MaGiamGia}", null);
                       
                         }
                         if (khachHang.ID_KhachHang != "KHNOLOGIN")
                         {
 
-                        
-                        int fpoint = Convert.ToInt32(hoaDon.TongTien) / 100;
-                            
+                            //Tích điểm
+                            int fpoint = Convert.ToInt32(hoaDon.TongTien) / 100;                            
                             await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{hoaDon.ID_HoaDon}/{fpoint}/{khachHang.ID_KhachHang}", null);
                         }
+
+                        //Xóa giỏ hàng sau khi mua hàng
                         await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{khachHang.Email}", null);
-                            HttpContext.Session.Clear();
-                            Response.Cookies.Delete("Cart");
-                        
-                       
+
+                        //Gửi mail đơn hàng 
+                        await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/SendMailOder/{hoaDon.ID_HoaDon}", null);
+                        HttpContext.Session.Clear();
+                        Response.Cookies.Delete("Cart");
                         ViewBag.SuccessMessage = "Đặt hàng thành công";
                         return View();
                     }
@@ -354,11 +358,17 @@ namespace WebNewBook.Controllers
                     }
 
                     string paymentUrl = vnpay.CreateRequestUrl(VNPayConfig.vnp_Url, VNPayConfig.vnp_HashSecret);
-                    HttpContext.Session.SetString("emailCustomer", khachHang.Email.ToString());
-                    //set mã khách hàng gửi sang cổng thanh toán 
+
+                   
                     if (khachHang.ID_KhachHang != "KHNOLOGIN")
                     {
-                        HttpContext.Session.SetString("idCustomer", khachHang.ID_KhachHang.ToString());
+                        //set mã khách hàng gửi sang cổng thanh toán 
+                        if (khachHang.Email != null)
+                        {
+                            HttpContext.Session.SetString("emailCustomer", khachHang.Email.ToString());
+                            HttpContext.Session.SetString("idCustomer", khachHang.ID_KhachHang.ToString());
+                        }
+                       
                     }
                     return Redirect(paymentUrl);
                 }
@@ -405,6 +415,8 @@ namespace WebNewBook.Controllers
                 await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{idHoaDon}/{fpoint}/{idCustomer}", null);
             }
             await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{emailCustomer}", null);
+            //Gửi mail đơn hàng 
+            await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/SendMailOder/{idHoaDon}", null);
             HttpContext.Session.Clear();
             Response.Cookies.Delete("Cart");
             ViewBag.Message = request.message;
@@ -441,7 +453,7 @@ namespace WebNewBook.Controllers
                                 HttpContext.Session.SetString("idVoucher", maVoucher.ToString());
                                 HttpContext.Session.SetString("amoutVoucher", voucher.MenhGia.ToString());
                                 HttpContext.Session.SetString("menhgiadk", voucher.MenhGiaDieuKien.ToString());
-                                //HttpContext.Session.SetString("amout", tongTien.ToString());
+            
                               
                             }else if (voucherCT.TrangThai == 2)
                             {
@@ -450,7 +462,7 @@ namespace WebNewBook.Controllers
                             {
                                 ViewBag.MessageVC = "Voucher chưa phát hàng, bạn có thể sử dụng vào lúc"+ voucherCT.NgayBatDau;
                             }
-                            else if (ngayHienTai > voucher.EndDate )
+                            else if (ngayHienTai > voucherCT.NgayHetHan )
                             {
                                 ViewBag.MessageVC = "Voucher đã hết thời hạn sử dụng" ;
                             }
