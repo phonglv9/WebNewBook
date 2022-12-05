@@ -211,12 +211,13 @@ namespace WebNewBook.Controllers
             {
 
                 //Trang thái đơn hàng :
-                //0.Không tồn tại
+               
                 //1.Đặt hàng
                 //2.Đã thanh toán 
                 //3.Đơn hàng thanh toán thất bại
                 //4.Trả hàng
-                //5.Thành công         
+                //5.Thành công
+                //6.Vô hiệu hóa
 
                 var lstCart = Giohangs();
                 ViewBag.SuccessMessage = "";
