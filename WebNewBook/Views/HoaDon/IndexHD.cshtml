@@ -50,7 +50,7 @@
                             <div class="col-5 mb-3">
                                 <select id="selectHD" name="trangThai" class="form-select" aria-label="Default select example">
                                     <option selected>Chọn trạng thái</option>
-                                    <option value="10">Tất cả</option>
+                                   
                                     <option value="6">Không tồn tại</option>
                                     <option value="1">Đặt hàng</option>
                                     <option value="2">Đã thanh toán</option>
@@ -105,11 +105,11 @@
                         {
                             @foreach (var a in ViewBag.DataHD)
                             {
-                                var coler = "black";
+                                var coler = "null";
                                 @if (@a.hoaDon.TrangThai == 1 ||@a.hoaDon.TrangThai == 2)
                                 {
                                     @*coler = "Green2";*@
-                                    coler = "#00CCFF";
+                                    coler = "table-info";
 
                                 }
                                
@@ -117,15 +117,15 @@
                                 
 
                                 <tr>
-                                    <td>@a.hoaDon.ID_HoaDon</td>
-                                    <td>@a.KhachHang.HoVaTen</td>
-                                   
-                                  
-                                    <td>@a.hoaDon.NgayMua</td>
-                                    <td>@a.hoaDon.TongTien</td>
-                                  
-                                    <td>
-                                        <font color="@coler">
+                                    <td class="@coler">@a.hoaDon.ID_HoaDon</td>
+                                    <td class="@coler">@a.KhachHang.HoVaTen</td>
+
+
+                                    <td class="@coler">@a.hoaDon.NgayMua</td>
+                                    <td class="@coler">@a.hoaDon.TongTien</td>
+
+                                    <td class="@coler">
+                                        
                                             @if (@a.hoaDon.TrangThai == 6)
                                             {
                                                 <p>Không tồn tại</p>
@@ -150,11 +150,11 @@
                                             {
                                                 <p>Thành công </p>
                                             }
-                                         </font>
+                                        
                                       
                                     </td>
-                                    <td><a asp-controller="HoaDon" asp-action="ChiTiet" asp-route-id="@a.hoaDon.ID_HoaDon">Chi Tiết</a> </td>
-                                    <td>
+                                    <td class="@coler"><a asp-controller="HoaDon" asp-action="ChiTiet" asp-route-id="@a.hoaDon.ID_HoaDon">Chi Tiết</a> </td>
+                                    <td class="@coler">
                                         <form asp-controller="HoaDon" asp-action="Sua" method="post">
 
                                             @* <input name="dd" type="hidden" value=" @item.hoaDon.ID_HoaDon">*@
@@ -162,7 +162,7 @@
                                               
                                                 <div class="combobox-HD">
                                                     <select class="form-select" name="name" aria-label="Default select example">
-                                                        <option value="#">Tất cả</option>
+                                                        <option value="">Tất cả</option>
                                                         <option value="6">Không tồn tại</option>
                                                         <option value="1">Đặt hàng</option>
                                                         <option value="2">Đã thanh toán</option>

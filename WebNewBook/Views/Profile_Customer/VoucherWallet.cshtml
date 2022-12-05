@@ -1,160 +1,193 @@
-﻿
-    <link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
-    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
+﻿@{
+    var DiemTichluy = ViewBag.diemtichluy;
+    var VoucherKhachHang = ViewBag.ListVoucher;
+    var Voucherdedoi = ViewBag.VoucherPhatHanh;
+}
+<link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
+<link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
+<link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
 
-    <div style="background-color: #f1f1f1;">
-        <div class="row  p-1">
-            <div class="col-3 mx-2">
-                <div class="list-group">
-                    <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
-                     <a asp-action="account" class="list-group-item list-group-item-action ">
-                        Bảng điều khiển tài khoản
-                    </a>
-                    <a asp-action="profile" class="list-group-item list-group-item-action ">Thông tin tài khoản</a>
-                    <a asp-action="order" class="list-group-item list-group-item-action">Đơn hàng của tôi</a>
+<div style="background-color: #f1f1f1;">
+    <div class="row  p-1">
+        <div class="col-3 mx-2">
+            <div class="list-group">
+                <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
+                <a asp-action="account" class="list-group-item list-group-item-action ">
+                    Bảng điều khiển tài khoản
+                </a>
+                <a asp-action="profile" class="list-group-item list-group-item-action ">Thông tin tài khoản</a>
+                <a asp-action="order" class="list-group-item list-group-item-action">Đơn hàng của tôi</a>
                 <a asp-action="VoucherWallet" class="list-group-item list-group-item-action active">Ví Voucher</a>
                 <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
-                </div>
             </div>
-            <div class="col-8  mx-4 ">
-                <div class="bg-white mb-2 p-3">
-                    <h5>Ví Voucher của tôi</h5>
-                    <hr>
-                    <button class="btn" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample"   >Đổi điểm <span class="mx-4">8000 điểm</span></button>
-                    <div class="collapse" id="collapseExample">
-                        <div class="card card-body ">
-                            <div class="row">
+        </div>
+        <div class="col-8  mx-4 ">
+            <div class="bg-white mb-2 p-3">
+                <h5>Ví Voucher của tôi</h5>
+                <hr>
+                <button class="btn" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Đổi điểm <span class="mx-4">@String.Format( "{0:#,##0.##}",(DiemTichluy)) điểm</span></button>
+                <div class="collapse" id="collapseExample">
+
+                    <div class="card card-body ">
+
+                        @if (Voucherdedoi == null)
+                        {
+                            <span class="text-danger">Chưa có Voucher để đổi</span>
+                        }
+                        <div class="row">
+                            @if (Voucherdedoi != null)
+                            {
+                                @foreach (var x in Voucherdedoi)
+                                {
+                                    <div class="col-6 ">
+                                        <div class="card mb-3" style="max-width: 540px;">
+                                            <div class="row g-0">
+                                                <div class="col-md-4">
+                                                    <img src="https://i.ytimg.com/vi/kT2P1-3wyFI/maxresdefault.jpg" class="img-fluid rounded-start" alt="...">
+                                                </div>
+                                                <div class="col-md-8">
+
+                                                    <div class="card-body row">
+                                                        <h6 class="card-title col-7">Giảm hóa đơn khi thanh toán</h6>
+                                                        <a href="#" class="col-5 text-decoration-none">Chi tiết</a>
+                                                        <p class="card-text "><small class=" border border-1 border-danger text-danger p-1 ">Giảm @String.Format( "{0:#,##0.##}",(x.MenhGia))k</small></p>
+                                                        <input value="@x.Id" id="IdVoucher" hidden>
+                                                        <a id="btnDoiDiem" class="btn btn-primary opacity-75">@String.Format( "{0:#,##0.##}",(x.DiemDoi))<span> Điểm</span></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            }
+
+                        </div>
+
+
+                    </div>
+                </div>
+                <hr>
+            </div>
+            <div class="bg-white mb-1  p-3">
+                <div style="font-size: 13px;">
+                    <div class="row">
+                        @if (VoucherKhachHang != null)
+                        {
+                            @foreach (var x in VoucherKhachHang)
+                            {
                                 <div class="col-6 ">
                                     <div class="card mb-3" style="max-width: 540px;">
                                         <div class="row g-0">
-                                          <div class="col-md-4">
-                                            <img src="https://cdn0.fahasa.com/media/catalog/product/_/k/_khong-phai-soi-nhung-cung-dung-la-cuu.jpg" class="img-fluid rounded-start" alt="...">
-                                          </div>
-                                          <div class="col-md-8">
-
-                                            <div class="card-body row">
-                                              <h6 class="card-title col-7">Giảm hóa đơn khi thanh toán</h6>
-                                              <a href="#" class="col-5 text-decoration-none">Chi tiết</a>
-                                              <p class="card-text "><small class=" border border-1 border-danger text-danger p-1 ">Giảm 50k</small></p>
-                                              <a href="#" class="btn btn-primary opacity-75">2000 <span>Điểm</span></a>
+                                            <div class="col-md-4">
+                                                <img src="https://th.bing.com/th/id/R.cbb492e70582af9a9eec50e6a8bf50b3?rik=016yOWNQyEarOQ&pid=ImgRaw&r=0" class="img-fluid rounded-start" alt="...">
                                             </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                 </div>
-                                 <div class="col-6 ">
-                                    <div class="card mb-3" style="max-width: 540px;">
-                                        <div class="row g-0">
-                                          <div class="col-md-4">
-                                            <img src="https://cdn0.fahasa.com/media/catalog/product/_/k/_khong-phai-soi-nhung-cung-dung-la-cuu.jpg" class="img-fluid rounded-start" alt="...">
-                                          </div>
-                                          <div class="col-md-8">
+                                            <div class="col-md-8">
 
-                                            <div class="card-body row">
-                                              <h6 class="card-title col-7">Giảm hóa đơn khi thanh toán</h6>
-                                              <a href="#" class="col-5 text-decoration-none">Chi tiết</a>
-                                              <p class="card-text "><small class=" border border-1 border-danger text-danger p-1 ">Giảm 50k</small></p>
-                                              <a href="#" class="btn btn-primary opacity-75">2000 <span>Điểm</span></a>
+                                                <div class="card-body row">
+                                                    <h6 class="card-title col-7">Giảm hóa đơn khi thanh toán</h6>
+                                                    <a href="#" class="col-5 text-decoration-none">Chi tiết</a>
+                                                    <p class="card-text "><small class=" border border-1 border-danger text-danger p-1 "> @String.Format( "{0:#,##0.##}",(x.MenhGia))k </small></p>
+                                                    <p>HSD: @x.NgayHetHan.ToString("d-M-yyyy")</p>
+                                                </div>
                                             </div>
-                                          </div>
                                         </div>
-                                      </div>
-                                 </div>
-                                 <div class="col-6 ">
-                                    <div class="card mb-3" style="max-width: 540px;">
-                                        <div class="row g-0">
-                                          <div class="col-md-4">
-                                            <img src="https://cdn0.fahasa.com/media/catalog/product/_/k/_khong-phai-soi-nhung-cung-dung-la-cuu.jpg" class="img-fluid rounded-start" alt="...">
-                                          </div>
-                                          <div class="col-md-8">
-
-                                            <div class="card-body row">
-                                              <h6 class="card-title col-7">Giảm hóa đơn khi thanh toán</h6>
-                                              <a href="#" class="col-5 text-decoration-none">Chi tiết</a>
-                                              <p class="card-text "><small class=" border border-1 border-danger text-danger p-1 ">Giảm 50k</small></p>
-                                              <a href="#" class="btn btn-primary opacity-75">2000 <span>Điểm</span></a>
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </div>
-                                 </div>
-                            </div>
-
-
-                        </div>
-                      </div>
-                    <hr>
-                </div>
-                <div class="bg-white mb-1  p-3">
-                    <div style="font-size: 13px;" >
-                        <div class="row">
-                            <div class="col-6 ">
-                                <div class="card mb-3" style="max-width: 540px;">
-                                    <div class="row g-0">
-                                      <div class="col-md-4">
-                                        <img src="https://cdn0.fahasa.com/media/catalog/product/_/k/_khong-phai-soi-nhung-cung-dung-la-cuu.jpg" class="img-fluid rounded-start" alt="...">
-                                      </div>
-                                      <div class="col-md-8">
-
-                                        <div class="card-body row">
-                                          <h6 class="card-title col-7">Giảm hóa đơn khi thanh toán</h6>
-                                          <a href="#" class="col-5 text-decoration-none">Chi tiết</a>
-                                          <p class="card-text "><small class=" border border-1 border-danger text-danger p-1 ">Giảm 50k</small></p>
-                                          <p>HSD: 14.11.2022</p>
-                                        </div>
-                                      </div>
                                     </div>
-                                  </div>
-                             </div>
-                             <div class="col-6 ">
-                                <div class="card mb-3" style="max-width: 540px;">
-                                    <div class="row g-0">
-                                      <div class="col-md-4">
-                                        <img src="https://cdn0.fahasa.com/media/catalog/product/_/k/_khong-phai-soi-nhung-cung-dung-la-cuu.jpg" class="img-fluid rounded-start" alt="...">
-                                      </div>
-                                      <div class="col-md-8">
+                                </div>
+                            }
+                        }
 
-                                        <div class="card-body row">
-                                          <h6 class="card-title col-7">Giảm hóa đơn khi thanh toán</h6>
-                                          <a href="#" class="col-5 text-decoration-none ">Chi tiết</a>
-                                          <p class="card-text "><small class=" border border-1 border-danger text-danger p-1 ">Giảm 50k</small></p>
-                                          <p>HSD: 14.11.2022</p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                             </div>
-                             <div class="col-6 ">
-                                <div class="card mb-3" style="max-width: 540px;">
-                                    <div class="row g-0">
-                                      <div class="col-md-4">
-                                        <img src="https://cdn0.fahasa.com/media/catalog/product/_/k/_khong-phai-soi-nhung-cung-dung-la-cuu.jpg" class="img-fluid rounded-start" alt="...">
-                                      </div>
-                                      <div class="col-md-8">
-
-                                        <div class="card-body row">
-                                          <h6 class="card-title col-7">Giảm hóa đơn khi thanh toán</h6>
-                                          <a href="#" class="col-5 text-decoration-none">Chi tiết</a>
-                                          <p class="card-text "><small class=" border border-1 border-danger text-danger p-1 ">Giảm 50k</small></p>
-                                         <p>HSD: 14.11.2022</p>
-                                        </div>
-                                      </div>
-                                    </div>
-                                  </div>
-                             </div>
-                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
     </div>
 
 
+</div>
 
 
-    <script src="/bootstrap-5.2.1/dist/js/bootstrap.min.js"></script>
-    <script src="/fontawesome-free-6.2.0-web/js/fontawesome.min.js"></script>
-    <script src="/fontawesome-free-6.2.0-web/js/all.min.js"></script>
+
+
+<script src="/bootstrap-5.2.1/dist/js/bootstrap.min.js"></script>
+<script src="/fontawesome-free-6.2.0-web/js/fontawesome.min.js"></script>
+<script src="/fontawesome-free-6.2.0-web/js/all.min.js"></script>
+
+
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>
+    $(function () {
+        var IdVoucher = $("#IdVoucher").val();
+        $("#btnDoiDiem").click(function () {
+            Swal.fire({
+                title: 'Bạn có chắc chắn muốn đổi không?',
+                showCancelButton: true,
+                confirmButtonText: 'Save',
+
+            }).then((result) => {
+                /* Read more about isConfirmed, isDenied below */
+                if (result.isConfirmed) {
+                    $.ajax({
+                        type: "POST",
+                        data: {
+                            id: IdVoucher
+                        },
+                        url: "/Profile_Customer/DoiVoucher",
+                        success: function (response) {
+                            if (response == 1) {
+                                Swal.fire({
+                                    text: "Thành công !",
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                    position: 'bottom-end',
+                                    width: 300,
+
+                                    height: 50,
+                                    color: '#66a15a',
+                                    background: '#ffffff',
+
+                                }).then((result) => {
+                                    /* Read more about handling dismissals below */
+                                    if (result.dismiss === Swal.DismissReason.timer) {
+                                        console.log('I was closed by the timer')
+                                    }
+                                })
+
+                                setTimeout(function () {
+                                    document.getElementById("load").style.display = 'block';
+                                    window.location.reload(1);
+
+
+                                }, 2000);
+                            } else {
+                                Swal.fire({
+                                    text: "Thất bại !",
+                                    timer: 1500,
+                                    timerProgressBar: true,
+                                    showConfirmButton: false,
+                                    position: 'bottom-end',
+                                    width: 300,
+
+                                    height: 50,
+                                    color: '#66a15a',
+                                    background: '#ffffff',
+
+                                }).then((result) => {
+                                    /* Read more about handling dismissals below */
+                                    if (result.dismiss === Swal.DismissReason.timer) {
+                                        console.log('I was closed by the timer')
+                                    }
+                                })
+
+                            }
+
+                        }
+                    });
+                }// ngặc hỏi
+            })// ngoặc hỏi
+
+        });
+
+
+    })
+</script>

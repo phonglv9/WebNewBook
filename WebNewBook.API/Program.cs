@@ -36,9 +36,9 @@ builder.Services.AddControllers(options =>
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
 
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Password=Ph@16158;Initial Catalog=WebNewBook;Persist Security Info=True;"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-KBU829B\\SQLEXPRESS;Initial Catalog=datn;Persist Security Info=True;User ID=sa;Password=123"));
 
-builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Password=Ph@16158;Initial Catalog=WebNewBook;Persist Security Info=True;"));
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=DESKTOP-KBU829B\\SQLEXPRESS;Initial Catalog=datn;Persist Security Info=True;User ID=sa;Password=123"));
 
 
 builder.Services.AddIdentityCore<IdentityUser>()

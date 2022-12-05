@@ -50,8 +50,8 @@ namespace WebNewBook.Controllers
             {
                 switch (trangThai)
                 {
-                    case 0:
-                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 0).ToList();
+                    case 6:
+                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 6).ToList();
                         break;
                     case 1:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 1).ToList();

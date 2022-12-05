@@ -16,5 +16,6 @@ namespace WebNewBook.API.Repository.IService
         Task HuyVouCherAsync(List<string> id);
         Task UpdateVoucherByPayment(string idVoucherCT);
         Task<List<VoucherCT>> ListVoucherCTByPayment(string id);
+        Task DoiDiemVoucher(string id, string maKh); 
     }
 }

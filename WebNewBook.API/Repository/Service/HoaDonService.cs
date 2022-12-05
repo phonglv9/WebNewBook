@@ -148,6 +148,7 @@ namespace WebNewBook.API.Repository.Service
                           }
                          ).ToList();
             var listGoupBy = viewhd.OrderBy(c => c.hoaDon.TrangThai).ToList();
+           
             return listGoupBy;
         }
 
