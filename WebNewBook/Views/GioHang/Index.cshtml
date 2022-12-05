@@ -48,7 +48,11 @@
 
     <div class="container">
         @if (ViewBag.giohang == null || ViewBag.giohang.Count == 0)
-        {
+        {   @if(ViewBag.MessUpdateCart != null && mess != null)
+              {<div class="alert alert-@color" role="alert">
+                        @mess
+            </div>
+                 }
             <h3 class="text-info text-center">
                 Giỏ hàng của bạn rỗng!
             </h3>
