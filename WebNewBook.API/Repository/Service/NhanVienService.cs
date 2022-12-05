@@ -16,6 +16,10 @@ namespace WebNewBook.API.Repository.Service
 
         public async Task AddNhanVienAsync(NhanVien par)
         {
+            if (dbcontext.NhanViens.ToList().Exists(c => c.Email.Equals(par.Email)))
+            {
+                throw new Exception("Đã tồn tại email!");
+            }
             dbcontext.Add(par);
             await dbcontext.SaveChangesAsync();
         }

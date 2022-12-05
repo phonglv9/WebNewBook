@@ -20,10 +20,15 @@
                 <span asp-validation-for="SanPham.TenSanPham" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @foreach (var item in ViewBag.Saches)
+                @for (var i = 0; i < ViewBag.Saches.Count; i++)
                 {
-                    <a>@item.TenSach - </a>
+                    string a = i < ViewBag.Saches.Count - 1 ? "-" : string.Empty;
+                    <a asp-action="Update" asp-controller="Sach" asp-route-id=@ViewBag.Saches[i].ID_Sach> @ViewBag.Saches[i].TenSach  @a </a>
                 }
+                @*@foreach (var item in ViewBag.Saches)
+                {
+                    <a asp-action="Update" asp-controller="Sach" asp-route-id=@item.ID_Sach> @item.TenSach - </a>
+                }*@
             </div>
             <div class="form-group">
                 <label asp-for="SanPham.HinhAnh" class="control-label">Hình ảnh</label>
