@@ -199,7 +199,7 @@
                                 <td>@x.StartDate.ToString("d/M/yyyy")</td>
                                 <td>@x.EndDate.ToString("d/M/yyyy")</td>
                                 <td>@x.SoLuong</td>
-                                <td>@x.MenhGia</td>
+                                <td>@String.Format( "{0:#,##0.##}",(x.MenhGia))</td>
                                 <td>@(x.HinhThuc == 1 ? "Đổi điểm" : "Tặng")</td>
 
                                 <td>
@@ -390,6 +390,7 @@
                         if (menhGia <= 1000000) {
                             if (startDate >= today) {
                                 if (startDate <= enddate) {
+                                  
                                     Swal.fire({
                                         title: 'Bạn có chắc chắn muốn thêm không?',
                                         showCancelButton: true,
@@ -402,6 +403,7 @@
                                                 type: "POST",
                                                 data: {
                                                     TenPhatHanh: tenPhatHanh,
+                                                    MenhGiaDieuKien : menhGiaDK,
                                                     MenhGia: menhGia,
                                                     Ghichu: ghiChu,
                                                     StartDate: startDate,

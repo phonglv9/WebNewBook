@@ -38,11 +38,7 @@ namespace WebNewBook.Controllers
                 using (var httpClient = new HttpClient())
                 {
                     StringContent content = new StringContent(JsonConvert.SerializeObject(khachang), Encoding.UTF8, "application/json");
-                    using (var response = await httpClient.PostAsync("https://localhost:7266/api/Customer", content))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        khachang = JsonConvert.DeserializeObject<KhachHang>(apiResponse);
-                    }
+                    HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + "/Customer", content).Result;
                 }
                 ViewBag.message = 1;
                   return RedirectToAction("Index",ViewBag.message);

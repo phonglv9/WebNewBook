@@ -26,10 +26,23 @@
             <div class="bg-white mb-2 p-3 ">
                 <div style="font-size: 13px;">
                     <h6>Chi tiết đơn hàng</h6>
-                    <p><small class="rounded-pill p-1 bg-primary text-white ">Đơn hàng đang sử lý</small></p>
+                    @if (orderbyid.TrangThai==0)
+                    {
+                        <p><small class="rounded-pill p-1 bg-primary text-white ">Đơn hàng đang sử lý</small></p>
+                    }
+                         @if (orderbyid.TrangThai==1)
+                    {
+                        <p><small class="rounded-pill p-1 bg-danger text-white ">Đơn hàng thất bại</small></p>
+                    }
+                    @if (orderbyid.TrangThai == 2)
+                    {
+                        <p><small class="rounded-pill p-1 bg-success text-white ">Đơn hàng thành công</small></p>
+                    }
+
+                
                     <p>Mã đơn hàng : <span class="fw-bold">@orderbyid.ID_HoaDon</span></p>
                     <p>Ngày mua : <span class="fw-bold">@orderbyid.NgayMua.ToString("d/M/yyyy")</span></p>
-                    <p>Tổng tiền : <span class="fw-bold">@orderbyid.TongTien</span></p>
+                    <p>Tổng tiền : <span class="fw-bold">@String.Format( "{0:#,##0.##}",(orderbyid.TongTien)) đ</span></p>
                     <p>Ghi chú : <span>@orderbyid.GhiChu </span></p>
 
                 </div>
@@ -41,11 +54,11 @@
                     <hr class="opacity-25">
                     <div>
                         <p>
-                            Đơn hàng 31867283_103033726 của Quý khách đã được bàn giao cho bên vận chuyển. Dự kiến
-                            ngày 17-11-2022 đơn hàng sẽ được giao đến. Quý khách vui lòng nghe máy khi có nhân viên
+                            Đơn hàng @orderbyid.ID_HoaDon của Quý khách đã được tiếp nhận 
+                            ngày @orderbyid.NgayMua.ToString("d-M-yyyy"). Quý khách vui lòng nghe máy khi có nhân viên
                             liên hệ giao hàng.
                         </p>
-                        <p class="opacity-50">2022-11-10 16:03:32</p>
+                        <p class="opacity-50">@orderbyid.NgayMua</p>
                     </div>
 
                 </div>
@@ -104,12 +117,12 @@
                         @foreach (var x in lsthoadondetail)
                         {
                             <tr>
-                                <td><img src="/img/@x.sanPham.HinhAnh" /></td>
+                                <td><img width="100px" src="/img/@x.sanPham.HinhAnh" /></td>
                                 <td colspan="2">@x.sanPham.TenSanPham</td>
                                 <td></td>
-                                <td>@x.hoaDonCT.GiaBan</td>
+                                <td>@String.Format( "{0:#,##0.##}",(x.hoaDonCT.GiaBan)) đ</td>
                                 <td>@x.hoaDonCT.SoLuong</td>
-                                <td>@(x.hoaDonCT.GiaBan * x.hoaDonCT.SoLuong)</td>
+                                <td>@String.Format( "{0:#,##0.##}",(x.hoaDonCT.GiaBan * x.hoaDonCT.SoLuong)) đ</td>
                             </tr>
 
                         }
@@ -121,7 +134,7 @@
                     <td></td>
                     <td></td>
                     <td>Tổng số tiền:</td>
-                    <th>   @ViewBag.tongtien<span>đ</span></th>
+                    <th> @String.Format( "{0:#,##0.##}",(  ViewBag.tongtien)) <span>đ</span></th>
                     </tfoot>
                     <tfoot>
                     <td></td>
@@ -129,7 +142,7 @@
                     <td></td>
                     <td></td>
                     <td>Thành tiền:</td>
-                    <th>@ViewBag.thanhtien <span>đ</span></th>
+                    <th>@String.Format( "{0:#,##0.##}",(ViewBag.thanhtien)) <span>đ</span></th>
                     </tfoot>
                     <tfoot>
                     <td></td>
@@ -145,7 +158,7 @@
                     <td></td>
                     <td></td>
                     <td>Chiết khấu:</td>
-                    <th>@ViewBag.chietkhau <span>đ</span></th>
+                    <th>@String.Format( "{0:#,##0.##}",(ViewBag.chietkhau)) <span>đ</span></th>
                     </tfoot>
 
 

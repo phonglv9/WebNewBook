@@ -18,10 +18,9 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                if (khachHang.ID_KhachHang == null)
-                {
+              
                     khachHang.ID_KhachHang = Guid.NewGuid().ToString();
-                }
+                
 
                 khachHang.TrangThai = 1;
                 _dbcontext.Add(khachHang);
