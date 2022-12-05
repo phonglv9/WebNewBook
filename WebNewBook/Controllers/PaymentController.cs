@@ -357,11 +357,17 @@ namespace WebNewBook.Controllers
                     }
 
                     string paymentUrl = vnpay.CreateRequestUrl(VNPayConfig.vnp_Url, VNPayConfig.vnp_HashSecret);
-                    HttpContext.Session.SetString("emailCustomer", khachHang.Email.ToString());
-                    //set mã khách hàng gửi sang cổng thanh toán 
+
+                   
                     if (khachHang.ID_KhachHang != "KHNOLOGIN")
                     {
-                        HttpContext.Session.SetString("idCustomer", khachHang.ID_KhachHang.ToString());
+                        //set mã khách hàng gửi sang cổng thanh toán 
+                        if (khachHang.Email != null)
+                        {
+                            HttpContext.Session.SetString("emailCustomer", khachHang.Email.ToString());
+                            HttpContext.Session.SetString("idCustomer", khachHang.ID_KhachHang.ToString());
+                        }
+                       
                     }
                     return Redirect(paymentUrl);
                 }
