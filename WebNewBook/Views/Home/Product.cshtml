@@ -283,13 +283,14 @@
 							@foreach( var item in Model)
 							{
 
-							
+							 var giamGia = 100 - item.sanPhams.GiaBan * 100 / item.sanPhams.GiaGoc;
+
 							<div class="col-md-4 col-xs-6">
 								<div class="product">
 									<div class="product-img">
-										<img src="~/img/product01.png" alt="">
+										 <img src="~/img/@item.sanPhams.HinhAnh" alt="">
 										<div class="product-label">
-											<span class="sale">-30%</span>
+											<span class="sale">-@giamGia</span>
 											<span class="new">NEW</span>
 										</div>
 									</div>
@@ -298,16 +299,30 @@
 									<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.sanPhams.ID_SanPham">@item.sanPhams.TenSanPham</a></h3>
 										<h4 class="product-price">@item.sanPhams.GiaBan.ToString("#,##0").Replace(',', '.')đ <del class="product-old-price">$990.00</del></h4>
 									
-										<div class="product-btns">
 										
-											<button class="quick-view"><i class="fa fa-eye"></i><span class="tooltipp">Xem chi tiết</span></button>
-										</div>
 									</div>
-									
-									<div class="add-to-cart">
+									 @if (item.sanPhams.SoLuong < 1)
+                                            {
+                                                <div class="add-to-cart">
+
+
+                                                    <button class="btn btn-warning" type="button"><i class="fa fa-shopping-cart"></i> Sản phẩm tạm hết hàng</button>
+
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <div class="add-to-cart">
+
+
+                                                    <button class="add-to-cart-btn" type="button" data-toggle="modal" data-target="#exampleModalCart" class="add-to-cart-btn" value="@item.sanPhams.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+
+                                                </div>
+                                            }
+									@*<div class="add-to-cart">
 										
 										<button type="button" class="add-to-cart-btn" data-toggle="modal" data-target="#exampleModalCart"value="@item.sanPhams.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-									</div>
+									</div>*@
 									
 								</div>
 							</div>

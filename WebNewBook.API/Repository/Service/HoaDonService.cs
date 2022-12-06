@@ -258,7 +258,7 @@ namespace WebNewBook.API.Repository.Service
 
             using var smtp = new MailKit.Net.Smtp.SmtpClient();
             smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-            smtp.Authenticate("phonglvph16158@fpt.edu.vn", "Ph@01248460961");
+            smtp.Authenticate("phonglvph16158@fpt.edu.vn", "Nhập mật khẩu ợ đẫy");
             smtp.Send(email);
             smtp.Disconnect(true);
 
