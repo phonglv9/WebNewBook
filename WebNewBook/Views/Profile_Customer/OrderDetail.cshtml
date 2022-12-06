@@ -26,15 +26,19 @@
             <div class="bg-white mb-2 p-3 ">
                 <div style="font-size: 13px;">
                     <h6>Chi tiết đơn hàng</h6>
-                    @if (orderbyid.TrangThai==0)
+                    @if (orderbyid.TrangThai==1)
                     {
                         <p><small class="rounded-pill p-1 bg-primary text-white ">Đơn hàng đang sử lý</small></p>
                     }
-                         @if (orderbyid.TrangThai==1)
+                         @if (orderbyid.TrangThai==4)
                     {
                         <p><small class="rounded-pill p-1 bg-danger text-white ">Đơn hàng thất bại</small></p>
                     }
                     @if (orderbyid.TrangThai == 2)
+                    {
+                        <p><small class="rounded-pill p-1 bg-warning text-white ">Đơn hàng đã thanh toán</small></p>
+                    }
+                    @if (orderbyid.TrangThai == 5)
                     {
                         <p><small class="rounded-pill p-1 bg-success text-white ">Đơn hàng thành công</small></p>
                     }

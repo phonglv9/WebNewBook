@@ -50,7 +50,7 @@ namespace WebNewBook.Controllers
             {
                 enddate = enddate.Value.AddDays(1);
             }
-            ViewBag.lstvoucher = Getvoucher.Where(c => c.TrangThai == 1 && ((!string.IsNullOrEmpty(search) ? c.Id.StartsWith(search) : true) || (!string.IsNullOrEmpty(search) ? c.TenPhatHanh.Contains(search) : true))
+            ViewBag.lstvoucher = Getvoucher.Where(c => c.TrangThai != 0 && ((!string.IsNullOrEmpty(search) ? c.Id.StartsWith(search) : true) || (!string.IsNullOrEmpty(search) ? c.TenPhatHanh.Contains(search) : true))
                                                                     && (startdate.HasValue ? c.StartDate >= startdate.Value : true)
                                                                     && (enddate.HasValue ? c.EndDate <= enddate.Value : true)
                                                                     && (type != null ? c.HinhThuc == type : true)).OrderByDescending(c => c.Createdate).ToPagedList(pageNumber, 10);

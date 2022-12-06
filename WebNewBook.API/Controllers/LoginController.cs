@@ -46,7 +46,7 @@ namespace WebNewBook.API.Controllers
         {
             if (userDto.NhanVien)
             {
-                if (_db.NhanViens.ToList().Exists(c => c.Email == userDto.Email && c.MatKhau == userDto.Password))
+                if (_db.NhanViens.ToList().Exists(c => c.Email == userDto.Email && c.MatKhau == userDto.Password && c.TrangThai == 1))
                 {
                     var user = _db.NhanViens.FirstOrDefault(c => c.Email == userDto.Email && c.MatKhau == userDto.Password);
                     var claims = new[]
@@ -61,7 +61,7 @@ namespace WebNewBook.API.Controllers
             }
             else
             {
-                if (_db.KhachHangs.ToList().Exists(c => c.Email == userDto.Email && c.MatKhau == userDto.Password))
+                if (_db.KhachHangs.ToList().Exists(c => c.Email == userDto.Email && c.MatKhau == userDto.Password && c.TrangThai == 1))
                 {
                     var user = _db.KhachHangs.FirstOrDefault(c => c.Email == userDto.Email && c.MatKhau == userDto.Password);
                     var claims = new[]
@@ -122,12 +122,14 @@ namespace WebNewBook.API.Controllers
                 smtp.Authenticate("phonglvph16158@fpt.edu.vn", "nhập mật khẩu ở đây");
                 smtp.Send(email);
                 smtp.Disconnect(true);
+                return Ok();
             }
-            return Ok();
+
+            return BadRequest("Đăng ký thất bại!");
         }
 
         [HttpGet]
-        public async Task<KhachHang> ConfirmEmail(string userId, string code, string pw, string sdt, string hoten, string diaChi, string ngaySinh)
+        public async Task<IActionResult> ConfirmEmail(string userId, string code, string pw, string sdt, string hoten, string diaChi, string ngaySinh)
         {
             var user = await userManager.FindByIdAsync(userId);
             if (user == null || _db.KhachHangs.Any(c => c.Email == user.Email))
@@ -151,7 +153,7 @@ namespace WebNewBook.API.Controllers
                 _db.Add(use);
                 _db.SaveChanges();
             }
-            return use;
+            return Redirect("https://localhost:7047/");
         }
         private IdentityUser CreateUser()
         {

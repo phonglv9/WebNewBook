@@ -53,7 +53,7 @@ namespace WebNewBook.Controllers
                 string jsonData = responseGet.Content.ReadAsStringAsync().Result;
                 sachs = JsonConvert.DeserializeObject<List<Sach>>(jsonData);
             };
-            return sachs ?? new List<Sach>();
+            return sachs?.Where(c => c.TrangThai == 1 && c.SoLuong > 0).ToList() ?? new List<Sach>();
         }
 
 
@@ -241,6 +241,11 @@ namespace WebNewBook.Controllers
             }
 
             return BadRequest();
+        }
+
+        public IActionResult SachDetail(string id)
+        {
+            return RedirectToAction("Update", "Sach", id);
         }
 
         private async Task<string> UpLoadFile(IFormFile file)
