@@ -96,7 +96,8 @@ namespace WebNewBook.Controllers
             {
                 string jsondata = response2.Content.ReadAsStringAsync().Result;
                 lstvoucher = JsonConvert.DeserializeObject<List<Voucher>>(jsondata);
-                ViewBag.VoucherPhatHanh = lstvoucher.Where(c => c.HinhThuc == 1 && c.SoLuong>0 && c.TrangThai==1);
+               
+                ViewBag.VoucherPhatHanh = lstvoucher.Where(c => c.HinhThuc == 1 &&  c.SoLuong>0 && c.TrangThai==1);
             }
 
             List<VoucherCT> lstvoucherCT = new List<VoucherCT>();
@@ -132,17 +133,26 @@ namespace WebNewBook.Controllers
             return View();
         }
 
-        public  int DoiVoucher(string id)
+        public IActionResult DoiVoucher(string id)
         {
 
             HttpClient _httpClient = new HttpClient();
             string Id_khachang = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
+
+
+
             HttpResponseMessage response = _httpClient.PutAsync("https://localhost:7266/api/VoucherCT/DoiVoucherAccount?maph=" + id+"&makh="+ Id_khachang, null).Result;
             if (response.IsSuccessStatusCode)
             {
-                return 1;
+
+                return RedirectToAction("VoucherWallet", new { mess = 1 });
             }
-            return 0;
+            else
+            {
+
+                return RedirectToAction("VoucherWallet", new { mess = 2 });
+            }
+
         }
 
 

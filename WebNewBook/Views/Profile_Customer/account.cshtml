@@ -64,7 +64,28 @@
                                     <td>@x.NgayMua.ToString("d/M/yyyy")</td>
                                     <td>@x.TenNguoiNhan</td>
                                     <td>@String.Format( "{0:#,##0.##}",(x.TongTien)) đ</td>
-                                    <td>@(x.TrangThai == 2 ? "Thành công" : x.Trangthai == 3 ? "Thất bại" : "Chờ duyệt")</td>
+                                    @if (x.TrangThai == 1)
+                                    {
+                                        <td class="text-primary">Đã đặt hàng</td>
+                                     
+                                    }
+                                    @if (x.TrangThai == 2)
+                                    {
+                                        <td class="text-warning">Đã thanh toán</td>
+                                       
+                                    }
+                                    @if (x.TrangThai == 5)
+                                    {
+                                        <td class="text-success">Thành công</td>
+                                      
+                                    }
+                                    @if (x.TrangThai == 4)
+                                    {
+                                        <td class="">Trả hàng</td>
+                                    }  @if (x.TrangThai == 6)
+                                    {
+                                        <td class="">Không tồn tại</td>
+                                    }
                                       @*//Trang thái đơn hàng :
                
                                     //1.Đặt hàng
