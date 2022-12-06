@@ -110,6 +110,7 @@ namespace WebNewBook.API.Repository.Service
                         var soluongVoucherCT = _dbcontext.VoucherCTs.Count(c => c.MaVoucher == Phathanh);
                         var model = _dbcontext.Vouchers.FirstOrDefault(c => c.Id == Phathanh);
                         model.SoLuong = soluongVoucherCT;
+                        model.TrangThai = 1;
                         _dbcontext.Vouchers.Update(model);
                         await _dbcontext.SaveChangesAsync();
 
@@ -126,6 +127,7 @@ namespace WebNewBook.API.Repository.Service
         {
             var modelVoucher = _dbcontext.Vouchers.FirstOrDefault(c => mavoucher == c.Id);
             if (modelVoucher != null)
+                modelVoucher.TrangThai = 1;
                 modelVoucher.SoLuong += 1;
             return modelVoucher;
         }
@@ -138,8 +140,11 @@ namespace WebNewBook.API.Repository.Service
                     voucherCT.NgayBatDau = null;
                     voucherCT.TrangThai = 0;
                     voucherCT.CreateDate = DateTime.Now;
+               
+                  
                     _dbcontext.VoucherCTs.Add(voucherCT);
                     _dbcontext.Vouchers.Update(SoluongVoucherCT(voucherCT.MaVoucher));
+
                     await _dbcontext.SaveChangesAsync();
                 }
             }
@@ -374,14 +379,20 @@ namespace WebNewBook.API.Repository.Service
                     if (  Voucher != null && Customer!=null)
                     {
                         VoucherCT voucherCT = lstVoucherCT[0];
+                        if (lstVoucherCT.Count==1)
+                        {
+                            Voucher.TrangThai = 3;
+                        }
                         voucherCT.MaKhachHang = maKh;
                         voucherCT.NgayBatDau = DateTime.Now;
                         voucherCT.TrangThai = 1;
                         voucherCT.HinhThuc = Voucher.HinhThuc;
                         voucherCT.Diemdoi = Voucher.DiemDoi;
+
                         Customer.DiemTichLuy = (int)(Customer.DiemTichLuy - Voucher.DiemDoi);
                         _dbcontext.VoucherCTs.Update(voucherCT);
                         _dbcontext.KhachHangs.Update(Customer);
+                        _dbcontext.Vouchers.Update(Voucher);
                     }
                     await _dbcontext.SaveChangesAsync();
 
