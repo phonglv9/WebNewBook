@@ -50,6 +50,24 @@ namespace WebNewBook.Controllers
         public async Task<IActionResult> Index(string? mess)
         {
             Giohangs();
+            List<SanPham> lstsanPham = new List<SanPham>();
+
+            HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/GetSanPham").Result;
+            if (response1.IsSuccessStatusCode)
+            {
+                string jsonData = response1.Content.ReadAsStringAsync().Result;
+                lstsanPham = JsonConvert.DeserializeObject<List<SanPham>>(jsonData);
+
+
+            };
+            foreach (var item in Giohangs())
+            {
+                //trangthai = lstsanPham.Where(A => A.ID_SanPham == item.Maasp && A.SoLuong < item.Soluong) ? 3 : 6;
+
+
+
+            }
+            
             ViewBag.MessUpdateCart = mess;
             var cart = Giohangs();
             var tongTien = cart.Sum(a => a.ThanhTien);
@@ -64,6 +82,8 @@ namespace WebNewBook.Controllers
         }
         public List<CartItem> Giohangs()
         {
+            var trangthai = 10;
+            
             List<CartItem> data = new List<CartItem>();
             if (User.Identity.Name == null)
             {
@@ -75,6 +95,7 @@ namespace WebNewBook.Controllers
                 {
                     data = JsonConvert.DeserializeObject<List<CartItem>>(jsonData);
                 }
+
                 else if (data == null)
                 {
                    
@@ -83,6 +104,7 @@ namespace WebNewBook.Controllers
 
 
                 }
+                
             }
             else
             {
@@ -158,12 +180,7 @@ namespace WebNewBook.Controllers
                     myCart.Add(item);
 
 
-                    if (SoLuong > 100)
-                    {
-                        return RedirectToAction("Index", new { mess = 1 });
-
-                    }
-                    else if (SoLuong >= modelHome.SoLuong)
+                    if (SoLuong > modelHome.SoLuong)
                     {
 
                         return RedirectToAction("Index", new { mess = 2 });
@@ -174,12 +191,7 @@ namespace WebNewBook.Controllers
                 }
                  else if (myCart.Exists(c => c.Maasp == id))
                 {
-                        if (SoLuong + item.Soluong > 100 || SoLuong > 100)
-                          {
-                             return RedirectToAction("Index", new { mess = 1 });
-
-                          }
-                        else if (SoLuong >= modelHome.SoLuong || item.Soluong >= modelHome.SoLuong)
+                        if (SoLuong + item.Soluong > modelHome.SoLuong || item.Soluong > modelHome.SoLuong)
                         {
 
                             return RedirectToAction("Index", new { mess = 2 });
@@ -293,16 +305,12 @@ namespace WebNewBook.Controllers
                     }
                     else if (myCart.Exists(c => c.Maasp == id))
                     {
-                        if (SoLuong >= modelHome.SoLuong || item.Soluong >= modelHome.SoLuong)
+                        if (SoLuong + item.Soluong > modelHome.SoLuong || item.Soluong > modelHome.SoLuong)
                         {
 
                             return Json("Số lượng không có sẵn");
                         }
-                        else if (SoLuong + item.Soluong>100 )
-                        {
-
-                            return Json("Số lượng trong giỏ không thể vượt 100");
-                        }
+                    
                         else
                         {
                             item.Soluong += SoLuong;
@@ -352,11 +360,7 @@ namespace WebNewBook.Controllers
                     {
                         string jsonData = response1.Content.ReadAsStringAsync().Result;
                         mess = JsonConvert.DeserializeObject<int>(jsonData);
-                        if (mess == 1)
-                        {
-                            return Json("Số lượng trong giỏ không thể vượt 100");
-                        }
-                        else if(mess == 2)
+                         if(mess == 2)
                         {
                             return Json("Số lượng không có sẵn");
                         }
@@ -397,7 +401,7 @@ namespace WebNewBook.Controllers
                         }
                         else
                         {
-                            return RedirectToAction("Index", new { mess = "Số lượng" + soluongmoi + "không có sẵn" });
+                            return RedirectToAction("Index", new { mess =2 });
                         }
                     }
                     else
@@ -406,13 +410,7 @@ namespace WebNewBook.Controllers
                         {
                             item.Soluong = item.Soluong + 1;
                             item.ThanhTien = item.Soluong * item.DonGia;
-                            if (item.Soluong>100)
-                            {
-                                item.Soluong = item.Soluong - 1;
-                                item.ThanhTien = item.Soluong * item.DonGia;
-                                return RedirectToAction("Index", new { mess = 1 });
-                            }
-                           else if (item.Soluong  > sanPham.SoLuong)
+                            if (item.Soluong +1  > sanPham.SoLuong)
                             {
                                 item.Soluong = item.Soluong - 1;
                                 item.ThanhTien = item.Soluong * item.DonGia;
