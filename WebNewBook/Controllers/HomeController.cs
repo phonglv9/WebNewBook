@@ -82,7 +82,15 @@ namespace WebNewBook.Controllers
         {
 
             #region Product
+            //SanPham
 
+            List<HomeVM> productStore = new List<HomeVM>();
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/Product").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonData = response.Content.ReadAsStringAsync().Result;
+                productStore = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
+            };
 
             //DanhMuc
             List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
@@ -115,15 +123,7 @@ namespace WebNewBook.Controllers
                 ViewBag.TacGia = await tacGias.ToListAsync();
             };
 
-            //SanPham
-
-            List<HomeVM> productStore = new List<HomeVM>();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/Product").Result;
-            if (response.IsSuccessStatusCode)
-            {
-                string jsonData = response.Content.ReadAsStringAsync().Result;
-                productStore = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
-            };
+            
 
 
 

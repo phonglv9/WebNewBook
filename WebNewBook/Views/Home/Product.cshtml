@@ -27,10 +27,6 @@
 	{
 		priceMax = ViewBag.PriceMax;
 		priceMin = ViewBag.PriceMin;
-	}else
-	{
-		priceMax = 999000;
-		priceMin = 1000;
 	}
 
 
@@ -277,7 +273,7 @@
 							
 						</div>
 						<!-- store products -->
-						<s class="row">
+						<div class="row">
 							<!-- product -->
 							
 							@foreach( var item in Model)
@@ -319,18 +315,16 @@
 
                                                 </div>
                                             }
-									@*<div class="add-to-cart">
-										
-										<button type="button" class="add-to-cart-btn" data-toggle="modal" data-target="#exampleModalCart"value="@item.sanPhams.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-									</div>*@
+								
 									
 								</div>
 							</div>
 							<!-- /product -->
+							<div class="clearfix visible-sm visible-xs"></div>
 							}
 
 							
-						</s>
+						</div>
 						<!-- /store products -->
 				@{
 					var prevDisabled = !Model.HasPreviousPage ? "disabled" : "";

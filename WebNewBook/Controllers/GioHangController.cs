@@ -64,6 +64,8 @@ namespace WebNewBook.Controllers
         }
         public List<CartItem> Giohangs()
         {
+            ////Kiểm tra số lượng :
+
             List<CartItem> data = new List<CartItem>();
             if (User.Identity.Name == null)
             {
@@ -123,6 +125,8 @@ namespace WebNewBook.Controllers
 
         public IActionResult AddToCartCT(string id, int SoLuong)
         {
+            /////
+
             if (User.Identity.Name == null)
             {
                 SanPham modelHome = new SanPham();

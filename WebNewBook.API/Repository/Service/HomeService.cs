@@ -34,7 +34,6 @@ namespace WebNewBook.API.Repository.Service
                        join g in tacGia on d.MaTacGia equals g.ID_TacGia
                        select new HomeViewModel
                        {
-
                            ID_SanPham = a.ID_SanPham,
                            TenSanPham = a.TenSanPham,
                            SoLuong = a.SoLuong,
@@ -47,6 +46,7 @@ namespace WebNewBook.API.Repository.Service
                            NgayTao = a.NgayTao,
                     
                        }).ToList();
+
             List<HomeViewModel> lst = new List<HomeViewModel>();
             foreach (var item in homeVMs2.DistinctBy(c=>c.ID_SanPham).Where(c => c.TrangThai == 1).ToList())
             {
@@ -56,7 +56,7 @@ namespace WebNewBook.API.Repository.Service
 
             return lst;
         }
-        public async Task<List<ProductVM>> GetProductHome()
+        public async Task<IEnumerable<ProductVM>> GetProductHome()
         {
             var sanPham = await _dbContext.SanPhams.ToListAsync();
             var sanPhamCT = await _dbContext.SanPhamCTs.ToListAsync();

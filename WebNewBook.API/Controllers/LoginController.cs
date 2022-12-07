@@ -119,7 +119,7 @@ namespace WebNewBook.API.Controllers
 
                 using var smtp = new MailKit.Net.Smtp.SmtpClient();
                 smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                smtp.Authenticate("phonglvph16158@fpt.edu.vn", "nhập mật khẩu ở đây");
+                smtp.Authenticate("phonglvph16158@fpt.edu.vn", "Ph@01248460961");
                 smtp.Send(email);
                 smtp.Disconnect(true);
                 return Ok();

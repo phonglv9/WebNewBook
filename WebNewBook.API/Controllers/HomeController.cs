@@ -25,7 +25,7 @@ namespace WebNewBook.API.Controllers
 
         }
         [HttpGet("Product")]
-        public async Task<List<ProductVM>> GetProuctHomes()
+        public async Task<IEnumerable<ProductVM>> GetPrHomes()
         {
             return await _homeService.GetProductHome();
 
