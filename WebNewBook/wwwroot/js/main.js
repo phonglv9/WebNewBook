@@ -122,7 +122,7 @@
 
 			var value = parseInt($input.val()) + 1;
 
-			if (value > 100) {
+			if (value > 100000000000) {
 				$('.messErorr').html("số lượng ko được quá 100");
 				$('.add-to-cart-btn').hide();
 
@@ -234,14 +234,7 @@
 	$("#getvalue").keyup(function () {
 		
 		var valua = $(this).val();
-		if (valua > 100) {
-			$('.add-to-cart-btn').hide();
-			/*$('.messErorr').("số lượng ko được quá 100");*/
-			alert("số lượng ko được quá 100");
-			
-
-		}
-		else if (valua <= 0) {
+		 if (valua <= 0) {
 			$('.add-to-cart-btn').hide();
 			/*$('.messErorr').html("số lượng ko được nhỏ hơn 1");*/
 			alert("số lượng ko được nhỏ hơn 1");

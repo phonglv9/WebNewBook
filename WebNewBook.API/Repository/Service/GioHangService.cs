@@ -22,6 +22,9 @@ namespace WebNewBook.API.Repository.Service
         {
             var listsp = _dbContext.SanPhams.ToList();
             var listgh = _dbContext.GioHangs.ToList();
+            var giohang = listgh.SingleOrDefault(c => c.Maasp == idsp);
+            var sanpham = listsp.SingleOrDefault(c => c.ID_SanPham == idsp);
+           
             GioHang giohangs = new GioHang();
             giohangs.ID_GioHang= "GH" + Guid.NewGuid().ToString();
             giohangs.HinhAnh = HinhAnh;
@@ -32,14 +35,9 @@ namespace WebNewBook.API.Repository.Service
             giohangs.DonGia= listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.GiaBan).FirstOrDefault();
               if (listgh.Exists(c => c.Maasp == idsp&&c.emailKH==emailKH))
             {
-                var giohang = listgh.SingleOrDefault(c => c.Maasp == idsp);
-                var sanpham= listsp.SingleOrDefault(c => c.ID_SanPham == idsp);
-                if (SoLuongs + giohang.Soluong > 100 || SoLuongs > 100)
-                {
-                    return 1;
-
-                }
-                else if (SoLuongs >= sanpham.SoLuong || giohang.Soluong >= sanpham.SoLuong)
+                
+               
+                 if (SoLuongs + giohang.Soluong > sanpham.SoLuong || giohang.Soluong > sanpham.SoLuong)
                 {
 
                     return 2;
@@ -60,7 +58,13 @@ namespace WebNewBook.API.Repository.Service
 
             }
             else
+             
             {
+                if (SoLuongs > sanpham.SoLuong)
+                {
+
+                    return 2;
+                }
                 giohangs.Soluong += SoLuongs;
             }
             _dbContext.Add(giohangs);
@@ -112,12 +116,7 @@ namespace WebNewBook.API.Repository.Service
                 if (update == "1") {
                     giohang.Soluong = giohang.Soluong+1;
                     giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
-                    if (giohang.Soluong > 100)
-                    {
-                      
-                        return 1;
-                    }
-                    else if (giohang.Soluong > Sanpham.SoLuong)
+                    if (giohang.Soluong + soluongmoi > Sanpham.SoLuong)
                     {
                       
                         return 2;
@@ -195,6 +194,13 @@ namespace WebNewBook.API.Repository.Service
    
             _dbContext.RemoveRange(listgh);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<List<SanPham>> getSP()
+        {
+            var listsp = await _dbContext.SanPhams.ToListAsync();
+
+            return listsp;
         }
     }
 }

@@ -28,6 +28,12 @@ namespace WebNewBook.API.Controllers
             return await _GioHangService.GetlistGH();
 
         }
+        [HttpGet("GetSanPham")]
+        public async Task<List<SanPham>> GetSanPham()
+        {
+            return await _GioHangService.getSP();
+
+        }
         [HttpGet("SanPham/{id}")]
         public async Task<SanPham> Getsp(string id)
         {
@@ -51,11 +57,7 @@ namespace WebNewBook.API.Controllers
         [HttpGet("Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}")]
         public async Task<int> Addgiohang(string HinhAnh,int SoLuongs,string emailKH,string idsp)
         {
-            
-          
-            
-            
-                
+
                 return await _GioHangService.AddGioHangAsync(HinhAnh, SoLuongs, emailKH, idsp); 
            
         }
