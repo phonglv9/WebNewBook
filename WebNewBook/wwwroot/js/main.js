@@ -140,30 +140,30 @@
 
 	let priceInputMax = document.getElementById('price-max');
 	let priceInputMin = document.getElementById('price-min');
-	if (priceInputMax != null) {
-		priceInputMax.addEventListener('input', function () {
-			if (priceInputMax.value > 999000) {
+	//if (priceInputMax != null) {
+	//	priceInputMax.addEventListener('input', function () {
+	//		if (priceInputMax.value > 999000) {
 
-				priceInputMax.value = 999000;
-			}
-			if (priceInputMax.value < 1000) {
+	//			priceInputMax.value = 999000;
+	//		}
+	//		if (priceInputMax.value < 1000) {
 				
-				priceInputMax.value = 1000;
-			}
-		})
-	}
-	if (priceInputMin != null) {
-		priceInputMin.addEventListener('input', function () {
-			if (priceInputMin.value > 999000) {
+	//			priceInputMax.value = 1000;
+	//		}
+	//	})
+	//}
+	//if (priceInputMin != null) {
+	//	priceInputMin.addEventListener('input', function () {
+	//		if (priceInputMin.value > 999000) {
 				
-				priceInputMin.value = 999000;
-			}
-			if (priceInputMin.value < 1000) {
+	//			priceInputMin.value = 999000;
+	//		}
+	//		if (priceInputMin.value < 1000) {
 
-				priceInputMin.value = 1000;
-			}
-		});
-	}
+	//			priceInputMin.value = 1000;
+	//		}
+	//	});
+	//}
 	if (priceInputMax != null) {
 		priceInputMax.addEventListener('change', function () {
 			

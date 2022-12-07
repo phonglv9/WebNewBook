@@ -84,12 +84,12 @@ namespace WebNewBook.Controllers
             #region Product
             //SanPham
 
-            List<HomeVM> productStore = new List<HomeVM>();
+            List<ProductVM> productStore = new List<ProductVM>();
             HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/Product").Result;
             if (response.IsSuccessStatusCode)
             {
                 string jsonData = response.Content.ReadAsStringAsync().Result;
-                productStore = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
+                productStore = JsonConvert.DeserializeObject<List<ProductVM>>(jsonData);
             };
 
             //DanhMuc
@@ -141,7 +141,7 @@ namespace WebNewBook.Controllers
 
             if (pageSize == 0)
             {
-                pageSize = 4;
+                pageSize = 20;
             }
 
             if (search != null)
@@ -166,23 +166,23 @@ namespace WebNewBook.Controllers
 
                     break;
                 case "Giá cao nhất":
-                    productStore = await productStore.OrderByDescending(c => c.sanPhams.GiaBan).ToListAsync();
+                    productStore = await productStore.OrderByDescending(c => c.GiaBan).ToListAsync();
                     break;
                 case "Giá thấp nhất":
-                    productStore = await productStore.OrderBy(c => c.sanPhams.GiaBan).ToListAsync();
+                    productStore = await productStore.OrderBy(c => c.GiaBan).ToListAsync();
                     break;
                 case "A-Z":
-                    productStore = await productStore.OrderBy(c => c.sanPhams.TenSanPham).ToListAsync();
+                    productStore = await productStore.OrderBy(c => c.TenSanPham).ToListAsync();
                     break;
                 case "Z-A":
-                    productStore = await productStore.OrderByDescending(c => c.sanPhams.TenSanPham).ToListAsync();
+                    productStore = await productStore.OrderByDescending(c => c.TenSanPham).ToListAsync();
                     break;
 
             }
             #region Fillter price
             if (priceMax != 0 || priceMin != 0)
             {
-                productStore = await productStore.Where(c => c.sanPhams.GiaBan >= priceMin && c.sanPhams.GiaBan <= priceMax).ToListAsync();
+                productStore = await productStore.Where(c => c.GiaBan >= priceMin && c.GiaBan <= priceMax).ToListAsync();
                 ViewBag.NumberProduct = productStore.Count();
 
             }
@@ -196,20 +196,20 @@ namespace WebNewBook.Controllers
             if (!String.IsNullOrEmpty(search) && !(iddanhmuc == "Tất cả sách"))
             {
                 search = search.ToLower();
-                productStore = await productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc && c.sanPhams.TenSanPham.ToLower().Contains(search)).ToListAsync();
+                productStore = await productStore.Where(c => c.idDanhMuc == iddanhmuc && c.TenSanPham.ToLower().Contains(search)).ToListAsync();
                 if (productStore.Count == 0)
                 {
                     ViewBag.TextSearch = $"Không tìm thấy kết quả {search} trong danh mục";
                 }
                 ViewBag.NumberProduct = productStore.Count();
-                return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+                return View(await PaginatedList<ProductVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
 
             }
 
             if (!String.IsNullOrEmpty(search))
             {
                 search = search.ToLower();
-                productStore = await productStore.Where(c => c.sanPhams.TenSanPham.ToLower().Contains(search)).ToListAsync();
+                productStore = await productStore.Where(c => c.TenSanPham.ToLower().Contains(search)).ToListAsync();
 
                 if (productStore.Count == 0 || productStore == null)
                 {
@@ -218,7 +218,7 @@ namespace WebNewBook.Controllers
 
                 ViewBag.NumberProduct = productStore.Count();
 
-                return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+                return View(await PaginatedList<ProductVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
 
             }
 
@@ -227,9 +227,9 @@ namespace WebNewBook.Controllers
                 if (iddanhmuc == "Tất cả sách")
                 {
                     ViewBag.NumberProduct = productStore.Count();
-                    return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+                    return View(await PaginatedList<ProductVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
                 }
-                productStore = await productStore.Where(c => c.danhMucSach.ID_DanhMuc == iddanhmuc).ToListAsync();
+                productStore = await productStore.Where(c => c.idDanhMuc == iddanhmuc).ToListAsync();
                 if (productStore == null || productStore.Count == 0)
                 {
                     ViewBag.ProductNull = "Không có sản phẩm";
@@ -237,17 +237,17 @@ namespace WebNewBook.Controllers
                 }
                 else
                 {
-                    ViewBag.ProductSS = productStore.Select(c => c.danhMucSach.TenDanhMuc).Distinct();
+                    ViewBag.ProductSS = productStore.Select(c => c.TenDanhMuc).Distinct();
                 }
                 ViewBag.NumberProduct = productStore.Count();
 
-                return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+                return View(await PaginatedList<ProductVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
 
             }
             if (!String.IsNullOrEmpty(idtheloai))
             {
 
-                productStore = await productStore.Where(c => c.theLoai.ID_TheLoai == idtheloai).ToListAsync();
+                productStore = await productStore.Where(c => c.idTheLoai == idtheloai).ToListAsync();
                 if (productStore == null || productStore.Count == 0)
                 {
                     ViewBag.ProductNull = "Không có sản phẩm";
@@ -255,17 +255,17 @@ namespace WebNewBook.Controllers
                 }
                 else
                 {
-                    ViewBag.ProductSS = productStore.Select(c => c.theLoai.TenTL).Distinct();
+                    ViewBag.ProductSS = productStore.Select(c => c.TenTheLoai).Distinct();
                 }
                 ViewBag.NumberProduct = productStore.Count();
-                return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+                return View(await PaginatedList<ProductVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
 
 
             }
             if (!String.IsNullOrEmpty(idtacgia))
             {
 
-                productStore = await productStore.Where(c => c.tacGia.ID_TacGia == idtacgia).ToListAsync();
+                productStore = await productStore.Where(c => c.idTacGia == idtacgia).ToListAsync();
                 if (productStore == null || productStore.Count == 0)
                 {
                     ViewBag.ProductNull = "Không có sản phẩm";
@@ -273,10 +273,10 @@ namespace WebNewBook.Controllers
                 }
                 else
                 {
-                    ViewBag.ProductSS = productStore.Select(c => c.tacGia.HoVaTen).Distinct();
+                    ViewBag.ProductSS = productStore.Select(c => c.TenTacGia).Distinct();
                 }
                 ViewBag.NumberProduct = productStore.Count();
-                return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+                return View(await PaginatedList<ProductVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
 
 
             }
@@ -286,7 +286,7 @@ namespace WebNewBook.Controllers
 
 
             ViewBag.NumberProduct = productStore.Count();
-            return View(await PaginatedList<HomeVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
+            return View(await PaginatedList<ProductVM>.CreateAsync(await productStore.ToListAsync(), pageNumber ?? 1, pageSize));
         }
 
         public async Task<IActionResult> ProductDetaill(string id)

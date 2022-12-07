@@ -58,15 +58,15 @@ namespace WebNewBook.API.Repository.Service
         }
         public async Task<IEnumerable<ProductVM>> GetProductHome()
         {
-            var sanPham = await _dbContext.SanPhams.ToListAsync();
-            var sanPhamCT = await _dbContext.SanPhamCTs.ToListAsync();
-            var sachCT = await _dbContext.SachCTs.ToListAsync();
-            var sach = await _dbContext.Sachs.ToListAsync();
-            var theLoai = await _dbContext.TheLoais.ToListAsync();
-            var danhMuc = await _dbContext.DanhMucSachs.ToListAsync();
-            var tacGia = await _dbContext.TacGias.ToListAsync();
-            List<ProductVM> homeVMs = new List<ProductVM>();
-            homeVMs = (from a in sanPham
+            var sanPham = _dbContext.SanPhams;
+            var sanPhamCT = _dbContext.SanPhamCTs;
+            var sachCT = _dbContext.SachCTs;
+            var sach = _dbContext.Sachs;
+            var theLoai = _dbContext.TheLoais;
+            var danhMuc = _dbContext.DanhMucSachs;
+            var tacGia = _dbContext.TacGias;
+           
+           var  products = (from a in sanPham
                        join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
                        join c in sach on b.MaSach equals c.ID_Sach
                        join d in sachCT on c.ID_Sach equals d.MaSach
@@ -75,17 +75,29 @@ namespace WebNewBook.API.Repository.Service
                        join g in tacGia on d.MaTacGia equals g.ID_TacGia
                        select new ProductVM()
                        {
-                           sanPhams = a,
-                           SanPhamCT = b,
-                           sach = c,
-                           sachCT = d,
-                           theLoai = e,
-                           danhMucSach = f,
-                           tacGia = g,
-                       }).ToList().DistinctBy(c=>c.sanPhams.ID_SanPham).ToList();
-                     
+                           ID_SanPham = a.ID_SanPham,
+                           TenSanPham = a.TenSanPham ,
+                           SoLuong = a.SoLuong,
+                           GiaBan = a.GiaBan,
+                           GiaGoc = a.GiaGoc,
+                           TrangThai = a.TrangThai,
+                           HinhAnh = a.HinhAnh,
+                           idTheLoai = e.ID_TheLoai,
+                           TenTheLoai = e.TenTL,
+                           idDanhMuc = f.ID_DanhMuc,
+                            TenDanhMuc = f.TenDanhMuc,
+                            idTacGia = g.ID_TacGia,
+                            TenTacGia = g.HoVaTen,
+                           
+                           
+             }).Where(c=>c.TrangThai == 1).ToList();
 
-            return  homeVMs;
+            List<ProductVM> lst = new List<ProductVM>();
+            foreach (var item in products.DistinctBy(c => c.ID_SanPham).Where(c => c.TrangThai == 1).ToList())
+            {
+                lst.Add(item);
+            }
+            return lst;
         }
         public async Task<SanPhamChiTiet> GetProductDetail (string id)
         {

@@ -199,23 +199,36 @@
                     @if (ViewBag.NavBar != null)
                     @foreach (var item in ViewBag.NavBar)
                     {
-                        @*<li><a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})">@item.TenDanhMuc</a></li>*@
-                        <li class="dropdown">
-                        <a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})" class="dropdown-toggle"@* data-toggle="dropdown"*@>@item.TenDanhMuc <b class="caret"></b></a>
-                        @if (item.TheLoais != null)
+                          <li class="dropdown">
+                          <a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})"  class="dropdown-toggle" @*data-toggle="dropdown"*@ role="button" aria-haspopup="true" aria-expanded="false">@item.TenDanhMuc <span class="caret"></span></a>
+                           @if (item.TheLoais != null)
                             {
-                             foreach (var itemtl in item.TheLoais)
-                                {
-                                             
-                                <ul class="dropdown-menu">
-                                  <li><a href="@Url.Action("Product", "Home", new { idtheloai= itemtl.ID_TheLoai})">@itemtl.TenTL</a></li>
-                          
-                                </ul>
-                                }
-                            }
-                      </li>
-                    }
+                            
+                          <ul class="dropdown-menu">
+                             @foreach (var itemtl in item.TheLoais)
+                              {
 
+
+                            <li><a href="@Url.Action("Product", "Home", new { idtheloai= itemtl.ID_TheLoai})">@itemtl.TenTL</a></li>
+                              
+                              
+                              
+                              }
+                          </ul>
+                             
+                            }
+                        </li>
+
+                    }
+                    <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
+                  <ul class="dropdown-menu">
+                    <li><a href="#">Action</a></li>
+                    <li><a href="#">Another action</a></li>
+                    <li><a href="#">Something else here</a></li>
+                    
+                   
+                    </ul>
             </ul>
             <!-- /NAV -->
         </div>

@@ -148,7 +148,7 @@ namespace WebNewBook.API.Repository.Service
         }
 
        
-
+        //Truy vấn lại giỏ hàng:
         public async Task<List<HomeVM>> VM()
 		{
             var sanPham = await _dbContext.SanPhams.ToListAsync();
