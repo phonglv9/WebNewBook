@@ -49,25 +49,45 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Index(string? mess)
         {
-            Giohangs();
-            List<SanPham> lstsanPham = new List<SanPham>();
-
-            HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/GetSanPham").Result;
-            if (response1.IsSuccessStatusCode)
-            {
-                string jsonData = response1.Content.ReadAsStringAsync().Result;
-                lstsanPham = JsonConvert.DeserializeObject<List<SanPham>>(jsonData);
-
-
-            };
-            foreach (var item in Giohangs())
-            {
-                //trangthai = lstsanPham.Where(A => A.ID_SanPham == item.Maasp && A.SoLuong < item.Soluong) ? 3 : 6;
-
-
-
-            }
             
+           // Giohangs();
+           // List<SanPham> lstsanPham = new List<SanPham>();
+
+           // HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/GetSanPham").Result;
+           // if (response1.IsSuccessStatusCode)
+           // {
+           //     string jsonData = response1.Content.ReadAsStringAsync().Result;
+           //     lstsanPham = JsonConvert.DeserializeObject<List<SanPham>>(jsonData);
+
+
+           // };
+           // List<CartItem> listcart=new List<CartItem>();
+           //if (Giohangs()!= null)
+           // {
+           //     foreach (var item in Giohangs())
+           //     {
+           //         var soluongsp = 0;
+           //         soluongsp = lstsanPham.Single(a => a.ID_SanPham == item.Maasp).SoLuong;
+
+           //         if (item.Soluong > soluongsp)
+           //         {
+           //             item.Soluong = soluongsp;
+           //             listcart.Add(item);
+           //             mess = "1";
+
+           //         }
+
+
+
+           //     }
+           // }
+           // var json = System.Text.Json.JsonSerializer.Serialize(listcart);
+           // Response.Cookies.Append("Cart", json, new Microsoft.AspNetCore.Http.CookieOptions
+           // {
+           //     Expires = DateTimeOffset.Now.AddDays(3)
+           // });
+            Giohangs();
+
             ViewBag.MessUpdateCart = mess;
             var cart = Giohangs();
             var tongTien = cart.Sum(a => a.ThanhTien);
@@ -82,7 +102,7 @@ namespace WebNewBook.Controllers
         }
         public List<CartItem> Giohangs()
         {
-            var trangthai = 10;
+            
             
             List<CartItem> data = new List<CartItem>();
             if (User.Identity.Name == null)

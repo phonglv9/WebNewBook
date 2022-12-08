@@ -17,11 +17,11 @@
 				<div class="col-md-5 col-md-push-2">
 					<div id="product-main-img">
 						<div class="product-preview">
-							<img src="~/img/@ViewBag.SanphamCT.sanPhams.HinhAnh" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.HinhAnh" alt="">
 						</div>
 
 						<div class="product-preview">
-							<img src="~/img/@ViewBag.SanphamCT.sanPhams.HinhAnh" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.HinhAnh" alt="">
 						</div>
 
 
@@ -32,11 +32,11 @@
 				<div class="col-md-2  col-md-pull-5">
 					<div id="product-imgs">
 						<div class="product-preview">
-							<img src="~/img/@ViewBag.SanphamCT.sanPhams.HinhAnh" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.HinhAnh" alt="">
 						</div>
 
 						<div class="product-preview">
-							<img src="~/img/@ViewBag.SanphamCT.sanPhams.HinhAnh" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.HinhAnh" alt="">
 						</div>
 
 					</div>
@@ -47,7 +47,7 @@
 					<div class="product-details">
 						<h2 class="product-name">
 
-							@ViewBag.SanphamCT.sanPhams.TenSanPham
+							@ViewBag.SanphamCT.TenSanPham
 
 
 
@@ -58,7 +58,7 @@
 							<h3 class="product-price">
 
 
-								@ViewBag.SanphamCT.sanPhams.GiaBan
+								@ViewBag.SanphamCT.GiaBan
 
 								<del class="product-old-price"></del>
 							</h3>
@@ -79,7 +79,7 @@
 							}
 						</ul>
 						<br>
-						<form asp-controller="GioHang" asp-action="AddToCartCT" asp-route-id="@ViewBag.SanphamCT.sanPhams.ID_SanPham ">
+						<form asp-controller="GioHang" asp-action="AddToCartCT" asp-route-id="@ViewBag.SanphamCT.ID_SanPham ">
 							<div class="add-to-cart">
 								<div class="qty-label">
 									Số lượng
@@ -131,7 +131,7 @@
 									<div class="col-md-12">
 										<p>
 
-											@ViewBag.SanphamCT.sach.MoTa
+											@ViewBag.SanphamCT.Mota
 
 										</p>
 									</div>
@@ -153,19 +153,31 @@
 
 												<tr>
 													<td>Tên sách :</td>
-													<td class="col-2">@ViewBag.SanphamCT.sach.TenSach</td>
+													<td class="col-2">@ViewBag.SanphamCT.TenSanPham</td>
 												</tr>
 												<tr>
 													<td>Số trang :</td>
-													<td> @ViewBag.SanphamCT.sach.SoTrang</td>
+													<td> @ViewBag.SanphamCT.sotrang</td>
 												</tr>
 												<tr>
 													<td>Tái bản :</td>
-													<td> @ViewBag.SanphamCT.sach.TaiBan</td>
+													<td> @ViewBag.SanphamCT.taiban</td>
 												</tr>
 												<tr>
-													<td>Số lượng : :</td>
-													<td>@ViewBag.SanphamCT.sach.SoLuong</td>
+													<td>Số lượng : </td>
+													<td>@ViewBag.SanphamCT.SoLuong</td>
+												</tr>
+												<tr>
+													<td>Tên tác giả : </td>
+													<td>@ViewBag.SanphamCT.TenTacGia</td>
+												</tr>
+												<tr>
+													<td>Tên thể loại : </td>
+													<td>@ViewBag.SanphamCT.TenTheLoai</td>
+												</tr>
+												<tr>
+													<td>Tên nhà xuất bản : </td>
+													<td>@ViewBag.SanphamCT.TenNhaXuatBan</td>
 												</tr>
 
 											</tbody>
@@ -222,19 +234,19 @@
 												<!-- product -->
 												<div class="product">
 													<div class="product-img">
-													<img src="~/img/@a.sanPhams.HinhAnh" alt="">
+													<img src="~/img/@a.HinhAnh" alt="">
 													</div>
 													<div class="product-body">
 														
 																<p class="product-category">
 
-																	@a.danhMucSach.TenDanhMuc
+													              @a.TenDanhMuc
 
 
 																</p>
-															
-														<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@a.sanPhams.ID_SanPham"> @a.sanPhams.TenSanPham</a> </h3>
-														<h4 class="product-price"> @a.sanPhams.GiaBan <del class="product-old-price"> </del></h4>
+
+												<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@a.ID_SanPham"> @a.TenSanPham</a> </h3>
+												<h4 class="product-price"> @a.GiaBan <del class="product-old-price"> </del></h4>
 
 
 													</div>

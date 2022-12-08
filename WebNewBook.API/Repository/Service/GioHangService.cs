@@ -29,7 +29,7 @@ namespace WebNewBook.API.Repository.Service
             giohangs.ID_GioHang= "GH" + Guid.NewGuid().ToString();
             giohangs.HinhAnh = HinhAnh;
             giohangs.Soluong = 0;
-            giohangs.emailKH = emailKH;
+            giohangs.emailKH = emailKH; 
             giohangs.Maasp = idsp;
             giohangs.Tensp = listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.TenSanPham).FirstOrDefault();
             giohangs.DonGia= listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.GiaBan).FirstOrDefault();
@@ -51,8 +51,7 @@ namespace WebNewBook.API.Repository.Service
 
                     await _dbContext.SaveChangesAsync();
                     return 3;
-
-                    
+    
                 }
 
 

@@ -99,39 +99,56 @@ namespace WebNewBook.API.Repository.Service
             }
             return lst;
         }
+       
         public async Task<SanPhamChiTiet> GetProductDetail (string id)
         {
 
+
+            var sanPham = _dbContext.SanPhams;
+            var sanPhamCT = _dbContext.SanPhamCTs;
+            var sachCT = _dbContext.SachCTs;
+            var sach = _dbContext.Sachs;
+            var theLoai = _dbContext.TheLoais;
+            var danhMuc = _dbContext.DanhMucSachs;
+            var tacGia = _dbContext.TacGias;
+            var nhaxuatban = _dbContext.NhaXuatBans;
+
+            var products = (from a in sanPham
+                            join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
+                            join c in sach on b.MaSach equals c.ID_Sach
+                            join d in sachCT on c.ID_Sach equals d.MaSach
+                            join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
+                            join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
+                            join g in tacGia on d.MaTacGia equals g.ID_TacGia
+                            join x in nhaxuatban on c.MaNXB equals x.ID_NXB
+                            select new SanPhamChiTiet()
+                            {
+                                ID_SanPham = a.ID_SanPham,
+                                TenSanPham = a.TenSanPham,
+                                SoLuong = a.SoLuong,
+                                GiaBan = a.GiaBan,
+                                GiaGoc = a.GiaGoc,
+                                TrangThai = a.TrangThai,
+                                HinhAnh = a.HinhAnh,
+                                idTheLoai = e.ID_TheLoai,
+                                TenTheLoai = e.TenTL,
+                                idDanhMuc = f.ID_DanhMuc,
+                                TenDanhMuc = f.TenDanhMuc,
+                                idTacGia = g.ID_TacGia,
+                                TenTacGia = g.HoVaTen,
+                                sotrang=c.SoTrang,
+                                taiban=c.TaiBan,
+                                TenNhaXuatBan=x.TenXuatBan,
+                                Mota= c.MoTa,
+
+
+                            }).Where(c => c.TrangThai == 1).ToList();
+
+
+            var lst = products.Where(c => c.ID_SanPham == id).FirstOrDefault();
+              
             
-            var sanPhamCT = await _dbContext.SanPhamCTs.ToListAsync();
-            var sachCT = await _dbContext.SachCTs.ToListAsync();
-            var sach = await _dbContext.Sachs.ToListAsync();
-            var sanPham = await _dbContext.SanPhams.ToListAsync();
-            var theLoai = await _dbContext.TheLoais.ToListAsync();
-            var tacGia = await _dbContext.TacGias.ToListAsync();
-
-            List<SanPhamChiTiet> homeVMs = new List<SanPhamChiTiet>();
-            homeVMs = (from a in sanPhamCT join b in sach on a.MaSach equals b.ID_Sach
-                       join c in sachCT on b.ID_Sach equals c.MaSach
-                       join d in sanPham on a.MaSanPham equals d.ID_SanPham
-                       join j in tacGia on c.MaTacGia equals j.ID_TacGia
-                       join k in theLoai on c.MaTheLoai equals k.ID_TheLoai
-                       select new SanPhamChiTiet()
-                       {
-                          SanPhamCT=a,
-                          sach=b,
-                          sachCT=c,
-                          sanPhams=d,
-                          tacGia=j,
-                          theLoai=k
-
-                          
-                       }).ToList();
-
-            var x = homeVMs.Where(o => o.sanPhams.ID_SanPham == id).First();
-
-
-            return x;
+            return lst;
         }
         public async Task<List<TheLoai>> GetTheLoais()
         {
