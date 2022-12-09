@@ -18,10 +18,10 @@ namespace WebNewBook.API.ModelsAPI
         public string idTheLoai { get; set; }
         public string TenTheLoai { get; set; }
         public string TenNhaXuatBan { get; set; }
-        
         public int sotrang { get; set; }
         public int taiban { get; set; }
         public int TrangThai { get; set; }
+
 
     }
 }

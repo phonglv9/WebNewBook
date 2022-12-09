@@ -5,6 +5,7 @@ using System.Diagnostics;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.Models;
+using WebNewBook.ViewModel;
 using X.PagedList;
 
 namespace WebNewBook.Controllers
@@ -305,26 +306,18 @@ namespace WebNewBook.Controllers
             ViewBag.SanphamCT = Product;
 
             //Thể loại
-            List<TheLoai> theLoais = new List<TheLoai>();
-            HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;
+            List<SanPhamChiTiet> lstchitetsp = new List<SanPhamChiTiet>();
+            HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + $"/home/TheLoaict/{id}").Result;
             if (responseTL.IsSuccessStatusCode)
             {
                 string jsonData = responseTL.Content.ReadAsStringAsync().Result;
-                theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
-
-
+                lstchitetsp = JsonConvert.DeserializeObject<List<SanPhamChiTiet>>(jsonData);
             };
-            if (!String.IsNullOrEmpty(Product.idTheLoai))
-            {
-                foreach (var a in Product.idTheLoai)
-                {
-                    List<TheLoai> lsttheLoai = new List<TheLoai>();
-                    lsttheLoai = theLoais.Where(c => c.ID_TheLoai == a.ToString()).ToList();
-                    var TentheLoai = theLoais.Where(c => c.ID_TheLoai == a.ToString()).Select(v => v.TenTL).FirstOrDefault();
-                    ViewBag.TheLoai = lsttheLoai;
+
+            List<string> lsttheLoai = lstchitetsp.Where(c => c.ID_SanPham == id).Select(x => x.TenTheLoai).ToList();
+            ViewBag.TheLoai = lsttheLoai;
                    
-                }
-            }
+          
            
             //DanhMuc
             List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
@@ -359,21 +352,8 @@ namespace WebNewBook.Controllers
 
 
 
-            //TÁC GIẢ
-            List<TacGia> tacGias = new List<TacGia>();
-            HttpResponseMessage responseTG = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/Tacgia").Result;
-            if (responseTL.IsSuccessStatusCode)
-            {
-                string jsonData = responseTG.Content.ReadAsStringAsync().Result;
-                tacGias = JsonConvert.DeserializeObject<List<TacGia>>(jsonData);
-
-
-            };
-            List<TacGia> LstTacGia = new List<TacGia>();
-
-
-
-            LstTacGia = tacGias.Where(c => c.ID_TacGia == Product.idTacGia).ToList();
+            List<string> LstTacGia = lstchitetsp.Where(c => c.ID_SanPham == id).Select(x => x.TenTacGia).ToList();
+            
 
             ViewBag.TacGia = LstTacGia;
 

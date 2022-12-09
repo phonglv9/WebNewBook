@@ -168,5 +168,54 @@ namespace WebNewBook.API.Repository.Service
 
             return await _dbContext.TacGias.ToListAsync();
         }
+
+        public async Task<List<SanPhamChiTiet>> GetTheLoaisCT(string id)
+        {
+            var sanPham = _dbContext.SanPhams;
+            var sanPhamCT = _dbContext.SanPhamCTs;
+            var sachCT = _dbContext.SachCTs;
+            var sach = _dbContext.Sachs;
+            var theLoai = _dbContext.TheLoais;
+            var danhMuc = _dbContext.DanhMucSachs;
+            var tacGia = _dbContext.TacGias;
+            var nhaxuatban = _dbContext.NhaXuatBans;
+
+            var products = (from a in sanPham
+                            join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
+                            join c in sach on b.MaSach equals c.ID_Sach
+                            join d in sachCT on c.ID_Sach equals d.MaSach
+                            join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
+                            join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
+                            join g in tacGia on d.MaTacGia equals g.ID_TacGia
+                            join x in nhaxuatban on c.MaNXB equals x.ID_NXB
+                            select new SanPhamChiTiet()
+                            {
+                                ID_SanPham = a.ID_SanPham,
+                                TenSanPham = a.TenSanPham,
+                                SoLuong = a.SoLuong,
+                                GiaBan = a.GiaBan,
+                                GiaGoc = a.GiaGoc,
+                                TrangThai = a.TrangThai,
+                                HinhAnh = a.HinhAnh,
+                                idTheLoai = e.ID_TheLoai,
+                                TenTheLoai = e.TenTL,
+                                idDanhMuc = f.ID_DanhMuc,
+                                TenDanhMuc = f.TenDanhMuc,
+                                idTacGia = g.ID_TacGia,
+                                TenTacGia = g.HoVaTen,
+                                sotrang = c.SoTrang,
+                                taiban = c.TaiBan,
+                                TenNhaXuatBan = x.TenXuatBan,
+                                Mota = c.MoTa,
+                                
+
+
+                            }).Where(c => c.TrangThai == 1).ToList();
+            //var listsp=products.Where(c=>c.ID_SanPham==id && c.ID_SanPham==)
+           
+          
+            var lst = products.Where(c => c.ID_SanPham == id).ToList();
+            return lst;
+        }
     }
 }

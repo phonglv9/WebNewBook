@@ -72,9 +72,15 @@
 						</ul>
 						<ul class="product-links">
 							<li>Tác giả:</li>
+							@if (ViewBag.TacGia != null)
 							@foreach (var item in ViewBag.TacGia)
 							{
-								<li><a href="#">@item.HoVaTen</a></li>
+								
+									<li><a href="#">@item</a></li>
+								
+								
+								
+								
 
 							}
 						</ul>
@@ -97,12 +103,13 @@
 
 
 						<ul class="product-links">
-							
+							<li>Thể loại:</li>
 							@if (ViewBag.TheLoai != null)
+
 								@foreach (var item in ViewBag.TheLoai)
 								{
-									<li>Thể loại:</li>
-									<li><a href="#">@item.TenTL</a></li>
+									
+									<li><a href="#">@item</a></li>
 
 								}
 
