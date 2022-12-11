@@ -36,9 +36,9 @@ builder.Services.AddControllers(options =>
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
 
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-KBU829B\\SQLEXPRESS;Initial Catalog=datn;Persist Security Info=True;User ID=sa;Password=123"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Initial Catalog=WebNewBook;Persist Security Info=True;User ID=LVP09;Password=Ph@16158"));
 
-builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=DESKTOP-KBU829B\\SQLEXPRESS;Initial Catalog=datn;Persist Security Info=True;User ID=sa;Password=123"));
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Initial Catalog=WebNewBook;Persist Security Info=True;User ID=LVP09;Password=Ph@16158"));
 
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddEntityFrameworkStores<LoginContext>().AddDefaultTokenProviders().AddDefaultUI();
@@ -66,6 +66,7 @@ builder.Services.AddScoped<ITacGiaService, TacGiaService>();
 builder.Services.AddScoped<INhaXuatBanService, NhaXuatBanService>();
 builder.Services.AddScoped<IDanhMucService, DanhMucService>();
 builder.Services.AddScoped<IPhieuGiamSPService, PhieuGiamSPService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 builder.Services.AddTransient<IEmailService, SendMailConfig>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>

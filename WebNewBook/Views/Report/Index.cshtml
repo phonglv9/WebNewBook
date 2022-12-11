@@ -1,0 +1,300 @@
+﻿@using WebNewBook.API.ModelsAPI
+@using WebNewBook.ViewModel;
+@model IEnumerable<ReportVM>
+
+@{
+
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+
+    //DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month lấy ngày cuối cùng tháng hiện tại
+    var XLabels = "";
+    var YValues = "";
+    if (ViewBag.ChartData != null)
+    {
+        List<OrderDateSummary> dataChart = new List<OrderDateSummary>();
+        dataChart = ViewBag.ChartData;
+
+        if (ViewBag.MessChart == "day")
+        {
+            XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Date.Hour));
+            YValues = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Total));
+        }
+        if (ViewBag.MessChart == "month")
+        {
+         
+            XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Date.ToString("dd/MM/yyyy")));
+            YValues = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Total));
+        }
+        if (ViewBag.MessChart == "year")
+        {
+            XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Date.Year));
+            YValues = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Total));
+        }
+    }
+
+}
+
+
+<div class="container-fluid">
+    
+    <div class="row gx-lg-5">
+        <div class="col-md-3 mb-2">
+            <label>
+       
+
+                <div class="card card-input">
+                    <div class="card-body">
+                        <p class="text-uppercase fw-bold text-muted">Doanh thu</p>
+                        <p class="h2 fw-bold">@String.Format("{0:#,##0.##}",@Model.Sum(c=>c.hoaDon.TongTien) ) đ</p>
+
+                    </div>
+                </div>
+            </label>
+        </div>
+        <div class="col-md-2 mb-2">
+            <label>
+              
+
+                <div class="card card-input">
+                    <div class="card-body">
+                        <p class="text-uppercase fw-bold text-muted">Số đơn hàng</p>
+                        <p class="h2 fw-bold">@Model.Select(c=>c.hoaDon).Count()   </p>
+
+                    </div>
+                </div>
+            </label>
+        </div>
+        <div class="col-md-2 mb-2">
+            <label>
+               
+
+                <div class="card card-input">
+                    <div class="card-body">
+                        <p class="text-uppercase fw-bold text-muted">Sản phẩm bán</p>
+                        <p class="h2 fw-bold">@String.Format("{0:#,##0.##}",@Model.Sum(c=>c.hoaDonCT.SoLuong)) </p>
+
+                    </div>
+                </div>
+            </label>
+        </div>
+    
+        <form class="col-md-5 mb-2 row" asp-controller="Report" asp-action="Index">
+             <div class="row">
+                <div class="col-3">                  
+                    <p class="text-uppercase fw-bold text-muted">Lọc theo:</p>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" asp-action="Index" asp-controller="Report" value="day" name="fillterDatetime" value="ok">Ngày</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary " asp-action="Index" asp-controller="Report" value="month" name="fillterDatetime" type="submit">Tháng</button>
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary " asp-action="Index" asp-controller="Report" value="year" name="fillterDatetime" type="submit">Năm</button>
+                </div>
+            </div>
+            <div class="row">
+            <div class="col-5">
+                <input class="form-control" type="date" name="timerangefrom" />
+            </div>
+            <div class="col-5">
+                <input class="form-control" type="date" name="rimerangeto" />
+            </div>
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary">Lọc</button>
+            </div>
+            </div>
+           
+
+
+        </form>
+    
+
+       
+
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+          <div>
+            <li class="nav-item dropdown btn">
+                <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-download fa-sm text-white-50"></i>  Xuất Excel
+                </a>
+           
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <li><a asp-area="" asp-controller="ThongKe" asp-action="closedExday" class="dropdown-item">Ngày </a></li>
+                    <li><a asp-area="" asp-controller="ThongKe" asp-action="closedExmonth" class="dropdown-item">Tháng</a></li>
+                    <li><a asp-area="" asp-controller="ThongKe" asp-action="closedExyer" class="dropdown-item">Năm</a></li>
+                    <li><a asp-area="" asp-controller="ThongKe" asp-action="closedEx" class="dropdown-item">Tổng</a></li>
+                </ul>
+            </li>
+        </div>
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+        <table class="table">
+
+            <thead>
+                <tr>
+                    <th>
+                        Tên Khách Hàng
+                    </th>
+                    <th>
+                        Ngày bán
+                    </th>
+                    <th>
+                        Tổng tiền
+                    </th>
+                    <th>
+                        Giảm giá
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Where(c => c.hoaDon.TrangThai == 1))
+                {
+                    <tr>
+                        <td>
+
+                            @Html.DisplayFor(modelItem => item.khachHang.HoVaTen)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.hoaDon.NgayMua)
+                        </td>
+                        <td>
+                            @String.Format("{0:#,##0.##}",@item.hoaDon.TongTien ) đ
+                        </td>
+                        <td>
+                            N/A
+                        </td>
+
+                        <td>
+                            <a asp-controller="ThongKe" asp-action="Detail" asp-route-Id="@item.hoaDon.ID_HoaDon"> Detail </a>
+                        </td>
+
+
+
+                    </tr>
+                }
+            </tbody>
+        </table>
+        </div>
+      </div>
+        <div class="col-xl-6 col-lg-6">
+
+
+
+            <!-- Bar Chart -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-dark">Thống kê</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="myBarChart"></canvas>
+                    </div>
+                    <hr>
+                    Styling for the bar chart can be found in the
+                    <code>/js/demo/chart-bar-demo.js</code> file.
+                </div>
+            </div>
+
+        </div>
+        
+
+    </div>
+
+
+
+  
+
+     
+    
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript">
+ 
+    // Set new default font family and font color to mimic Bootstrap's default styling
+    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+    Chart.defaults.global.defaultFontColor = '#858796';
+    function number_format(number, decimals, dec_point, thousands_sep) {
+        // *     example: number_format(1234.56, 2, ',', ' ');
+        // *     return: '1 234,56'
+        number = (number + '').replace(',', '').replace(' ', '');
+        var n = !isFinite(+number) ? 0 : +number,
+            prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+            sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+            dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+            s = '',
+            toFixedFix = function (n, prec) {
+                var k = Math.pow(10, prec);
+                return '' + Math.round(n * k) / k;
+            };
+        // Fix for IE parseFloat(0.55).toFixed(0) = 0;
+        s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+        if (s[0].length > 3) {
+            s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+        }
+        if ((s[1] || '').length < prec) {
+            s[1] = s[1] || '';
+            s[1] += new Array(prec - s[1].length + 1).join('0');
+        }
+        return s.join(dec);
+    }
+     var data = {
+            labels: @Html.Raw(XLabels),
+            datasets: [{
+                label: "Thống kê",
+                backgroundColor: "#4e73df",
+                hoverBackgroundColor: "#2e59d9",
+                borderColor: "#4e73df",
+            data: @Html.Raw(YValues),
+        
+            }]
+      };
+ 
+
+        var options = {
+                maintainAspectRatio: false,
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            display: true,
+                            color: "rgb(234, 236, 244)"
+                        }
+                    }],
+                    xAxes: [{
+                        ticks: {
+                            min: 0,
+                            beginAtZero: true
+                        },
+                        gridLines: {
+                            color: "rgb(234, 236, 244)",
+                            display: false
+                        }
+                    }]
+                }
+            };
+    // Bar Chart Example
+   
+   
+    var ctx = document.getElementById("myBarChart");
+    if (window.bar != undefined)
+        window.bar.destroy();
+    window.bar = new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options:options,
+       
+    });
+
+</script>
