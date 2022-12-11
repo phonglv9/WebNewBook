@@ -49,43 +49,65 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Index(string? mess)
         {
-            
-           // Giohangs();
-           // List<SanPham> lstsanPham = new List<SanPham>();
 
-           // HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/GetSanPham").Result;
-           // if (response1.IsSuccessStatusCode)
-           // {
-           //     string jsonData = response1.Content.ReadAsStringAsync().Result;
-           //     lstsanPham = JsonConvert.DeserializeObject<List<SanPham>>(jsonData);
+           
+
+           if(User.Identity.Name == null)
+            {
+                //List<CartItem> listcart = new List<CartItem>();
+                //if (Giohangs() != null)
+                //{
+                //    foreach (var item in Giohangs())
+                //    {
+                //        HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/GetSanPham/{item.Maasp}").Result;
+                //        if (response1.IsSuccessStatusCode)
+                //        {
+                //            string jsonData = response1.Content.ReadAsStringAsync().Result;
+                //            a = JsonConvert.DeserializeObject<int>(jsonData);
 
 
-           // };
-           // List<CartItem> listcart=new List<CartItem>();
-           //if (Giohangs()!= null)
-           // {
-           //     foreach (var item in Giohangs())
-           //     {
-           //         var soluongsp = 0;
-           //         soluongsp = lstsanPham.Single(a => a.ID_SanPham == item.Maasp).SoLuong;
-
-           //         if (item.Soluong > soluongsp)
-           //         {
-           //             item.Soluong = soluongsp;
-           //             listcart.Add(item);
-           //             mess = "1";
-
-           //         }
+                //        };
 
 
 
-           //     }
-           // }
-           // var json = System.Text.Json.JsonSerializer.Serialize(listcart);
-           // Response.Cookies.Append("Cart", json, new Microsoft.AspNetCore.Http.CookieOptions
-           // {
-           //     Expires = DateTimeOffset.Now.AddDays(3)
-           // });
+                //        if (item.Soluong > a)
+                //        {
+                //            item.Soluong = a;
+                //            listcart.Add(item);
+                //            mess = "1";
+                //            var json = System.Text.Json.JsonSerializer.Serialize(listcart);
+                //            Response.Cookies.Append("Cart", json, new Microsoft.AspNetCore.Http.CookieOptions
+                //            {
+                //                Expires = DateTimeOffset.Now.AddDays(3)
+                //            });
+
+                //        }
+
+
+
+                //    }
+                //}
+
+            }
+            else
+            {
+                var a = 0;
+                HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + "/GioHang/ChecksoluongCart").Result;
+                if (response1.IsSuccessStatusCode)
+                {
+                    string jsonData = response1.Content.ReadAsStringAsync().Result;
+                    a = JsonConvert.DeserializeObject<int>(jsonData);
+
+                    if (a != 0)
+                    {
+                        mess = a.ToString();
+                    }
+
+                };
+                Giohangs();
+            }
+
+
             Giohangs();
 
             ViewBag.MessUpdateCart = mess;

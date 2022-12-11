@@ -10,7 +10,7 @@
     var color = "";
     @if (ViewBag.MessUpdateCart == "1")
     {
-        mess = "Số lượng bạn đặt trong giỏ hàng không còn đủ";
+        mess = "Số lượng bạn đặt trong giỏ hàng không còn đủ, số lượng mới đã được cập nhật bên dưới";
         color = "danger";
     }
      if (ViewBag.MessUpdateCart == "3")
@@ -126,9 +126,10 @@
                         <td>   </td>
                         <td>   </td>
                         <td>
-                        <button type="button" class="btn btn-default">
-                            <span class="fa fa-arrow-left"></span> Tiếp tục mua hàng
-                        </button></td>
+                                    <a type="button" asp-controller="Home" asp-action="Index" class="btn btn-default">
+                                         <span class="fa fa-arrow-left"></span>  Tiếp tục mua hàng 
+                                    </a>
+                      </td>
                         <td>
                         <a type="button" asp-controller="Payment" asp-action="Checkout" class="btn btn-success">
                             Thanh Toán <span class="fa fa-arrow-right"></span>

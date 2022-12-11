@@ -7,12 +7,13 @@ namespace WebNewBook.API.Repository.IService
 	{
         Task<List<HomeVM>> VM();
         Task<SanPham> GetSanPham(string id);
-        Task<List<SanPham>> getSP();
+        Task<int> getSP(string id);
         Task<string>XoakhoiGioHang(string id,string namekh);
        Task XoaGioHangKH(string email);
         Task<int> AddGioHangAsync(string HinhAnh, int SoLuongs, string emailKH, string idsp);
         Task<List<GioHang>> GetlistGH();
         Task<int> Updatenumber(string id,int soluongmoi, string namekh, string update);
-        
+        Task<int> ChecksoluongCart();
+
     }
 }
