@@ -54,40 +54,47 @@ namespace WebNewBook.Controllers
 
            if(User.Identity.Name == null)
             {
-                //List<CartItem> listcart = new List<CartItem>();
-                //if (Giohangs() != null)
-                //{
-                //    foreach (var item in Giohangs())
-                //    {
-                //        HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/GetSanPham/{item.Maasp}").Result;
-                //        if (response1.IsSuccessStatusCode)
-                //        {
-                //            string jsonData = response1.Content.ReadAsStringAsync().Result;
-                //            a = JsonConvert.DeserializeObject<int>(jsonData);
+               
+                if (Giohangs() != null)
+                {
+                    foreach (var item in Giohangs())
+                    {
+                        var a = 0;
+                        HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/GetSanPham/{item.Maasp}").Result;
+                        if (response1.IsSuccessStatusCode)
+                        {
+                            string jsonData = response1.Content.ReadAsStringAsync().Result;
+                            a = JsonConvert.DeserializeObject<int>(jsonData);
 
 
-                //        };
-
-
-
-                //        if (item.Soluong > a)
-                //        {
-                //            item.Soluong = a;
-                //            listcart.Add(item);
-                //            mess = "1";
-                //            var json = System.Text.Json.JsonSerializer.Serialize(listcart);
-                //            Response.Cookies.Append("Cart", json, new Microsoft.AspNetCore.Http.CookieOptions
-                //            {
-                //                Expires = DateTimeOffset.Now.AddDays(3)
-                //            });
-
-                //        }
+                        };
 
 
 
-                //    }
-                //}
 
+                        if (item.Soluong > a)
+                        {
+                            //var myCart = Giohangs();
+                            //var items = myCart.SingleOrDefault(c => c.Maasp == id);
+
+                            item.Soluong = a;
+                           
+
+                            var json = System.Text.Json.JsonSerializer.Serialize(Giohangs());
+                            Response.Cookies.Append("Cart", json, new Microsoft.AspNetCore.Http.CookieOptions
+                            {
+                                Expires = DateTimeOffset.Now.AddDays(-1)
+                            });
+                            return RedirectToAction("Index" ,new { mess = "4" });
+
+                        }
+                        
+
+
+                    }
+                    
+                }
+               
             }
             else
             {

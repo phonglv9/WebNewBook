@@ -14,6 +14,7 @@ namespace WebNewBook.API.Repository.IService
         Task<List<GioHang>> GetlistGH();
         Task<int> Updatenumber(string id,int soluongmoi, string namekh, string update);
         Task<int> ChecksoluongCart();
+      
 
     }
 }

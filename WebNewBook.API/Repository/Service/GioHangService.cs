@@ -197,6 +197,7 @@ namespace WebNewBook.API.Repository.Service
 
         public async Task<int> getSP(string id)
         {
+            
             var listsp = await _dbContext.SanPhams.ToListAsync();
             var soluong = listsp.Where(c => c.ID_SanPham == id).Select(c => c.SoLuong).FirstOrDefault();
 
@@ -224,5 +225,7 @@ namespace WebNewBook.API.Repository.Service
             _dbContext.SaveChangesAsync();
             return trangthai;
         }
+
+       
     }
 }

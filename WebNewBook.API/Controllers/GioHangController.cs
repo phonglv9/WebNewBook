@@ -34,6 +34,7 @@ namespace WebNewBook.API.Controllers
             return await _GioHangService.GetlistGH();
 
         }
+      
         [HttpGet("GetSanPham/{id}")]
         public async Task<int> GetSanPham(string id)
         {
