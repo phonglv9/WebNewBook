@@ -75,12 +75,9 @@
 							@if (ViewBag.TacGia != null)
 							@foreach (var item in ViewBag.TacGia)
 							{
-								
+
 									<li><a href="#">@item</a></li>
-								
-								
-								
-								
+
 
 							}
 						</ul>
@@ -136,11 +133,13 @@
 							<div id="tab1" class="tab-pane fade in active">
 								<div class="row">
 									<div class="col-md-12">
-										<p>
+											@if (ViewBag.Mota !=null)
+											@foreach (var item in ViewBag.Mota){
+												
 
-											@ViewBag.SanphamCT.Mota
-
-										</p>
+												<p> @item</p>
+												
+											}
 									</div>
 								</div>
 							</div>

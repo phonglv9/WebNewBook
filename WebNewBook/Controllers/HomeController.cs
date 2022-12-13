@@ -313,12 +313,37 @@ namespace WebNewBook.Controllers
                 string jsonData = responseTL.Content.ReadAsStringAsync().Result;
                 lstchitetsp = JsonConvert.DeserializeObject<List<SanPhamChiTiet>>(jsonData);
             };
+            var gouptl = lstchitetsp.GroupBy(c => c.TenTheLoai).ToList();
+            List<string> tl=new List<string>();
+            if (gouptl != null)
+            {
+                foreach (var b in gouptl)
+                {
+                    foreach (var c in b.Take(1))
+                    {
+                        tl.Add(c.TenTheLoai);
 
-            List<string> lsttheLoai = lstchitetsp.Where(c => c.ID_SanPham == id).Select(x => x.TenTheLoai).ToList();
-            ViewBag.TheLoai = lsttheLoai;
-                   
-          
+                    }
+                }
+            }
+            ViewBag.TheLoai = tl;
+
+            var goupMT = lstchitetsp.GroupBy(c => c.TenTheLoai).ToList();
+            List<string> MT = new List<string>();
+            if (gouptl != null)
+            {
+                foreach (var b in goupMT)
+                {
+                    foreach (var c in b.Take(1))
+                    {
+                        MT.Add(c.Mota);
+
+                    }
+                }
+            }
            
+            ViewBag.Mota = MT;
+
             //DanhMuc
             List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
             HttpResponseMessage responseDMm = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
@@ -352,12 +377,22 @@ namespace WebNewBook.Controllers
 
 
 
-            List<string> LstTacGia = lstchitetsp.Where(c => c.ID_SanPham == id).Select(x => x.TenTacGia).ToList();
+
             
+            var gouptg= lstchitetsp.GroupBy(c => c.TenTacGia).ToList();
+            List<string> tg = new List<string>();
+            if (gouptg != null) {
+                foreach (var b in gouptg)
+                {
+                    foreach (var c in b.Take(1))
+                    {
+                        tg.Add(c.TenTacGia);
 
-            ViewBag.TacGia = LstTacGia;
+                    }
+                }
+            }
 
-
+            ViewBag.TacGia = tg;
             return View("ProductDetail");
         }
         public IActionResult Privacy()

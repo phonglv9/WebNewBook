@@ -207,6 +207,7 @@ namespace WebNewBook.API.Repository.Service
                                 taiban = c.TaiBan,
                                 TenNhaXuatBan = x.TenXuatBan,
                                 Mota = c.MoTa,
+                                TenSach=c.TenSach
                                 
 
 
