@@ -36,9 +36,9 @@ builder.Services.AddControllers(options =>
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
 
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Initial Catalog=WebNewBook;Persist Security Info=True;User ID=LVP09;Password=Ph@16158"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Initial Catalog=WebNewBook;Persist Security Info=True;User ID=LVP09;Password=Ph@161589"));
 
-builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Initial Catalog=WebNewBook;Persist Security Info=True;User ID=LVP09;Password=Ph@16158"));
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Initial Catalog=WebNewBook;Persist Security Info=True;User ID=LVP09;Password=Ph@161589"));
 
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddEntityFrameworkStores<LoginContext>().AddDefaultTokenProviders().AddDefaultUI();
