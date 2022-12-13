@@ -13,11 +13,21 @@ namespace WebNewBook.API.Controllers
         public ReportController(IReportService reportService) {
             _reportService = reportService;
         }
-        [HttpGet]
-        public async Task< IEnumerable<ReportVM>> GetReport()
+        [HttpGet("NewBook/{type}")]
+        public IEnumerable<ReportDTO> GetReport(int type)
         {
-         return await _reportService.GetReportVMs();
+
+         return  _reportService.GetReportNewBook(type);
 
         }
+        [HttpGet("Fillter/{startDate}/{endDate}")]
+        public IEnumerable<ReportDTO> GetFillterReport(DateTime startDate, DateTime endDate)
+        {
+
+            return _reportService.GetFillterReport(startDate,endDate);
+
+        }
+
+        
     }
 }

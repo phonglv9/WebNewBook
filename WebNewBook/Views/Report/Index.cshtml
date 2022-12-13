@@ -1,124 +1,78 @@
-﻿@using WebNewBook.API.ModelsAPI
-@using WebNewBook.ViewModel;
-@model IEnumerable<ReportVM>
-
+﻿
 @{
 
     ViewData["Title"] = "Báo cáo thống kê";
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
-    var XLabels = "";
-    var YValues = "";
-    var TitleReport = "";
-    if (ViewBag.ChartData != null)
-    {
-        var dataChart = new List<OrderDateSummary>();
-        dataChart = ViewBag.ChartData;
-        if (ViewBag.MessChart == "month")
-        {
-            TitleReport = DateTime.Now.ToString("MM/yyyy") ;
-            XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Date.ToString("dd/MM/yyyy")));
-            YValues = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Total));
-        }
-        if (ViewBag.MessChart == "year")
-        {
-            TitleReport = DateTime.Now.Year.ToString();
-            XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Date.ToString("MM/yyyy")));
-            YValues = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Total));
-        }
-        if (ViewBag.MessChart == "FillterX")
-        {
-            XLabels = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Date.ToString("dd/MM/yyyy")));
-            YValues = Newtonsoft.Json.JsonConvert.SerializeObject(dataChart.Select(c => c.Total));
-        }
-    }
-
 }
-
-
 <div class="container-fluid">
-    
-    <div class="row gx-lg-5">
-        <div class="col-md-3 mb-2">
-            <label>
-       
-                <h1>@TitleReport</h1>
-                <div class="card card-input">
-                    <div class="card-body">
-                        <p class="text-uppercase fw-bold text-muted">Doanh thu</p>
-                        <p class="h2 fw-bold">@String.Format("{0:#,##0.##}",@Model.Sum(c=>c.hoaDon.TongTien) ) đ</p>
+ 
+    <div class="bg-light d-flex align-items-center justify-content-between col-md-2 ">
+        <select class="form-select" aria-label="Default select example" id="value_Type">
 
-                    </div>
-                </div>
-            </label>
-        </div>
-        <div class="col-md-2 mb-2">
-            <label>
-              
-
-                <div class="card card-input">
-                    <div class="card-body">
-                        <p class="text-uppercase fw-bold text-muted">Số đơn hàng</p>
-                        <p class="h2 fw-bold">@Model.Select(c=>c.hoaDon.ID_HoaDon).Count()   </p>
-
-                    </div>
-                </div>
-            </label>
-        </div>
-        <div class="col-md-2 mb-2">
-            <label>
-               
-
-                <div class="card card-input">
-                    <div class="card-body">
-                        <p class="text-uppercase fw-bold text-muted">Số lượng sản phẩm bán ra</p>
-                        <p class="h2 fw-bold">@String.Format("{0:#,##0.##}",@Model.Sum(c=>c.hoaDonCT.SoLuong)) </p>
-
-                    </div>
-                </div>
-            </label>
-        </div>
-    
-        <form class="col-md-5 mb-2 row" asp-controller="Report" asp-action="Index">
-             <div class="row">
-                <div class="col-3">                  
-                    <p class="text-uppercase fw-bold text-muted">Lọc theo:</p>
-                </div>
-                <div class="col-3">
-                    <button class="btn btn-primary " asp-action="Index" asp-controller="Report" value="month" name="fillterDatetime" type="submit">Tháng</button>
-                </div>
-                <div class="col-3">
-                    <button class="btn btn-primary " asp-action="Index" asp-controller="Report" value="year" name="fillterDatetime" type="submit">Năm</button>
-                </div>
-            </div>
-            <div class="row">
-            <div class="col-5">
-                <input class="form-control" type="date" name="timerangefrom" />
-            </div>
-            <div class="col-5">
-                <input class="form-control" type="date" name="rimerangeto" />
-            </div>
-            <div class="col-2">
-                <button type="submit" class="btn btn-primary">Lọc</button>
-            </div>
-            </div>
-           
-
-
-        </form>
-    
-
-       
-
+            <option value="1">Năm hiện tại</option>
+            <option value="2">Tháng hiện tại</option>
+        </select>
     </div>
+    <div class="row g-4 ">
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light d-flex align-items-center justify-content-between p-4">
+                <i class="fas fa-dollar-sign fa-2x text-primary"></i>
+                <h5 class="mb-0 fw-bold text-dark text-uppercase">Doanh thu:</h5>
+                <h5 class="mb-0" id="total_money"></h5>
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light d-flex align-items-center justify-content-between p-4 px-2">
+
+                <i class="fas fa-shopping-cart text-primary fa-2x"></i>
+                <h5 class="mb-0 fw-bold text-dark text-uppercase">Tổng đơn hàng:</h5>
+                <h5 class="mb-0" id="total_oder"></h5>
+
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light d-flex align-items-center justify-content-between p-4 px-2">
+
+                <i class="fas fa-book text-primary fa-2x"></i>
+                <h5 class="mb-0 fw-bold text-dark text-uppercase">Sản phẩm bán ra:</h5> 
+                <h5 class="mb-0" id="total_product"></h5>
+
+            </div>
+        </div>
+        <div class="col-sm-6 col-xl-3">
+            <div class="bg-light d-flex align-items-center justify-content-between p-4 px-2">
+                <form class="mb-2 row" asp-controller="Report" asp-action="Index">
+                    <div class="row">
+                        <div class="col-5">
+                            <input class="form-control" type="date" name="timerangefrom" />
+                        </div>
+                        <div class="col-5">
+                            <input class="form-control" type="date" name="rimerangeto" />
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-primary">Lọc</button>
+                        </div>
+                    </div>
+
+
+
+                </form>
+                
+
+            </div>
+        </div>
+      
+    </div>
+       
 
     <!-- Content Row -->
     <div class="row">
-          <div>
+        <div>
             <li class="nav-item dropdown btn">
                 <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                     <i class="fas fa-download fa-sm text-white-50"></i>  Xuất Excel
                 </a>
-           
+
                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <li><a asp-area="" asp-controller="ThongKe" asp-action="closedExmonth" class="dropdown-item">Tháng</a></li>
                     <li><a asp-area="" asp-controller="ThongKe" asp-action="closedExyer" class="dropdown-item">Năm</a></li>
@@ -128,48 +82,33 @@
         </div>
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
-        <table class="table">
+                <table class="table">
 
-            <thead>
-                <tr>
-                    <th>
-                        Ngày bán
-                    </th>
-                    <th>
-                        Tổng doanh thu
-                    </th>
-                    <th>
-                       Số lượng sản phẩm bán ra
-                    </th>
+                    <thead>
+                        <tr>
+                            <th>
+                                Ngày bán
+                            </th>
+                            <th>
+                                Tổng doanh thu
+                            </th>
+                            <th>
+                                Tổng đơn hàng
+                            </th>
+                            <th>
+                                Số lượng sản phẩm bán ra
+                            </th>
 
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var item in Model.OrderByDescending(c=>c.hoaDon.NgayMua))
-                {
-                    
-                    <tr>
-                   
-                        <td>
-                                    @Html.DisplayFor(modelItem => item.hoaDon.NgayMua)
-                        </td>
-                        <td>
-                            @String.Format("{0:#,##0.##}",@item.hoaDon.TongTien ) đ
-                        </td>
-                        <td>
-                                    @item.hoaDonCT.SoLuong
-                        </td>
+                        </tr>
+                    </thead>
+                    <tbody class="datatable_report">
+                        
                          
-
-
-
-
-                    </tr>
-                }
-            </tbody>
-        </table>
+                        
+                    </tbody>
+                </table>
+            </div>
         </div>
-      </div>
         <div class="col-xl-6 col-lg-6">
 
 
@@ -184,70 +123,71 @@
                         <canvas id="myBarChart"></canvas>
                     </div>
                     <hr>
-                    
-                    <code>/js/demo/chart-bar-demo.js</code> 
+
+                    <code>/js/demo/chart-bar-demo.js</code>
                 </div>
             </div>
 
         </div>
-        
+
 
     </div>
 
 
 
-  
 
-     
-    
+
+
+
 </div>
 
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-<script type="text/javascript">
- 
+<script src="~/js/report_admin.js" asp-append-version="true"></script>
+@*<script type="text/javascript">
+
     // Set new default font family and font color to mimic Bootstrap's default styling
     Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
     Chart.defaults.global.defaultFontColor = '#858796';
-     var data = {
-            labels: @Html.Raw(XLabels),
-            datasets: [{
+    var data = {
+        labels: @Html.Raw(XLabels),
+        datasets: [{
             label: "Doanh thu",
-                backgroundColor: "#4e73df",
-                hoverBackgroundColor: "#2e59d9",
-                borderColor: "#4e73df",
+            backgroundColor: "#4e73df",
+            hoverBackgroundColor: "#2e59d9",
+            borderColor: "#4e73df",
             data: @Html.Raw(YValues),
-        
-            }]
-      };
- 
 
-        var options = {
-                maintainAspectRatio: false,
-                scales: {
-                    yAxes: [{
-                        ticks: {
-                            min: 0,
-                            beginAtZero: true
-                        },
-                        gridLines: {
-                            display: true,
-                            color: "rgb(234, 236, 244)"
-                        }
-                    }],
-                    xAxes: [{
-                        ticks: {
-                            min: 0,
-                            beginAtZero: true
-                        },
-                        gridLines: {
-                            color: "rgb(234, 236, 244)",
-                            display: false
-                        }
-                    }]
+        }]
+    };
+
+
+    var options = {
+        maintainAspectRatio: false,
+        scales: {
+            yAxes: [{
+                ticks: {
+                    min: 0,
+                    beginAtZero: true
+                },
+                gridLines: {
+                    display: true,
+                    color: "rgb(234, 236, 244)"
                 }
-            };
+            }],
+            xAxes: [{
+                ticks: {
+                    min: 0,
+                    beginAtZero: true
+                },
+                gridLines: {
+                    color: "rgb(234, 236, 244)",
+                    display: false
+                }
+            }]
+        }
+    };
     // Bar Chart Example
     var ctx = document.getElementById("myBarChart");
     if (window.bar != undefined)
@@ -255,8 +195,8 @@
     window.bar = new Chart(ctx, {
         type: 'bar',
         data: data,
-        options:options,
-       
+        options: options,
+
     });
 
-</script>
+</script>*@
