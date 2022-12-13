@@ -8,6 +8,7 @@ using WebNewBook.Model;
 using WebNewBook.Models;
 using X.PagedList;
 using WebNewBook.API.ModelsAPI;
+using Org.BouncyCastle.Asn1.Ocsp;
 
 namespace WebNewBook.Controllers
 {
@@ -46,6 +47,13 @@ namespace WebNewBook.Controllers
                 lissttl = lissttl.Where(a => a.hoaDon.ID_HoaDon.ToLower().Contains(timkiem)).ToList();
                 
             }
+
+            //var checkbox = Request.Form["CheckBoxId"];
+            //if (checkbox.Contains("true"))
+            //{
+            //    lissttl = lissttl.Where(a => a.KhachHang.ID_KhachHang.ToLower().Contains("KHNOLOGIN")).ToList();
+
+            //}
             if (trangThai != null)
             {
                 switch (trangThai)
@@ -68,6 +76,9 @@ namespace WebNewBook.Controllers
                         break;
                     case 5:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 5).ToList();
+                        break;
+                    case 7:
+                        lissttl = lissttl.Where(a => a.KhachHang.ID_KhachHang.ToLower().Contains("KHNOLOGIN")).ToList();
                         break;
 
                     default:

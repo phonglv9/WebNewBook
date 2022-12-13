@@ -6,6 +6,7 @@ namespace WebNewBook.API.ModelsAPI
 	{
         public string ID_SanPham { get; set; }
         public string TenSanPham { get; set; }
+        public string TenSach { get; set; }
         public int SoLuong { get; set; }
         public double GiaBan { get; set; }
         public double GiaGoc { get; set; }

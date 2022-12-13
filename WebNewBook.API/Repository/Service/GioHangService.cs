@@ -195,11 +195,37 @@ namespace WebNewBook.API.Repository.Service
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<SanPham>> getSP()
+        public async Task<int> getSP(string id)
         {
+            
             var listsp = await _dbContext.SanPhams.ToListAsync();
+            var soluong = listsp.Where(c => c.ID_SanPham == id).Select(c => c.SoLuong).FirstOrDefault();
 
-            return listsp;
+            return soluong;
         }
+
+        public async Task<int> ChecksoluongCart()
+        {
+            var trangthai = 0;
+            var listgh=await _dbContext.GioHangs.ToListAsync();
+            var listsp = await _dbContext.SanPhams.ToListAsync();
+            foreach(var cm in listgh)
+            {
+                var soluongsp = listsp.Where(b => b.ID_SanPham == cm.Maasp).Select(c => c.SoLuong).FirstOrDefault();
+                if (cm.Soluong> soluongsp)
+                {
+                    cm.Soluong= soluongsp;
+                    _dbContext.Update(cm);
+                  
+                    trangthai =1;
+
+                }
+
+            }
+            _dbContext.SaveChangesAsync();
+            return trangthai;
+        }
+
+       
     }
 }
