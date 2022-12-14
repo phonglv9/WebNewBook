@@ -30,10 +30,10 @@ namespace WebNewBook.Controllers
 
             return Json(modelReport, new System.Text.Json.JsonSerializerOptions());
         }
-        public JsonResult GetFillterReport(DateTime startDate, DateTime endDate)
+        public JsonResult GetFillterReport(string startDate, string endDate)
         {
             List<ReportDTO> modelReport = new List<ReportDTO>();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/Report/Fillter/{startDate}/{endDate}").Result;
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/Report/Fillter?startDate="+startDate+"&endDate="+endDate+"").Result;
             if (response.IsSuccessStatusCode)
             {
                 string jsonData = response.Content.ReadAsStringAsync().Result;

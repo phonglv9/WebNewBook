@@ -20,8 +20,8 @@ namespace WebNewBook.API.Controllers
          return  _reportService.GetReportNewBook(type);
 
         }
-        [HttpGet("Fillter/{startDate}/{endDate}")]
-        public IEnumerable<ReportDTO> GetFillterReport(DateTime startDate, DateTime endDate)
+        [HttpGet("Fillter")]
+        public IEnumerable<ReportDTO> GetFillterReport(string startDate, string endDate)
         {
 
             return _reportService.GetFillterReport(startDate,endDate);

@@ -41,22 +41,22 @@
         </div>
         <div class="col-sm-6 col-xl-3">
             <div class="bg-light d-flex align-items-center justify-content-between p-4 px-2">
-                <form class="mb-2 row" asp-controller="Report" asp-action="Index">
+                <div class="mb-2 row">
                     <div class="row">
                         <div class="col-5">
-                            <input class="form-control" type="date" name="timerangefrom" />
+                            <input class="form-control" type="date" id="date_start"  />
                         </div>
                         <div class="col-5">
-                            <input class="form-control" type="date" name="rimerangeto" />
+                            <input class="form-control" type="date" id="date_end" />
                         </div>
                         <div class="col-2">
-                            <button type="submit" class="btn btn-primary">Lọc</button>
+                            <button type="submit" class="btn btn-primary" onclick=" return GetFillterReprort()">Lọc</button>
                         </div>
                     </div>
 
 
 
-                </form>
+                </div>
                 
 
             </div>
@@ -68,17 +68,13 @@
     <!-- Content Row -->
     <div class="row">
         <div>
-            <li class="nav-item dropdown btn">
-                <a class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+
+            <a class="d-none d-sm-inline-block btn btn-sm btn-primary mb-2" href="#" id="btnExport">
                     <i class="fas fa-download fa-sm text-white-50"></i>  Xuất Excel
                 </a>
 
-                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <li><a asp-area="" asp-controller="ThongKe" asp-action="closedExmonth" class="dropdown-item">Tháng</a></li>
-                    <li><a asp-area="" asp-controller="ThongKe" asp-action="closedExyer" class="dropdown-item">Năm</a></li>
-                    <li><a asp-area="" asp-controller="ThongKe" asp-action="closedEx" class="dropdown-item">Tổng</a></li>
-                </ul>
-            </li>
+               
+         
         </div>
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
@@ -144,59 +140,5 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.bundle.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/gh/linways/table-to-excel@v1.0.4/dist/tableToExcel.js"></script>
 <script src="~/js/report_admin.js" asp-append-version="true"></script>
-@*<script type="text/javascript">
-
-    // Set new default font family and font color to mimic Bootstrap's default styling
-    Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-    Chart.defaults.global.defaultFontColor = '#858796';
-    var data = {
-        labels: @Html.Raw(XLabels),
-        datasets: [{
-            label: "Doanh thu",
-            backgroundColor: "#4e73df",
-            hoverBackgroundColor: "#2e59d9",
-            borderColor: "#4e73df",
-            data: @Html.Raw(YValues),
-
-        }]
-    };
-
-
-    var options = {
-        maintainAspectRatio: false,
-        scales: {
-            yAxes: [{
-                ticks: {
-                    min: 0,
-                    beginAtZero: true
-                },
-                gridLines: {
-                    display: true,
-                    color: "rgb(234, 236, 244)"
-                }
-            }],
-            xAxes: [{
-                ticks: {
-                    min: 0,
-                    beginAtZero: true
-                },
-                gridLines: {
-                    color: "rgb(234, 236, 244)",
-                    display: false
-                }
-            }]
-        }
-    };
-    // Bar Chart Example
-    var ctx = document.getElementById("myBarChart");
-    if (window.bar != undefined)
-        window.bar.destroy();
-    window.bar = new Chart(ctx, {
-        type: 'bar',
-        data: data,
-        options: options,
-
-    });
-
-</script>*@

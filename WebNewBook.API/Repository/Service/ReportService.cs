@@ -54,7 +54,7 @@ namespace WebNewBook.API.Repository.Service
            
             return   list;
         }
-        public List<ReportDTO> GetFillterReport(DateTime startDate,DateTime endDate)
+        public List<ReportDTO> GetFillterReport(string startDate,string endDate)
         {
             List<ReportDTO> list = new List<ReportDTO>();
             DataSet dataSet = TextUtils.GetDataSetSP("spGetFillterReport", new string[] { "@StartDate", "@EndDate" }, new object[] { startDate, endDate });            
