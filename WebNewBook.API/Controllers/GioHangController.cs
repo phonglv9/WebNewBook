@@ -16,12 +16,7 @@ namespace WebNewBook.API.Controllers
         {
             _GioHangService = GioHangService;
         }
-        [HttpGet("GioHangVM")]
-        public async Task<List<HomeVM>> GetHomVMs()
-        {
-            return await _GioHangService.VM();
-
-        }
+      
         [HttpGet("ChecksoluongCart")]
         public async Task<int> ChecksoluongCart()
         {

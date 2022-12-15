@@ -99,7 +99,7 @@
                                 
                                     <form  asp-action="SuaSoLuong" asp-route-id="@i.Maasp">
                                     <a class="btn" href="@Url.Action("SuaSoLuong",new{id = i.Maasp ,update = "2"})"><i class="fa fa-minus" aria-hidden="true"></i></a>
-                                    <input id="numberCart" type="number"min="1" step="1" name="soluongmoi" max="100" value="@i.Soluong" />
+                                    <input id="numberCart" type="number"min="1" step="1" name="soluongmoi" max="10000" value="@i.Soluong" />
                                      
                                     <a href="@Url.Action("SuaSoLuong",new{id = i.Maasp ,update = "1"})"><i class="fa fa-plus" aria-hidden="true"></i></a>
 

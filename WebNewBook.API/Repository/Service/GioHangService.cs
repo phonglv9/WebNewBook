@@ -128,8 +128,10 @@ namespace WebNewBook.API.Repository.Service
                     if (giohang.Soluong <= 0)
                     {
 
-                        giohang.Soluong = 1;
-                        giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
+                        var listghang = _dbContext.GioHangs.ToList();
+                        var xgiohang = listghang.SingleOrDefault(c => c.Maasp == id && c.emailKH == namekh);
+                        _dbContext.Remove(xgiohang);
+                        await _dbContext.SaveChangesAsync();
 
                     }
                 }
@@ -145,36 +147,7 @@ namespace WebNewBook.API.Repository.Service
 
         }
 
-       
-        //Truy vấn lại giỏ hàng:
-        public async Task<List<HomeVM>> VM()
-		{
-            var sanPham = await _dbContext.SanPhams.ToListAsync();
-            var sanPhamCT = await _dbContext.SanPhamCTs.ToListAsync();
-            var sachCT = await _dbContext.SachCTs.ToListAsync();
-            var sach = await _dbContext.Sachs.ToListAsync();
-            var theLoai = await _dbContext.TheLoais.ToListAsync();
-            var danhMuc = await _dbContext.DanhMucSachs.ToListAsync();
-            var tacgia = await _dbContext.TacGias.ToListAsync();
-            List<HomeVM> homeVMs = new List<HomeVM>();
-            homeVMs = (from b in sanPhamCT
-                       join c in sach on b.MaSach equals c.ID_Sach
-                       join d in sachCT on c.ID_Sach equals d.MaSach
-                       join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
-                       join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
-                       join g in tacgia on d.MaTacGia equals g.ID_TacGia
-                       select new HomeVM()
-                       {
-
-                           SanPhamCT = b,
-                           sach = c,
-                           sachCT = d,
-                           theLoai = e,
-                           danhMucSach = f,
-                           tacGia = g,
-                       }).ToList();
-            return homeVMs;
-        }
+  
 
         public async Task<string> XoakhoiGioHang(string id,string namekh)
         {

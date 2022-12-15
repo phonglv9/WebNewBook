@@ -328,21 +328,25 @@ namespace WebNewBook.Controllers
             }
             ViewBag.TheLoai = tl;
 
-            var goupMT = lstchitetsp.GroupBy(c => c.TenTheLoai).ToList();
-            List<string> MT = new List<string>();
+            var goupMT = lstchitetsp.GroupBy(c => c.Mota).ToList();
+            List<SanPhamChiTiet> MT = new List<SanPhamChiTiet>();
+            List<string> TS = new List<string>();
             if (gouptl != null)
             {
                 foreach (var b in goupMT)
                 {
                     foreach (var c in b.Take(1))
                     {
-                        MT.Add(c.Mota);
-
+                        SanPhamChiTiet spct = new SanPhamChiTiet();
+                        spct.TenSach = c.TenSach;
+                        spct.Mota = c.Mota;
+                        MT.Add(spct);
                     }
                 }
             }
            
             ViewBag.Mota = MT;
+            
 
             //DanhMuc
             List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();

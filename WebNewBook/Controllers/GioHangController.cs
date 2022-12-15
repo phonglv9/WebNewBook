@@ -22,28 +22,13 @@ namespace WebNewBook.Controllers
             _httpClient.BaseAddress = baseAdress;
 
          
-            //ListData();
-
-            // Giohangs();
+            
 
         }
 
 
 
-        public List<HomeVM> ListData()
-        {
-            List<HomeVM> modelHome = new List<HomeVM>();
-            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/GioHang/GioHangVM").Result;
-            if (response.IsSuccessStatusCode)
-            {
-                string jsonData = response.Content.ReadAsStringAsync().Result;
-                modelHome = JsonConvert.DeserializeObject<List<HomeVM>>(jsonData);
-
-
-            };
-            return modelHome;
-
-        }
+      
       
         
 
@@ -474,10 +459,18 @@ namespace WebNewBook.Controllers
                             item.ThanhTien = item.Soluong * item.DonGia;
                             if (item.Soluong <= 0)
                             {
+                                var myCartt = Giohangs();
+                                var item1 = myCartt.SingleOrDefault(c => c.Maasp == id);
+                                if (item1 != null)
+                                {
+                                    myCart.Remove(item);
 
-                                item.Soluong = 1;
-                                item.ThanhTien = item.Soluong * item.DonGia;
-                                
+                                }
+
+                                var jsonn = System.Text.Json.JsonSerializer.Serialize(myCart);
+                                Response.Cookies.Append("Cart", jsonn);
+                                return RedirectToAction("Index");
+
                             }
                         }
 
