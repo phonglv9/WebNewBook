@@ -1,4 +1,5 @@
-﻿using Microsoft.Data.SqlClient;
+﻿using Microsoft.AspNetCore.Components;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Reflection.PortableExecutable;
@@ -37,6 +38,7 @@ namespace WebNewBook.API.Repository.Service
 
         //    return _lstThongKe;
         //}
+        //Lay doanh thu theo year or month
         public List<ReportDTO>GetReportNewBook(int type)
         {
             List<ReportDTO> list = new List<ReportDTO>();
@@ -54,6 +56,7 @@ namespace WebNewBook.API.Repository.Service
            
             return   list;
         }
+        //loc
         public List<ReportDTO> GetFillterReport(string startDate,string endDate)
         {
             List<ReportDTO> list = new List<ReportDTO>();
@@ -62,6 +65,25 @@ namespace WebNewBook.API.Repository.Service
             list = TextUtils.ConvertDataTable<ReportDTO>(dt);
             return list;
         }
-      
+
+        //thong ke san pham
+        public List<ReportProductDTO> GetReportProduct()
+        {
+            List<ReportProductDTO> list = new List<ReportProductDTO>();
+            DataSet dataSet = TextUtils.GetDataSet("spGetReportNewBook");
+            DataTable dt = dataSet.Tables[2];
+            list = TextUtils.ConvertDataTable<ReportProductDTO>(dt);
+            return list;
+        }
+        //Top 10 san pham ban chay nhat !
+        public List<ReportProductDTO> GetReportProductTop10()
+        {
+            List<ReportProductDTO> list = new List<ReportProductDTO>();
+            DataSet dataSet = TextUtils.GetDataSet("spGetReportNewBook");
+            DataTable dt = dataSet.Tables[3];
+            list = TextUtils.ConvertDataTable<ReportProductDTO>(dt);
+            return list;
+        }
+
     }
 }

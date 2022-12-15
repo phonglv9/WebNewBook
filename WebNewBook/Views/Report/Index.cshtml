@@ -64,8 +64,8 @@
       
     </div>
        
-
-    <!-- Content Row -->
+    
+    <!-- Content Row Date-->
     <div class="row">
         <div>
 
@@ -76,6 +76,7 @@
                
          
         </div>
+        
         <div class="col-xl-6 col-lg-6">
             <div class="card shadow mb-4">
                 <table class="table">
@@ -83,7 +84,7 @@
                     <thead>
                         <tr>
                             <th>
-                                Ngày bán
+                                Date Value
                             </th>
                             <th>
                                 Tổng doanh thu
@@ -121,6 +122,66 @@
                     <hr>
 
                     <code>/js/demo/chart-bar-demo.js</code>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- Content Row Product-->
+    <div class="row">
+        <div class="">
+            <h3 class="d-flex align-items-center justify-content-center mt-3">Thống kê sản phẩm</h3>
+            <a class="d-none d-sm-inline-block btn btn-sm btn-primary mb-2" href="#" id="btnExportProduct">
+                <i class="fas fa-download fa-sm text-white-50"></i>  Xuất Excel
+            </a>
+
+
+
+        </div>
+        <div class="col-xl-6 col-lg-6">
+            <div class="card shadow mb-4">
+                <table class="table">
+
+                    <thead>
+                        <tr>
+                            <th>
+                               ID Sản Phẩm
+                            </th>
+                            <th>
+                                Tên Sản Phẩm
+                            </th>
+                            <th>
+                                Số lượng bán được
+                            </th>
+                            <th>
+                                Doanh thu 
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody class="datatable_reportproduct">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-xl-6 col-lg-6">
+
+
+
+            <!-- Bar Chart -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-dark">Top 10 Sản phẩm bán chạy nhất</h6>
+                </div>
+                <div class="card-body">
+                    <div class="chart-bar">
+                        <canvas id="myBarChartProduct"></canvas>
+                    </div>
+                   
                 </div>
             </div>
 

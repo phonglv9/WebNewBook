@@ -7,5 +7,7 @@ namespace WebNewBook.API.Repository.IService
         //Task<List<ReportVM>> GetReportVMs();
         List<ReportDTO> GetReportNewBook(int type);
         List<ReportDTO> GetFillterReport(string startDate, string endDate);
+        List<ReportProductDTO> GetReportProduct();
+        List<ReportProductDTO> GetReportProductTop10();
     }
 }

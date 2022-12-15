@@ -43,6 +43,32 @@ namespace WebNewBook.Controllers
 
             return Json(modelReport, new System.Text.Json.JsonSerializerOptions());
         }
+        public JsonResult GetReportProduct()
+        {
+            List<ReportProductDTO> modelReport = new List<ReportProductDTO>();
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/Report/Product").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonData = response.Content.ReadAsStringAsync().Result;
+                modelReport = JsonConvert.DeserializeObject<List<ReportProductDTO>>(jsonData);
+
+            }
+
+            return Json(modelReport, new System.Text.Json.JsonSerializerOptions());
+        }
+        public JsonResult GetReportProductTop10()
+        {
+            List<ReportProductDTO> modelReport = new List<ReportProductDTO>();
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + $"/Report/ProductTop10").Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string jsonData = response.Content.ReadAsStringAsync().Result;
+                modelReport = JsonConvert.DeserializeObject<List<ReportProductDTO>>(jsonData);
+
+            }
+
+            return Json(modelReport, new System.Text.Json.JsonSerializerOptions());
+        }
         public  IActionResult Index()
         {
             return View();

@@ -27,7 +27,21 @@ namespace WebNewBook.API.Controllers
             return _reportService.GetFillterReport(startDate,endDate);
 
         }
+        [HttpGet("Product")]
+        public IEnumerable<ReportProductDTO> GetReportProduct()
+        {
 
-        
+            return _reportService.GetReportProduct();
+
+        }
+        [HttpGet("ProductTop10")]
+        public IEnumerable<ReportProductDTO> GetReportProductTOP10()
+        {
+
+            return _reportService.GetReportProductTop10();
+
+        }
+
+
     }
 }

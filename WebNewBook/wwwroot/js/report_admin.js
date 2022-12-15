@@ -2,6 +2,8 @@
 $(document).ready(function () {
 
     GetReport();
+    GetReportProduct();
+    GetReportProductTop10();
     $('#value_Type').change(function () {
         GetReport();
     });
@@ -9,6 +11,15 @@ $(document).ready(function () {
         let table = document.getElementsByTagName("table");
         TableToExcel.convert(table[0], { // html code may contain multiple tables so here we are refering to 1st table tag
             name: `BaoCaoDoanhThu.xlsx`, // fileName you could use any name
+            sheet: {
+                name: 'Sheet 1' // sheetName
+            }
+        });
+    });
+    $("#btnExportProduct").click(function () {
+        let table = document.getElementsByTagName("table");
+        TableToExcel.convert(table[0], { // html code may contain multiple tables so here we are refering to 1st table tag
+            name: `BaoCaoSanPham.xlsx`, // fileName you could use any name
             sheet: {
                 name: 'Sheet 1' // sheetName
             }
@@ -118,12 +129,66 @@ function GetReport() {
           
 
             }, error: function () {
-                alert("Error loading data! Please try again.");
+                alert("Error loading data date! Please try again.");
+            }
+
+        });
+
+  
+
+}
+function GetReportProductTop10() {
+    $.ajax(
+        {
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: _URL + 'Report/GetReportProductTop10',
+            success: function (result) {
+
+                BarChartReportProduct(result);
+
+
+            }, error: function () {
+                alert("Error loading data product top 10 ! Please try again.");
             }
 
         });
 
 
+
+}
+ //Get san pham
+function GetReportProduct() {
+    
+    var html = '';
+    $.ajax(
+        {
+            type: 'GET',
+            dataType: 'json',
+            contentType: 'application/json',
+            url: _URL + 'Report/GetReportProduct',
+            success: function (result) {
+                $.each(result, function (key, val) {                
+                    html += '  <tr>';
+                    html += '   <td> ' + val.ID_SanPham + ' </td>'
+                    html += '   <td> ' + val.TenSanPham + '</td>'
+                    html += '   <td> ' + val.SoLuongDaBan + ' </td>'
+                    html += '   <td> ' + formatVND(val.DoanhThu) + '</td>'                 
+                    html += '  </tr >'
+                });
+
+                $(".datatable_reportproduct").html(html);
+           
+
+
+            }, error: function () {
+                alert("Error loading data product! Please try again.");
+            }
+
+        });
+
+    //Get san pham
 
 }
 function formatVND(money) {
@@ -144,7 +209,7 @@ function BarChartReport(data) {
     var dataSet = [{
         label: 'VND',
         data: dataTotal,
-        backgroundColor: '#FFA000'
+        backgroundColor: '#ffde22'
     }
     ]
     const ctx = document.getElementById('myBarChart').getContext('2d');
@@ -176,4 +241,46 @@ function BarChartReport(data) {
             maintainAspectRatio: false
         }
     });      
+}
+function BarChartReportProduct(data) {
+    var labels_p = [];
+    var dataTotal = [];
+    $.each(data, function (key, val) {
+        dataTotal.push(val.SoLuongDaBan);
+        labels_p.push(val.TenSanPham);
+    });
+
+    var dataSet = [{
+        label: 'Số Lượng',
+        data: dataTotal,
+        backgroundColor: '#ff414e'
+    }
+    ]
+    const ctx = document.getElementById('myBarChartProduct').getContext('2d');
+    new Chart(ctx, {
+        type: 'horizontalBar',
+        data: {
+            labels: labels_p,
+            datasets: dataSet
+        },options: {
+            scales: {
+                xAxes: {
+
+                    ticks: {
+                        callback: function (dataTotal) {
+                            return formatVND(dataTotal)
+                        }
+                    }
+
+                },
+                yAxes: {
+
+
+
+                }
+            }, responsive: true,
+            maintainAspectRatio: false
+        }
+      
+    });
 }
