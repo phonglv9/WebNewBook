@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 using WebNewBook.Model;
 
@@ -15,6 +17,12 @@ namespace WebNewBook.Controllers
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7266/");
             nhanViens = new List<NhanVien>();
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
         }
 
         public async Task<List<NhanVien>?> Get()

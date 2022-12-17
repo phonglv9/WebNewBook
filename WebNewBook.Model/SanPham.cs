@@ -13,8 +13,6 @@ namespace WebNewBook.Model
     {
         [Key]
         public string ID_SanPham { get; set; }
-        [ForeignKey("PhieuGiamGiaSP")]
-        public string? MaPhieuGiamGiaSP { get; set; }
         public string TenSanPham { get; set; }
         public int SoLuong { get; set; } 
         public double GiaBan { get; set; }
@@ -22,7 +20,6 @@ namespace WebNewBook.Model
         public string HinhAnh { get; set; }
         public int TrangThai { get; set; }
         public DateTime NgayTao { get; set; }
-        public virtual PhieuGiamGiaSP? PhieuGiamGiaSP { get; set; }
         public virtual ICollection<HoaDonCT>? HoaDonCTs { get; set; }
         public virtual ICollection<SanPhamCT>? SanPhamCTs { get; set; }
     }
