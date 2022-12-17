@@ -2,6 +2,7 @@
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 using Microsoft.EntityFrameworkCore;
+using System.Data;
 
 namespace WebNewBook.API.Repository.Service
 {
@@ -70,7 +71,8 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                return await _dbcontext.Vouchers.ToListAsync();
+                var dateNow = DateTime.Now;
+                return await _dbcontext.Vouchers.Where(c => c.TrangThai == 1 &&   dateNow <= c.EndDate).ToListAsync();
             }
             catch (Exception ex)
             {

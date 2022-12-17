@@ -18,13 +18,16 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-              
+               var model=  _dbcontext.KhachHangs.ToList();
+                var checkSdt = model.Any(c => c.SDT == khachHang.SDT);
+                var checkEmail = model.Any(c => c.Email == khachHang.Email);
+                if (checkSdt==false && checkEmail ==false)
+                {
                     khachHang.ID_KhachHang = Guid.NewGuid().ToString();
-                
-
-                khachHang.TrangThai = 1;
-                _dbcontext.Add(khachHang);
-                await _dbcontext.SaveChangesAsync();
+                    khachHang.TrangThai = 1;
+                    _dbcontext.Add(khachHang);
+                    await _dbcontext.SaveChangesAsync();
+                }
             }
             catch (Exception ex)
             {
