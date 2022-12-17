@@ -27,6 +27,7 @@
     <Compile Include="Repository\IService\INhaXuatBanService.cs" />
     <Compile Include="Repository\IService\IPhieuNhapService.cs" />
     <Compile Include="Repository\IService\IProfileCustomerService.cs" />
+    <Compile Include="Repository\IService\IReportService.cs" />
     <Compile Include="Repository\IService\ISanPhamService.cs" />
     <Compile Include="Repository\IService\ITacGiaService.cs" />
     <Compile Include="Repository\IService\ITheLoaiService.cs" />
@@ -44,6 +45,7 @@
     <Compile Include="Repository\Service\NhaXuatBanService.cs" />
     <Compile Include="Repository\Service\PhieuNhapService.cs" />
     <Compile Include="Repository\Service\ProfileCustomerService.cs" />
+    <Compile Include="Repository\Service\ReportService.cs" />
     <Compile Include="Repository\Service\SanPhamService.cs" />
     <Compile Include="Repository\Service\SendMailConfig.cs" />
     <Compile Include="Repository\Service\TacGiaService.cs" />

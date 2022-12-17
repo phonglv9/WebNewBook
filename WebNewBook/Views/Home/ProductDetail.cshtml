@@ -72,19 +72,23 @@
 						</ul>
 						<ul class="product-links">
 							<li>Tác giả:</li>
+							@if (ViewBag.TacGia != null)
 							@foreach (var item in ViewBag.TacGia)
 							{
-								<li><a href="#">@item.HoVaTen</a></li>
+
+									<li><a href="#">@item</a></li>
+
 
 							}
 						</ul>
 						<br>
-						<form asp-controller="GioHang" asp-action="AddToCartCT" asp-route-id="@ViewBag.SanphamCT.ID_SanPham ">
+						<form asp-controller="GioHang" asp-action="AddToCartCT" >
 							<div class="add-to-cart">
 								<div class="qty-label">
 									Số lượng
 									<div class="input-number">
 										<input id="getvalue" name="SoLuong" type="number" value="1">
+										<input id="getvalue" name="id" type="hidden" value="@ViewBag.SanphamCT.ID_SanPham">
 
 										<span class="qty-up">+</span>
 										<span class="qty-down">-</span>
@@ -97,12 +101,13 @@
 
 
 						<ul class="product-links">
-							
+							<li>Thể loại:</li>
 							@if (ViewBag.TheLoai != null)
+
 								@foreach (var item in ViewBag.TheLoai)
 								{
-									<li>Thể loại:</li>
-									<li><a href="#">@item.TenTL</a></li>
+									
+									<li><a href="#">@item</a></li>
 
 								}
 
@@ -129,11 +134,18 @@
 							<div id="tab1" class="tab-pane fade in active">
 								<div class="row">
 									<div class="col-md-12">
-										<p>
+										
+												
+											
+											
+											@if (ViewBag.Mota !=null)
+											@foreach (var item in ViewBag.Mota){
 
-											@ViewBag.SanphamCT.Mota
 
-										</p>
+												<h4 class="title"> @item.TenSach</h4>
+												<p> @item.Mota</p>
+												
+											}
 									</div>
 								</div>
 							</div>
@@ -167,14 +179,7 @@
 													<td>Số lượng : </td>
 													<td>@ViewBag.SanphamCT.SoLuong</td>
 												</tr>
-												<tr>
-													<td>Tên tác giả : </td>
-													<td>@ViewBag.SanphamCT.TenTacGia</td>
-												</tr>
-												<tr>
-													<td>Tên thể loại : </td>
-													<td>@ViewBag.SanphamCT.TenTheLoai</td>
-												</tr>
+												
 												<tr>
 													<td>Tên nhà xuất bản : </td>
 													<td>@ViewBag.SanphamCT.TenNhaXuatBan</td>

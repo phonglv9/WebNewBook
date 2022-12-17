@@ -43,6 +43,12 @@ namespace WebNewBook.API.Controllers
             return await _homeService.GetTheLoais();
 
         }
+        [HttpGet("TheLoaict/{id}")]
+        public async Task<List<SanPhamChiTiet>> GetTLct(string id)
+        {
+            return await _homeService.GetTheLoaisCT(id);
+
+        }
         [HttpGet("DanhMuc")]
         public async Task<List<DanhMucSach>> GetDM()
         {

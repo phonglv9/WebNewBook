@@ -10,7 +10,7 @@
     var color = "";
     @if (ViewBag.MessUpdateCart == "1")
     {
-        mess = "Số lượng bạn đặt trong giỏ hàng không còn đủ";
+        mess = "Số lượng bạn đặt trong giỏ hàng không còn đủ, số lượng mới đã được cập nhật bên dưới";
         color = "danger";
     }
      if (ViewBag.MessUpdateCart == "3")
@@ -21,6 +21,11 @@
     if (ViewBag.MessUpdateCart == "2")
     {
         mess = "Số lượng không có sẵn";
+        color = "danger";
+    }
+    if (ViewBag.MessUpdateCart == "4")
+    {
+        mess = "Số lượng bạn đặt trong giỏ hàng không còn đủ, đăng nhập để trải nghiệm tốt hơn";
         color = "danger";
     }
 }
@@ -94,7 +99,7 @@
                                 
                                     <form  asp-action="SuaSoLuong" asp-route-id="@i.Maasp">
                                     <a class="btn" href="@Url.Action("SuaSoLuong",new{id = i.Maasp ,update = "2"})"><i class="fa fa-minus" aria-hidden="true"></i></a>
-                                    <input id="numberCart" type="number"min="1" step="1" name="soluongmoi" max="100" value="@i.Soluong" />
+                                    <input id="numberCart" type="number"min="1" step="1" name="soluongmoi" max="10000" value="@i.Soluong" />
                                      
                                     <a href="@Url.Action("SuaSoLuong",new{id = i.Maasp ,update = "1"})"><i class="fa fa-plus" aria-hidden="true"></i></a>
 
@@ -126,9 +131,10 @@
                         <td>   </td>
                         <td>   </td>
                         <td>
-                        <button type="button" class="btn btn-default">
-                            <span class="fa fa-arrow-left"></span> Tiếp tục mua hàng
-                        </button></td>
+                                    <a type="button" asp-controller="Home" asp-action="Index" class="btn btn-default">
+                                         <span class="fa fa-arrow-left"></span>  Tiếp tục mua hàng 
+                                    </a>
+                      </td>
                         <td>
                         <a type="button" asp-controller="Payment" asp-action="Checkout" class="btn btn-success">
                             Thanh Toán <span class="fa fa-arrow-right"></span>

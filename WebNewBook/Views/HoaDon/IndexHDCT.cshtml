@@ -80,7 +80,7 @@
                 <td>
                     @foreach (var item in Model.GroupBy(a => a.sanPham.TenSanPham))
                     {
-                        @foreach (var n in item)
+                        @foreach (var n in item.Take(1))
                         {
                             <p> @n.sanPham.TenSanPham    số lượng:x @n.hoaDonCT.SoLuong    đơn giá :@n.hoaDonCT.GiaBan </p>
                         }

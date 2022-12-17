@@ -6,6 +6,7 @@ namespace WebNewBook.API.ModelsAPI
 	{
         public string ID_SanPham { get; set; }
         public string TenSanPham { get; set; }
+        public string TenSach { get; set; }
         public int SoLuong { get; set; }
         public double GiaBan { get; set; }
         public double GiaGoc { get; set; }
@@ -18,10 +19,10 @@ namespace WebNewBook.API.ModelsAPI
         public string idTheLoai { get; set; }
         public string TenTheLoai { get; set; }
         public string TenNhaXuatBan { get; set; }
-        
         public int sotrang { get; set; }
         public int taiban { get; set; }
         public int TrangThai { get; set; }
+
 
     }
 }

@@ -16,10 +16,11 @@ namespace WebNewBook.API.Controllers
         {
             _GioHangService = GioHangService;
         }
-        [HttpGet("GioHangVM")]
-        public async Task<List<HomeVM>> GetHomVMs()
+      
+        [HttpGet("ChecksoluongCart")]
+        public async Task<int> ChecksoluongCart()
         {
-            return await _GioHangService.VM();
+            return await _GioHangService.ChecksoluongCart();
 
         }
         [HttpGet("GetLitsGH")]
@@ -28,10 +29,11 @@ namespace WebNewBook.API.Controllers
             return await _GioHangService.GetlistGH();
 
         }
-        [HttpGet("GetSanPham")]
-        public async Task<List<SanPham>> GetSanPham()
+      
+        [HttpGet("GetSanPham/{id}")]
+        public async Task<int> GetSanPham(string id)
         {
-            return await _GioHangService.getSP();
+            return await _GioHangService.getSP(id);
 
         }
         [HttpGet("SanPham/{id}")]

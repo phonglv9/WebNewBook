@@ -47,6 +47,7 @@
                             <div class="col-2">
                                 <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
                             </div>
+                         
                             <div class="col-5 mb-3">
                                 <select id="selectHD" name="trangThai" class="form-select" aria-label="Default select example">
                                     <option selected>Chọn trạng thái</option>
@@ -57,6 +58,7 @@
                                    @* <option value="3">Đơn hàng thanh toán thất bại</option>*@
                                     <option value="4">Trả hàng</option>
                                     <option value="5">Thành công</option>
+                                    <option value="7">Khách không đăng nhập</option>
                                 </select>
                             </div>
                         </form>
@@ -112,15 +114,9 @@
                                     coler = "table-info";
 
                                 }
-                               
-                                
-                                
-
                                 <tr>
                                     <td class="@coler">@a.hoaDon.ID_HoaDon</td>
                                     <td class="@coler">@a.KhachHang.HoVaTen</td>
-
-
                                     <td class="@coler">@a.hoaDon.NgayMua</td>
                                     <td class="@coler">@a.hoaDon.TongTien</td>
 

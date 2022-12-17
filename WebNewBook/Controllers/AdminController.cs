@@ -42,7 +42,7 @@ namespace WebNewBook.Controllers
                     ClaimsPrincipal principal = new ClaimsPrincipal(identity);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
                     Set("token", token, 1);
-                    return RedirectToAction("Index", "Admin");
+                    return RedirectToAction("Index", "Report");
                 }
 
                 error = await response.Content.ReadAsStringAsync();

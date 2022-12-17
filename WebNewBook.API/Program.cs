@@ -65,6 +65,7 @@ builder.Services.AddScoped<ITheLoaiService, TheLoaiService>();
 builder.Services.AddScoped<ITacGiaService, TacGiaService>();
 builder.Services.AddScoped<INhaXuatBanService, NhaXuatBanService>();
 builder.Services.AddScoped<IDanhMucService, DanhMucService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 
 builder.Services.AddTransient<IEmailService, SendMailConfig>();
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, options =>

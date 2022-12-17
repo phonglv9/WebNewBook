@@ -5,6 +5,7 @@ using System.Diagnostics;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.Models;
+using WebNewBook.ViewModel;
 using X.PagedList;
 
 namespace WebNewBook.Controllers
@@ -305,27 +306,48 @@ namespace WebNewBook.Controllers
             ViewBag.SanphamCT = Product;
 
             //Thể loại
-            List<TheLoai> theLoais = new List<TheLoai>();
-            HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;
+            List<SanPhamChiTiet> lstchitetsp = new List<SanPhamChiTiet>();
+            HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + $"/home/TheLoaict/{id}").Result;
             if (responseTL.IsSuccessStatusCode)
             {
                 string jsonData = responseTL.Content.ReadAsStringAsync().Result;
-                theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
-
-
+                lstchitetsp = JsonConvert.DeserializeObject<List<SanPhamChiTiet>>(jsonData);
             };
-            if (!String.IsNullOrEmpty(Product.idTheLoai))
+            var gouptl = lstchitetsp.GroupBy(c => c.TenTheLoai).ToList();
+            List<string> tl=new List<string>();
+            if (gouptl != null)
             {
-                foreach (var a in Product.idTheLoai)
+                foreach (var b in gouptl)
                 {
-                    List<TheLoai> lsttheLoai = new List<TheLoai>();
-                    lsttheLoai = theLoais.Where(c => c.ID_TheLoai == a.ToString()).ToList();
-                    var TentheLoai = theLoais.Where(c => c.ID_TheLoai == a.ToString()).Select(v => v.TenTL).FirstOrDefault();
-                    ViewBag.TheLoai = lsttheLoai;
-                   
+                    foreach (var c in b.Take(1))
+                    {
+                        tl.Add(c.TenTheLoai);
+
+                    }
+                }
+            }
+            ViewBag.TheLoai = tl;
+
+            var goupMT = lstchitetsp.GroupBy(c => c.Mota).ToList();
+            List<SanPhamChiTiet> MT = new List<SanPhamChiTiet>();
+            List<string> TS = new List<string>();
+            if (gouptl != null)
+            {
+                foreach (var b in goupMT)
+                {
+                    foreach (var c in b.Take(1))
+                    {
+                        SanPhamChiTiet spct = new SanPhamChiTiet();
+                        spct.TenSach = c.TenSach;
+                        spct.Mota = c.Mota;
+                        MT.Add(spct);
+                    }
                 }
             }
            
+            ViewBag.Mota = MT;
+            
+
             //DanhMuc
             List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
             HttpResponseMessage responseDMm = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
@@ -359,25 +381,22 @@ namespace WebNewBook.Controllers
 
 
 
-            //TÁC GIẢ
-            List<TacGia> tacGias = new List<TacGia>();
-            HttpResponseMessage responseTG = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/Tacgia").Result;
-            if (responseTL.IsSuccessStatusCode)
-            {
-                string jsonData = responseTG.Content.ReadAsStringAsync().Result;
-                tacGias = JsonConvert.DeserializeObject<List<TacGia>>(jsonData);
 
+            
+            var gouptg= lstchitetsp.GroupBy(c => c.TenTacGia).ToList();
+            List<string> tg = new List<string>();
+            if (gouptg != null) {
+                foreach (var b in gouptg)
+                {
+                    foreach (var c in b.Take(1))
+                    {
+                        tg.Add(c.TenTacGia);
 
-            };
-            List<TacGia> LstTacGia = new List<TacGia>();
+                    }
+                }
+            }
 
-
-
-            LstTacGia = tacGias.Where(c => c.ID_TacGia == Product.idTacGia).ToList();
-
-            ViewBag.TacGia = LstTacGia;
-
-
+            ViewBag.TacGia = tg;
             return View("ProductDetail");
         }
         public IActionResult Privacy()
