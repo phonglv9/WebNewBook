@@ -33,7 +33,7 @@ namespace WebNewBook.API.Data
         public DbSet<TheLoai> TheLoais { get; set; }
         public DbSet<VoucherCT> VoucherCTs { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
-        public DbSet<PhieuGiamGiaSP> PhieuGiamGiaSPs { get; set; }
+        //public DbSet<PhieuGiamGiaSP> PhieuGiamGiaSPs { get; set; }
         public DbSet<PhieuNhap> PhieuNhaps { get; set; }
         public DbSet<PhieuTra> PhieuTras { get; set; }
         public DbSet<SanPham> SanPhams { get; set; }
