@@ -64,8 +64,7 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Delete(string Id)
         {
-            StringContent content = new StringContent(JsonConvert.SerializeObject(Id));
-            List<KhachHang> khachHangs = new List<KhachHang>();
+       
             HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/Customer/"+Id,null).Result;
             if (response.IsSuccessStatusCode)
             {

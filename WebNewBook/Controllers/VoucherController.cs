@@ -83,6 +83,8 @@ namespace WebNewBook.Controllers
                 string jsondata_1 = response_1.Content.ReadAsStringAsync().Result;
 
                 voucherModel.Voucher = JsonConvert.DeserializeObject<Voucher>(jsondata_1);
+                ViewBag.Hinhthuc = voucherModel.Voucher.HinhThuc;
+                Console.WriteLine(voucherModel.Voucher.HinhThuc);
 
             }
             HttpResponseMessage response_2 = _httpClient.GetAsync(_httpClient.BaseAddress + "/VoucherCT/CallIdPH/" + voucherModel.Voucher.Id).Result;
@@ -95,6 +97,7 @@ namespace WebNewBook.Controllers
                 ViewBag.lstvoucherCT0 = voucherCTs.Where(c => c.TrangThai == 0).OrderByDescending(c => c.CreateDate).ToList();
                 ViewBag.lstvoucherCT1 = voucherCTs.OrderByDescending(c => c.CreateDate).ToList();
                 ViewBag.lstvoucherCT2 = voucherCTs.Where(c => c.TrangThai == 2).OrderByDescending(c => c.CreateDate).ToList();
+               
 
             }
             HttpResponseMessage responseMessage = _httpClient.GetAsync(_httpClient.BaseAddress + "/Customer").Result;

@@ -27,13 +27,10 @@
 
 }
 
-<link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
-<link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
 
 <div style="background-color: #f1f1f1;">
     <div class="row  p-1">
-        <div class="col-3 mx-2">
+        <div class="col-md-3 mx-2">
             <div class="list-group">
                 <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
                 <a asp-action="account" class="list-group-item list-group-item-action ">
@@ -45,22 +42,22 @@
                 <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
             </div>
         </div>
-        <div class="col-8  mx-4 ">
-            <div class="py-3">
+        <div class="col-md-8  ">
+            <div  class="py-3">
                 @if (mess != "")
                 {
                     <div class="alert alert-@color" id="msNXB" role="alert">
                         @mess
                     </div>
                 }
-            <div class="bg-white mb-2 p-3">
+                <div  style="background-color:white;padding:30px" class=" mb-2 p-3 my-3">
                 <h5>Ví Voucher của tôi</h5>
                 <hr>
-                <button class="btn" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Đổi điểm <span class="mx-4">@String.Format( "{0:#,##0.##}",(DiemTichluy)) điểm</span></button>
-                <div class="collapse" id="collapseExample">
+                <button class="btn btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">Đổi điểm <span class="mx-4">@String.Format( "{0:#,##0.##}",(DiemTichluy)) điểm</span></button>
+                    <div style="padding-top:20px" class="collapse" id="collapseExample">
 
                     <div class="card card-body ">
-
+                    
                         @if (Voucherdedoi == null)
                         {
                             <span class="text-danger">Chưa có Voucher để đổi</span>
@@ -72,11 +69,11 @@
                                 {
                                     @if (DiemTichluy < x.DiemDoi)
                                     {
-                                        <div class="col-6 ">
-                                            <div class="card mb-3" style="max-width: 540px;">
+                                        <div   class="col-md-6 ">
+                                            <div  class="card mb-3" style="max-width: 540px;">
                                                 <div class="row g-0">
                                                     <div class="col-md-4">
-                                                        <img src="https://i.ytimg.com/vi/kT2P1-3wyFI/maxresdefault.jpg" class="img-fluid rounded-start" alt="...">
+                                                        <img src="/img/voucher.png"  width="150px">
                                                     </div>
                                                     <div class="col-md-8">
 
@@ -95,11 +92,11 @@
                                     }
                                     else
                                     {
-                                        <div class="col-6 ">
+                                        <div class="col-md-6     ">
                                             <div class="card mb-3" style="max-width: 540px;">
                                                 <div class="row g-0">
                                                     <div class="col-md-4">
-                                                        <img src="https://i.ytimg.com/vi/kT2P1-3wyFI/maxresdefault.jpg" class="img-fluid rounded-start" alt="...">
+                                                        <img src="/img/voucher.png"  width="150px">
                                                     </div>
                                                     <div class="col-md-8">
                                                         <form asp-action="DoiVoucher">
@@ -129,24 +126,26 @@
                 </div>
                 <hr>
             </div>
-            <div class="bg-white mb-1  p-3">
+                <div style="background-color:white;padding:30px" class="mb-1  p-3">
                 <div style="font-size: 13px;">
                     <div class="row">
+                            <p>Voucher của tôi</p>
                         @if (VoucherKhachHang != null)
                         {
+
                             @foreach (var x in VoucherKhachHang)
                             {
 
-                                <div class="col-6 ">
+                                <div class="col-md-6 ">
                                     <div class="card mb-3" style="max-width: 540px;">
                                         <div class="row g-0">
                                             <div class="col-md-4">
-                                                <img src="https://th.bing.com/th/id/R.cbb492e70582af9a9eec50e6a8bf50b3?rik=016yOWNQyEarOQ&pid=ImgRaw&r=0" class="img-fluid rounded-start" alt="...">
+                                                    <img src="/img/voucher.png" width="150px">
                                             </div>
                                             <div class="col-md-8">
 
                                                 <div class="card-body row">
-                                                    <h6 class="card-title col-7">Giảm hóa đơn khi thanh toán</h6>
+                                                        <h6 class="card-title col-7">Giảm hóa đơn khi thanh toán (@x.TenPhatHanh)</h6>
                                                     <a href="#" class="col-5 text-decoration-none">Chi tiết</a>
                                                     <p class="card-text "><small class=" border border-1 border-danger text-danger p-1 "> @String.Format( "{0:#,##0.##}",(x.MenhGia))k </small></p>
                                                     <p>HSD: @x.NgayHetHan.ToString("d-M-yyyy")</p>
@@ -169,10 +168,6 @@
 
 
 
-
-<script src="/bootstrap-5.2.1/dist/js/bootstrap.min.js"></script>
-<script src="/fontawesome-free-6.2.0-web/js/fontawesome.min.js"></script>
-<script src="/fontawesome-free-6.2.0-web/js/all.min.js"></script>
 
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
