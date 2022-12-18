@@ -23,7 +23,6 @@
     <Compile Include="Repository\IService\IHoaDonService.cs" />
     <Compile Include="Repository\IService\IHomeService.cs" />
     <Compile Include="Repository\IService\INhanVienService.cs" />
-    <Compile Include="Repository\IService\IPhieuGiamSPService.cs" />
     <Compile Include="Repository\IService\INhaXuatBanService.cs" />
     <Compile Include="Repository\IService\IPhieuNhapService.cs" />
     <Compile Include="Repository\IService\IProfileCustomerService.cs" />
@@ -41,7 +40,6 @@
     <Compile Include="Repository\Service\HoaDonService.cs" />
     <Compile Include="Repository\Service\HomeService.cs" />
     <Compile Include="Repository\Service\NhanVienService.cs" />
-    <Compile Include="Repository\Service\PhieuGiamSPService.cs" />
     <Compile Include="Repository\Service\NhaXuatBanService.cs" />
     <Compile Include="Repository\Service\PhieuNhapService.cs" />
     <Compile Include="Repository\Service\ProfileCustomerService.cs" />
