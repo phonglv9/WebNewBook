@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using System.Diagnostics;
+using System.Linq;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.Models;
@@ -36,16 +37,8 @@ namespace WebNewBook.Controllers
 
 
             };
-            ////TheLoai
-            //List<TheLoai> theLoais = new List<TheLoai>();
-            //HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;
-            //if (responseTL.IsSuccessStatusCode)
-            //{
-            //    string jsonData = responseTL.Content.ReadAsStringAsync().Result;
-            //    theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
-
-            //    ViewBag.TheLoai = await theLoais.ToListAsync();
-            //};
+        
+            
             //danh muc
             List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
             HttpResponseMessage responseDM =  _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
@@ -57,28 +50,22 @@ namespace WebNewBook.Controllers
                 ViewBag.DanhMuc = await danhMucSaches.ToListAsync();
             };
             //Sách mới
-            ViewBag.NewBook = modelHome.OrderByDescending(c => c.NgayTao).ToList();
+            ViewBag.NewBook = modelHome.OrderByDescending(c => c.NgayTao).Take(10).ToList();
+            //Sách bán chạy
+            List<ProductOderTop10VM> productOderTop10VMs = new List<ProductOderTop10VM>();
+            HttpResponseMessage responseProductTop10= _httpClient.GetAsync(_httpClient.BaseAddress + "/home/HomeProductTop10Oder").Result;
+            if (responseProductTop10.IsSuccessStatusCode)
+            {
+                string jsonData = responseProductTop10.Content.ReadAsStringAsync().Result;
+                productOderTop10VMs = JsonConvert.DeserializeObject<List<ProductOderTop10VM>>(jsonData);
 
+                ViewBag.SachBanChay = productOderTop10VMs;
+            };
 
 
 
             return View(modelHome);
         }
-        //public JsonResult GetOderSell()
-        //{
-        //    //Model home
-        //   List<TheLoai> theLoais = new List<TheLoai>();
-        //    HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;
-        //    if (responseTL.IsSuccessStatusCode)
-        //    {
-        //        string jsonData = responseTL.Content.ReadAsStringAsync().Result;
-        //        theLoais = JsonConvert.DeserializeObject<List<TheLoai>>(jsonData);
-
-               
-        //    };
-        //    return Json(theLoais);
-        //}
-
         public async Task<IActionResult> Product(string search, string currentFilter, string iddanhmuc, string idtheloai, string idtacgia, string sortOrder, int? pageNumber, int pageSize, double priceMin, double priceMax)
         {
 
@@ -102,7 +89,9 @@ namespace WebNewBook.Controllers
                 danhMucSaches = JsonConvert.DeserializeObject<List<DanhMucSach>>(jsonData);
 
                 ViewBag.DanhMuc = await danhMucSaches.ToListAsync();
-            };
+               
+
+			};
             //TheLoai
             List<TheLoai> theLoais = new List<TheLoai>();
             HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/TheLoai").Result;

@@ -8,7 +8,7 @@ $(document).ready(function () {
         GetReport();
     });
     $("#btnExport").click(function () {
-        let table = document.getElementsByTagName("table");
+        let table = document.getElementsByClassName("tabledate");
         TableToExcel.convert(table[0], { // html code may contain multiple tables so here we are refering to 1st table tag
             name: `BaoCaoDoanhThu.xlsx`, // fileName you could use any name
             sheet: {
@@ -17,7 +17,7 @@ $(document).ready(function () {
         });
     });
     $("#btnExportProduct").click(function () {
-        let table = document.getElementsByTagName("table");
+        let table = document.getElementsByClassName("tableproduct");
         TableToExcel.convert(table[0], { // html code may contain multiple tables so here we are refering to 1st table tag
             name: `BaoCaoSanPham.xlsx`, // fileName you could use any name
             sheet: {
@@ -209,7 +209,7 @@ function BarChartReport(data) {
     var dataSet = [{
         label: 'VND',
         data: dataTotal,
-        backgroundColor: '#ffde22'
+        backgroundColor: '#ff6b50'
     }
     ]
     const ctx = document.getElementById('myBarChart').getContext('2d');
@@ -225,16 +225,13 @@ function BarChartReport(data) {
             scales: {
                 xAxes: {
                    
-                    ticks: {
-                        callback: function (dataTotal) {
-                            return formatVND(dataTotal)
-                        }
-                    }
                     
                 },
                 yAxes: {
                    
-
+                    ticks: {
+                        beginAtZero: true
+                    }
 
                 }
             }, responsive: true,
@@ -253,7 +250,7 @@ function BarChartReportProduct(data) {
     var dataSet = [{
         label: 'Số Lượng',
         data: dataTotal,
-        backgroundColor: '#ff414e'
+        backgroundColor: '#00cc99'
     }
     ]
     const ctx = document.getElementById('myBarChartProduct').getContext('2d');
@@ -266,11 +263,6 @@ function BarChartReportProduct(data) {
             scales: {
                 xAxes: {
 
-                    ticks: {
-                        callback: function (dataTotal) {
-                            return formatVND(dataTotal)
-                        }
-                    }
 
                 },
                 yAxes: {

@@ -14,6 +14,7 @@ namespace WebNewBook.API.Repository.IService
         Task<List<TacGia>> GetTacGias();
         Task<SanPhamChiTiet> GetProductDetail(string id);
         Task<List<SanPhamChiTiet>> GetTheLoaisCT(string id);
+        Task<List<ProductOderTop10VM>> GetTopProduct10Oder();
 
 
 

@@ -4,6 +4,8 @@ using WebNewBook.API.ModelsAPI;
 using Microsoft.EntityFrameworkCore;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
+using System.Data;
+using WebNewBook.API.Common;
 
 namespace WebNewBook.API.Repository.Service
 {
@@ -55,6 +57,18 @@ namespace WebNewBook.API.Repository.Service
 
 
             return lst;
+        }
+        public async Task<List<ProductOderTop10VM>> GetTopProduct10Oder()
+        {
+           
+                List<ProductOderTop10VM> list = new List<ProductOderTop10VM>();
+                DataSet dataSet = TextUtils.GetDataSet("spGetTop10ProductOder");
+                DataTable dt = new DataTable();
+            dt = dataSet.Tables[0];
+            list = TextUtils.ConvertDataTable<ProductOderTop10VM>(dt);
+
+                return list;
+            
         }
         public async Task<IEnumerable<ProductVM>> GetProductHome()
         {

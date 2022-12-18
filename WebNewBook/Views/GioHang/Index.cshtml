@@ -29,27 +29,9 @@
         color = "danger";
     }
 }
-<!-- BREADCRUMB -->
-<div id="breadcrumb">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-12">
-                <ul class="breadcrumb-tree">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Book</a></li>
 
-                </ul>
-            </div>
-        </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
-</div>
-<!-- /BREADCRUMB -->
 
-<div class="section">
+<div class="section" style="height:100%;">
 
     <div class="container">
         @if (ViewBag.giohang == null || ViewBag.giohang.Count == 0)
@@ -58,7 +40,7 @@
                         @mess
             </div>
                  }
-            <h3 class="text-info text-center">
+            <h3 class="text-info text-center" style="height:500px;">
                 Giỏ hàng của bạn rỗng!
             </h3>
         }else{
