@@ -416,11 +416,24 @@
 
                                                 </div>
 
-                                                <div class="add-to-cart">
+                                                @if (item.SoLuong < 1)
+                                                {
+                                                    <div class="add-to-cart">
 
 
-                                                    <button type="button" class="add-to-cart-btn" data-toggle="modal" data-target="#exampleModalCart" value="@item.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-                                                </div>
+                                                        <button class="add-to-cart-btn " type="button"><i class="fa fa-shopping-cart"></i> Sản phẩm tạm hết hàng</button>
+
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="add-to-cart">
+
+
+                                                        <button class="add-to-cart-btn" type="button" data-toggle="modal" data-target="#exampleModalCart" value="@item.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+
+                                                    </div>
+                                                }
 
                                             </div>
 
