@@ -52,11 +52,11 @@
                                 <select id="selectHD" name="trangThai" class="form-select" aria-label="Default select example">
                                     <option selected>Chọn trạng thái</option>
                                    
-                                    <option value="6">Không tồn tại</option>
-                                    <option value="1">Đặt hàng</option>
-                                    <option value="2">Đã thanh toán</option>
+                                    <option value="6">Vô hiệu hóa</option>
+                                    @*<option value="1">Đặt hàng</option>
+                                    <option value="2">Đã thanh toán</option>*@
                                    @* <option value="3">Đơn hàng thanh toán thất bại</option>*@
-                                    <option value="4">Trả hàng</option>
+                                   @* <option value="4">Trả hàng</option>*@
                                     <option value="5">Thành công</option>
                                     <option value="7">Khách không đăng nhập</option>
                                 </select>
@@ -108,7 +108,7 @@
                             @foreach (var a in ViewBag.DataHD)
                             {
                                 var coler = "null";
-                                @if (@a.hoaDon.TrangThai == 1 ||@a.hoaDon.TrangThai == 2)
+                                @if (@a.hoaDon.TrangThai == 5 )
                                 {
                                     @*coler = "Green2";*@
                                     coler = "table-info";
@@ -124,24 +124,24 @@
                                         
                                             @if (@a.hoaDon.TrangThai == 6)
                                             {
-                                                <p>Không tồn tại</p>
+                                                <p>Vô hiệu hóa</p>
                                             }
-                                            else if (@a.hoaDon.TrangThai == 1)
+                                          @*  else if (@a.hoaDon.TrangThai == 1)
                                             {
                                                 <p>Đặt hàng</p>
                                             }
                                             else if (@a.hoaDon.TrangThai == 2)
                                             {
                                                 <p>Đã thanh toán</p>
-                                            }
+                                            }*@
                                             @* else if (@a.hoaDon.TrangThai == 3)
                                     {
                                     <h6 >Đơn hàng thanh toán thất bại</h6>
                                     }*@
-                                            else if (@a.hoaDon.TrangThai == 4)
+                                           @* else if (@a.hoaDon.TrangThai == 4)
                                             {
                                                 <p>Trả hàng</p>
-                                            }
+                                            }*@
                                             else if (@a.hoaDon.TrangThai == 5)
                                             {
                                                 <p>Thành công </p>
@@ -154,16 +154,16 @@
                                         <form asp-controller="HoaDon" asp-action="Sua" method="post">
 
                                             @* <input name="dd" type="hidden" value=" @item.hoaDon.ID_HoaDon">*@
-                                           <div class="editindex">
-                                              
-                                                <div class="combobox-HD">
+                                           <div style="display: flex;">
+
+                                                <div class="combobox-HD" style="margin-right:10px;">
                                                     <select class="form-select" name="name" aria-label="Default select example">
                                                         <option value="">Tất cả</option>
-                                                        <option value="6">Không tồn tại</option>
-                                                        <option value="1">Đặt hàng</option>
-                                                        <option value="2">Đã thanh toán</option>
+                                                        <option value="6">Vô hiệu hóa</option>
+                                                       @* <option value="1">Đặt hàng</option>
+                                                        <option value="2">Đã thanh toán</option>*@
                                                         @*<option value="3">Đơn hàng thanh toán thất bại</option>*@
-                                                        <option value="4">Trả hàng</option>
+                                                        @*<option value="4">Trả hàng</option>*@
                                                         <option value="5">Thành công</option>
 
                                                     </select>
