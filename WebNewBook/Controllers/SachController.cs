@@ -44,6 +44,7 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Index(string? timKiem, int? trangThai, int? page, string mess)
         {
+            ViewBag.TitleAdmin = "Sách";
             timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
             List<Sach>? lstSach = new List<Sach>();
             lstSach = await Get();

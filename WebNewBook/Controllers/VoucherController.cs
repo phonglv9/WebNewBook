@@ -32,6 +32,7 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Index(int? page, string search, DateTime? startdate, DateTime? enddate, int? type)
         {
+            ViewBag.TitleAdmin = "Voucher";
 
             ViewBag.Search = search;
             ViewBag.Startdate = startdate;

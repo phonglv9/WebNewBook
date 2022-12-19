@@ -30,6 +30,7 @@ namespace WebNewBook.Controllers
         }
         public async Task<IActionResult> Index(string? timkiem, int? trangThai, int? page, string mess)
         {
+            ViewBag.TitleAdmin = "Hóa Đơn";
             ViewBag.TimKiem = timkiem;
             ViewBag.TrangThai = trangThai;
             ViewBag.message = mess;
