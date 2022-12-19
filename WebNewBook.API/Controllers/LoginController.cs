@@ -91,7 +91,7 @@ namespace WebNewBook.API.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register(CustomInputModel Input)
         {
-            if (_db.KhachHangs.Any(c => c.Email == Input.Email) || _db.NhanViens.Any(c => c.Email == Input.Email))
+            if (_db.KhachHangs.Any(c => c.Email == Input.Email) || _db.NhanViens.Any(c => c.Email == Input.Email) || await userManager.FindByEmailAsync(Input.Email) != null)
             {
                 return BadRequest("Tài khoản đã tồn tại!");
             }
@@ -114,14 +114,14 @@ namespace WebNewBook.API.Controllers
                         Request.Host.ToString());
                 //Set gửi mail
                 var email = new MimeMessage();
-                email.From.Add(MailboxAddress.Parse("phonglvph16158@fpt.edu.vn"));
+up                email.From.Add(MailboxAddress.Parse("tuyenlhph15504@fpt.edu.vn"));
                 email.To.Add(MailboxAddress.Parse(Input.Email));
                 email.Subject = "Confirm";
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." };
 
                 using var smtp = new MailKit.Net.Smtp.SmtpClient();
                 smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                smtp.Authenticate("phonglvph16158@fpt.edu.vn", "");
+                smtp.Authenticate("tuyenlhph15504@fpt.edu.vn", "tuuuuuus001");
                 smtp.Send(email);
                 smtp.Disconnect(true);
                 return Ok();
@@ -181,14 +181,14 @@ namespace WebNewBook.API.Controllers
                         Request.Host.ToString());
 
                 var email = new MimeMessage();
-                email.From.Add(MailboxAddress.Parse("phonglvph16158 @fpt.edu.vn"));
+                email.From.Add(MailboxAddress.Parse("tuyenlhph15504@fpt.edu.vn"));
                 email.To.Add(MailboxAddress.Parse(tk));
                 email.Subject = "Reset Password";
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Please click here to reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." };
                 //phonglvph16158 @fpt.edu.vn", "Ph@01248460961
                 using var smtp = new MailKit.Net.Smtp.SmtpClient();
                 smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                smtp.Authenticate("phonglvph16158 @fpt.edu.vn", "Ph@");
+                smtp.Authenticate("tuyenlhph15504@fpt.edu.vn", "tuuuuuus001");
                 smtp.Send(email);
                 smtp.Disconnect(true);
                 return Ok();
@@ -244,14 +244,14 @@ namespace WebNewBook.API.Controllers
                 _db.SaveChanges();
 
                 var emailTo = new MimeMessage();
-                emailTo.From.Add(MailboxAddress.Parse("phonglvph16158@fpt.edu.vn"));
+                emailTo.From.Add(MailboxAddress.Parse("tuyenlhph15504@fpt.edu.vn"));
                 emailTo.To.Add(MailboxAddress.Parse(email));
                 emailTo.Subject = "New Password";
                 emailTo.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = "Your new password is " + pw };
                 //phonglvph16158 @fpt.edu.vn", "Ph@01248460961
                 using var smtp = new MailKit.Net.Smtp.SmtpClient();
                 smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                smtp.Authenticate("phonglvph16158 @fpt.edu.vn", "Ph@");
+                smtp.Authenticate("tuyenlhph15504@fpt.edu.vn", "tuuuuuus001");
                 smtp.Send(emailTo);
                 smtp.Disconnect(true);
             }

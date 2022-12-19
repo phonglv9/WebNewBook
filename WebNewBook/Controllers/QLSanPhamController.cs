@@ -12,7 +12,7 @@ using System.IO;
 
 namespace WebNewBook.Controllers
 {
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin,NhanVien")]
     public class QLSanPhamController : Controller
     {
         private readonly HttpClient _httpClient;

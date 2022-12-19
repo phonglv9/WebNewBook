@@ -256,15 +256,20 @@ namespace WebNewBook.API.Repository.Service
                             {
                                 if (voucher.HinhThuc == 2 && lstCustomer[i] != null)
                                 {
-
-                                    model.TrangThai = 1;
-
-                                    if (lstvoucherCTs.Count >= lstCustomer.Count)
+                                    if (x.MaKhachHang!=null)
                                     {
-                                        model.MaKhachHang = lstCustomer[i].ID_KhachHang;
-                                        i++;
+                                        model.MaKhachHang = x.MaKhachHang;
+                                     
                                     }
-
+                                    else
+                                    {
+                                        if (lstvoucherCTs.Count >= lstCustomer.Count)
+                                        {
+                                            model.MaKhachHang = lstCustomer[i].ID_KhachHang;
+                                            i++;
+                                        }
+                                    }
+                                    model.TrangThai = 1;
                                     model.HinhThuc = voucher.HinhThuc;
                                     model.Diemdoi = voucher.DiemDoi;
                                     model.NgayBatDau = x.NgayBatDau;
@@ -272,17 +277,7 @@ namespace WebNewBook.API.Repository.Service
                                     await _dbcontext.SaveChangesAsync();
                                     if (i == lstCustomer.Count)
                                     {
-                                        //var listVoucherCT = _dbcontext.VoucherCTs.Where(c => c.MaVoucher == voucher.Id && c.TrangThai==0).ToList();
-                                        //if (listVoucherCT!= null)
-                                        //{
-                                        //    foreach (var item in lstvoucherCTs)
-                                        //    {
-                                        //        item.TrangThai = 3;
-                                        //        _dbcontext.VoucherCTs.Update(item);
-                                        //        _dbcontext.SaveChanges();
-
-                                        //    }
-                                        //}
+                         
                                         break;
                                     }
                                 }
