@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -9,6 +10,7 @@ using WebNewBook.Model;
 
 namespace WebNewBook.Controllers
 {
+    [Authorize(Roles = "Admin,NhanVien")]
     public class SachController : Controller
     {
         private readonly HttpClient _httpClient;

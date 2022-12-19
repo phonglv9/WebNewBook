@@ -70,19 +70,19 @@
                  
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            @if (User.IsInRole("Admin"))
+                            @if (User.IsInRole("Admin") || User.IsInRole("NhanVien"))
                             {
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Đăng xuất</span>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Tài khoản</span>
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                  aria-labelledby="userDropdown">
                                   
-                                    <a class="dropdown-item" href="#">
+                                    <a asp-action="ChangePasswordNV" asp-controller="QLLogin" class="dropdown-item">
                                         <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                        Thông tin tài khoản
+                                        Đổi mật khẩu
                                     </a>
                                     <a asp-action="Logout" asp-controller="Admin" class="dropdown-item">
                                         <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>

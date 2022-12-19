@@ -42,6 +42,11 @@ namespace WebNewBook.Controllers
             return View();
         }
 
+        public IActionResult ForgotPassword()
+        {
+            return View();
+        }
+
         [Authorize]
         public IActionResult ChangePassword()
         {
@@ -56,6 +61,54 @@ namespace WebNewBook.Controllers
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await _httpClient.PostAsync("login/ChangePassword", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                error = await response.Content.ReadAsStringAsync();
+                error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
+            }
+            ViewBag.Error = error;
+            return View();
+        }
+
+        [Authorize]
+        public IActionResult ChangePasswordNV()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePasswordNV(ChangePasswordModel user)
+        {
+            string error = "";
+            user.NhanVien = true;
+            if (ModelState.IsValid)
+            {
+                StringContent content = new StringContent(JsonConvert.SerializeObject(user), Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _httpClient.PostAsync("login/ChangePassword", content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                error = await response.Content.ReadAsStringAsync();
+                error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
+            }
+            ViewBag.Error = error;
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ForgotPassword(string user)
+        {
+            string error = "";
+            if (ModelState.IsValid)
+            {
+                HttpResponseMessage response = await _httpClient.PostAsync("login/ForgotPassword?tk=" + user, null);
 
                 if (response.IsSuccessStatusCode)
                 {

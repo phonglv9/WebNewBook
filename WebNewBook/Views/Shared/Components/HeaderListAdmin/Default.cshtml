@@ -1,14 +1,14 @@
 ﻿<!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Admin" asp-action="Index">
-                <div class="sidebar-brand-icon rotate-n-15">
-                   <i class="fa-solid fa-book"></i>
-                </div>
-                <div class="sidebar-brand-text mx-2"> Newbook<sup>UPDM30</sup></div>
-            </a>
-              @if (User.IsInRole("Admin"))
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Admin" asp-action="Index">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fa-solid fa-book"></i>
+        </div>
+        <div class="sidebar-brand-text mx-2"> Newbook<sup>UPDM30</sup></div>
+    </a>
+    @if (User.IsInRole("Admin") || User.IsInRole("NhanVien"))
     {
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
@@ -36,7 +36,7 @@
                 <span>Thông tin người dùng</span>
             </a>
         </li>
-        
+
 
 
         <!-- Divider -->
@@ -63,12 +63,21 @@
                 <span>Sách</span>
             </a>
         </li>
-        <li class="nav-item ">
-            <a class="nav-link" asp-controller="QLPhieuNhap" asp-action="Index">
-                <i class="fa-solid fa-book"></i>
-                <span>Quản lý phiếu nhập</span>
-            </a>
-        </li>
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item ">
+                <a class="nav-link" asp-controller="QLPhieuNhap" asp-action="Index">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Phiếu nhập</span>
+                </a>
+            </li>
+             <li class="nav-item ">
+                <a class="nav-link" asp-controller="QLNhanVien" asp-action="Index">
+                    <i class="fa-solid fa-book"></i>
+                    <span>Nhân viên</span>
+                </a>
+            </li>
+        }
         <li class="nav-item">
             <a class="nav-link" asp-controller="QLDanhMuc" asp-action="Index">
                 <i class="fa-solid fa-book"></i>
@@ -94,7 +103,7 @@
                 <span>Nhà xuất bản</span>
             </a>
         </li>
-           <li class="nav-item">
+        <li class="nav-item">
             <a class="nav-link" asp-controller="HoaDon" asp-action="Index">
                 <i class="fa-solid fa-book"></i>
                 <span>Hóa đơn</span>
@@ -107,9 +116,9 @@
             </a>
         </li>
 
-        
 
-            }
 
-        </ul>
-        <!-- End of Sidebar -->
+    }
+
+</ul>
+<!-- End of Sidebar -->

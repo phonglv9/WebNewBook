@@ -34,9 +34,9 @@
                 <!-- LOGO -->
                 <div class="col-md-3">
                     <div class="header-logo">
-                        <a href="/Home" class="logo" >
-                            <img src="~/img/logo_newbook.png"width="187px" alt="">
-                        @* <h3 style="color:#fff">NewBook<i class="icon-book"></i></h3> *@ 
+                        <a href="/Home" class="logo">
+                            <img src="~/img/logo_newbook.png" width="187px" alt="">
+                            @* <h3 style="color:#fff">NewBook<i class="icon-book"></i></h3> *@
                         </a>
                     </div>
                 </div>
@@ -74,17 +74,24 @@
                                 <span>Tài khoản</span>
                             </a>
                             <div class="dropdown-menu">
-                                 @if (User.Identity.IsAuthenticated)
+                                @if (User.Identity.IsAuthenticated)
                                 {
                                     <div>
                                         <a asp-controller="Profile_Customer" asp-action="account">
-                                        Thông tin tài khoản
-                                    </a>
+                                            Thông tin tài khoản
+                                        </a>
+                                    </div>
+                                    <div>
+                                        <a asp-controller="QLLogin" asp-action="ChangePassword">
+                                            Đổi mật khẩu
+                                        </a>
                                     </div>
                                     <div>
                                         <a asp-action="Logout" asp-controller="QLLogin" class="dropdown-item">Đăng xuất</a>
                                     </div>
-                                }else{
+                                }
+                                else
+                                {
                                     <div><a asp-action="Login" asp-controller="QLLogin" class="dropdown-item">Đăng nhập</a></div>
                                     <div><a asp-action="Register" asp-controller="QLLogin">Đăng ký</a></div>
                                     <div><a href="">Quên mật khẩu</a></div>
@@ -98,91 +105,97 @@
 
 
 
-						<!-- /Wishlist -->
-						<!-- Cart -->
-						<div class="dropdown" id="cartshow">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
-								<i class="fa fa-shopping-cart"></i>
-								<span>Giỏ hàng</span>
-								<div class="qty">
-									@if (ViewBag.count != null)
-										@ViewBag.count
-										</div>
+                        <!-- /Wishlist -->
+                        <!-- Cart -->
+                        <div class="dropdown" id="cartshow">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="true">
+                                <i class="fa fa-shopping-cart"></i>
+                                <span>Giỏ hàng</span>
+                                <div class="qty">
+                                    @if (ViewBag.count != null)
+                                        @ViewBag.count
 
-							</a>
-							<div class="cart-dropdown">
-								@if (ViewBag.giohang.Count != null && ViewBag.giohang.Count != 0 && ViewBag.thanhtien != 0 && ViewBag.soluong != 0)
-								{
-								<div class="cart-list">
-									@if(ViewBag.giohang != null)
-									@foreach (var a in ViewBag.giohang){
-										<div class="product-widget">
-										<div class="product-img">
+                                    </div>
+
+                                </a>
+                                <div class="cart-dropdown">
+                                    @if (ViewBag.giohang.Count != null && ViewBag.giohang.Count != 0 && ViewBag.thanhtien != 0 && ViewBag.soluong != 0)
+                                {
+                                    <div class="cart-list">
+                                        @if (ViewBag.giohang != null)
+                                            @foreach (var a in ViewBag.giohang)
+                                            {
+                                                <div class="product-widget">
+                                                    <div class="product-img">
                                                         <img src="~/img/@a.hinhanh" alt="">
-										</div>
-										<div class="product-body">
-                                            
-														<h3 class="product-name"><a asp-controller="Home" asp-action="ProductDetaill" asp-route-id="@a.Maasp">@a.Tensp</a></h3>
-													<h4 class="product-price"><span class="qty">@a.Soluong x</span> @a.DonGia.ToString("#,##0").Replace(',', '.')đ</h4>
-										</div>
+                                                    </div>
+                                                    <div class="product-body">
+
+                                                        <h3 class="product-name"><a asp-controller="Home" asp-action="ProductDetaill" asp-route-id="@a.Maasp">@a.Tensp</a></h3>
+                                                        <h4 class="product-price"><span class="qty">@a.Soluong x</span> @a.DonGia.ToString("#,##0").Replace(',', '.')đ</h4>
+                                                    </div>
                                                     <form asp-controller="GioHang" asp-action="XoaKhoiGioHome" asp-route-id="@a.Maasp"><button class="delete"><i class="fa fa-close" data-id="@a.Maasp"></i></button></form>
-                                                    
-									</div>
-									}
-									
-									
-									
 
-									
-								</div>
-								<div class="cart-summary">
-									
-										@if (ViewBag.soluong != null){
-
-										<small>
-											Tổng số lượng: @ViewBag.soluong
-										</small>
-											}
-
-										@if (ViewBag.thanhtien != null)
-										{
-											<h5>
-											Tổng tiền:@ViewBag.thanhtien.ToString("#,##0").Replace(',', '.')đ</h5>}
-								</div>
-								
-								<div class="cart-btns">
-									<a asp-action="Index" asp-controller="GioHang">Chi tiết giỏ hàng</a>
-									<a asp-action="Checkout" asp-controller="Payment">Thanh toán<i class="fa fa-arrow-circle-right"></i></a>
-									</div>
+                                                </div>
+                                            }
 
 
 
-								}else
-								{
-									<div class="product-body">
-										<h3 class="product-name">Giỏ hàng đang trống</h3>
-									</div>
-								}
-							</div>
-						</div>
-						<!-- /Cart -->
-						<!-- Menu Toogle -->
-						<div class="menu-toggle">
-							<a href="#">
-								<i class="fa fa-bars"></i>
-								<span>Menu</span>
-							</a>
-						</div>
-						<!-- /Menu Toogle -->
-					</div>
-				</div>
-				<!-- /ACCOUNT -->
-			</div>
-			<!-- row -->
-		</div>
-		<!-- container -->
-	</div>
-	<!-- /MAIN HEADER -->
+
+
+                                    </div>
+                                    <div class="cart-summary">
+
+                                        @if (ViewBag.soluong != null)
+                                        {
+
+                                            <small>
+                                                Tổng số lượng: @ViewBag.soluong
+                                            </small>
+                                        }
+
+                                        @if (ViewBag.thanhtien != null)
+                                        {
+                                            <h5>
+                                                Tổng tiền:@ViewBag.thanhtien.ToString("#,##0").Replace(',', '.')đ
+                                            </h5>
+                                        }
+                                    </div>
+
+                                    <div class="cart-btns">
+                                        <a asp-action="Index" asp-controller="GioHang">Chi tiết giỏ hàng</a>
+                                        <a asp-action="Checkout" asp-controller="Payment">Thanh toán<i class="fa fa-arrow-circle-right"></i></a>
+                                    </div>
+
+
+
+                                }
+                                else
+                                {
+                                    <div class="product-body">
+                                        <h3 class="product-name">Giỏ hàng đang trống</h3>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!-- /Cart -->
+                        <!-- Menu Toogle -->
+                        <div class="menu-toggle">
+                            <a href="#">
+                                <i class="fa fa-bars"></i>
+                                <span>Menu</span>
+                            </a>
+                        </div>
+                        <!-- /Menu Toogle -->
+                    </div>
+                </div>
+                <!-- /ACCOUNT -->
+            </div>
+            <!-- row -->
+        </div>
+        <!-- container -->
+    </div>
+    <!-- /MAIN HEADER -->
 </header>
 <!-- /HEADER -->
 <!-- NAVIGATION -->
@@ -192,36 +205,36 @@
         <!-- responsive-nav -->
         <div id="responsive-nav">
             <!-- NAV -->
-     
+
             <ul class="main-nav nav navbar-nav">
                 <li class="active"><a href="/Home">Trang chủ</a></li>
 
-                    @if (ViewBag.NavBar != null)
+                @if (ViewBag.NavBar != null)
                     @foreach (var item in ViewBag.NavBar)
                     {
-                          <li class="dropdown">
-                          <a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})"  class="dropdown-toggle" @*data-toggle="dropdown"*@ role="button" aria-haspopup="true" aria-expanded="false">@item.TenDanhMuc <span class="caret"></span></a>
-                           @if (item.TheLoais != null)
+                        <li class="dropdown">
+                            <a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})" class="dropdown-toggle" @*data-toggle="dropdown"*@ role="button" aria-haspopup="true" aria-expanded="false">@item.TenDanhMuc <span class="caret"></span></a>
+                            @if (item.TheLoais != null)
                             {
-                            
-                          <ul class="dropdown-menu">
-                             @foreach (var itemtl in item.TheLoais)
-                              {
+
+                                <ul class="dropdown-menu">
+                                    @foreach (var itemtl in item.TheLoais)
+                                    {
 
 
-                            <li><a href="@Url.Action("Product", "Home", new { idtheloai= itemtl.ID_TheLoai})">@itemtl.TenTL</a></li>
-                              
-                              
-                              
-                              }
-                          </ul>
-                             
+                                        <li><a href="@Url.Action("Product", "Home", new { idtheloai= itemtl.ID_TheLoai})">@itemtl.TenTL</a></li>
+
+
+
+                                    }
+                                </ul>
+
                             }
                         </li>
 
                     }
-                    
-                    
+
+
             </ul>
             <!-- /NAV -->
         </div>
@@ -232,21 +245,21 @@
 <!-- /NAVIGATION -->
 <!-- The modal message Cart -->
 <div class="modal fade " id="exampleModalCart" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					<div class="modal-dialog  messErorr" role="document">
-						<div class="modal-content">
-							<div class="modal-body text-center bg-success">
-								<h5 class="modal-title  messCart " id="exampleModalLabel"><i class="fa fa-check" aria-hidden="true"></i>   </h5>
-								
-							</div>
-							
-							
-						</div>
-					</div>
+    <div class="modal-dialog  messErorr" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center bg-success">
+                <h5 class="modal-title  messCart " id="exampleModalLabel"><i class="fa fa-check" aria-hidden="true"></i>   </h5>
+
+            </div>
+
+
+        </div>
+    </div>
 </div>
 
 
 @*<!-- The modal Login -->
-<div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
     <div class="modal-content">
     <div class="modal-header">
@@ -257,36 +270,36 @@
     </div>
     <div class="modal-body">
 
-        
-        <div class="row">
-            <div class="col-md-4">    
-                <h3>Đăng nhập</h3>
-                
-                <form asp-action="Index" asp-controller="QLLogin" method="post" enctype="multipart/form-data">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <div class="form-group">
-                        <label  class="col-sm-2 col-form-label">Email</label>
-                        <input name="Email" class="form-control"/>
-                        <span  class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label class="control-label">Password</label>
-                        <input  name="Password" class="form-control" />
-                        <span class="text-danger"></span>
-                    </div>
-                    <div class="form-group" hidden>
-                        <input name="Password" class="form-control" value=@ViewBag.nhanVien/>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Đăng nhập</button>
-                </form>
-            </div>
-        </div>
+
+    <div class="row">
+    <div class="col-md-4">
+    <h3>Đăng nhập</h3>
+
+    <form asp-action="Index" asp-controller="QLLogin" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+    <label  class="col-sm-2 col-form-label">Email</label>
+    <input name="Email" class="form-control"/>
+    <span  class="text-danger"></span>
+    </div>
+    <div class="form-group">
+    <label class="control-label">Password</label>
+    <input  name="Password" class="form-control" />
+    <span class="text-danger"></span>
+    </div>
+    <div class="form-group" hidden>
+    <input name="Password" class="form-control" value=@ViewBag.nhanVien/>
+    </div>
+    <button type="submit" class="btn btn-primary">Đăng nhập</button>
+    </form>
+    </div>
+    </div>
 
     </div>
     <div class="modal-footer">
     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-   
+
     </div>
     </div>
     </div>
-</div>*@
+    </div>*@

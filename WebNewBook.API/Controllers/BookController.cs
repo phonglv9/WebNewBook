@@ -10,6 +10,7 @@ namespace WebNewBook.API.Controllers
 {
     [Route("[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin,NhanVien")]
     public class BookController : ControllerBase
     {
         private readonly IBookSevice _BookService;

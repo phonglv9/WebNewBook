@@ -91,7 +91,7 @@ namespace WebNewBook.API.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register(CustomInputModel Input)
         {
-            if (_db.KhachHangs.Any(c => c.Email == Input.Email) || _db.NhanViens.Any(c => c.Email == Input.Email))
+            if (_db.KhachHangs.Any(c => c.Email == Input.Email) || _db.NhanViens.Any(c => c.Email == Input.Email) || await userManager.FindByEmailAsync(Input.Email) != null)
             {
                 return BadRequest("Tài khoản đã tồn tại!");
             }
