@@ -96,8 +96,8 @@ namespace WebNewBook.Controllers
             {
                 string jsondata = response2.Content.ReadAsStringAsync().Result;
                 lstvoucher = JsonConvert.DeserializeObject<List<Voucher>>(jsondata);
-               
-                ViewBag.VoucherPhatHanh = lstvoucher.Where(c => c.HinhThuc == 1 &&  c.SoLuong>0 && c.TrangThai==1);
+                var dateNow = DateTime.Now;
+                ViewBag.VoucherPhatHanh = lstvoucher.Where(c => c.HinhThuc == 1 &&  c.SoLuong>0 && c.TrangThai==1 && dateNow >= c.StartDate && dateNow <= c.EndDate);
             }
 
             List<VoucherCT> lstvoucherCT = new List<VoucherCT>();

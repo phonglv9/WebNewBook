@@ -3,9 +3,7 @@
 }
 @using WebNewBook.Model
 @model KhachHang
-<link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
-<link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
-<link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
+
 
 
 
@@ -16,7 +14,7 @@
         <div class="spinner-border text-primary spinner-center" role="status"></div>
     </div>
     <div class="row  p-1 ">
-        <div class="col-3 mx-2">
+        <div class="col-md-3 mx-2">
             <div class="list-group">
                 <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
                 <a asp-action="account" class="list-group-item list-group-item-action ">
@@ -28,7 +26,7 @@
                 <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
             </div>
         </div>
-        <div class="col-8 bg-white fs-6 my-3 ">
+        <div style="background-color:white" class="col-md-8  fs-6 my-3 ">
             <h4>Thông tin tài khoản</h4>
             <br>
             <form class="needs-validation " novalidate>
@@ -39,9 +37,7 @@
                     <div class="col-sm-10">
                         <input type="text" value="@modelCustome.HoVaTen" class="form-control form-control-sm" id="HoVaTen" placeholder="Họ và tên" required>
                     </div>
-                    <div class="invalid-feedback">
-                        yêu cầu nhập Họ và tên
-                    </div>
+              
                 </div>
                 <div class="row mb-3">
                     <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Số điện thoại</label>
@@ -57,13 +53,13 @@
                 </div>
                 <div class="row mb-3">
                     <label for="colFormLabelSm" class="col-sm-2 col-form-label col-form-label-sm">Birthday</label>
-                    <div class="col-sm">
+                    <div class="col-md-3">
                         <input readonly type="number" value="@modelCustome.NgaySinh.ToString("dd")" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Ngày">
                     </div>
-                    <div class="col-sm">
+                    <div class="col-md-3">
                         <input readonly type="number" value="@modelCustome.NgaySinh.ToString("MM")" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Tháng">
                     </div>
-                    <div class="col-sm">
+                    <div class="col-md-3">
                         <input readonly type="number" value="@modelCustome.NgaySinh.ToString("yyyy")" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Năm">
                     </div>
                 </div>
@@ -82,30 +78,24 @@
                         <div class="col-sm-9">
                             <input type="text" value="@modelCustome.MatKhau" class="form-control form-control-sm" id="Passwork" placeholder="Mật khẩu hiện tại" required>
                         </div>
-                        <div class="invalid-feedback">
-                            yêu cầu nhập mật khẩu cũ
-                        </div>
+                       
                     </div>
                     <div class="row mb-3">
                         <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Mật khẩu mới</label>
                         <div class="col-sm-9">
                             <input type="text" value="@modelCustome.MatKhau" class="form-control form-control-sm" id="Passworknew" placeholder="Mật khẩu mới" required>
                         </div>
-                        <div class="invalid-feedback">
-                            yêu cầu nhập khẩu mới
-                        </div>
+                      
                     </div>
                     <div class="row mb-3">
                         <label for="colFormLabelSm" class="col-sm-3 col-form-label col-form-label-sm">Nhập lại mật khẩu mới</label>
                         <div class="col-sm-9">
                             <input type="text" value="@modelCustome.MatKhau" class="form-control form-control-sm" id="NhaplaiPasswork" placeholder="Nhập lại mật khẩu mới" required>
                         </div>
-                        <div class="invalid-feedback">
-                            yêu cầu nhập lại mật khẩu
-                        </div>
+                      
                     </div>
                 </div>
-                <div class="d-grid gap-2 col-6 mx-auto">
+                <div style="margin-left: 520px" class="d-grid gap-2 col-md-12 mx-auto">
                     <button class="btn btn-primary" type="button" id="btnluu">Lưu thay đổi</button>
                 </div>
             </form>
@@ -119,10 +109,6 @@
 
 
 
-
-<script src="/bootstrap-5.2.1/dist/js/bootstrap.min.js"></script>
-<script src="/fontawesome-free-6.2.0-web/js/fontawesome.min.js"></script>
-<script src="/fontawesome-free-6.2.0-web/js/all.min.js"></script>
 
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 @section Scripts{

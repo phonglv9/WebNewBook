@@ -107,7 +107,7 @@ namespace WebNewBook.Controllers
         {
             if ( Giohangs().Count <= 0)
             {
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index", "GioHang");
             }
           
             var idVoucher = HttpContext.Session.GetString("idVoucher");

@@ -82,7 +82,7 @@
 									<label for="category-1">
 										<a href="@Url.Action("Product", "Home", new { iddanhmuc = item.ID_DanhMuc})">@item.TenDanhMuc</a>
 										
-									<small>10</small>
+									@*<small>10</small>*@
 									</label>
 									</div>
 								}
@@ -119,14 +119,15 @@
 								@if (ViewBag.TheLoai != null)
 							@foreach (var item in ViewBag.TheLoai)
 							{
-							
-						
+
+
+			
 								<div class="input-checkbox">
 									
 									<label for="brand-1">
 									<a href="@Url.Action("Product", "Home", new { idtheloai = item.ID_TheLoai})">@item.TenTL</a>
-										
-										<small>(578)</small>
+
+									@*	<small></small>*@
 									</label>
 								</div>
 								}
@@ -146,14 +147,14 @@
 											
 								<label for="brand-6">
 										<a href="@Url.Action("Product", "Home", new { idtacgia = item.ID_TacGia})">@item.HoVaTen</a>
-												<small>(755)</small>
+												@*<small>(755)</small>*@
 								</label>
 								</div>
 							}
 							</div>
 						</div>
 
-						<!-- aside Widget -->
+					@*	<!-- aside Widget -->
 						<div class="aside">
 							<h3 class="aside-title">Sách được mua nhiều nhất</h3>
 							<div class="product-widget">
@@ -189,7 +190,7 @@
 								</div>
 							</div>
 						</div>
-						<!-- /aside Widget -->
+						<!-- /aside Widget -->*@
 					</div>
 					<!-- /ASIDE -->
 
@@ -283,7 +284,7 @@
 
 							 var giamGia = 100 - item.GiaBan * 100 / item.GiaGoc;
 
-							<div class="col-md-4 col-xs-6">
+							<div class="col-md-3 col-xs-6">
 								<div class="product">
 									<div class="product-img">
 										 <img src="~/img/@item.HinhAnh" alt="">
@@ -292,14 +293,14 @@
 
 											<span class="sale">-@giamGia</span>
 											}
-											<span class="new">NEW</span>
+											@*<span class="new">NEW</span>*@
 										</div>
 									</div>
 									<div class="product-body">
 										<p class="product-category">@item.TenDanhMuc</p>
 									<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.ID_SanPham">@item.TenSanPham</a></h3>
 										<h4 class="product-price">@item.GiaBan.ToString("#,##0").Replace(',', '.')đ <del class="product-old-price">@item.GiaBan.ToString("#,##0").Replace(',', '.')đ </del></h4>
-									
+									<div class="number-product" style="width:100% !important">Số lượng: @item.SoLuong</div>
 										
 									</div>
 									 @if (item.SoLuong < 1)
@@ -316,7 +317,7 @@
                                                 <div class="add-to-cart">
 
 
-                                                    <button class="add-to-cart-btn" type="button" data-toggle="modal" data-target="#exampleModalCart" class="add-to-cart-btn" value="@item.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+                                                    <button class="add-to-cart-btn" type="button" data-toggle="modal" data-target="#exampleModalCart" value="@item.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
 
                                                 </div>
                                             }
@@ -396,8 +397,8 @@
 									<a asp-action="Product"
 									   asp-route-currentFilter="@ViewData["CurrentFilter"]"
 									   asp-route-pageNumber="@(Model.PageIndex + 1)"
-							   asp-route-idtacgia="@ViewData["IdTacGia"]"
-							   asp-route-idtheloai="@ViewData["IdTheLoai"]"
+									   asp-route-idtacgia="@ViewData["IdTacGia"]"
+									   asp-route-idtheloai="@ViewData["IdTheLoai"]"
 									   asp-route-iddanhmuc="@ViewData["IdDanhMuc"]"
 									 asp-route-sortOrder="@ViewData["CurrentSort"]"
 									   class="@nextDisabled">

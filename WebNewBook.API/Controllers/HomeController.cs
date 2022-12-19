@@ -24,6 +24,12 @@ namespace WebNewBook.API.Controllers
             return  await _homeService.GetHomVM();
 
         }
+        [HttpGet("HomeProductTop10Oder")]
+        public async Task<List<ProductOderTop10VM>> GetProductTop10Oder()
+        {
+            return await _homeService.GetTopProduct10Oder();
+
+        }
         [HttpGet("Product")]
         public async Task<IEnumerable<ProductVM>> GetPrHomes()
         {
