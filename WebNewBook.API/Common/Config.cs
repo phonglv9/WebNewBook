@@ -7,7 +7,7 @@
         {
             
            
-            string connectionString = "Data Source=DESKTOP-KBU829B\\SQLEXPRESS;Initial Catalog=datn;Persist Security Info=True;User ID=sa;Password=123";
+            string connectionString = "Data Source=DESKTOP-ID1I205\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook";
             
 
             return connectionString;
