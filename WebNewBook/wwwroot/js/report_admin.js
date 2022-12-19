@@ -32,11 +32,6 @@ function GetFillterReprort() {
    
     var startDate = $('#date_start').val();
     var endDate = $('#date_end').val();
-    console.log(startDate)
-    console.log(endDate)
-    //var f = new Date(startDate);
-    //var t = new Date(endDate);
-  
     var html = '';
     $.ajax(
         {
@@ -208,7 +203,7 @@ function BarChartReport(data) {
    
     var dataSet = [{
         label: 'VND',
-        data: dataTotal,
+        data:  dataTotal,
         backgroundColor: '#ff6b50'
     }
     ]
@@ -224,18 +219,16 @@ function BarChartReport(data) {
         options: {
             scales: {
                 xAxes: {
-                   
+                    
                     
                 },
                 yAxes: {
-                   
-                    ticks: {
-                        beginAtZero: true
-                    }
+                    reverse: false,
+                    stepSize: 500
 
                 }
             }, responsive: true,
-            maintainAspectRatio: false
+            
         }
     });      
 }
