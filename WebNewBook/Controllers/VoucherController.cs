@@ -108,7 +108,14 @@ namespace WebNewBook.Controllers
                 lstCustomer = JsonConvert.DeserializeObject<List<KhachHang>>(jsondata_lstkhachhang);
                 ViewBag.SoluongKhachHang = lstCustomer.Count();
 
+
             }
+            var listItem = new List<SelectListItem>();
+            lstCustomer.ForEach(s =>
+            {
+                listItem.Add(new SelectListItem { Text = s.HoVaTen + " - " + s.SDT, Value = s.ID_KhachHang });
+            });
+            ViewBag.lstItemKhachhang = listItem;
             return View(voucherModel);
         }
 
@@ -331,9 +338,9 @@ namespace WebNewBook.Controllers
                         {
                             return 3;
                         }
-                        if (Getvoucher.HinhThuc == 2)
+                        if (Getvoucher.HinhThuc == 2 && voucherCT.MaKhachHang==null)
                         {
-
+                           
                             HttpResponseMessage responseMessage = _httpClient.GetAsync(_httpClient.BaseAddress + "/Customer").Result;
                             List<KhachHang> lstCustome = new List<KhachHang>();
                             if (responseMessage.IsSuccessStatusCode)
@@ -359,7 +366,7 @@ namespace WebNewBook.Controllers
                     VoucherCT cT = new VoucherCT();
 
                     cT.Id = id;
-
+                    cT.MaKhachHang = voucherCT.MaKhachHang;
                     cT.NgayBatDau = voucherCT.NgayBatDau;
                     voucherCTList.Add(cT);
                 }
@@ -390,5 +397,8 @@ namespace WebNewBook.Controllers
             }
             return 1;
         }
+
+     
+
     }
 }
