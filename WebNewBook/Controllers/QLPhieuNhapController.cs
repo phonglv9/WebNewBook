@@ -10,7 +10,6 @@ using WebNewBook.Model;
 namespace WebNewBook.Controllers
 {
     [Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "NhanVien")]
     public class QLPhieuNhapController : Controller
     {
         private readonly HttpClient _httpClient;

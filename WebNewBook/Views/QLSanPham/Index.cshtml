@@ -78,7 +78,6 @@
                             <th scope="col">Số lượng</th>
                             <th scope="col">Giá</th>
                             <th scope="col">Hình ảnh</th>
-                            <th scope="col">Khuyến mại</th>
                             <th scope="col">Trạng thái</th>
                             <th colspan="2" style="text-align: center ;">Thao tác</th>
                         </tr>
@@ -94,7 +93,6 @@
                                 <td>@item.SoLuong</td>
                                 <td>@item.GiaBan</td>
                                 <td><img src="~/img/@img" style="width:100px;height:100px"/></td>
-                                <td>@item.MaPhieuGiamGiaSP</td>
                                 <td>@trangThai</td>
                                 <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_SanPham"><i class="fa-solid fa-pen"></i></a></td>
                                 <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_SanPham"><i class="fa-solid fa-trash"></i></button></td>
@@ -125,10 +123,6 @@
                                                 <div class="mb-3 row">
                                                     <label for="GiaBan" class="control-label">Giá bán</label>
                                                     <input for="GiaBan" class="form-control" name="soLuongNhap" value="@item.GiaBan" disabled/>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label for="MaPhieuGiamGiaSP" class="control-label">Khuyến mại</label>
-                                                    <input for="MaPhieuGiamGiaSP" class="form-control" name="soLuongNhap" value="@item.MaPhieuGiamGiaSP" disabled/>
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="Quyen" class="control-label">Trạng thái</label>

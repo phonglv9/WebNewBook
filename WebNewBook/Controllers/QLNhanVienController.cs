@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -7,6 +8,7 @@ using WebNewBook.Model;
 
 namespace WebNewBook.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class QLNhanVienController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -73,7 +75,7 @@ namespace WebNewBook.Controllers
             string error = "";
             nhanVien.ID_NhanVien = "NV" + Guid.NewGuid().ToString();
             nhanVien.TrangThai = 1;
-            nhanVien.MatKhau = RandomString(10);
+            nhanVien.MatKhau = "NV@12345" + nhanVien.Email;
             if (ModelState.IsValid)
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(nhanVien), Encoding.UTF8, "application/json");
