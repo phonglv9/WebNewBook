@@ -1,4 +1,4 @@
-﻿ @if (User.IsInRole("Admin"))
+﻿ @if (User.IsInRole("Admin") || User.IsInRole("NhanVien"))
     {
         Context.Response.Redirect("/Admin/Index");
     } 

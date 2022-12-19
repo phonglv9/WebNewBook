@@ -6,9 +6,9 @@ using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.API.Controllers
 {
+    [Authorize(Roles = "Admin,NhanVien")]
     [ApiController]
     [Route("[controller]")]
-    [Authorize(Roles = "Admin")]
     public class SanPhamController : Controller
     {
         private readonly ISanPhamService sanPhamService;
