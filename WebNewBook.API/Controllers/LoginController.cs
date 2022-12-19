@@ -114,7 +114,7 @@ namespace WebNewBook.API.Controllers
                         Request.Host.ToString());
                 //Set gửi mail
                 var email = new MimeMessage();
-up                email.From.Add(MailboxAddress.Parse("tuyenlhph15504@fpt.edu.vn"));
+              email.From.Add(MailboxAddress.Parse("tuyenlhph15504@fpt.edu.vn"));
                 email.To.Add(MailboxAddress.Parse(Input.Email));
                 email.Subject = "Confirm";
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." };
