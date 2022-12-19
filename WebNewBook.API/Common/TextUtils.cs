@@ -111,7 +111,8 @@ namespace WebNewBook.API.Common
                     {
                         if (pro.Name == column.ColumnName)
                         {
-                            pro.SetValue(obj, dr[column.ColumnName], null);
+                            var value = Convert.IsDBNull(dr[column.ColumnName]) ? null : dr[column.ColumnName];
+                            pro.SetValue(obj, value, null);
                         }
 
                         else

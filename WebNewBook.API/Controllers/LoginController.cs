@@ -114,14 +114,14 @@ namespace WebNewBook.API.Controllers
                         Request.Host.ToString());
                 //Set gửi mail
                 var email = new MimeMessage();
-                email.From.Add(MailboxAddress.Parse("tuyenlhph15504@fpt.edu.vn"));
+                email.From.Add(MailboxAddress.Parse("phonglvph16158@fpt.edu.vn"));
                 email.To.Add(MailboxAddress.Parse(Input.Email));
                 email.Subject = "Confirm";
                 email.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>." };
 
                 using var smtp = new MailKit.Net.Smtp.SmtpClient();
                 smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                smtp.Authenticate("tuyenlhph15504@fpt.edu.vn", "tuuuuuus001");
+                smtp.Authenticate("phonglvph16158@fpt.edu.vn", "");
                 smtp.Send(email);
                 smtp.Disconnect(true);
                 return Ok();
@@ -188,7 +188,7 @@ namespace WebNewBook.API.Controllers
                 //phonglvph16158 @fpt.edu.vn", "Ph@01248460961
                 using var smtp = new MailKit.Net.Smtp.SmtpClient();
                 smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                smtp.Authenticate("tuyenlhph15504@fpt.edu.vn", "tuuuuuus001");
+                smtp.Authenticate("phonglvph16158 @fpt.edu.vn", "Ph@");
                 smtp.Send(email);
                 smtp.Disconnect(true);
                 return Ok();
@@ -244,14 +244,14 @@ namespace WebNewBook.API.Controllers
                 _db.SaveChanges();
 
                 var emailTo = new MimeMessage();
-                emailTo.From.Add(MailboxAddress.Parse("tuyenlhph15504@fpt.edu.vn"));
+                emailTo.From.Add(MailboxAddress.Parse("phonglvph16158@fpt.edu.vn"));
                 emailTo.To.Add(MailboxAddress.Parse(email));
                 emailTo.Subject = "New Password";
                 emailTo.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = "Your new password is " + pw };
                 //phonglvph16158 @fpt.edu.vn", "Ph@01248460961
                 using var smtp = new MailKit.Net.Smtp.SmtpClient();
                 smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                smtp.Authenticate("tuyenlhph15504@fpt.edu.vn", "tuuuuuus001");
+                smtp.Authenticate("phonglvph16158 @fpt.edu.vn", "Ph@");
                 smtp.Send(emailTo);
                 smtp.Disconnect(true);
             }
