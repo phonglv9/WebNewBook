@@ -3,6 +3,7 @@
 }
 
 <div class="section">
+    <strong>
     <div class="container" style="background-color: #f1f1f1; padding:20px;">
     <div class="row  p-1">
         <div class="col-md-3 mx-2">
@@ -29,8 +30,8 @@
                     <button class="col-sm-2 btn btn-sm btn-success rounded-pill opacity-75">Nạp điểm</button>
                 </div>
                 <div class="row mb-3">
-                    <p class="col-sm-4">số dư tài khoản</p>
-                    <span class="col-3 fw-bold">@String.Format( "{0:#,##0.##}",(ViewBag.Diemtichluy)) điểm</span>
+                    <p class="col-sm-4">Số dư tài khoản:</p>
+                    <span class="col-3 fw-bold" style="color:red">@String.Format( "{0:#,##0.##}",(ViewBag.Diemtichluy)) điểm</span>
                 </div>
             </div>
             <div style="background-color:white;padding-left:20px" class="mb-1  p-3">
@@ -72,6 +73,7 @@
 
 
 </div>
+</strong>
 </div>
 
 
