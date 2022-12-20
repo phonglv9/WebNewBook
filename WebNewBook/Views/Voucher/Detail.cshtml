@@ -7,6 +7,7 @@
     var lstvoucherCT2 = ViewBag.lstvoucherCT2;
     var soluongKhachHang = ViewBag.SoluongKhachHang;
     var hinhthuc = ViewBag.Hinhthuc;
+    var lstkhachhang = ViewBag.lstItemKhachhang;
 }
 @using WebNewBook.ViewModel
 @model VoucherModel
@@ -231,26 +232,36 @@
                                 </div>
                                 @if (hinhthuc == 2)
                                 {
-                                    <div class="mb-3 row">
-                                        <label for="" class="col-sm-4 col-form-label">Ngày Phát hành</label>
-                                        <div class="col-sm-8">
-                                            <input id="ko" type="radio" class="form-control" value="Toàn bộ khách hàng">
-                                            <input id="co" type="radio" class="form-control" value="Theo khách hàng">
-                                        </div>
+                                    <div class="form-check">
+                                        <input onclick="ChonHinhThuc()" class="form-check-input" type="radio" name="flexRadioDefault" id="toanbokh" checked>
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                            Toàn bộ khách hàng
+                                        </label>
                                     </div>
+                                    <div class="form-check">
+                                        <input onclick="ChonHinhThuc()" class="form-check-input" type="radio" name="flexRadioDefault" id="chonkh">
+                                        <label class="form-check-label" for="flexRadioDefault2">
+                                            Chọn khách hàng
+                                        </label>
+                                    </div>
+                                    @if (lstkhachhang != null)
+                                    {
+                                        <div id="Div_kh" class="form-group">
+                                            <label class="control-label">Sách</label>
+
+                                            <select id="KhachHangs" name="SelectedSachs"
+                                            asp-items="@lstkhachhang" multiple class="form-control">
+                                            </select>
+
+                                        </div>
+                                    }
                                 }
-
-
-
                                 <div class="mb-3 row">
                                     <label for="" class="col-sm-4 col-form-label">Ngày Phát hành</label>
                                     <div class="col-sm-8">
                                         <input id="ngayphathanh" type="date" class="form-control" required>
                                     </div>
                                 </div>
-
-
-
                             </div>
                             <div class="modal-footer">
                                 <button id="btnDong" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
@@ -264,12 +275,12 @@
             <table class="table table-striped  table-hover">
                 <thead>
                     <tr>
-                        @if (hinhthuc==2)
+                        @if (hinhthuc == 2)
                         {
                             <th>
 
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="click_all" >
+                                    <input class="form-check-input" type="checkbox" value="" id="click_all">
                                 </div>
                             </th>
                         }
@@ -280,7 +291,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" value="" id="click_all" disabled>
                                 </div>
-                            </th> 
+                            </th>
                         }
 
                         <th>Mã Voucher</th>
@@ -409,7 +420,16 @@
                             <tr>
 
                                 <td>@x.Id</td>
-                                <td></td>
+                                @if (x.MaKhachHang != null)
+                                {
+                                    <td>@x.MaKhachHang</td>
+                                }
+                                else
+                                {
+
+                                    <td></td>
+                                }
+
                                 @if (x.NgayBatDau != null)
                                 {
                                     <td>@x.NgayBatDau.ToString("d/M/yyyy")</td>
@@ -591,48 +611,53 @@
             }
         }
 
-       
-        function ChonHinhThuc() {
-            var tang = document.getElementById("Tang")
-            var doi = document.getElementById("DoiDiem")
+        var allkh = document.getElementById("toanbokh")
+        var chonkh = document.getElementById("chonkh")
+        if (allkh.checked == true) {
+            document.getElementById("Div_kh").hidden = true
+        }
+        if (chonkh.checked == true) {
+            document.getElementById("Div_kh").hidden = false
 
-            if (tang.checked == true) {
-                document.getElementById("Div_diem").hidden = true
+        }
+        function ChonHinhThuc() {
+
+
+            if (allkh.checked == true) {
+                document.getElementById("Div_kh").hidden = true
             }
-            if (doi.checked == true) {
-                document.getElementById("Div_diem").hidden = false
+            if (chonkh.checked == true) {
+                document.getElementById("Div_kh").hidden = false
 
             }
         }
-
-
 
         $(function () {
             document.getElementById("load").style.display = 'none';
             var arrItem = [];
             var commaSeparatedIds = "";
             var soluong = 0;
-             document.getElementById("SoluongPhatHanh").onclick = function () {
-            var checkboxes = document.getElementsByName('NameOK');
-           
+            //   $("#KhachHangs").chosen();
+            document.getElementById("SoluongPhatHanh").onclick = function () {
+                var checkboxes = document.getElementsByName('NameOK');
 
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked == true) {
-                    soluong++;
+
+                for (var i = 0; i < checkboxes.length; i++) {
+                    if (checkboxes[i].checked == true) {
+                        soluong++;
+                    }
                 }
+
+                document.getElementById("SoluongVoucher").value = soluong
+                var soluongkH = document.getElementById("soluongKhachHang").value
+                var soluongcantaothem = soluongkH - soluong;
+
+                //if (soluongkH > soluong) {
+                //   alert("Bạn Cần tạo thêm "+ soluongcantaothem + " Voucher mới có thể phát hành !" )
+                //}
             }
 
-            document.getElementById("SoluongVoucher").value = soluong
-            var soluongkH = document.getElementById("soluongKhachHang").value
-            var soluongcantaothem = soluongkH - soluong;
-
-            //if (soluongkH > soluong) {
-            //   alert("Bạn Cần tạo thêm "+ soluongcantaothem + " Voucher mới có thể phát hành !" )
-            //}
-        }
-
-
-
+           
             // phát hành voucher
             $("#btnPhatHanh").click(function () {
                 $("#timCkeckBox #ListItem input[type=checkbox]").each(function (index, val) {
@@ -646,119 +671,127 @@
                 });
                 commaSeparatedIds = arrItem.toString();
                 arrItem = [];
-
+                var chonkh_ckeck=document.getElementById("chonkh")
+           
+     
                 var ngayPhatHanh = $("#ngayphathanh").val()
+                var idkhahang = $("#KhachHangs").val()
+                if (chonkh_ckeck.checked == true ? (idkhahang != "" ? true : false) : true) {               
+                    if (ngayPhatHanh != "") {
+                     
+                        document.getElementById("SoluongVoucher").value = soluong
+                        var soluongkH = document.getElementById("soluongKhachHang").value
+                        var soluongcantaothem = soluongkH - soluong;
+                        $.ajax({
+                            type: "POST",
+                            data:
+                            {
+                                GetId: commaSeparatedIds,
+                                NgayBatDau: ngayPhatHanh,
+                                MaKhachHang: idkhahang
+                            },
+                            url: "/Voucher/PhatHanhVoucher",
+                            success: function (response) {
+                                if (response == 1) {
 
-                if (ngayPhatHanh != "") {
-                    document.getElementById("SoluongVoucher").value = soluong
-                    var soluongkH = document.getElementById("soluongKhachHang").value
-                    var soluongcantaothem = soluongkH - soluong;
-                    $.ajax({
-                        type: "POST",
-                        data:
-                        {
-                            GetId: commaSeparatedIds,
-                            NgayBatDau: ngayPhatHanh,
+                                    Swal.fire({
+                                        text: "Phát hành Thành công !",
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                        position: 'bottom-end',
+                                        width: 300,
 
-                        },
-                        url: "/Voucher/PhatHanhVoucher",
-                        success: function (response) {
-                            if (response == 1) {
+                                        height: 50,
+                                        color: '#66a15a',
+                                        background: '#ffffff',
 
-                                Swal.fire({
-                                    text: "Phát hành Thành công !",
-                                    timer: 1500,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false,
-                                    position: 'bottom-end',
-                                    width: 300,
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            console.log('I was closed by the timer')
+                                        }
+                                    })
 
-                                    height: 50,
-                                    color: '#66a15a',
-                                    background: '#ffffff',
-
-                                }).then((result) => {
-                                    /* Read more about handling dismissals below */
-                                    if (result.dismiss === Swal.DismissReason.timer) {
-                                        console.log('I was closed by the timer')
-                                    }
-                                })
-
-                                setTimeout(function () {
-                                    document.getElementById("load").style.display = 'block';
-                                    window.location.reload(1);
+                                    setTimeout(function () {
+                                        document.getElementById("load").style.display = 'block';
+                                        window.location.reload(1);
 
 
-                                }, 2000);
+                                    }, 2000);
 
-                            } if (response == 0) {
-                                Swal.fire({
-                                    text: "Phát hành thất bại !",
-                                    timer: 1500,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false,
-                                    position: 'bottom-end',
-                                    width: 300,
+                                } if (response == 0) {
+                                    Swal.fire({
+                                        text: "Phát hành thất bại !",
+                                        timer: 1500,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                        position: 'bottom-end',
+                                        width: 300,
 
-                                    height: 50,
-                                    color: '#66a15a',
-                                    background: '#ffffff',
+                                        height: 50,
+                                        color: '#66a15a',
+                                        background: '#ffffff',
 
-                                }).then((result) => {
-                                    /* Read more about handling dismissals below */
-                                    if (result.dismiss === Swal.DismissReason.timer) {
-                                        console.log('I was closed by the timer')
-                                    }
-                                })
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            console.log('I was closed by the timer')
+                                        }
+                                    })
+                                }
+                                if (response == 2) {
+                                    Swal.fire({
+                                        text: "Ngày phát hành không được bé hơn ngày bắt đầu của đợt phát hành !",
+                                        timer: 2000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                        position: 'bottom-end',
+                                        width: 300,
+
+                                        height: 50,
+                                        color: '#66a15a',
+                                        background: '#ffffff',
+
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            console.log('I was closed by the timer')
+                                        }
+                                    })
+                                }
+                                if (response == 4) {
+                                    alert("Bạn cần thêm " + soluongcantaothem + " mã voucher")
+                                }
+                                if (response == 3) {
+                                    Swal.fire({
+                                        text: "Ngày phát hành không được lớn hơn ngày kết thúc của đợt phát hành !",
+                                        timer: 2000,
+                                        timerProgressBar: true,
+                                        showConfirmButton: false,
+                                        position: 'bottom-end',
+                                        width: 300,
+                                        height: 50,
+                                        color: '#66a15a',
+                                        background: '#ffffff',
+
+                                    }).then((result) => {
+                                        /* Read more about handling dismissals below */
+                                        if (result.dismiss === Swal.DismissReason.timer) {
+                                            console.log('I was closed by the timer')
+                                        }
+                                    })
+                                }
                             }
-                            if (response == 2) {
-                                Swal.fire({
-                                    text: "Ngày phát hành không được bé hơn ngày bắt đầu của đợt phát hành !",
-                                    timer: 2000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false,
-                                    position: 'bottom-end',
-                                    width: 300,
+                        });
+                    } else {
+                        alert("Yêu cầu chọn ngày")
+                    }
 
-                                    height: 50,
-                                    color: '#66a15a',
-                                    background: '#ffffff',
-
-                                }).then((result) => {
-                                    /* Read more about handling dismissals below */
-                                    if (result.dismiss === Swal.DismissReason.timer) {
-                                        console.log('I was closed by the timer')
-                                    }
-                                })
-                            }
-                            if (response == 4) {
-                                alert("Bạn cần thêm " + soluongcantaothem+" mã voucher")
-                            }
-                            if (response == 3) {
-                                Swal.fire({
-                                    text: "Ngày phát hành không được lớn hơn ngày kết thúc của đợt phát hành !",
-                                    timer: 2000,
-                                    timerProgressBar: true,
-                                    showConfirmButton: false,
-                                    position: 'bottom-end',
-                                    width: 300,
-                                    height: 50,
-                                    color: '#66a15a',
-                                    background: '#ffffff',
-
-                                }).then((result) => {
-                                    /* Read more about handling dismissals below */
-                                    if (result.dismiss === Swal.DismissReason.timer) {
-                                        console.log('I was closed by the timer')
-                                    }
-                                })
-                            }
-                        }
-                    });
                 } else {
-                    alert("Không được để trống")
+                    alert("Yêu cầu bạn chọn khách hàng")
                 }
-
+               
             });
             // Thêm 1 voucher
             $("#Add1Voucher").click(function () {

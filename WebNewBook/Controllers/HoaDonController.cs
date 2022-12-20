@@ -30,6 +30,7 @@ namespace WebNewBook.Controllers
         }
         public async Task<IActionResult> Index(string? timkiem, int? trangThai, int? page, string mess)
         {
+            ViewBag.TitleAdmin = "Hóa Đơn";
             ViewBag.TimKiem = timkiem;
             ViewBag.TrangThai = trangThai;
             ViewBag.message = mess;
@@ -61,19 +62,19 @@ namespace WebNewBook.Controllers
                     case 6:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 6).ToList();
                         break;
-                    case 1:
-                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 1).ToList();
-                        break;
-                    case 2:
-                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 2).ToList();
-                        break;
+                    //case 1:
+                    //    lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 1).ToList();
+                    //    break;
+                    //case 2:
+                    //    lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 2).ToList();
+                    //    break;
                     //case 3:
                     //    lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 3).ToList();
                     //    break;
 
-                    case 4:
-                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 4).ToList();
-                        break;
+                    //case 4:
+                    //    lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 4).ToList();
+                    //    break;
                     case 5:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 5).ToList();
                         break;

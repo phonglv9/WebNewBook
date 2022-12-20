@@ -20,6 +20,7 @@ namespace WebNewBook.Controllers
     
         public async Task<IActionResult> Index(string search, int? status)
         {
+            ViewBag.TitleAdmin = "Khách hàng";
             List<KhachHang> GetKhachHang = new List<KhachHang>();
             HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Customer?status=" + status + "&search=" + search).Result;
             if (response.IsSuccessStatusCode)

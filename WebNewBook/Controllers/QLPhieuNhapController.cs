@@ -59,6 +59,7 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.TitleAdmin = "Phiếu nhập";
             List<PhieuNhap>? lstPhieuNhap = new List<PhieuNhap>();
             lstPhieuNhap = await Get();
             var sach = await GetSachs();

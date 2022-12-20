@@ -71,6 +71,7 @@ namespace WebNewBook.Controllers
         }
         public  IActionResult Index()
         {
+            ViewBag.TitleAdmin = "DashBoard";
             return View();
         }
         //public async Task< IActionResult> Index(string nxb, string fillterDatetime, DateTime timerangefrom, DateTime rimerangeto)
