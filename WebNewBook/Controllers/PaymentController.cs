@@ -475,19 +475,12 @@ namespace WebNewBook.Controllers
                             {
                                 ViewBag.MessageVC = "Mã giảm giá không hợp lệ";
                             }
-
-
-
-
-
-
-
                         }
-                        else { ViewBag.MessageVC = "Mã giảm giá không hợp lệ"; }
+                        
                        
                     }
 
-
+                    ViewBag.MessageVC = "Mã giảm giá không hợp lệ";
 
 
 
