@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.Bibliography;
 using DocumentFormat.OpenXml.Packaging;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using WebNewBook.API.ModelsAPI;
@@ -8,6 +9,7 @@ using X.PagedList;
 
 namespace WebNewBook.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class ReportController : Controller
     {
         Uri baseAdress = new Uri("https://localhost:7266/api");

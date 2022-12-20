@@ -4,9 +4,170 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
+integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+crossorigin="anonymous"
+referrerpolicy="no-referrer">
+</script>
 
 
-<div class="container">
+<div class="container py-1">
+
+    <div class="row">
+            <div class="col-xl-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="d-flex align-items-center">
+                                <img src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+                                     alt=""
+                                     style="width: 45px; height: 45px"
+                                     class="rounded-circle" />
+                                <div class="ms-3">
+                                    <p class="fw-bold mb-1">@if(ViewBag.NameLogin != null) {@ViewBag.NameLogin}</p>
+                                    @if (ViewBag.IDLogin != "KHNOLOGIN")
+                                    {
+                                    <p class="text-muted mb-0">@if (ViewBag.EmailLogin != null) {@ViewBag.EmailLogin}</p>
+                                    <p class="text-muted mb-0">@if (ViewBag.SDTLogin != null) {@ViewBag.SDTLogin}</p>
+                                    }
+                                </div>
+                            </div>
+                 
+                        </div>
+                    </div>
+                    <div class="card-footer border-0 bg-light p-2 d-flex justify-content-around">
+               
+                    </div>
+                </div>
+            </div>
+        </div>
+    <div class="card "style="width:100%" >
+        <div class="card-body">
+            <div class="container mb-5 mt-3">
+                <div class="row d-flex align-items-baseline">
+                    <div class="col-xl-9">
+                        <p style="color: #7e8d9f;font-size: 20px;">Hóa đơn  >> <strong>ID: #@if (@ViewBag.IdHoaDon != null) { @ViewBag.IdHoaDon}</strong></p>
+                    </div>
+                    <div class="col-xl-3 float-end">
+                     @*   <a class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark" id="btn-print">
+                            <i class="fas fa-print text-primary"></i> 
+                        </a>*@
+                        <a class="btn btn-light text-capitalize" data-mdb-ripple-color="dark" id="btn-one">
+                            <i class="far fa-file-pdf text-danger"></i> Export
+                        </a>
+                    </div>
+                   
+                </div>
+
+                <div class="container" id="hoadonct">
+                    <div class="col-md-12">
+                        <div class="text-center font-weight-bold">
+                            <h2>Hóa đơn</h2>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <ul class="list-unstyled">
+                                <li class="font-weight-bold">Họ tên người nhận: <span style="color:#0d6efd ;">@if (ViewBag.Namekh != null){@ViewBag.Namekh}</span></li>
+                                <li class="font-weight-bold">Địa chỉ:@if (ViewBag.diachi != null){@ViewBag.diachi}</li>
+                            
+                                <li class="font-weight-bold">Số điện thoại: <i class="fas fa-phone"></i> @if (ViewBag.sdtkh != null){@ViewBag.sdtkh}</li>
+                                <li class="font-weight-bold">Ghi chú: @if (ViewBag.ghichu != null){@ViewBag.ghichu}</li>
+                            </ul>
+                        </div>
+                        <div class="col-xl-4">
+                       
+                            <ul class="list-unstyled">
+                                <li class="text-dark">
+                                    <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold font-weight-bold">ID: #@if (@ViewBag.IdHoaDon != null) { @ViewBag.IdHoaDon}</span>
+                                <li class="text-dark">
+                                    <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold">Ngày mua:  @if (ViewBag.ngaymua != null){@ViewBag.ngaymua} </span> 
+                                </li>
+                          
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="row my-2 mx-1 justify-content-center">
+                        <table class="table table-striped table-borderless">
+                            <thead style="background-color:#2a5da9 ;" class="text-white">
+                                <tr>
+                              
+                                    <th scope="col">Tên sản phẩm</th>
+                                    <th scope="col">Số lượng</th>
+                                    <th scope="col">Đơn giá</th>
+                                    <th scope="col">Thành tiền</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var item in Model.GroupBy(a => a.sanPham.TenSanPham))
+                                {
+                                    @foreach (var n in item.Take(1))
+                                    {
+                                        var tongtien = @n.hoaDonCT.SoLuong * @n.hoaDonCT.GiaBan;
+
+                           
+                                        <tr>
+
+                                            <td>@n.sanPham.TenSanPham</td>
+                                            <td>@n.hoaDonCT.SoLuong  </td>
+                                            <td>@n.hoaDonCT.GiaBan.ToString("#,##0").Replace(',', '.')đ</td>
+                                            <td>@tongtien.ToString("#,##0").Replace(',', '.')đ</td>
+                                        </tr>
+                                    }
+                                }
+                            </tbody>
+
+                        </table>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <p class="ms-3"></p>
+
+                        </div>
+                        <div class="col-xl-3">
+                        
+                            <p class="text-black float-end">
+                                <span class="text-black me-3 font-weight-bold"> Tổng tiền: </span><span class="font-weight-bold" style="font-size: 25px;"> @if (ViewBag.tongtien != null)
+                                    {
+                                        @ViewBag.tongtien.ToString("#,##0").Replace(',', '.')
+                                    }đ</span>
+                            </p>
+                        </div>
+                    </div>
+                    <hr>
+                
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+            $('#btn-one').click(function () {
+                html2canvas(document.querySelector('#hoadonct')).then((canvas) => {
+                    let base64image = canvas.toDataURL('image/png');
+                    // console.log(base64image);
+                    let pdf = new jsPDF('p', 'px', [1600, 1131]);
+                    pdf.addImage(base64image, 'PNG', 15, 15, 1110, 360);
+                    pdf.save('webtylepress-two.pdf');
+                });
+            });
+        });
+
+    </script>
+}
+
+@*<div class="container">
     <h1>Chi tiết hóa đơn</h1>
 
     <hr />
@@ -124,4 +285,4 @@
 
         <a asp-action="Index">Quay lại</a>
     </div>
-</div>
+</div>*@

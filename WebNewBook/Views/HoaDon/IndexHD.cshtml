@@ -34,8 +34,8 @@
 }
 
 
-    <div class="container py-3" style="background-color: #f1f1f1;">
-        <h3 style="font-weight: 700; text-align:center;">Hóa Đơn</h3>
+    <div class="container py-1" style="background-color: #f1f1f1;">
+       
         <div class="container" style="background-color: rgb(255, 255, 255);">
             <div class="py-3">
                 <h6>
@@ -53,8 +53,8 @@
                                     <option selected>Chọn trạng thái</option>
                                    
                                     <option value="6">Vô hiệu hóa</option>
-                                    @*<option value="1">Đặt hàng</option>
-                                    <option value="2">Đã thanh toán</option>*@
+                                    <option value="1">Đặt hàng</option>
+                                    <option value="2">Đã thanh toán</option>
                                    @* <option value="3">Đơn hàng thanh toán thất bại</option>*@
                                    @* <option value="4">Trả hàng</option>*@
                                     <option value="5">Thành công</option>
@@ -70,7 +70,7 @@
         </div>
         <br>
         <div class="container" style="background-color: rgb(255, 255, 255);">
-            <div class="py-3">
+            <div class="py-1">
             @if (mess != "")
             {
                 <div class="alert alert-@color" id="msHD" role="alert">
@@ -78,10 +78,11 @@
                 </div>
             }
             <p>
-                @if (ViewBag.NXB != null)
+                @*@if (ViewBag.NXB != null)
                 {
-                    <span>Trang @(ViewBag.NXB.PageCount < ViewBag.NXB.PageNumber ? 0 : ViewBag.NXB.PageNumber) / @ViewBag.NXB.PageCount</span>
-                }
+                    <span>Trang @(ViewBag.DataHDPageCount < ViewBag.DataHD.PageNumber ? 0 : ViewBag.DataHD.PageNumber) / @ViewBag.DataHD.PageCount</span>
+                }*@
+                <div class="mb-2"> <i class="fa-solid fa-square text-info"></i> Đơn hàng mới </div>
                 <table class="table">
                     <thead class="table-secondary">
                         <tr>
@@ -101,39 +102,39 @@
                     <tbody>
                         @if (ViewBag.DataHD.Count == 0)
                         {
-                            <tr><th>Không có sản phẩm</th></tr>
+                            <tr><th>Không có hóa đơn</th></tr>
                         }
                         else
                         {
                             @foreach (var a in ViewBag.DataHD)
                             {
-                                var coler = "null";
-                                @if (@a.hoaDon.TrangThai == 5 )
+                                var coler = "";
+                                @if (@a.hoaDon.TrangThai == 1 || @a.hoaDon.TrangThai == 2)
                                 {
                                     @*coler = "Green2";*@
                                     coler = "table-info";
 
                                 }
-                                <tr>
-                                    <td class="@coler">@a.hoaDon.ID_HoaDon</td>
-                                    <td class="@coler">@a.KhachHang.HoVaTen</td>
-                                    <td class="@coler">@a.hoaDon.NgayMua</td>
-                                    <td class="@coler">@a.hoaDon.TongTien</td>
+                                <tr class="@coler">
+                                    <td >@a.hoaDon.ID_HoaDon</td>
+                                    <td>@a.KhachHang.HoVaTen</td>
+                                    <td >@a.hoaDon.NgayMua</td>
+                                    <td>@a.hoaDon.TongTien.ToString("#,##0").Replace(',', '.')đ</td>
 
-                                    <td class="@coler">
+                                    <td >
                                         
                                             @if (@a.hoaDon.TrangThai == 6)
                                             {
                                                 <p>Vô hiệu hóa</p>
                                             }
-                                          @*  else if (@a.hoaDon.TrangThai == 1)
+                                            else if (@a.hoaDon.TrangThai == 1)
                                             {
                                                 <p>Đặt hàng</p>
                                             }
                                             else if (@a.hoaDon.TrangThai == 2)
                                             {
                                                 <p>Đã thanh toán</p>
-                                            }*@
+                                            }
                                             @* else if (@a.hoaDon.TrangThai == 3)
                                     {
                                     <h6 >Đơn hàng thanh toán thất bại</h6>
@@ -149,8 +150,8 @@
                                         
                                       
                                     </td>
-                                    <td class="@coler"><a asp-controller="HoaDon" asp-action="ChiTiet" asp-route-id="@a.hoaDon.ID_HoaDon">Chi Tiết</a> </td>
-                                    <td class="@coler">
+                                    <td ><a asp-controller="HoaDon" asp-action="ChiTiet" asp-route-id="@a.hoaDon.ID_HoaDon">Chi Tiết</a> </td>
+                                    <td>
                                         <form asp-controller="HoaDon" asp-action="Sua" method="post">
 
                                             @* <input name="dd" type="hidden" value=" @item.hoaDon.ID_HoaDon">*@
