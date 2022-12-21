@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 using WebNewBook.Model;
 
@@ -17,7 +19,11 @@ namespace WebNewBook.Controllers
 
 
         }
-    
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
+        }
         public async Task<IActionResult> Index(string search, int? status)
         {
             ViewBag.TitleAdmin = "Khách hàng";
