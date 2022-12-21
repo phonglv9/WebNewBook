@@ -32,8 +32,8 @@ namespace WebNewBook.Controllers
                 string jsondata = responseOrder.Content.ReadAsStringAsync().Result;
                 lstOrder = JsonConvert.DeserializeObject<List<HoaDon>>(jsondata);
                 ViewBag.lstOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year);
-                ViewBag.soLuongOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year && c.TrangThai==2).Count();
-                ViewBag.tongTienOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year && c.TrangThai==2).Sum(c=>c.TongTien);
+                ViewBag.soLuongOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year && c.TrangThai==5).Count();
+                ViewBag.tongTienOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year && c.TrangThai==5).Sum(c=>c.TongTien);
             }
           
           
@@ -169,7 +169,7 @@ namespace WebNewBook.Controllers
                 lstfpoints = JsonConvert.DeserializeObject<List<Fpoint>>(jsondata);
             }
 
-            ViewBag.lstfpoin = lstfpoints.Where(c=>c.MaKhachHang==Id_khachang);
+            ViewBag.lstfpoin = lstfpoints.Where(c=>c.MaKhachHang==Id_khachang).OrderByDescending(c=>c.CreatDate);
 
 
             KhachHang khachHang = new KhachHang();
@@ -199,7 +199,7 @@ namespace WebNewBook.Controllers
             HoaDon hoaDon = new HoaDon();
             HttpResponseMessage responseOrderbyId = _httpClient.GetAsync("https://localhost:7266/api/ProfileCustomer/GetOrderById/" + id).Result;
             HttpResponseMessage responseOrderdetail = _httpClient.GetAsync("https://localhost:7266/api/ProfileCustomer/GetOrderdetail/" + id).Result;
-            HttpResponseMessage responseListOrderdetail = _httpClient.GetAsync("https://localhost:7266/api/ProfileCustomer/GetListOrder/" + id).Result;
+            HttpResponseMessage responseListOrderdetail = _httpClient.GetAsync("https://localhost:7266/api/HoaDon/getlistid/" + id).Result;
             if (responseOrderdetail.IsSuccessStatusCode)
             {
                 string jsondata = responseOrderdetail.Content.ReadAsStringAsync().Result;

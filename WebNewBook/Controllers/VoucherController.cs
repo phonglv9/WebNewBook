@@ -4,6 +4,7 @@ using DocumentFormat.OpenXml.Spreadsheet;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using System.Globalization;
@@ -28,7 +29,11 @@ namespace WebNewBook.Controllers
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = baseAdress;
         }
-
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
+        }
 
         public async Task<IActionResult> Index(int? page, string search, DateTime? startdate, DateTime? enddate, int? type)
         {
@@ -51,6 +56,8 @@ namespace WebNewBook.Controllers
             {
                 enddate = enddate.Value.AddDays(1);
             }
+
+
             ViewBag.lstvoucher = Getvoucher.Where(c => c.TrangThai != 0 && ((!string.IsNullOrEmpty(search) ? c.Id.StartsWith(search) : true) || (!string.IsNullOrEmpty(search) ? c.TenPhatHanh.Contains(search) : true))
                                                                     && (startdate.HasValue ? c.StartDate >= startdate.Value : true)
                                                                     && (enddate.HasValue ? c.EndDate <= enddate.Value : true)

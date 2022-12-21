@@ -240,7 +240,7 @@ namespace WebNewBook.API.Repository.Service
             try
             {
                 int i = 0;
-                var lstCustomer = _dbcontext.KhachHangs.ToList();
+                var lstCustomer = _dbcontext.KhachHangs.Where(c=>c.ID_KhachHang!="KHNOLOGIN").ToList();
 
                 if (lstvoucherCTs != null)
                 {
@@ -385,6 +385,10 @@ namespace WebNewBook.API.Repository.Service
                         voucherCT.Diemdoi = Voucher.DiemDoi;
 
                         Customer.DiemTichLuy = (int)(Customer.DiemTichLuy - Voucher.DiemDoi);
+
+
+
+
                         _dbcontext.VoucherCTs.Update(voucherCT);
                         _dbcontext.KhachHangs.Update(Customer);
                         _dbcontext.Vouchers.Update(Voucher);

@@ -233,13 +233,13 @@
                                 @if (hinhthuc == 2)
                                 {
                                     <div class="form-check">
-                                        <input onclick="ChonHinhThuc()" class="form-check-input" type="radio" name="flexRadioDefault" id="toanbokh" checked>
+                                        <input onclick="ChonHinhThuc()" class="form-check-input" type="radio" name="flexRadioDefault" id="toanbokh">
                                         <label class="form-check-label" for="flexRadioDefault1">
                                             Toàn bộ khách hàng
                                         </label>
                                     </div>
                                     <div class="form-check">
-                                        <input onclick="ChonHinhThuc()" class="form-check-input" type="radio" name="flexRadioDefault" id="chonkh">
+                                        <input onclick="ChonHinhThuc()" class="form-check-input" type="radio" name="flexRadioDefault" id="chonkh" checked>
                                         <label class="form-check-label" for="flexRadioDefault2">
                                             Chọn khách hàng
                                         </label>
@@ -247,10 +247,18 @@
                                     @if (lstkhachhang != null)
                                     {
                                         <div id="Div_kh" class="form-group">
-                                            <label class="control-label">Sách</label>
+                                           
 
-                                            <select id="KhachHangs" name="SelectedSachs"
-                                            asp-items="@lstkhachhang" multiple class="form-control">
+                                      
+                                            <select id="KhachHangs" class="form-select"  aria-label="Default select example">
+                                                <option value="" selected>Chọn khách hàng</option>
+                                                @foreach (var x in lstkhachhang)
+                                                {
+                                                     <option value="@x.Value">@x.Text</option>
+                                                }
+                                               
+                                              
+                                                
                                             </select>
 
                                         </div>
@@ -613,13 +621,7 @@
 
         var allkh = document.getElementById("toanbokh")
         var chonkh = document.getElementById("chonkh")
-        if (allkh.checked == true) {
-            document.getElementById("Div_kh").hidden = true
-        }
-        if (chonkh.checked == true) {
-            document.getElementById("Div_kh").hidden = false
 
-        }
         function ChonHinhThuc() {
 
 
@@ -657,7 +659,7 @@
                 //}
             }
 
-           
+
             // phát hành voucher
             $("#btnPhatHanh").click(function () {
                 $("#timCkeckBox #ListItem input[type=checkbox]").each(function (index, val) {
@@ -671,14 +673,14 @@
                 });
                 commaSeparatedIds = arrItem.toString();
                 arrItem = [];
-                var chonkh_ckeck=document.getElementById("chonkh")
-           
-     
+                var chonkh_ckeck = document.getElementById("chonkh")
+
+
                 var ngayPhatHanh = $("#ngayphathanh").val()
                 var idkhahang = $("#KhachHangs").val()
-                if (chonkh_ckeck.checked == true ? (idkhahang != "" ? true : false) : true) {               
+                if (chonkh_ckeck.checked == true ? (idkhahang != "" ? true : false) : true) {
                     if (ngayPhatHanh != "") {
-                     
+
                         document.getElementById("SoluongVoucher").value = soluong
                         var soluongkH = document.getElementById("soluongKhachHang").value
                         var soluongcantaothem = soluongkH - soluong;
@@ -791,7 +793,7 @@
                 } else {
                     alert("Yêu cầu bạn chọn khách hàng")
                 }
-               
+
             });
             // Thêm 1 voucher
             $("#Add1Voucher").click(function () {
