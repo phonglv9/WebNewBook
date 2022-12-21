@@ -17,6 +17,7 @@ namespace WebNewBook.Model
         public string MaNhanVien { get; set; }
         [ForeignKey("Sach")]
         public string MaSach { get; set; }
+        [Range(1, 999999)]
         public double GiaNhap { get; set; }
         public int SoLuongNhap { get; set; }
         public DateTime NgayNhap { get; set; }
