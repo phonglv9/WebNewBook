@@ -165,35 +165,60 @@
 									<div class="col-md-6">
 
 
+										@if(ViewBag.CheckBook!=null)
+											@if (ViewBag.CheckBook<=3)
+											{
+												<table class="table table-hover ">
+													<tbody>
 
+														<tr>
+															<td>Tên sách :</td>
+															<td class="col-2">@ViewBag.SanphamCT.TenSanPham</td>
+														</tr>
+														<tr>
+															<td>Số trang :</td>
+															<td> @ViewBag.SanphamCT.sotrang</td>
+														</tr>
+														<tr>
+															<td>Tái bản :</td>
+															<td> @ViewBag.SanphamCT.taiban</td>
+														</tr>
+														<tr>
+															<td>Số lượng : </td>
+															<td>@ViewBag.SanphamCT.SoLuong</td>
+														</tr>
 
-										<table class="table table-hover ">
-											<tbody>
+														<tr>
+															<td>Tên nhà xuất bản : </td>
+															<td>@ViewBag.SanphamCT.TenNhaXuatBan</td>
+														</tr>
 
-												<tr>
-													<td>Tên sách :</td>
-													<td class="col-2">@ViewBag.SanphamCT.TenSanPham</td>
-												</tr>
-												<tr>
-													<td>Số trang :</td>
-													<td> @ViewBag.SanphamCT.sotrang</td>
-												</tr>
-												<tr>
-													<td>Tái bản :</td>
-													<td> @ViewBag.SanphamCT.taiban</td>
-												</tr>
-												<tr>
-													<td>Số lượng : </td>
-													<td>@ViewBag.SanphamCT.SoLuong</td>
-												</tr>
-												
-												<tr>
-													<td>Tên nhà xuất bản : </td>
-													<td>@ViewBag.SanphamCT.TenNhaXuatBan</td>
-												</tr>
+													</tbody>
+												</table>
+										}
+										else{
+												<table class="table table-hover ">
+													<tbody>
 
-											</tbody>
-										</table>
+														<tr>
+															<td>Tên sản phẩm :</td>
+															<td class="col-2">@ViewBag.SanphamCT.TenSanPham</td>
+														</tr>
+														<tr>
+															<td>Số lượng : </td>
+															<td>@ViewBag.SanphamCT.SoLuong</td>
+														</tr>
+
+														<tr>
+															<td>Tên nhà xuất bản : </td>
+															<td>@ViewBag.SanphamCT.TenNhaXuatBan</td>
+														</tr>
+
+													</tbody>
+												</table>
+
+										}
+									
 
 
 									</div>

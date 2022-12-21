@@ -302,6 +302,8 @@ namespace WebNewBook.Controllers
                 string jsonData = responseTL.Content.ReadAsStringAsync().Result;
                 lstchitetsp = JsonConvert.DeserializeObject<List<SanPhamChiTiet>>(jsonData);
             };
+            var checkBook = lstchitetsp.Where(c => c.TenSach != null).Select(c=>c.taiban).ToList();
+            ViewBag.CheckBook = checkBook.Count();
             var gouptl = lstchitetsp.GroupBy(c => c.TenTheLoai).ToList();
             List<string> tl=new List<string>();
             if (gouptl != null)
