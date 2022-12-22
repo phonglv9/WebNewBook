@@ -16,9 +16,9 @@ namespace WebNewBook.Model
         public string TenSanPham { get; set; }
         [Range(1, 999999)]
         public int SoLuong { get; set; }
-        [Range(1, 999999)]
+
         public double GiaBan { get; set; }
-        [Range(1, 999999)]
+       
         public double GiaGoc { get; set; }
         public string HinhAnh { get; set; }
         public int TrangThai { get; set; }

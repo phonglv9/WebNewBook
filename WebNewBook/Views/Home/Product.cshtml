@@ -299,7 +299,7 @@
 									<div class="product-body">
 										<p class="product-category">@item.TenDanhMuc</p>
 									<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@item.ID_SanPham">@item.TenSanPham</a></h3>
-										<h4 class="product-price">@item.GiaBan.ToString("#,##0").Replace(',', '.')đ <del class="product-old-price">@item.GiaBan.ToString("#,##0").Replace(',', '.')đ </del></h4>
+										<h4 class="product-price">@item.GiaBan.ToString("#,##0").Replace(',', '.')đ <del class="product-old-price">@item.GiaGoc.ToString("#,##0").Replace(',', '.')đ </del></h4>
 									<div class="number-product" style="width:100% !important">Số lượng: @item.SoLuong</div>
 										
 									</div>

@@ -90,6 +90,7 @@
 
                 <div class="products-widget-slick">
                     <div>
+                        @if(ViewBag.SachBanChay != null){
                         @foreach (var item in  ViewBag.SachBanChay)
                         {
                             <!-- product widget -->
@@ -108,7 +109,7 @@
 
 
                             <!-- /product widget -->
-                        }
+                            }}
                     </div>
 
 
