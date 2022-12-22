@@ -73,7 +73,7 @@ namespace WebNewBook.Controllers
             timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
             List<SanPham>? lstSanPham = new List<SanPham>();
             lstSanPham = await Get();
-            lstSanPham = (trangThai == 1 || trangThai == 0) ? lstSanPham.Where(c => c.TenSanPham.Contains(timKiem) && c.TrangThai == trangThai).ToList() : lstSanPham.Where(c => c.TenSanPham.Contains(timKiem)).ToList();
+            lstSanPham = (trangThai == 1 || trangThai == 0) ? lstSanPham.Where(c => c.TenSanPham.Contains(timKiem) && c.TrangThai == trangThai).OrderByDescending(c=>c.NgayTao).ToList() : lstSanPham.Where(c => c.TenSanPham.Contains(timKiem)).OrderByDescending(c => c.NgayTao).ToList();
             ViewBag.SanPham = lstSanPham;
             ViewBag.TimKiem = timKiem;
             ViewBag.TrangThai = trangThai;

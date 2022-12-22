@@ -447,7 +447,7 @@ namespace WebNewBook.Controllers
                             HttpResponseMessage responseVoucher = await _httpClient.GetAsync(_httpClient.BaseAddress + $"api/VouCher/{voucherCT.MaVoucher}");
                             string jsonData2 = responseVoucher.Content.ReadAsStringAsync().Result;
                             voucher = JsonConvert.DeserializeObject<Voucher>(jsonData2);
-                            if (tongTien >= voucher.MenhGiaDieuKien && ngayHienTai >= voucherCT.NgayBatDau && ngayHienTai <= voucherCT.NgayHetHan)
+                            if (tongTien >= voucher.MenhGiaDieuKien && ngayHienTai >= voucherCT.NgayBatDau && ngayHienTai <= voucherCT.NgayHetHan && voucherCT.TrangThai == 1)
                             {
                                 
                                 HttpContext.Session.SetString("idVoucher", maVoucher.ToString());
@@ -477,14 +477,19 @@ namespace WebNewBook.Controllers
                             }
                         }
                         
+                        
                        
                     }
+					else
+					{
+						ViewBag.MessageVC = "Mã giảm giá không hợp lệ";
+					}
 
-                    ViewBag.MessageVC = "Mã giảm giá không hợp lệ";
 
 
 
-                }
+
+				}
                 else
                 {
                     ViewBag.MessageVC = "Vui lòng nhập mã giảm giá";

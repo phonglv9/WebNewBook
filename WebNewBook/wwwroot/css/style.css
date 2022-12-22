@@ -931,11 +931,14 @@ header {
         z-index: 20;
     }
 
-.product .product-body .product-category {
-    text-transform: uppercase;
-    font-size: 12px;
-    color: #8D99AE;
-}
+        .product .product-body .product-category {
+            text-transform: uppercase;
+            font-size: 12px;
+            color: #8D99AE;
+            height: 24px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+        }
 
 .product .product-body .product-name {
     overflow: hidden;
