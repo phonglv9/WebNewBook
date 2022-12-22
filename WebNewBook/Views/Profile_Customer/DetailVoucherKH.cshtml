@@ -1,0 +1,58 @@
+﻿@{
+    var voucher = ViewBag.Voucher;
+}
+<div style="height:600px; background-color:#f1f1f1" class="row">
+    <div class="col-xs-6 col-md-4">
+    </div>
+    <div class="col-xs-6 col-md-4" style="border : solid  white ;background-color:white">
+        <div style="height:100px ;background-color:orange" class="row">
+            <div class="col-md-4">
+                <img src="/img/voucher.png" width="135px">
+            </div>
+            <div class="col-md-8">
+                <h5 style="color:white">@voucher.TenPhatHanh</h5>
+            </div>
+
+        </div>
+        <hr />
+        <div>
+            <h6>
+                Ưu đãi
+            </h6>
+            <p>Lượt sử dụng có hạn. Nhanh tay kẻo lỡ bạn nhé! Mã giảm giá đơn hàng | <span>@voucher.TenPhatHanh</span></p>
+        </div>
+        <br />
+        <div>
+            <h6>
+                Thời gian sử dụng mã
+            </h6>
+            <p><span>@voucher.StartDate.ToString("d-M-yyyy")</span> - <span>@voucher.EndDate.ToString("d-M-yyyy")</span></p>
+        </div>
+        <br />
+        <div>
+            <h6>
+                Thanh Toán
+            </h6>
+            <p>Tất cả hình thức thanh toán</p>
+        </div>
+        <br />
+        <div>
+            <h6>
+                Xem chi tiết
+            </h6>
+            <p>
+                Sử dụng mã giảm tiền đơn hàng tối đa <span>@String.Format( "{0:#,##0.##}",(voucher.MenhGia)) đ</span> cho đơn hàng từ <span>@String.Format( "{0:#,##0.##}",(voucher.MenhGiaDieuKien)) đ</span> thỏa điều kiện ưu đãi khi mua hàng trên NewBook.
+                Mã chỉ được hoàn theo quy định của NewBook.
+                 Mã có thể kết thúc khi  hết hạn ưu đãi.
+            </p>
+        </div>
+        <div>
+            <form asp-action="VoucherWallet">
+                <button type="submit" class="btn btn-warning btn-lg btn-block">Đồng ý</button>
+        </form>
+          
+        </div>
+    </div>
+    <div class="col-xs-6 col-md-4">
+    </div>
+</div>

@@ -12,6 +12,7 @@ using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.ViewModel;
 using X.PagedList;
@@ -235,6 +236,7 @@ namespace WebNewBook.Controllers
                 return View(e.Message);
             }
         }
+        // tạo chậm
         public async Task<int> Create(VoucherCT voucherCT)
         {
 
@@ -281,6 +283,10 @@ namespace WebNewBook.Controllers
         }
         public async Task<IActionResult> Update(Voucher voucher)
         {
+            if (voucher.HinhThuc==2)
+            {
+                voucher.DiemDoi = null;
+            }
             StringContent content = new StringContent(JsonConvert.SerializeObject(voucher), Encoding.UTF8, "application/json");
             HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/Voucher", content).Result;
             if (response.IsSuccessStatusCode)
@@ -406,7 +412,20 @@ namespace WebNewBook.Controllers
             return 1;
         }
 
-     
+        public IActionResult DetailOrder(string Id)
+        {
+            HoaDon hoaDon = new HoaDon();
+            HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/VoucherCT/GetOderByIdVoucherCT/" + Id ).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                string jsondata = response.Content.ReadAsStringAsync().Result;
+                hoaDon = JsonConvert.DeserializeObject<HoaDon>(jsondata);
+            }
+            return Redirect("https://localhost:7047/HoaDon/ChiTiet/" + hoaDon.ID_HoaDon);
+          
+        }
+
+
 
     }
 }

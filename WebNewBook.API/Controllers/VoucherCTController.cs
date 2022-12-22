@@ -201,5 +201,11 @@ namespace WebNewBook.API.Controllers
                 return BadRequest(e);
             }
         }
+        [HttpGet("GetOderByIdVoucherCT/{id}")]
+        public async Task<HoaDon?> GetOderByIdVocucherCT(string id)
+        {
+            var order = await _voucherCTServices.GetOderByIdVoucherCT(id);
+            return order;
+        }
     }
 }

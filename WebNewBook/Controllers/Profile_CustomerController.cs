@@ -253,5 +253,21 @@ namespace WebNewBook.Controllers
             }
             return 0;
         }
+        public async Task<IActionResult> DetailVoucherKH( string Id)
+        {
+            HttpClient _httpClient = new HttpClient();
+            Voucher voucher = new Voucher();
+            HttpResponseMessage response = _httpClient.GetAsync("https://localhost:7266/api/VouCher/"+Id).Result;
+
+            if (response.IsSuccessStatusCode)
+            {
+                string jsondata = response.Content.ReadAsStringAsync().Result;
+                voucher = JsonConvert.DeserializeObject<Voucher>(jsondata);
+              ViewBag.Voucher = voucher;
+             
+            }
+            
+            return View();
+        }
     }
 }
