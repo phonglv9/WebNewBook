@@ -463,7 +463,6 @@
                                 {
                                     <td></td>
                                 }
-
                                 <td>@x.Diemdoi</td>
                                 @*    <td>@(x.TrangThai==0?"Chưa phát Hành": "Đã phát hành")</td>*@
                                 @if (@x.TrangThai == 0)
@@ -512,14 +511,22 @@
                             <tr>
 
                                 <td>@x.Id</td>
-                                <td></td>
+                                @if (x.MaKhachHang!=null)
+                                {
+                                     <td>@x.MaKhachHang</td>
+                                }
+                                else
+                                {
+                                     <td></td>
+                                }
+                               
                                 @if (x.NgayBatDau != null)
                                 {
                                     <td>@x.NgayBatDau.ToString("d/M/yyyy")</td>
                                 }
                                 else
                                 {
-                                    <td></td>
+                                   <td></td>
                                 }
                                 @if (x.NgayHetHan != null)
                                 {
@@ -557,6 +564,7 @@
                                 {
                                     <td class="text-danger fs-6 fst-italic">Đã Hủy</td>
                                 }
+                                <td><a asp-action="DetailOrder" asp-route-Id="@x.Id">Chi tiết</a></td>
                             </tr>
                         }
                     }

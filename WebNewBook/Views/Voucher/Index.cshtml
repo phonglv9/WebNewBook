@@ -13,7 +13,7 @@
     <div id="load" style="display : block" class="loading">
         <div class="spinner-border text-primary spinner-center" role="status"></div>
     </div>
-  
+
     <div class="container " style="background-color: rgb(255, 255, 255);">
         <div class="py-3">
             <h6>
@@ -184,7 +184,7 @@
                             <th scope="col">Từ ngày</th>
                             <th scope="col">Đến ngày</th>
                             <th scope="col">Số lượng</th>
-                            <th scope="col">Mệnh Giá</th>
+                            <th scope="col">Điểm đổi</th>
                             <th scope="col">Hình thức</th>
                             <th scope="col" style="text-align: center ;">Thao tác</th>
 
@@ -199,7 +199,8 @@
                                 <td>@x.StartDate.ToString("d/M/yyyy")</td>
                                 <td>@x.EndDate.ToString("d/M/yyyy")</td>
                                 <td>@x.SoLuong</td>
-                                <td>@String.Format( "{0:#,##0.##}",(x.MenhGia))</td>
+                       @*         <td>@String.Format( "{0:#,##0.##}",(x.MenhGia))</td>*@
+                                  <td>@x.DiemDoi</td>
                                 <td>@(x.HinhThuc == 1 ? "Đổi điểm" : "Tặng")</td>
 
                                 <td>
@@ -209,30 +210,31 @@
                                 </td>
 
                             </tr>
-                            @if (x.SoLuong <=0)
-                            {
-                                <div class="modal fade " id="@x.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl ">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel">Sửa thông tin khách hàng</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <form>
-                                                <div class="row p-3">
-                                                    <input type="hidden" value="@x.Id" asp-for="Id" />
-                                                    <input type="hidden" asp-for="MaNhanVien" value="@x.MaNhanVien" />
+                            <div class="modal fade " id="@x.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-xl ">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel">Sửa thông tin đợt phát hành</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form asp-action="Update">
+                                            <div class="row p-3">
+                                                <input type="hidden" value="@x.Id" asp-for="Id" />
+                                                <input type="hidden" asp-for="MaNhanVien" value="@x.MaNhanVien" />
 
 
-                                                    <div class="col-6">
-                                                        <div class="mb-3 row ">
-                                                            <label for="" class="col-sm-4 col-form-label">
-                                                                Tên đợt phát hành <span class="text-danger">*</span>
-                                                            </label>
-                                                            <div class="col-sm-8">
-                                                                <input asp-for="TenPhatHanh" value="@x.TenPhatHanh" type="text" class="form-control">
-                                                            </div>
+                                                <div class="col-6">
+                                                    <div class="mb-3 row ">
+                                                        <label for="" class="col-sm-4 col-form-label">
+                                                            Tên đợt phát hành <span class="text-danger">*</span>
+                                                        </label>
+                                                        <div class="col-sm-8">
+                                                            <input asp-for="TenPhatHanh" value="@x.TenPhatHanh" type="text" class="form-control">
                                                         </div>
+                                                    </div>
+                                                    @if (x.SoLuong <= 0)
+                                                    {
+
                                                         <div class="mb-3 row">
                                                             <label for="" class="col-sm-4 col-form-label">
                                                                 Mệnh giá <span class="text-danger">*</span>
@@ -241,10 +243,23 @@
                                                                 <input asp-for="MenhGia" value="@x.MenhGia" type="number" class="form-control">
                                                             </div>
                                                         </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="mb-3 row">
+                                                            <label for="" class="col-sm-4 col-form-label">
+                                                                Mệnh giá <span class="text-danger">*</span>
+                                                            </label>
+                                                            <div class="col-sm-8">
+                                                                <input asp-for="MenhGia" value="@x.MenhGia" type="number" class="form-control" disabled>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
 
-                                                    </div>
-                                                    <div class="col-6">
-
+                                                <div class="col-6">
+                                                    @if (x.SoLuong <= 0)
+                                                    {
                                                         <div class="mb-3 row">
                                                             <label for="" class="col-sm-3 col-form-label">
                                                                 Tổng tiền hàng<span class="text-danger">*</span>
@@ -253,15 +268,29 @@
                                                                 <input asp-for="MenhGiaDieuKien" value="@x.MenhGiaDieuKien" type="number" class="form-control">
                                                             </div>
                                                         </div>
+                                                    }
+                                                    else
+                                                    {
                                                         <div class="mb-3 row">
-                                                            <label class="col-sm-3 col-form-label">
-                                                                Ghi chú
+                                                            <label for="" class="col-sm-3 col-form-label">
+                                                                Tổng tiền hàng<span class="text-danger">*</span>
                                                             </label>
                                                             <div class="col-sm-9">
-                                                                <input asp-for="GhiChu" value="@x.GhiChu" type="text" class="form-control">
+                                                                <input asp-for="MenhGiaDieuKien"  value="@x.MenhGiaDieuKien" type="number" class="form-control" disabled>
                                                             </div>
                                                         </div>
+                                                    }
+                                                    <div class="mb-3 row">
+                                                        <label class="col-sm-3 col-form-label">
+                                                            Ghi chú
+                                                        </label>
+                                                        <div class="col-sm-9">
+                                                            <input asp-for="GhiChu" value="@x.GhiChu" type="text" class="form-control">
+                                                        </div>
                                                     </div>
+                                                </div>
+                                                @if (x.SoLuong <= 0)
+                                                {
                                                     <div class="col-7 row">
                                                         <label for="" class="col-3 col-form-label">
                                                             Thời gian <span class="text-danger">*</span>
@@ -277,100 +306,9 @@
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <div class="col-6 row">
-                                                        <label for="" class="col-5 col-form-label">
-                                                            Hình thức <span class="text-danger">*</span>
-                                                        </label>
-                                                        <div class="col-sm-7 mb-3 row">
-                                                            <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check">
-                                                                <input class="form-check-input" type="radio" id="chonTang_@x.Id"
-                                                               checked id="Tang">
-                                                                <label class="form-check-label" for="Tang">
-                                                                    Tặng
-                                                                </label>
-                                                            </div>
-                                                            <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check ">
-                                                                <input class="form-check-input" type="radio" id="chonDoi_@x.Id">
-                                                                <label class="form-check-label" for="DoiDiem">
-                                                                    Đổi điểm
-                                                                </label>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div id="Div_diem_@x.Id" hidden class="col-7">
-                                                        <div class="mb-3 row ">
-                                                            <label for="" class="col-sm-3 col-form-label">
-                                                                Điểm <span class="text-danger">*</span>
-                                                            </label>
-                                                            <div class="mx-4 col-sm-7">
-                                                                <input asp-for="DiemDoi" type="text" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                    <button type="button" id="btnAddPhatHanh" class="btn btn-primary">Lưu</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            }else
-                            {
-                                <div class="modal fade " id="@x.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog modal-xl ">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel">Sửa thông tin khách hàng</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <form>
-                                                <div class="row p-3">
-                                                    <input type="hidden" value="@x.Id" asp-for="Id" />
-                                                    <input type="hidden" asp-for="MaNhanVien" value="@x.MaNhanVien" />
-
-
-                                                    <div class="col-6">
-                                                        <div class="mb-3 row ">
-                                                            <label for="" class="col-sm-4 col-form-label">
-                                                                Tên đợt phát hành <span class="text-danger">*</span>
-                                                            </label>
-                                                            <div class="col-sm-8">
-                                                                <input asp-for="TenPhatHanh" value="@x.TenPhatHanh" type="text" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                        <div class="mb-3 row">
-                                                            <label for="" class="col-sm-4 col-form-label">
-                                                                Mệnh giá <span class="text-danger">*</span>
-                                                            </label>
-                                                            <div class="col-sm-8">
-                                                                <input asp-for="MenhGia" value="@x.MenhGia" type="number" class="form-control" disabled>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                    <div class="col-6">
-
-                                                        <div class="mb-3 row">
-                                                            <label for="" class="col-sm-3 col-form-label">
-                                                                Tổng tiền hàng<span class="text-danger">*</span>
-                                                            </label>
-                                                            <div class="col-sm-9">
-                                                                <input asp-for="MenhGiaDieuKien" value="@x.MenhGiaDieuKien" type="number" class="form-control" disabled>
-                                                            </div>
-                                                        </div>
-                                                        <div class="mb-3 row">
-                                                            <label class="col-sm-3 col-form-label">
-                                                                Ghi chú
-                                                            </label>
-                                                            <div class="col-sm-9">
-                                                                <input asp-for="GhiChu" value="@x.GhiChu" type="text" class="form-control">
-                                                            </div>
-                                                        </div>
-                                                    </div>
+                                                }
+                                                else
+                                                {
                                                     <div class="col-7 row">
                                                         <label for="" class="col-3 col-form-label">
                                                             Thời gian <span class="text-danger">*</span>
@@ -386,49 +324,129 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                }
+                                                @if (x.SoLuong <= 0)
+                                                {
                                                     <div class="col-6 row">
                                                         <label for="" class="col-5 col-form-label">
                                                             Hình thức <span class="text-danger">*</span>
                                                         </label>
-                                                        <div class="col-sm-7 mb-3 row">
-                                                            <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check">
-                                                                <input class="form-check-input" type="radio" id="chonTang_@x.Id"
-                                                               checked id="Tang" disabled>
-                                                                <label class="form-check-label" for="Tang">
-                                                                    Tặng
-                                                                </label>
+                                                        @if (x.HinhThuc==1)
+                                                        {
+                                                            <div class="col-sm-7 mb-3 row">
+                                                                <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check">
+                                                                    <input id="tang2" value="2" type="radio" asp-for="HinhThuc" class="form-check-input" />
+                                                                    <label class="form-check-label" for="Tang">
+                                                                        Tặng
+                                                                    </label>
+                                                                </div>
+                                                                <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check ">
+                                                                    <input id="doidiem1" class="form-check-input" checked value="1" type="radio" asp-for="HinhThuc" />
+                                                                    <label class="form-check-label" for="DoiDiem" >
+                                                                        Đổi điểm
+                                                                    </label>
+                                                                </div>
                                                             </div>
-                                                            <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check ">
-                                                                <input class="form-check-input" type="radio" id="chonDoi_@x.Id" disabled>
-                                                                <label class="form-check-label" for="DoiDiem">
-                                                                    Đổi điểm
-                                                                </label>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-7 mb-3 row">
+                                                                <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check">
+                                                                    <input id="tang2" value="2" type="radio" asp-for="HinhThuc " checked class="form-check-input" />
+                                                                    <label class="form-check-label" for="Tang">
+                                                                        Tặng
+                                                                    </label>
+                                                                </div>
+                                                                <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check ">
+                                                                    <input id="doidiem1" class="form-check-input"  value="1" type="radio" asp-for="HinhThuc" />
+                                                                    <label class="form-check-label" for="DoiDiem">
+                                                                        Đổi điểm
+                                                                    </label>
+                                                                </div>
                                                             </div>
-                                                        </div>
+                                                        }
+
 
                                                     </div>
+                                                    <div id="diemdoiupdate"   class="col-7">
+                                                        <div class="mb-3 row ">
+                                                            <label for="" class="col-sm-3 col-form-label">
+                                                                Điểm <span class="text-danger">*</span>
+                                                            </label>
+                                                            <div class="mx-4 col-sm-7">
+                                                                <input asp-for="DiemDoi" value="@x.DiemDoi" type="text" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-6 row">
+                                                        <label for="" class="col-5 col-form-label">
+                                                            Hình thức <span class="text-danger">*</span>
+                                                        </label>
+                                                        @if(x.HinhThuc==1){
+                                                            <div class="col-sm-7 mb-3 row">
+                                                                <div class="col-sm-5 form-check">
+                                                                    <input class="form-check-input" type="radio"
+                                                               id="tang2" disabled>
+                                                                    <label class="form-check-label" for="Tang">
+                                                                        Tặng
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-sm-5 form-check ">
+                                                                    <input class="form-check-input" type="radio" checked id="doidiem1" disabled>
+                                                                    <label class="form-check-label" for="DoiDiem" >
+                                                                        Đổi điểm
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-7 mb-3 row">
+                                                                <div class="col-sm-5 form-check">
+                                                                    <input class="form-check-input" type="radio"
+                                                               id="tang2" disabled checked>
+                                                                    <label class="form-check-label" for="Tang">
+                                                                        Tặng
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-sm-5 form-check ">
+                                                                    <input class="form-check-input" type="radio"  id="doidiem1" disabled>
+                                                                    <label class="form-check-label" for="DoiDiem">
+                                                                        Đổi điểm
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
 
+
+                                                    </div>
                                                     <div id="Div_diem_@x.Id" hidden class="col-7">
                                                         <div class="mb-3 row ">
                                                             <label for="" class="col-sm-3 col-form-label">
                                                                 Điểm <span class="text-danger">*</span>
                                                             </label>
                                                             <div class="mx-4 col-sm-7">
-                                                                <input asp-for="DiemDoi" type="text" class="form-control">
+                                                                <input asp-for="DiemDoi" type="text" class="form-control" disabled>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                    <button type="button" id="btnAddPhatHanh" class="btn btn-primary">Lưu</button>
-                                                </div>
-                                            </form>
-                                        </div>
+                                                }
+
+
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                <button type="submit" class="btn btn-primary">Lưu</button>
+                                            </div>
+                                        </form>
                                     </div>
                                 </div>
-                            }
-                        
+                            </div>
+
+
 
                         }
                     </tbody>
@@ -464,6 +482,26 @@
 
         }
     }
+    //if (document.getElementById("doidiem1").checked == true) {
+    //    document.getElementById("diemdoiupdate").hidden = false;
+    //    console.log("1")
+    //}
+    //if (document.getElementById("tang2").checked == true) {
+    //    document.getElementById("diemdoiupdate").hidden = true;
+    //    console.log("2")
+    //}
+    //function Thaydoihinhthuc() {
+
+    //    if (document.getElementById("doidiem1").checked == true) {
+    //        document.getElementById("diemdoiupdate").hidden = false;
+    //        console.log("1")
+    //    }
+    //    if (document.getElementById("tang2").checked == true) {
+    //        document.getElementById("diemdoiupdate").hidden = true;
+    //        console.log("2")
+    //    }
+    //}
+
 
     $(function () {
 
@@ -502,7 +540,7 @@
                         if (menhGia <= 1000000) {
                             if (startDate >= today) {
                                 if (startDate <= enddate) {
-                                  
+
                                     Swal.fire({
                                         title: 'Bạn có chắc chắn muốn thêm không?',
                                         showCancelButton: true,
@@ -515,7 +553,7 @@
                                                 type: "POST",
                                                 data: {
                                                     TenPhatHanh: tenPhatHanh,
-                                                    MenhGiaDieuKien : menhGiaDK,
+                                                    MenhGiaDieuKien: menhGiaDK,
                                                     MenhGia: menhGia,
                                                     Ghichu: ghiChu,
                                                     StartDate: startDate,
@@ -605,13 +643,13 @@
 
         // Cập nhật đợt phát hành
 
-        $(document.getElementsByName("ModalUpdate")).click(function (){
+        $(document.getElementsByName("ModalUpdate")).click(function () {
 
-           
 
-        });
 
         });
+
+    });
 
 
 </script>
