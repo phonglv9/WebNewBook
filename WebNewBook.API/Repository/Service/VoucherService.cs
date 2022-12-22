@@ -72,7 +72,7 @@ namespace WebNewBook.API.Repository.Service
             try
             {
                 var dateNow = DateTime.Now;
-                return await _dbcontext.Vouchers.Where(c => c.TrangThai == 1 &&   dateNow <= c.EndDate).ToListAsync();
+                return await _dbcontext.Vouchers.Where(c => c.TrangThai == 1 &&   dateNow <= c.EndDate.AddDays(1)).ToListAsync();
             }
             catch (Exception ex)
             {
@@ -101,30 +101,24 @@ namespace WebNewBook.API.Repository.Service
             {
                 if (voucher!=null)
                 {
-                    bool checkthaydoi=true;
-                    var vouchers = _dbcontext.VoucherCTs.Where(c => c.MaVoucher == voucher.Id).ToList();
-                    if (vouchers!=null)
+                    var model= _dbcontext.Vouchers.FirstOrDefault(c=>c.Id == voucher.Id);
+                    if (model.SoLuong==0)
                     {
-                        foreach (var x in vouchers)
-                        {
-
-                            if (x.TrangThai!=0)
-                            {
-                                checkthaydoi = false;
-                                break;
-                               
-                            }
-                        }
-                    }
-                   
-                    if (checkthaydoi==true)
-                    {
-                        _dbcontext.Update(voucher);
+                        model.Createdate = DateTime.Now;
+                        model.StartDate=voucher.StartDate;
+                        model.EndDate=voucher.EndDate;
+                        model.GhiChu= voucher.GhiChu;
+                        model.MenhGiaDieuKien = voucher.MenhGiaDieuKien;
+                        model.MenhGia = model.MenhGia;
+                        model.TenPhatHanh = voucher.TenPhatHanh;
+                        model.HinhThuc=  voucher.HinhThuc;
+                        model.DiemDoi = voucher.DiemDoi;
+                        _dbcontext.Update(model);
                         await _dbcontext.SaveChangesAsync();
                     }
                     else
                     {
-                        var model = _dbcontext.Vouchers.FirstOrDefault(c => c.Id == voucher.Id);
+                        model.Createdate = DateTime.Now;
                         model.TenPhatHanh = voucher.TenPhatHanh;
                         model.GhiChu=voucher.GhiChu;    
                         _dbcontext.Update(model);

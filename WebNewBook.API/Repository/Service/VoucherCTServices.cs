@@ -404,5 +404,10 @@ namespace WebNewBook.API.Repository.Service
             }
           
         }
+
+        public async Task<HoaDon?> GetOderByIdVoucherCT(string id)
+        {
+            return _dbcontext.HoaDons.FirstOrDefault(c => c.MaGiamGia == id);
+        }
     }
 }
