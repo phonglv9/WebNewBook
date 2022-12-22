@@ -35,6 +35,7 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-ID1I205\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook"));
 
 builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("server=LVP-09\\LVP09;database=Webnewbook;User Id = LVP09; Password=Ph@161589;"));
 

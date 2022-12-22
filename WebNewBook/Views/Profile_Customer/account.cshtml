@@ -40,7 +40,7 @@
                             <p>F-point : <strong> <a asp-action="FpointHistory" style="color:red;">@Model.DiemTichLuy </a></strong>điểm</p>
 
                             <p>Số đơn hàng thành công năm @DateTime.Now.Year:      <span class="fw-semibold mx-5">@ViewBag.soLuongOrder</span></p>
-                            <p>Số tiền đã thanh toán @DateTime.Now.Year:         <span class="fw-semibold mx-5">@ViewBag.tongTienOrder</span></p>
+                            <p>Số tiền đã thanh toán @DateTime.Now.Year:         <span class="fw-semibold mx-5">@String.Format( "{0:#,##0.##}",(ViewBag.tongTienOrder)) đ</span></p>
 
                         </div>
                     </div>

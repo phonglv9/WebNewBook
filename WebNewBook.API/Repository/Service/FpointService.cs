@@ -23,6 +23,7 @@ namespace WebNewBook.API.Repository.Service
                     fpoint.Hanhdong = 1;
                     //hanh động 1 : tích điểm fpoint
                     //hành động 2 : nạp điểm fpoint
+                    //hành động 3 : đổi điểm fpoint
                     if (fpoint.Hanhdong==1)
                     {
                         fpoint.NameHanhDong = "Tích điểm Point";
