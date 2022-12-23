@@ -55,6 +55,22 @@ namespace WebNewBook.API.Controllers
         {
             var model = await _profileCustomerService.GetListOrder(mahoadon);
             return model;
-        } 
+        }
+        [HttpPut("Huydonhang/{Id}")]
+        public async Task<ActionResult> HuydonHang(string Id)
+        {
+            try
+            {
+                _profileCustomerService.HuyOrder(Id);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+
+               throw ex;
+            }
+        }
+
+        
     }
 }

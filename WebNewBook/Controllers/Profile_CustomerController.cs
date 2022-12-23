@@ -218,7 +218,9 @@ namespace WebNewBook.Controllers
             ViewBag.lstOrder = lsthoaDonCTs;
             ViewBag.hoadonById = hoaDon;
             ViewBag.lstviewHoadon = lstviewHoaDons;
-        
+            
+
+
             foreach (var x in lstviewHoaDons.Select(c => c.hoaDonCT))
             {
                 thanhtien += x.GiaBan * x.SoLuong;
@@ -252,6 +254,16 @@ namespace WebNewBook.Controllers
                
             }
             return 0;
+        }
+        public async Task<IActionResult> HuyOrder(string Id)
+        {
+            HttpClient httpClient = new HttpClient();
+            HttpResponseMessage response =  httpClient.PutAsync("https://localhost:7266/api/ProfileCustomer/Huydonhang/" + Id, null).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                return Redirect("https://localhost:7047/Profile_Customer/order");
+            }
+            return Redirect("https://localhost:7047/Profile_Customer/OrderDetail" + Id);
         }
         public async Task<IActionResult> DetailVoucherKH( string Id)
         {

@@ -225,7 +225,7 @@ namespace WebNewBook.API.Repository.Service
 
 
             var email = new MimeMessage();
-            email.From.Add(MailboxAddress.Parse("phonglvph16158@fpt.edu.vn"));
+            email.From.Add(MailboxAddress.Parse("cuonglvph13705@fpt.edu.vn"));
             email.To.Add(MailboxAddress.Parse(hoaDon.Email));
             email.Subject = "Thông báo đơn hàng từ newbook ☝️";
        
@@ -258,7 +258,7 @@ namespace WebNewBook.API.Repository.Service
 
             using var smtp = new MailKit.Net.Smtp.SmtpClient();
             smtp.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-            smtp.Authenticate("phonglvph16158@fpt.edu.vn", "Ph@16158");
+            smtp.Authenticate("cuonglvph13705@fpt.edu.vn", "Cuong24112002");
             smtp.Send(email);
             smtp.Disconnect(true);
 
