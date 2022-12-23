@@ -1,7 +1,7 @@
 ﻿// Document is ready
 $(document).ready(function () {
     var regexEmail = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
-   /*var  regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;*/
+    var regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
     // Validate fullname
     $("#fullnamecheck").hide();
     let fullnameError = true;
@@ -13,6 +13,7 @@ $(document).ready(function () {
         if (fullnameValue.length == "") {
             $("#fullnamecheck").show();
             $("#fullnamecheck").html("*Tên người nhận là bắt buộc");
+          
             fullnameError = false;
             return false;
         } else if (fullnameValue.length < 3 || fullnameValue.length > 30) {
@@ -76,12 +77,12 @@ $(document).ready(function () {
     }
     // Validate phonenumber
     $("#phonenumbercheck").hide();
-    let phonenumberError = true;
-    $("#phonenumber").keyup(function () {
-        validatePhonenumber();
-    });
+    var phonenumberError = true;
+    //$("#phonenumber").keyup(function () {
+    //    validatePhonenumber();
+    //});
     function validatePhonenumber() {
-        let phonenumberValue = $("#phonenumber").val();
+        var phonenumberValue = $("#phonenumber").val();
         if (phonenumberValue.length == "") {
             $("#phonenumbercheck").show();
             $("#phonenumbercheck").html("*Số điện thoại là bắt buộc là bắt buộc");
@@ -90,7 +91,7 @@ $(document).ready(function () {
         } else if (!regexPhoneNumber.test(phonenumberValue)) {
             $("#phonenumbercheck").show();
             $("#phonenumbercheck").html("*Số điện thoại không hợp lệ");
-            emailError = false;
+            phonenumberError = false;
             return false;
 
         } else {
@@ -105,14 +106,16 @@ $(document).ready(function () {
     $("#submitbtn").click(function () {
         validatefullname();
         validateEmail();
-        validateAdress();
         validatePhonenumber();
+        validateAdress();
+       
         
         if (
-            fullnameError == true && emailError == true && adressError == true && phonenumberError == true 
+            fullnameError == true && emailError == true && phonenumberError == true && adressError == true
         ){
             return true;
         } else {
+           
             return false;
         }
     });
