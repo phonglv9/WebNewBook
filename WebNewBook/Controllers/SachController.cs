@@ -177,6 +177,8 @@ namespace WebNewBook.Controllers
                 ViewBag.TheLoais = await GetSelectTheLoai();
                 return View(sach);
             }
+            
+
             sach.ID_Sach = "Sach" + Guid.NewGuid().ToString();
             sach.TrangThai = 1;
             sach.HinhAnh = file.FileName;
