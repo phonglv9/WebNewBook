@@ -4,92 +4,103 @@
 
 <div class="section">
     <div class="container" style="background-color: #f1f1f1; padding:20px;">
-    <div class="row  p-1">
-        <div class="col-md-3 mx-2">
-            <div class="list-group">
-                <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
-                <a asp-action="account" class="list-group-item list-group-item-action ">
-                    Bảng điều khiển tài khoản
-                </a>
-                <a asp-action="profile" class="list-group-item list-group-item-action ">Thông tin tài khoản</a>
-                <a asp-action="order" class="list-group-item list-group-item-action active">Đơn hàng của tôi</a>
-                <a asp-action="VoucherWallet" class="list-group-item list-group-item-action">Ví Voucher</a>
-                <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
+        <div class="row  p-1">
+            <div class="col-md-3 mx-2">
+                <div class="list-group">
+                    <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
+                    <a asp-action="account" class="list-group-item list-group-item-action ">
+                        Bảng điều khiển tài khoản
+                    </a>
+                    <a asp-action="profile" class="list-group-item list-group-item-action ">Thông tin tài khoản</a>
+                    <a asp-action="order" class="list-group-item list-group-item-action active">Đơn hàng của tôi</a>
+                    <a asp-action="VoucherWallet" class="list-group-item list-group-item-action">Ví Voucher</a>
+                    <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
+                </div>
             </div>
-        </div>
             <div class="col-md-8  mx-4 " style="background-color:white ;padding:20px">
-            <div style="background-color:white ;padding-left:20px" class=" mb-2 p-3 my-3">
-                <h5>Đơn hàng của tôi</h5>
-                <br>
-                <div style="display: none;" class="row mb-3">
-                    <label for="colFormLabelSm" class="col-sm-4 col-form-label col-form-label-sm">Nạp điểm F-point / Freeship</label>
-                    <div class="col-sm-4 ">
-                        <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Nhập mã bạn ...">
+                <div style="background-color:white ;padding-left:20px" class=" mb-2 p-3 my-3">
+                    <h5>Đơn hàng của tôi</h5>
+                    <br>
+                    <div style="display: none;" class="row mb-3">
+                        <label for="colFormLabelSm" class="col-sm-4 col-form-label col-form-label-sm">Nạp điểm F-point / Freeship</label>
+                        <div class="col-sm-4 ">
+                            <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Nhập mã bạn ...">
+                        </div>
+                        <button class="col-sm-2 btn btn-sm btn-success rounded-pill opacity-75">Nạp điểm</button>
                     </div>
-                    <button class="col-sm-2 btn btn-sm btn-success rounded-pill opacity-75">Nạp điểm</button>
+                    <div class="row mb-3">
+                    </div>
                 </div>
-                <div class="row mb-3">
-                  
-                </div>
-            </div>
-            <div style="background-color:white ;padding-left:20px" class=" mb-1  p-3">
-                <div style="font-size: 13px;">
-                    <div>
-                        <table class="table table-borderless">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Đơn Hàng #</th>
-                                    <th scope="col">Ngày</th>
-                                    <th scope="col">Người nhận</th>
-                                    <th scope="col">Tổng tiền</th>
-                                    <th scope="col">Trạng thái</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var x in lstorder)
-                                {
+                <div style="background-color:white ;padding-left:20px" class=" mb-1  p-3">
+                    <div style="font-size: 13px;">
+                        <div>
+                            <table class="table table-borderless">
+                                <thead>
                                     <tr>
-                                        <td>@x.ID_HoaDon</td>
-                                        <td>@x.NgayMua.ToString("d/M/yyyy")</td>
-                                        <td>@x.TenNguoiNhan</td>
-                                        <td>@String.Format( "{0:#,##0.##}",(x.TongTien)) đ</td>
-                                        @if (x.TrangThai==1)
-                                        {
-                                            <td class="text-primary">Đã đặt hàng</td>
-                                            <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
-                                        }
-                                        @if (x.TrangThai == 2)
-                                        {
-                                            <td class="text-warning">Đã thanh toán</td>
-                                            <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
-                                        }
-                                        @if (x.TrangThai == 5)
-                                        {
-                                            <td class="text-success">Thành công</td>
-                                            <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
-                                        }  
-                                        @if (x.TrangThai == 4)
-                                        {
-                                            <td class="">Trả hàng</td>
-                                        }  @if (x.TrangThai == 6)
-                                        {
-                                            <td class="">Không tồn tại</td>
-                                        }
-                                     
+                                        <th scope="col">Đơn Hàng #</th>
+                                        <th scope="col">Ngày</th>
+                                        <th scope="col">Người nhận</th>
+                                        <th scope="col">Tổng tiền</th>
+                                        <th scope="col">Trạng thái</th>
                                     </tr>
-                                }
+                                </thead>
+                                <tbody>
+                                    @foreach (var x in lstorder)
+                                    {
+                                        <tr>
+                                            <td>@x.ID_HoaDon</td>
+                                            <td>@x.NgayMua.ToString("d/M/yyyy")</td>
+                                            <td>@x.TenNguoiNhan</td>
+                                            <td>@String.Format( "{0:#,##0.##}",(x.TongTien)) đ</td>
+                                            @if (x.TrangThai == 1)
+                                            {
+                                                <td class="text-primary">Đã đặt hàng</td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            }
+                                            @if (x.TrangThai == 2)
+                                            {
+                                                <td class="text-warning">Đã thanh toán</td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            }
+                                            @if (x.TrangThai == 5)
+                                            {
+                                                <td class="text-success">Thành công</td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            }
+                                            @if (x.TrangThai == 4)
+                                            {
+                                                <td class="">Thất bại</td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            } 
+                                            @if (x.TrangThai == 6)
+                                            {
+                                                <td class="">Không tồn tại</td>
+                                            }
+                                            @if (x.TrangThai == 8)
+                                            {
+                                                <td class="">Đơn hàng đã xác nhận </td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            }
+                                            @if (x.TrangThai == 7)
+                                            {
+                                                <td class="text-danger">Đơn hàng Đã Hủy</td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            }
+
+                                        </tr>
+                                    }
 
 
-                            </tbody>
-                        </table>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
+
     </div>
-
-
-</div>
 </div>
 
 

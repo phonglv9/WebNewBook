@@ -7,174 +7,174 @@
 
 <div class="section">
     <strong>
-    <div class="container" style="background-color: #f1f1f1; padding:20px;">
-    <div class="row  p-1">
-        <div class="col-md-3 mx-2">
-            <div class="list-group">
-                <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
-                <a asp-action="account" class="list-group-item list-group-item-action ">
-                    Bảng điều khiển tài khoản
-                </a>
-                <a asp-action="profile" class="list-group-item list-group-item-action ">Thông tin tài khoản</a>
-                <a asp-action="order" class="list-group-item list-group-item-action active">Đơn hàng của tôi</a>
-                <a asp-action="VoucherWallet" class="list-group-item list-group-item-action">Ví Voucher</a>
-                <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
-            </div>
-        </div>
-        <div class="col-md-8  mx-4 ">
-            <div class=" mb-2 p-3 mx-3 " style="background-color:white ;padding:20px">
-                <div style="font-size: 13px;">
-                    <h3>Chi tiết đơn hàng</h3>
-                    @if (orderbyid.TrangThai==1)
-                    {
-                        <p><small class="rounded-pill p-1 bg-primary text-white ">Đơn hàng đang sử lý</small></p>
-                    }
-                         @*@if (orderbyid.TrangThai==4)
-                    {
-                        <p><small class="rounded-pill p-1 bg-danger text-white ">Đơn hàng thất bại</small></p>
-                    }*@
-                    @if (orderbyid.TrangThai == 2)
-                    {
-                        <p><small class="rounded-pill p-1 bg-warning text-white ">Đơn hàng đã thanh toán</small></p>
-                    }
-                    @if (orderbyid.TrangThai == 5)
-                    {
-                        <p><small class="rounded-pill p-1 bg-success text-white ">Đơn hàng thành công</small></p>
-                    }
-
-                
-                    <p>Mã đơn hàng : <span class="fw-bold">@orderbyid.ID_HoaDon</span></p>
-                    <p>Ngày mua : <span class="fw-bold">@orderbyid.NgayMua.ToString("d/M/yyyy")</span></p>
-                    <p>Tổng tiền : <span class="fw-bold">@String.Format( "{0:#,##0.##}",(orderbyid.TongTien)) đ</span></p>
-                    <p>Ghi chú : <span>@orderbyid.GhiChu </span></p>
-
+        <div class="container" style="background-color: #f1f1f1; padding:20px;">
+            <div class="row  p-1">
+                <div class="col-md-3 mx-2">
+                    <div class="list-group">
+                        <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
+                        <a asp-action="account" class="list-group-item list-group-item-action ">
+                            Bảng điều khiển tài khoản
+                        </a>
+                        <a asp-action="profile" class="list-group-item list-group-item-action ">Thông tin tài khoản</a>
+                        <a asp-action="order" class="list-group-item list-group-item-action active">Đơn hàng của tôi</a>
+                        <a asp-action="VoucherWallet" class="list-group-item list-group-item-action">Ví Voucher</a>
+                        <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
+                    </div>
                 </div>
+                <div class="col-md-8  mx-4 ">
+                    <div class=" mb-2 p-3 mx-3 " style="background-color:white ;padding:20px">
+                        <div style="font-size: 13px;">
+                            <h3>Chi tiết đơn hàng</h3>
+                            @if (orderbyid.TrangThai == 1)
+                            {
+                                <p><small class="rounded-pill p-1 bg-primary text-white ">Đơn hàng đang sử lý</small></p>
+                            }
+                            @*@if (orderbyid.TrangThai==4)
+                            {
+                            <p><small class="rounded-pill p-1 bg-danger text-white ">Đơn hàng thất bại</small></p>
+                            }*@
+                            @if (orderbyid.TrangThai == 2)
+                            {
+                                <p><small class="rounded-pill p-1 bg-warning text-white ">Đơn hàng đã thanh toán</small></p>
+                            }
+                            @if (orderbyid.TrangThai == 5)
+                            {
+                                <p><small class="rounded-pill p-1 bg-success text-white ">Đơn hàng thành công</small></p>
+                            }
 
-            </div>
-            <div style="background-color:white ;padding-left:20px" class=" mb-1  p-3 my-3">
+
+                            <p>Mã đơn hàng : <span class="fw-bold">@orderbyid.ID_HoaDon</span></p>
+                            <p>Ngày mua : <span class="fw-bold">@orderbyid.NgayMua.ToString("d/M/yyyy")</span></p>
+                            <p>Tổng tiền : <span class="fw-bold">@String.Format( "{0:#,##0.##}",(orderbyid.TongTien)) đ</span></p>
+                            <p>Ghi chú : <span>@orderbyid.GhiChu </span></p>
+
+                        </div>
+
+                    </div>
+                    <div style="background-color:white ;padding-left:20px" class=" mb-1  p-3 my-3">
                         <div style="font-size: 15px; padding-bottom: 20px;">
-                    <h6>Lịch sử liên lạc</h6>
-                    <hr class="opacity-25">
-                    <div>
-                        <p>
-                            Đơn hàng @orderbyid.ID_HoaDon của Quý khách đã được tiếp nhận 
-                            ngày @orderbyid.NgayMua.ToString("d-M-yyyy"). Quý khách vui lòng nghe máy khi có nhân viên
-                            liên hệ giao hàng.
-                        </p>
-                        <p class="opacity-50">@orderbyid.NgayMua</p>
-                    </div>
-
-                </div>
-            </div>
-            <div class="" style="background-color:white ;padding-left:20px">
-                <div class="row p-2">
-                    <div class="col-sm-4">
-                        <div class="card  h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">THÔNG TIN NGƯỜI NHẬN</h5>
-                                <p>@orderbyid.TenNguoiNhan</p>
-                                <p>@orderbyid.DiaChiGiaoHang</p>
-                                <p>Tel: <span>@orderbyid.SDT</span> </p>
+                            <h6>Lịch sử liên lạc</h6>
+                            <hr class="opacity-25">
+                            <div>
+                                <p>
+                                    Đơn hàng @orderbyid.ID_HoaDon của Quý khách đã được tiếp nhận
+                                    ngày @orderbyid.NgayMua.ToString("d-M-yyyy"). Quý khách vui lòng nghe máy khi có nhân viên
+                                    liên hệ giao hàng.
+                                </p>
+                                <p class="opacity-50">@orderbyid.NgayMua</p>
                             </div>
+
                         </div>
                     </div>
-                    <div class="col-sm-4">
-                        <div class="card  h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">PHƯƠNG THỨC VẬN CHUYỂN</h5>
-                                <p>Giao hàng tiêu chuẩn</p>
+                    <div class="" style="background-color:white ;padding-left:20px">
+                        <div class="row p-2">
+                            <div class="col-sm-4">
+                                <div class="card  h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">THÔNG TIN NGƯỜI NHẬN</h5>
+                                        <p>@orderbyid.TenNguoiNhan</p>
+                                        <p>@orderbyid.DiaChiGiaoHang</p>
+                                        <p>Tel: <span>@orderbyid.SDT</span> </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card  h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">PHƯƠNG THỨC VẬN CHUYỂN</h5>
+                                        <p>Giao hàng tiêu chuẩn</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="card  h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">PHƯƠNG THỨC THANH TOÁN</h5>
+
+                                        <p>Thanh toán khi nhận được hàng</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
+
+
+
+
+
+
                     </div>
-                    <div class="col-sm-4">
-                        <div class="card  h-100">
-                            <div class="card-body">
-                                <h5 class="card-title">PHƯƠNG THỨC THANH TOÁN</h5>
+                    <div style="background-color:white" class="mb-1  p-3">
+                        <table class="table table-borderless">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Hình ảnh</th>
+                                    <th colspan="2">Tên sản phẩm</th>
+                                    <th scope="col">Sku</th>
+                                    <th scope="col">Giá bán</th>
+                                    <th scope="col">SL</th>
+                                    <th scope="col">Thành tiền</th>
 
-                                <p>Thanh toán khi nhận được hàng</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var x in lsthoadondetail)
+                                {
+                                    <tr>
+                                        <td><img width="100px" src="/img/@x.sanPham.HinhAnh" /></td>
+                                        <td colspan="2">@x.sanPham.TenSanPham</td>
+                                        <td></td>
+                                        <td>@String.Format( "{0:#,##0.##}",(x.hoaDonCT.GiaBan)) đ</td>
+                                        <td>@x.hoaDonCT.SoLuong</td>
+                                        <td>@String.Format( "{0:#,##0.##}",(x.hoaDonCT.GiaBan * x.hoaDonCT.SoLuong)) đ</td>
+                                    </tr>
+
+                                }
+
+                            </tbody>
+                            <tfoot>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
+                            <td>Tổng số tiền:</td>
+                            <th> @String.Format( "{0:#,##0.##}",(  ViewBag.tongtien)) <span>đ</span></th>
+                            </tfoot>
+                            <tfoot>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
+                            <td>Thành tiền:</td>
+                            <th>@String.Format( "{0:#,##0.##}",(ViewBag.thanhtien)) <span>đ</span></th>
+                            </tfoot>
+                            <tfoot>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
+                            <td>Giảm giá:</td>
+                            <th>@String.Format( "{0:#,##0.##}",(ViewBag.chietkhau)) <span>đ</span></th>
+                            </tfoot>
 
 
-
-
-
-
-            </div>
-            <div style="background-color:white" class="mb-1  p-3">
-                <table class="table table-borderless">
-                    <thead>
-                        <tr>
-                            <th scope="col">Hình ảnh</th>
-                            <th colspan="2">Tên sản phẩm</th>
-                            <th scope="col">Sku</th>
-                            <th scope="col">Giá bán</th>
-                            <th scope="col">SL</th>
-                            <th scope="col">Thành tiền</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var x in lsthoadondetail)
+                        </table>
+                        @if (orderbyid!=null)
                         {
-                            <tr>
-                                <td><img width="100px" src="/img/@x.sanPham.HinhAnh" /></td>
-                                <td colspan="2">@x.sanPham.TenSanPham</td>
-                                <td></td>
-                                <td>@String.Format( "{0:#,##0.##}",(x.hoaDonCT.GiaBan)) đ</td>
-                                <td>@x.hoaDonCT.SoLuong</td>
-                                <td>@String.Format( "{0:#,##0.##}",(x.hoaDonCT.GiaBan * x.hoaDonCT.SoLuong)) đ</td>
-                            </tr>
-
+                            @if(orderbyid.TrangThai==1 || orderbyid.TrangThai==2){
+                                <div style="padding:10px;margin-left:600px">
+                                    <form asp-action="HuyOrder" asp-route-Id="@orderbyid.ID_HoaDon">
+                                        <button type="submit" class="btn btn-danger">Hủy đơn hàng</button>
+                                    </form>
+                                </div>
+                            }
                         }
-
-                    </tbody>
-                    <tfoot>
-                    <td></td>
-                    <td colspan="2"></td>
-                    <td></td>
-                    <td></td>
-                    <td>Tổng số tiền:</td>
-                    <th> @String.Format( "{0:#,##0.##}",(  ViewBag.tongtien)) <span>đ</span></th>
-                    </tfoot>
-                    <tfoot>
-                    <td></td>
-                    <td colspan="2"></td>
-                    <td></td>
-                    <td></td>
-                    <td>Thành tiền:</td>
-                    <th>@String.Format( "{0:#,##0.##}",(ViewBag.thanhtien)) <span>đ</span></th>
-                    </tfoot>
-                    @*<tfoot>
-                    <td></td>
-                    <td colspan="2"></td>
-                    <td></td>
-                    <td></td>
-                    <td>Phí vận chuyển:</td>
-                    <th>0 <span>đ</span></th>
-                    </tfoot>*@
-                    <tfoot>
-                    <td></td>
-                    <td colspan="2"></td>
-                    <td></td>
-                    <td></td>
-                    <td>Giảm giá:</td>
-                    <th>@String.Format( "{0:#,##0.##}",(ViewBag.chietkhau)) <span>đ</span></th>
-                    </tfoot>
-
-
-                </table>
- @*               <div style="padding:10px;margin-left:900px">
-                    <button class="btn btn-danger">Hủy đơn hàng</button>
-                </div>*@
+                   
+                    </div>
+                </div>
             </div>
+
+
         </div>
-    </div>
-
-
-</div>
     </strong>
 </div>
 
