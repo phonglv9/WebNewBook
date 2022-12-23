@@ -322,6 +322,10 @@ namespace WebNewBook.Controllers
                         return View();
                     }
 
+                    //Set id mã giảm giá gửi sang sau khi thanh toán thành công
+
+                    HttpContext.Session.SetString("idVoucherVNPAY", hoaDon.MaGiamGia.ToString());
+
                     //Hóa đơn VNpay
                     OrderInfo order = new OrderInfo();
                     order.OrderId = hoaDon.ID_HoaDon; // Giả lập mã giao dịch hệ thống merchant gửi sang VNPAY
@@ -379,6 +383,7 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> VNPayReturn([FromQuery] VNPayReturn request)
         {
+            var idVoucherVNPAY = HttpContext.Session.GetString("idVoucherVNPAY");
             var emailCustomer = HttpContext.Session.GetString("emailCustomer");
             var idCustomer = HttpContext.Session.GetString("idCustomer");
             var Infoid = request.vnp_OrderInfo;
@@ -414,9 +419,19 @@ namespace WebNewBook.Controllers
                 int fpoint = Convert.ToInt32(request.vnp_Amount) / 10000;
                 await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{idHoaDon}/{fpoint}/{idCustomer}", null);
             }
+            //Thay đổi trạng thái voucher
+            if (!string.IsNullOrEmpty(idVoucherVNPAY))
+            {
+
+                await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{idVoucherVNPAY}", null);
+
+            }
             await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{emailCustomer}", null);
             //Gửi mail đơn hàng 
             await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/SendMailOder/{idHoaDon}", null);
+
+
+
             HttpContext.Session.Clear();
             Response.Cookies.Delete("Cart");
             ViewBag.Message = request.message;
