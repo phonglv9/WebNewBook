@@ -70,17 +70,21 @@ namespace WebNewBook.Controllers
                     //    lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 3).ToList();
                     //    break;
 
-                    //case 4:
-                    //    lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 4).ToList();
-                    //    break;
+                    case 4:
+                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 4).ToList();
+                        break;
                     case 5:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 5).ToList();
                         break;
                     case 6:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 6).ToList();
                         break;
+
                     case 7:
-                        lissttl = lissttl.Where(a => a.KhachHang.ID_KhachHang.ToLower().Contains("KHNOLOGIN")).ToList();
+                        lissttl = lissttl.Where(a => a.KhachHang.ID_KhachHang == "KHNOLOGIN").ToList();
+                        break;
+                    case 8:
+                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 8).ToList();
                         break;
 
                     default:
@@ -139,7 +143,7 @@ namespace WebNewBook.Controllers
 
             return View("IndexHDCT", lissttlhdct);
         }
-        public async Task<IActionResult> Sua(string id, int name)
+        public async Task<IActionResult> Sua(string id, int name) 
         {
             
             HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}").Result;

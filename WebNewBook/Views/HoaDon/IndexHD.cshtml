@@ -59,6 +59,8 @@
                                    @* <option value="4">Trả hàng</option>*@
                                     <option value="5">Thành công</option>
                                     <option value="7">Khách không đăng nhập</option>
+                                    <option value="8">Đơn hàng đã xác nhận</option>
+                                    <option value="4">Đơn hàng giao thất bại</option>
                                 </select>
                             </div>
                         </form>
@@ -135,17 +137,20 @@
                                             {
                                                 <p>Đã thanh toán</p>
                                             }
-                                            @* else if (@a.hoaDon.TrangThai == 3)
-                                    {
-                                    <h6 >Đơn hàng thanh toán thất bại</h6>
-                                    }*@
-                                           @* else if (@a.hoaDon.TrangThai == 4)
+                                            else if (@a.hoaDon.TrangThai == 4)
                                             {
-                                                <p>Trả hàng</p>
-                                            }*@
+                                                <p>Giao hàng thất bại </p>
+                                            }
+                                            
                                             else if (@a.hoaDon.TrangThai == 5)
                                             {
                                                 <p>Thành công </p>
+                                            }else if (@a.hoaDon.TrangThai == 7)
+                                            {
+                                                <p>Đơn hàng bị hủy </p>
+                                            }else if (@a.hoaDon.TrangThai == 8)
+                                            {
+                                                <p>Đơn hàng đã xác nhận </p>
                                             }
                                         
                                       
@@ -160,12 +165,21 @@
                                                 <div class="combobox-HD" style="margin-right:10px;">
                                                     <select class="form-select" name="name" aria-label="Default select example">
                                                         <option value="">Tất cả</option>
-                                                        <option value="6">Vô hiệu hóa</option>
-                                                       @* <option value="1">Đặt hàng</option>
-                                                        <option value="2">Đã thanh toán</option>*@
-                                                        @*<option value="3">Đơn hàng thanh toán thất bại</option>*@
-                                                        @*<option value="4">Trả hàng</option>*@
-                                                        <option value="5">Thành công</option>
+                                                        @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2){
+
+                                                        <option value="8">Xác nhận đơn hàng</option>
+                                                        @*<option value="4">Đơn hàng giao thất bại</option>
+                                                        <option value="5">Thành công</option>*@
+
+                                                        }
+                                                        @if (a.hoaDon.TrangThai == 8)
+                                                        {
+                                                            <option value="4">Đơn hàng giao thất bại</option>
+                                                            <option value="5">Thành công</option>
+                                                        }
+                                                       
+                                                        
+                                                       
 
                                                     </select>
                                                 </div>
