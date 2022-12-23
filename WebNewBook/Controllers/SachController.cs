@@ -177,7 +177,16 @@ namespace WebNewBook.Controllers
                 ViewBag.TheLoais = await GetSelectTheLoai();
                 return View(sach);
             }
-            
+            if (sach.GiaBan > 5000000)
+            {
+                error = "Giá bán không hợp lệ";
+                ViewBag.Error = error;
+                ViewBag.NXBs = new SelectList(await GetNhaXuatBans(), "ID_NXB", "TenXuatBan");
+                ViewBag.TacGias = await GetSelectTacGia();
+                ViewBag.TheLoais = await GetSelectTheLoai();
+                return View(sach);
+
+            }
 
             sach.ID_Sach = "Sach" + Guid.NewGuid().ToString();
             sach.TrangThai = 1;

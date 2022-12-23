@@ -122,9 +122,16 @@ namespace WebNewBook.Controllers
                 ViewBag.NameLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.HoVaTen).FirstOrDefault();
                 ViewBag.SDTLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.SDT).FirstOrDefault();
                 ViewBag.EmailLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.Email).FirstOrDefault();
-                
 
-
+                var hoaDon = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).FirstOrDefault();
+                Voucher voucher = new Voucher(); 
+                HttpResponseMessage responsevc = client.GetAsync(client.BaseAddress + $"/HoaDon/GetPriceVoucher/{hoaDon.hoaDon.MaGiamGia}").Result;
+                if (responsevc.IsSuccessStatusCode)
+                {
+                    string data2 = responsevc.Content.ReadAsStringAsync().Result;
+                    voucher = JsonConvert.DeserializeObject<Voucher>(data2);
+                    ViewBag.PriceVoucher = voucher.MenhGia;
+                }
 
                 //Thông tin hóa đơn
                 ViewBag.IdHoaDon = id;

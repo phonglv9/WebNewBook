@@ -238,9 +238,12 @@
 			$('.add-to-cart-btn').hide();
 			/*$('.messErorr').html("số lượng ko được nhỏ hơn 1");*/
 			alert("số lượng ko được nhỏ hơn 1");
-			
-		}
-		else if (0<= valua <= 100) {
+
+		 } else if (valua > 999) {
+			 $('.add-to-cart-btn').hide();
+			 alert("số lượng không hợp lệ");
+		 }
+		else if (0 <= valua <= 100) {
 			$('.add-to-cart-btn').show();
 			
         }

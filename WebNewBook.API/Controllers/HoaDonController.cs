@@ -48,5 +48,13 @@ namespace WebNewBook.API.Controllers
             }
         }
 
+        //
+        [HttpGet("GetPriceVoucher/{idvoucherCT}")]
+        public async Task<Voucher> GetPriceVoucher( string idvoucherCT)
+        {
+
+            return await _hoaDonService.GetPriceVoucher(idvoucherCT);
+        }
+
     }
 }

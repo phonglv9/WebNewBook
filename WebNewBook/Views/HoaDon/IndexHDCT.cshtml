@@ -128,7 +128,14 @@ referrerpolicy="no-referrer">
                     </div>
                     <div class="row">
                         <div class="col-xl-8">
-                            <p class="ms-3"></p>
+                           @if (ViewBag.PriceVoucher != null) { <p class="ms-3">  
+                                
+                                
+                                Giảm giá : @ViewBag.PriceVoucher
+
+
+
+</p> }
 
                         </div>
                         <div class="col-xl-3">

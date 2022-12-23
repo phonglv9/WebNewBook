@@ -39,8 +39,8 @@
                 <select asp-for="MaNXB" class="form-control" asp-items="ViewBag.NXBs"></select>
             </div>
             <div class="form-group">
-                <label asp-for="GiaBan" class="control-label">Giá bán</label>
-                <input asp-for="GiaBan" class="form-control" />
+                <label asp-for="GiaBan" class="control-label" >Giá bán</label>
+                <input asp-for="GiaBan" id="value_priceinput2" class="form-control" />
                 <span asp-validation-for="GiaBan" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -72,6 +72,17 @@
     $(function() {
         $("#TheLoais").chosen();
         $("#TacGias").chosen();
+       $("#value_priceinput2").keypress(function () {
+
+                var value = $(this).val();
+                if (value > 5000000) {
+                    $(this).val(0);
+                    alert("Giá tiền không hợp lệ");
+
+                }
+
+        })
+
     });
 </script>
 }
