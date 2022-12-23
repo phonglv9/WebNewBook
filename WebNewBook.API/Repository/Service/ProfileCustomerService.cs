@@ -84,6 +84,22 @@ namespace WebNewBook.API.Repository.Service
             return  viewhd.Where(c => c.hoaDon.ID_HoaDon == mahoadon).ToList(); ;
         }
 
-  
+        public async Task HuyOrder(string id)
+        {
+            try
+            {
+                var model = _dbcontext.HoaDons.FirstOrDefault(c => c.ID_HoaDon == id);
+                model.TrangThai = 7;
+                if (model != null)
+                {
+                    _dbcontext.HoaDons.Update(model);
+                    await _dbcontext.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
