@@ -170,11 +170,18 @@
     </div>
     <br>
     <div class="container " style="background-color: rgb(255, 255, 255);">
+
         <div style="padding: 10px;">
+
             @if (lstvoucher != null)
             {
                 <span>Trang @(lstvoucher.PageCount < lstvoucher.PageNumber ? 0 : lstvoucher.PageNumber) / @lstvoucher.PageCount</span>
             }
+            @if (@ViewBag.checkdiemdoi != null)
+            {
+                <p>Thông báo   @ViewBag.checkdiemdoi </p>
+            }
+
             <p>
                 <table class="table ">
                     <thead class="table-secondary ">
@@ -199,15 +206,14 @@
                                 <td>@x.StartDate.ToString("d/M/yyyy")</td>
                                 <td>@x.EndDate.ToString("d/M/yyyy")</td>
                                 <td>@x.SoLuong</td>
-                       @*         <td>@String.Format( "{0:#,##0.##}",(x.MenhGia))</td>*@
-                                  <td>@x.DiemDoi</td>
+                                @*         <td>@String.Format( "{0:#,##0.##}",(x.MenhGia))</td>*@
+                                <td>@x.DiemDoi</td>
                                 <td>@(x.HinhThuc == 1 ? "Đổi điểm" : "Tặng")</td>
 
                                 <td>
                                     <button data-bs-toggle="modal" data-bs-target="#@x.Id" name="ModalUpdate" class="btn btn-secondary"><i class="fa-solid fa-circle-info"></i></button>
                                     <a class="btn btn-dark" asp-action="Detail" asp-route-Id="@x.Id"><i class="fa-solid fa-arrow-right"></i></a>
-                                    
-                                  @*  <a class="btn btn-danger" asp-action="Delete" asp-route-Id="@x.Id"><i class="fa-solid fa-trash"></i></a>*@
+                                    @*      <a class="btn btn-danger" asp-action="Delete" asp-route-Id="@x.Id"><i class="fa-solid fa-trash"></i></a>*@
                                 </td>
 
                             </tr>
@@ -277,7 +283,7 @@
                                                                 Tổng tiền hàng<span class="text-danger">*</span>
                                                             </label>
                                                             <div class="col-sm-9">
-                                                                <input asp-for="MenhGiaDieuKien"  value="@x.MenhGiaDieuKien" type="number" class="form-control" disabled>
+                                                                <input asp-for="MenhGiaDieuKien" value="@x.MenhGiaDieuKien" type="number" class="form-control" disabled>
                                                             </div>
                                                         </div>
                                                     }
@@ -332,7 +338,7 @@
                                                         <label for="" class="col-5 col-form-label">
                                                             Hình thức <span class="text-danger">*</span>
                                                         </label>
-                                                        @if (x.HinhThuc==1)
+                                                        @if (x.HinhThuc == 1)
                                                         {
                                                             <div class="col-sm-7 mb-3 row">
                                                                 <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check">
@@ -343,7 +349,7 @@
                                                                 </div>
                                                                 <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check ">
                                                                     <input id="doidiem1" class="form-check-input" checked value="1" type="radio" asp-for="HinhThuc" />
-                                                                    <label class="form-check-label" for="DoiDiem" >
+                                                                    <label class="form-check-label" for="DoiDiem">
                                                                         Đổi điểm
                                                                     </label>
                                                                 </div>
@@ -359,7 +365,7 @@
                                                                     </label>
                                                                 </div>
                                                                 <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check ">
-                                                                    <input id="doidiem1" class="form-check-input"  value="1" type="radio" asp-for="HinhThuc" />
+                                                                    <input id="doidiem1" class="form-check-input" value="1" type="radio" asp-for="HinhThuc" />
                                                                     <label class="form-check-label" for="DoiDiem">
                                                                         Đổi điểm
                                                                     </label>
@@ -369,7 +375,7 @@
 
 
                                                     </div>
-                                                    <div id="diemdoiupdate"   class="col-7">
+                                                    <div id="diemdoiupdate" class="col-7">
                                                         <div class="mb-3 row ">
                                                             <label for="" class="col-sm-3 col-form-label">
                                                                 Điểm <span class="text-danger">*</span>
@@ -386,7 +392,8 @@
                                                         <label for="" class="col-5 col-form-label">
                                                             Hình thức <span class="text-danger">*</span>
                                                         </label>
-                                                        @if(x.HinhThuc==1){
+                                                        @if (x.HinhThuc == 1)
+                                                        {
                                                             <div class="col-sm-7 mb-3 row">
                                                                 <div class="col-sm-5 form-check">
                                                                     <input class="form-check-input" type="radio"
@@ -397,7 +404,7 @@
                                                                 </div>
                                                                 <div class="col-sm-5 form-check ">
                                                                     <input class="form-check-input" type="radio" checked id="doidiem1" disabled>
-                                                                    <label class="form-check-label" for="DoiDiem" >
+                                                                    <label class="form-check-label" for="DoiDiem">
                                                                         Đổi điểm
                                                                     </label>
                                                                 </div>
@@ -414,7 +421,7 @@
                                                                     </label>
                                                                 </div>
                                                                 <div class="col-sm-5 form-check ">
-                                                                    <input class="form-check-input" type="radio"  id="doidiem1" disabled>
+                                                                    <input class="form-check-input" type="radio" id="doidiem1" disabled>
                                                                     <label class="form-check-label" for="DoiDiem">
                                                                         Đổi điểm
                                                                     </label>
@@ -541,81 +548,85 @@
                         if (menhGia <= 1000000) {
                             if (startDate >= today) {
                                 if (startDate <= enddate) {
+                                    if (doiDiem.checked == true ? (diemdoi > 0 && diemdoi < 100000 ? true : false) : true) {
+                                        Swal.fire({
+                                            title: 'Bạn có chắc chắn muốn thêm không?',
+                                            showCancelButton: true,
+                                            confirmButtonText: 'Save',
 
-                                    Swal.fire({
-                                        title: 'Bạn có chắc chắn muốn thêm không?',
-                                        showCancelButton: true,
-                                        confirmButtonText: 'Save',
+                                        }).then((result) => {
+                                            /* Read more about isConfirmed, isDenied below */
+                                            if (result.isConfirmed) {
+                                                $.ajax({
+                                                    type: "POST",
+                                                    data: {
+                                                        TenPhatHanh: tenPhatHanh,
+                                                        MenhGiaDieuKien: menhGiaDK,
+                                                        MenhGia: menhGia,
+                                                        Ghichu: ghiChu,
+                                                        StartDate: startDate,
+                                                        Enddate: enddate,
+                                                        DiemDoi: diemdoi,
+                                                        HinhThuc: hinhthuc
+                                                    },
+                                                    url: "/Voucher/Add",
+                                                    success: function (response) {
+                                                        if (response == 1) {
+                                                            Swal.fire({
+                                                                text: "Thành công !",
+                                                                timer: 1500,
+                                                                timerProgressBar: true,
+                                                                showConfirmButton: false,
+                                                                position: 'bottom-end',
+                                                                width: 300,
 
-                                    }).then((result) => {
-                                        /* Read more about isConfirmed, isDenied below */
-                                        if (result.isConfirmed) {
-                                            $.ajax({
-                                                type: "POST",
-                                                data: {
-                                                    TenPhatHanh: tenPhatHanh,
-                                                    MenhGiaDieuKien: menhGiaDK,
-                                                    MenhGia: menhGia,
-                                                    Ghichu: ghiChu,
-                                                    StartDate: startDate,
-                                                    Enddate: enddate,
-                                                    DiemDoi: diemdoi,
-                                                    HinhThuc: hinhthuc
-                                                },
-                                                url: "/Voucher/Add",
-                                                success: function (response) {
-                                                    if (response == 1) {
-                                                        Swal.fire({
-                                                            text: "Thành công !",
-                                                            timer: 1500,
-                                                            timerProgressBar: true,
-                                                            showConfirmButton: false,
-                                                            position: 'bottom-end',
-                                                            width: 300,
+                                                                height: 50,
+                                                                color: '#66a15a',
+                                                                background: '#ffffff',
 
-                                                            height: 50,
-                                                            color: '#66a15a',
-                                                            background: '#ffffff',
+                                                            }).then((result) => {
+                                                                /* Read more about handling dismissals below */
+                                                                if (result.dismiss === Swal.DismissReason.timer) {
+                                                                    console.log('I was closed by the timer')
+                                                                }
+                                                            })
 
-                                                        }).then((result) => {
-                                                            /* Read more about handling dismissals below */
-                                                            if (result.dismiss === Swal.DismissReason.timer) {
-                                                                console.log('I was closed by the timer')
-                                                            }
-                                                        })
-
-                                                        setTimeout(function () {
-                                                            document.getElementById("load").style.display = 'block';
-                                                            window.location.reload(1);
+                                                            setTimeout(function () {
+                                                                document.getElementById("load").style.display = 'block';
+                                                                window.location.reload(1);
 
 
-                                                        }, 2000);
-                                                    } else {
-                                                        Swal.fire({
-                                                            text: "Thất bại !",
-                                                            timer: 1500,
-                                                            timerProgressBar: true,
-                                                            showConfirmButton: false,
-                                                            position: 'bottom-end',
-                                                            width: 300,
+                                                            }, 2000);
+                                                        } else {
+                                                            Swal.fire({
+                                                                text: "Thất bại !",
+                                                                timer: 1500,
+                                                                timerProgressBar: true,
+                                                                showConfirmButton: false,
+                                                                position: 'bottom-end',
+                                                                width: 300,
 
-                                                            height: 50,
-                                                            color: '#66a15a',
-                                                            background: '#ffffff',
+                                                                height: 50,
+                                                                color: '#66a15a',
+                                                                background: '#ffffff',
 
-                                                        }).then((result) => {
-                                                            /* Read more about handling dismissals below */
-                                                            if (result.dismiss === Swal.DismissReason.timer) {
-                                                                console.log('I was closed by the timer')
-                                                            }
-                                                        })
+                                                            }).then((result) => {
+                                                                /* Read more about handling dismissals below */
+                                                                if (result.dismiss === Swal.DismissReason.timer) {
+                                                                    console.log('I was closed by the timer')
+                                                                }
+                                                            })
+
+                                                        }
 
                                                     }
+                                                });
+                                            }// ngặc hỏi
+                                        })// ngoặc hỏi
+                                    } else {
+                                        alert("Điểm chỉ từ 1 đến 99.999")
+                                    }
 
-                                                }
-                                            });
-                                        }// ngặc hỏi
-                                    })// ngoặc hỏi
                                 } else {
                                     alert("Thời san kết thúc không được trước ngày bắt đầu")
                                 }
