@@ -98,19 +98,20 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(PhieuNhap phieuNhap)
         {
+
             phieuNhap.MaNhanVien = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
             phieuNhap.ID_PhieuNhap = "PN" + Guid.NewGuid().ToString();
             var sachs = await GetSachs();
             string error = "";
             var selectItems = new List<SelectListItem>();
-            if (sachs.FirstOrDefault(c => c.ID_Sach == phieuNhap.MaSach).GiaBan < phieuNhap.GiaNhap)
-            {
-                error = "Giá nhập không vượt quá " + sachs.FirstOrDefault(c => c.ID_Sach == phieuNhap.MaSach).GiaBan.ToString();
-                ViewBag.Error = error;
-                selectItems = sachs.Select(s => new SelectListItem { Text = s.TenSach, Value = s.ID_Sach }).ToList();
-                ViewBag.Sachs = selectItems;
-                return View(phieuNhap);
-            }
+            //if (sachs.FirstOrDefault(c => c.ID_Sach == phieuNhap.MaSach).GiaBan < phieuNhap.GiaNhap)
+            //{
+            //    error = "Giá nhập không vượt quá " + sachs.FirstOrDefault(c => c.ID_Sach == phieuNhap.MaSach).GiaBan.ToString();
+            //    ViewBag.Error = error;
+            //    selectItems = sachs.Select(s => new SelectListItem { Text = s.TenSach, Value = s.ID_Sach }).ToList();
+            //    ViewBag.Sachs = selectItems;
+            //    return View(phieuNhap);
+            //}
 
             if (ModelState.IsValid)
             {

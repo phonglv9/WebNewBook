@@ -152,6 +152,10 @@
                                             {
                                                 <p>Đơn hàng đã xác nhận </p>
                                             }
+                                            else if (@a.hoaDon.TrangThai == 9)
+                                            {
+                                                <p>Đang giao </p>
+                                            }
                                         
                                       
                                     </td>
@@ -168,15 +172,21 @@
                                                         @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2){
 
                                                         <option value="8">Xác nhận đơn hàng</option>
-                                                        @*<option value="4">Đơn hàng giao thất bại</option>
-                                                        <option value="5">Thành công</option>*@
+                                                     
+                                                            
+                                                        }
+                                                        @if (a.hoaDon.TrangThai  ==  9)
+                                                        {
+                                                             <option value="4">Đơn hàng giao thất bại</option>
+                                                            <option value="5">Thành công</option>
 
                                                         }
                                                         @if (a.hoaDon.TrangThai == 8)
                                                         {
-                                                            <option value="4">Đơn hàng giao thất bại</option>
-                                                            <option value="5">Thành công</option>
+                                                            <option value="9">Đang giao hàng</option>
+                                                           
                                                         }
+                                                     
                                                        
                                                         
                                                        
