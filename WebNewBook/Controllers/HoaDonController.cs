@@ -156,7 +156,7 @@ namespace WebNewBook.Controllers
             HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}").Result;
            
 
-            return RedirectToAction("Index");
+            return Redirect("Index");
         }
     }
 }

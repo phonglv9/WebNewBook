@@ -27,22 +27,43 @@
                             <h3>Chi tiết đơn hàng</h3>
                             @if (orderbyid.TrangThai == 1)
                             {
-                                <p><small class="rounded-pill p-1 bg-primary text-white ">Đơn hàng đang sử lý</small></p>
+                                <p class="text-primary">Đã đặt hàng</p>
+                               
                             }
-                            @*@if (orderbyid.TrangThai==4)
-                            {
-                            <p><small class="rounded-pill p-1 bg-danger text-white ">Đơn hàng thất bại</small></p>
-                            }*@
                             @if (orderbyid.TrangThai == 2)
                             {
-                                <p><small class="rounded-pill p-1 bg-warning text-white ">Đơn hàng đã thanh toán</small></p>
+                                <p class="text-warning">Đã thanh toán</p>
+                              
                             }
                             @if (orderbyid.TrangThai == 5)
                             {
-                                <p><small class="rounded-pill p-1 bg-success text-white ">Đơn hàng thành công</small></p>
+                                <p class="text-success">Thành công</p>
+                               
                             }
-
-
+                            @if (orderbyid.TrangThai == 4)
+                            {
+                                <p class="">Thất bại</p>
+                               
+                            }
+                            @if (orderbyid.TrangThai == 6)
+                            {
+                                <p class="">Không tồn tại</p>
+                            }
+                            @if (orderbyid.TrangThai == 8)
+                            {
+                                <p class="">Đơn hàng đã xác nhận </p>
+                               
+                            }
+                            @if (orderbyid.TrangThai == 7)
+                            {
+                                <p class="text-danger">Đơn hàng Đã Hủy</p>
+                               
+                            }
+                            @if (orderbyid.TrangThai == 9)
+                            {
+                                <p class="text-danger">Đang Giao hàng</p>
+                                
+                            }
                             <p>Mã đơn hàng : <span class="fw-bold">@orderbyid.ID_HoaDon</span></p>
                             <p>Ngày mua : <span class="fw-bold">@orderbyid.NgayMua.ToString("d/M/yyyy")</span></p>
                             <p>Tổng tiền : <span class="fw-bold">@String.Format( "{0:#,##0.##}",(orderbyid.TongTien)) đ</span></p>
