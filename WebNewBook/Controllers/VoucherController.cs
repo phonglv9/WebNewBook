@@ -283,8 +283,14 @@ namespace WebNewBook.Controllers
         }
         public async Task<IActionResult> Update(Voucher voucher)
         {
+            if (voucher.DiemDoi < 0 || voucher.DiemDoi > 99900)
+            {
+                ViewBag.checkdiemdoi = "Điểm đổi phải từ 1 đến 99,999";
+                return RedirectToAction("Index");
+            }
             if (voucher.HinhThuc==2)
             {
+               
                 voucher.DiemDoi = null;
             }
             StringContent content = new StringContent(JsonConvert.SerializeObject(voucher), Encoding.UTF8, "application/json");
