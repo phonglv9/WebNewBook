@@ -1,9 +1,6 @@
-﻿@{
-    var lstOrderdetail = ViewBag.lstOrder;
-    var orderbyid = ViewBag.hoadonById;
-    var lsthoadondetail = ViewBag.lstviewHoadon;
-    var thanhtien = ViewBag.thanhtien;
-}
+﻿@using WebNewBook.API.ModelsAPI;
+@model List<ViewHoaDonCT> ;
+
 
 <div class="section">
     <strong>
@@ -25,49 +22,49 @@
                     <div class=" mb-2 p-3 mx-3 " style="background-color:white ;padding:20px">
                         <div style="font-size: 13px;">
                             <h3>Chi tiết đơn hàng</h3>
-                            @if (orderbyid.TrangThai == 1)
+                            @if (ViewBag.trangThai == 1)
                             {
                                 <p class="text-primary">Đã đặt hàng</p>
-                               
+
                             }
-                            @if (orderbyid.TrangThai == 2)
+                            @if (ViewBag.trangThai == 2)
                             {
                                 <p class="text-warning">Đã thanh toán</p>
-                              
+
                             }
-                            @if (orderbyid.TrangThai == 5)
+                            @if (ViewBag.trangThai == 5)
                             {
                                 <p class="text-success">Thành công</p>
-                               
+
                             }
-                            @if (orderbyid.TrangThai == 4)
+                            @if (ViewBag.trangThai == 4)
                             {
                                 <p class="">Thất bại</p>
-                               
+
                             }
-                            @if (orderbyid.TrangThai == 6)
+                            @if (ViewBag.trangThai == 6)
                             {
                                 <p class="">Không tồn tại</p>
                             }
-                            @if (orderbyid.TrangThai == 8)
+                            @if (ViewBag.trangThai == 8)
                             {
                                 <p class="">Đơn hàng đã xác nhận </p>
-                               
+
                             }
-                            @if (orderbyid.TrangThai == 7)
+                            @if (ViewBag.trangThai == 7)
                             {
                                 <p class="text-danger">Đơn hàng Đã Hủy</p>
-                               
+
                             }
-                            @if (orderbyid.TrangThai == 9)
+                            @if (ViewBag.trangThai == 9)
                             {
                                 <p class="text-danger">Đang Giao hàng</p>
-                                
+
                             }
-                            <p>Mã đơn hàng : <span class="fw-bold">@orderbyid.ID_HoaDon</span></p>
-                            <p>Ngày mua : <span class="fw-bold">@orderbyid.NgayMua.ToString("d/M/yyyy")</span></p>
-                            <p>Tổng tiền : <span class="fw-bold">@String.Format( "{0:#,##0.##}",(orderbyid.TongTien)) đ</span></p>
-                            <p>Ghi chú : <span>@orderbyid.GhiChu </span></p>
+                            <p>Mã đơn hàng : <span class="fw-bold">  ViewBag.IdHoaDon</span></p>
+                            <p>Ngày mua : <span class="fw-bold"> ViewBag.ngaymua</span></p>
+                            <p>Tổng tiền : <span class="fw-bold">@String.Format( "{0:#,##0.##}",(ViewBag.tongtien)) đ</span></p>
+                            <p>Ghi chú : <span>ViewBag.ghichu </span></p>
 
                         </div>
 
@@ -78,11 +75,11 @@
                             <hr class="opacity-25">
                             <div>
                                 <p>
-                                    Đơn hàng @orderbyid.ID_HoaDon của Quý khách đã được tiếp nhận
-                                    ngày @orderbyid.NgayMua.ToString("d-M-yyyy"). Quý khách vui lòng nghe máy khi có nhân viên
+                                    Đơn hàng @ViewBag.IdHoaDon của Quý khách đã được tiếp nhận
+                                    ngày @ViewBag.ngaymua.ToString("d-M-yyyy"). Quý khách vui lòng nghe máy khi có nhân viên
                                     liên hệ giao hàng.
                                 </p>
-                                <p class="opacity-50">@orderbyid.NgayMua</p>
+                                <p class="opacity-50">@ViewBag.ngaymua</p>
                             </div>
 
                         </div>
@@ -93,9 +90,9 @@
                                 <div class="card  h-100">
                                     <div class="card-body">
                                         <h5 class="card-title">THÔNG TIN NGƯỜI NHẬN</h5>
-                                        <p>@orderbyid.TenNguoiNhan</p>
-                                        <p>@orderbyid.DiaChiGiaoHang</p>
-                                        <p>Tel: <span>@orderbyid.SDT</span> </p>
+                                        <p>@ViewBag.Namekh</p>
+                                        <p>@ViewBag.diachi</p>
+                                        <p>Tel: <span>@ViewBag.sdtkh</span> </p>
                                     </div>
                                 </div>
                             </div>
@@ -130,7 +127,7 @@
                                 <tr>
                                     <th scope="col">Hình ảnh</th>
                                     <th colspan="2">Tên sản phẩm</th>
-                                    <th scope="col">Sku</th>
+                                   
                                     <th scope="col">Giá bán</th>
                                     <th scope="col">SL</th>
                                     <th scope="col">Thành tiền</th>
@@ -138,18 +135,25 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var x in lsthoadondetail)
-                                {
-                                    <tr>
-                                        <td><img width="100px" src="/img/@x.sanPham.HinhAnh" /></td>
-                                        <td colspan="2">@x.sanPham.TenSanPham</td>
-                                        <td></td>
-                                        <td>@String.Format( "{0:#,##0.##}",(x.hoaDonCT.GiaBan)) đ</td>
-                                        <td>@x.hoaDonCT.SoLuong</td>
-                                        <td>@String.Format( "{0:#,##0.##}",(x.hoaDonCT.GiaBan * x.hoaDonCT.SoLuong)) đ</td>
-                                    </tr>
 
+                                @foreach (var item in Model.GroupBy(a => a.sanPham.TenSanPham))
+                                {
+                                    @foreach (var n in item.Take(1))
+                                    {
+                                        var thanhtien = @n.hoaDonCT.SoLuong * @n.hoaDonCT.GiaBan;
+
+
+                                        <tr>
+                                            <td><img width="100px" src="/img/@n.sanPham.HinhAnh" /></td>
+                                            <td>@n.sanPham.TenSanPham</td>
+                                          <td></td>
+                                            <td>@n.hoaDonCT.GiaBan.ToString("#,##0").Replace(',', '.')đ</td>
+                                            <td>@n.hoaDonCT.SoLuong  </td>
+                                            <td>@thanhtien.ToString("#,##0").Replace(',', '.')đ</td>
+                                        </tr>
+                                    }
                                 }
+
 
                             </tbody>
                             <tfoot>
@@ -158,7 +162,7 @@
                             <td></td>
                             <td></td>
                             <td>Tổng số tiền:</td>
-                            <th> @String.Format( "{0:#,##0.##}",(  ViewBag.tongtien)) <span>đ</span></th>
+                            <th> @ViewBag.tongtien.ToString("#,##0").Replace(',', '.') <span>đ</span></th>
                             </tfoot>
                             <tfoot>
                             <td></td>
@@ -166,7 +170,7 @@
                             <td></td>
                             <td></td>
                             <td>Thành tiền:</td>
-                            <th>@String.Format( "{0:#,##0.##}",(ViewBag.thanhtien)) <span>đ</span></th>
+                            <th>@ViewBag.thanhTien.ToString("#,##0").Replace(',', '.')<span>đ</span></th>
                             </tfoot>
                             <tfoot>
                             <td></td>
@@ -174,16 +178,26 @@
                             <td></td>
                             <td></td>
                             <td>Giảm giá:</td>
-                            <th>@String.Format( "{0:#,##0.##}",(ViewBag.chietkhau)) <span>đ</span></th>
+                            <th>
+                                    @if (ViewBag.PriceVoucher!=null)
+                                    {
+                                        @ViewBag.PriceVoucher.ToString("#,##0").Replace(',', '.') <span>đ</span>
+                                    }
+                                    else
+                                    {
+                                    <span>0 đ</span>
+                                    }
+                                </th>
                             </tfoot>
 
 
                         </table>
-                        @if (orderbyid!=null)
+                        @if (ViewBag.trangThai != null)
                         {
-                            @if(orderbyid.TrangThai==1 || orderbyid.TrangThai==2){
+                            @if (ViewBag.trangThai == 1 || ViewBag.trangThai == 2)
+                            {
                                 <div style="padding:10px;margin-left:600px">
-                                    <form asp-action="HuyOrder" asp-route-Id="@orderbyid.ID_HoaDon">
+                                    <form asp-action="HuyOrder" asp-route-Id="@ViewBag.IdHoaDon">
                                         <button type="submit" class="btn btn-danger">Hủy đơn hàng</button>
                                     </form>
                                 </div>

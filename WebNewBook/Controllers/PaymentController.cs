@@ -322,9 +322,12 @@ namespace WebNewBook.Controllers
     //                    return View();
     //                }
 
-    //                //Set id mã giảm giá gửi sang sau khi thanh toán thành công
-
-    //                HttpContext.Session.SetString("idVoucherVNPAY", hoaDon.MaGiamGia.ToString());
+                    //Set id mã giảm giá gửi sang sau khi thanh toán thành công
+                    if (hoaDon.MaGiamGia != null)
+                    {
+                        HttpContext.Session.SetString("idVoucherVNPAY", hoaDon.MaGiamGia.ToString());
+                    }
+                   
 
     //                //Hóa đơn VNpay
     //                OrderInfo order = new OrderInfo();

@@ -283,7 +283,7 @@
 																</p>
 
 												<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@a.ID_SanPham"> @a.TenSanPham</a> </h3>
-												<h4 class="product-price"> @a.GiaBan <del class="product-old-price"> </del></h4>
+												<h4 class="product-price"> @a.GiaBan.ToString("#,##0").Replace(',', '.')đ <del class="product-old-price"> </del></h4>
 
 
 													</div>
