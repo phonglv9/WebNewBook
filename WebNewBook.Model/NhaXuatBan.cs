@@ -16,6 +16,5 @@ namespace WebNewBook.Model
         public string TenXuatBan { get; set; }
         [Range(0, 1)]
         public int TrangThai { get; set; }
-        public virtual ICollection<Sach>? Sachs { get; set; }
     }
 }
