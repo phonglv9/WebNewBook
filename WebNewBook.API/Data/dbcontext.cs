@@ -40,5 +40,7 @@ namespace WebNewBook.API.Data
         public DbSet<SanPhamCT> SanPhamCTs { get; set; }
         public DbSet<DanhMucSach> DanhMucSachs { get; set; }
         public DbSet<Fpoint> Fpoints { get; set; }
+        public DbSet<Sach_TacGia> Sach_TacGias { get; set; }
+        public DbSet<Sach_TheLoai> Sach_TheLoais { get; set; }
     }
 }

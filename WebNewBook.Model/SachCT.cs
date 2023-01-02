@@ -15,12 +15,16 @@ namespace WebNewBook.Model
         public string ID_SachCT { get; set; }
         [ForeignKey("Sach")]
         public string MaSach { get; set; }
-        [ForeignKey("TheLoai")]
-        public string MaTheLoai { get; set; }
-        [ForeignKey("TacGia")]
-        public string MaTacGia { get; set; }
+        [ForeignKey("NhaXuatBan")]
+        public string MaNXB { get; set; }
+        public string HinhAnh { get; set; }
+        public int SoLuong { get; set; }
+        [Range(1, 999999)]
+        public double GiaBan { get; set; }
+        [Range(0, 100)]
+        public int TaiBan { get; set; }
+        public int TrangThai { get; set; }
         public virtual Sach? Sach { get; set; }
-        public virtual TheLoai? TheLoai { get; set; }
-        public virtual TacGia? TacGia { get; set; }
+        public virtual NhaXuatBan? NhaXuatBan { get; set; }
     }
 }

@@ -35,9 +35,9 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("server=LVP-09\\LVP09;database=Webnewbook;User Id = LVP09; Password=Ph@161589;"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=FinalASM;User ID=hung;Password=hung;"));
 
-builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("server=LVP-09\\LVP09;database=Webnewbook;User Id = LVP09; Password=Ph@161589;"));
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=LoginFinalASM;User ID=hung;Password=hung;"));
 
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddEntityFrameworkStores<LoginContext>().AddDefaultTokenProviders().AddDefaultUI();
@@ -47,19 +47,19 @@ builder.Services.AddIdentityCore<IdentityUser>()
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<INhanVienService, NhanVienService>();
-builder.Services.AddScoped<ICustomerService, CustomerService>();
-builder.Services.AddScoped<IVoucherService, VoucherService>();
-builder.Services.AddScoped<IVoucherCTServices, VoucherCTServices>();
-builder.Services.AddScoped<IPhieuNhapService, PhieuNhapService>();
-builder.Services.AddScoped<ISanPhamService, SanPhamService>();
-builder.Services.AddScoped<IHomeService, HomeService>();
-builder.Services.AddScoped<IBookSevice, BookService>();
-builder.Services.AddScoped<IHomeService, HomeService>();
-builder.Services.AddScoped<IFpointService, FpointService>();
-builder.Services.AddScoped<IProfileCustomerService, ProfileCustomerService>();
-builder.Services.AddScoped<IGioHangService, GioHangService>();
-builder.Services.AddScoped<IHoaDonService, HoaDonService>();
+//builder.Services.AddScoped<INhanVienService, NhanVienService>();
+//builder.Services.AddScoped<ICustomerService, CustomerService>();
+//builder.Services.AddScoped<IVoucherService, VoucherService>();
+//builder.Services.AddScoped<IVoucherCTServices, VoucherCTServices>();
+//builder.Services.AddScoped<IPhieuNhapService, PhieuNhapService>();
+//builder.Services.AddScoped<ISanPhamService, SanPhamService>();
+//builder.Services.AddScoped<IHomeService, HomeService>();
+//builder.Services.AddScoped<IBookSevice, BookService>();
+//builder.Services.AddScoped<IHomeService, HomeService>();
+//builder.Services.AddScoped<IFpointService, FpointService>();
+//builder.Services.AddScoped<IProfileCustomerService, ProfileCustomerService>();
+//builder.Services.AddScoped<IGioHangService, GioHangService>();
+//builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 builder.Services.AddScoped<ITheLoaiService, TheLoaiService>();
 builder.Services.AddScoped<ITacGiaService, TacGiaService>();
 builder.Services.AddScoped<INhaXuatBanService, NhaXuatBanService>();

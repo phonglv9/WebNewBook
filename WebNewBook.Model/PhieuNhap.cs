@@ -15,13 +15,13 @@ namespace WebNewBook.Model
         public string ID_PhieuNhap { get; set; }
         [ForeignKey("NhanVien")]
         public string MaNhanVien { get; set; }
-        [ForeignKey("Sach")]
-        public string MaSach { get; set; }
+        [ForeignKey("SachCT")]
+        public string MaSachCT { get; set; }
         [Range(1, 999999)]
         public double GiaNhap { get; set; }
         public int SoLuongNhap { get; set; }
         public DateTime NgayNhap { get; set; }
         public virtual NhanVien? NhanVien { get; set; }
-        public virtual Sach? Sach { get; set; }
+        public virtual SachCT? SachCT { get; set; }
     }
 }
