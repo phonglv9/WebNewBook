@@ -531,9 +531,13 @@
             if (date.getDate() < 10) {
                 today = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + "0" + date.getDate();
             }
-
-
-
+             if (date.getMonth() < 10) {
+                today = date.getFullYear() + '-' + "0"+ (date.getMonth() + 1) + '-' + date.getDate();
+            }
+            if(date.getMonth() < 10 && date.getDate() < 10){
+                today = date.getFullYear() + '-' + "0" + (date.getMonth() + 1) + '-'+"0" + date.getDate();
+            }
+            console.log(today)
             if (doiDiem.checked == true) {
                 hinhthuc = 1;
                 diemdoi = $("#DiemDoi").val()
