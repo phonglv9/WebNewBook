@@ -159,7 +159,7 @@ namespace WebNewBook.API.Repository.Service
             var listhoadonct = dbcontext.HoaDonCTs.ToList();
             var listsanpham = dbcontext.SanPhams.ToList();
             var listsanphamct = dbcontext.SanPhamCTs.ToList();
-            var listsach = dbcontext.Sachs.ToList();
+           
             var listsachct = dbcontext.SachCTs.ToList();
           
             var listnhaxuatban = dbcontext.NhaXuatBans.ToList();

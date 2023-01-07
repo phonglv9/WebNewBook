@@ -9,48 +9,48 @@ using WebNewBook.API.Common;
 
 namespace WebNewBook.API.Repository.Service
 {
-    //public class HomeService: IHomeService
+    //public class HomeService : IHomeService
     //{
     //    private readonly dbcontext _dbContext;
     //    public HomeService(dbcontext dbContext)
     //    {
-    //          _dbContext = dbContext;
+    //        _dbContext = dbContext;
     //    }
     //    public async Task<IEnumerable<HomeViewModel>> GetHomVM()
     //    {
 
-    //        var sanPham =  _dbContext.SanPhams;
-    //        var sanPhamCT =  _dbContext.SanPhamCTs;
-    //        var sachCT =  _dbContext.SachCTs;
-    //        var sach =  _dbContext.Sachs;
-    //        var theLoai =  _dbContext.TheLoais;
-    //        var danhMuc =  _dbContext.DanhMucSachs;
-    //        var tacGia =  _dbContext.TacGias;
-           
-    //            var  homeVMs2 = (from a in sanPham
-    //                   join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
-    //                   join c in sach on b.MaSach equals c.ID_Sach
-    //                   join d in sachCT on c.ID_Sach equals d.MaSach
-    //                   join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
-    //                   join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
-    //                   join g in tacGia on d.MaTacGia equals g.ID_TacGia
-    //                   select new HomeViewModel
-    //                   {
-    //                       ID_SanPham = a.ID_SanPham,
-    //                       TenSanPham = a.TenSanPham,
-    //                       SoLuong = a.SoLuong,
-    //                       GiaBan = a.GiaBan,
-    //                       GiaGoc = a.GiaGoc,
-    //                       HinhAnh = a.HinhAnh,
-    //                       TenDanhMuc = f.TenDanhMuc,
-    //                       idDanhMuc = f.ID_DanhMuc,
-    //                       TrangThai = a.TrangThai,
-    //                       NgayTao = a.NgayTao,
-                    
-    //                   }).ToList();
+    //        var sanPham = _dbContext.SanPhams;
+    //        var sanPhamCT = _dbContext.SanPhamCTs;
+    //        var sachCT = _dbContext.SachCTs;
+    //        var sach = _dbContext.Sachs;
+    //        var theLoai = _dbContext.TheLoais;
+    //        var danhMuc = _dbContext.DanhMucSachs;
+    //        var tacGia = _dbContext.TacGias;
+
+    //        var homeVMs2 = (from a in sanPham
+    //                        join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
+    //                        join c in sach on b.MaSach equals c.ID_Sach
+    //                        join d in sachCT on c.ID_Sach equals d.MaSach
+    //                        join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
+    //                        join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
+    //                        join g in tacGia on d.MaTacGia equals g.ID_TacGia
+    //                        select new HomeViewModel
+    //                        {
+    //                            ID_SanPham = a.ID_SanPham,
+    //                            TenSanPham = a.TenSanPham,
+    //                            SoLuong = a.SoLuong,
+    //                            GiaBan = a.GiaBan,
+    //                            GiaGoc = a.GiaGoc,
+    //                            HinhAnh = a.HinhAnh,
+    //                            TenDanhMuc = f.TenDanhMuc,
+    //                            idDanhMuc = f.ID_DanhMuc,
+    //                            TrangThai = a.TrangThai,
+    //                            NgayTao = a.NgayTao,
+
+    //                        }).ToList();
 
     //        List<HomeViewModel> lst = new List<HomeViewModel>();
-    //        foreach (var item in homeVMs2.DistinctBy(c=>c.ID_SanPham).Where(c => c.TrangThai == 1).ToList())
+    //        foreach (var item in homeVMs2.DistinctBy(c => c.ID_SanPham).Where(c => c.TrangThai == 1).ToList())
     //        {
     //            lst.Add(item);
     //        }
@@ -60,15 +60,15 @@ namespace WebNewBook.API.Repository.Service
     //    }
     //    public async Task<List<ProductOderTop10VM>> GetTopProduct10Oder()
     //    {
-           
-    //            List<ProductOderTop10VM> list = new List<ProductOderTop10VM>();
-    //            DataSet dataSet = TextUtils.GetDataSet("spGetTop10ProductOder");
-    //            DataTable dt = new DataTable();
+
+    //        List<ProductOderTop10VM> list = new List<ProductOderTop10VM>();
+    //        DataSet dataSet = TextUtils.GetDataSet("spGetTop10ProductOder");
+    //        DataTable dt = new DataTable();
     //        dt = dataSet.Tables[0];
     //        list = TextUtils.ConvertDataTable<ProductOderTop10VM>(dt);
 
-    //            return list;
-            
+    //        return list;
+
     //    }
     //    public async Task<IEnumerable<ProductVM>> GetProductHome()
     //    {
@@ -79,32 +79,32 @@ namespace WebNewBook.API.Repository.Service
     //        var theLoai = _dbContext.TheLoais;
     //        var danhMuc = _dbContext.DanhMucSachs;
     //        var tacGia = _dbContext.TacGias;
-           
-    //       var  products = (from a in sanPham
-    //                   join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
-    //                   join c in sach on b.MaSach equals c.ID_Sach
-    //                   join d in sachCT on c.ID_Sach equals d.MaSach
-    //                   join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
-    //                   join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
-    //                   join g in tacGia on d.MaTacGia equals g.ID_TacGia
-    //                   select new ProductVM()
-    //                   {
-    //                       ID_SanPham = a.ID_SanPham,
-    //                       TenSanPham = a.TenSanPham ,
-    //                       SoLuong = a.SoLuong,
-    //                       GiaBan = a.GiaBan,
-    //                       GiaGoc = a.GiaGoc,
-    //                       TrangThai = a.TrangThai,
-    //                       HinhAnh = a.HinhAnh,
-    //                       idTheLoai = e.ID_TheLoai,
-    //                       TenTheLoai = e.TenTL,
-    //                       idDanhMuc = f.ID_DanhMuc,
-    //                        TenDanhMuc = f.TenDanhMuc,
-    //                        idTacGia = g.ID_TacGia,
-    //                        TenTacGia = g.HoVaTen,
-                           
-                           
-    //         }).Where(c=>c.TrangThai == 1).ToList();
+
+    //        var products = (from a in sanPham
+    //                        join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
+    //                        join c in sach on b.MaSach equals c.ID_Sach
+    //                        join d in sachCT on c.ID_Sach equals d.MaSach
+    //                        join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
+    //                        join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
+    //                        join g in tacGia on d.MaTacGia equals g.ID_TacGia
+    //                        select new ProductVM()
+    //                        {
+    //                            ID_SanPham = a.ID_SanPham,
+    //                            TenSanPham = a.TenSanPham,
+    //                            SoLuong = a.SoLuong,
+    //                            GiaBan = a.GiaBan,
+    //                            GiaGoc = a.GiaGoc,
+    //                            TrangThai = a.TrangThai,
+    //                            HinhAnh = a.HinhAnh,
+    //                            idTheLoai = e.ID_TheLoai,
+    //                            TenTheLoai = e.TenTL,
+    //                            idDanhMuc = f.ID_DanhMuc,
+    //                            TenDanhMuc = f.TenDanhMuc,
+    //                            idTacGia = g.ID_TacGia,
+    //                            TenTacGia = g.HoVaTen,
+
+
+    //                        }).Where(c => c.TrangThai == 1).ToList();
 
     //        List<ProductVM> lst = new List<ProductVM>();
     //        foreach (var item in products.DistinctBy(c => c.ID_SanPham).Where(c => c.TrangThai == 1).ToList())
@@ -113,8 +113,8 @@ namespace WebNewBook.API.Repository.Service
     //        }
     //        return lst;
     //    }
-       
-    //    public async Task<SanPhamChiTiet> GetProductDetail (string id)
+
+    //    public async Task<SanPhamChiTiet> GetProductDetail(string id)
     //    {
 
 
@@ -126,15 +126,21 @@ namespace WebNewBook.API.Repository.Service
     //        var danhMuc = _dbContext.DanhMucSachs;
     //        var tacGia = _dbContext.TacGias;
     //        var nhaxuatban = _dbContext.NhaXuatBans;
+    //        var Sach_Theloai = _dbContext.Sach_TheLoais;
+    //        var Sach_Tacgia = _dbContext.Sach_TacGias;
 
     //        var products = (from a in sanPham
     //                        join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
-    //                        join c in sach on b.MaSach equals c.ID_Sach
-    //                        join d in sachCT on c.ID_Sach equals d.MaSach
-    //                        join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
+
+    //                        join d in sachCT on b.MaSachCT equals d.ID_SachCT
+    //                        join x in nhaxuatban on d.MaNXB equals x.ID_NXB
+    //                        join c in sach on d.MaSach equals c.ID_Sach
+    //                        join p in Sach_Theloai on c.ID_Sach equals p.MaSach
+    //                        join l in Sach_Tacgia on c.ID_Sach equals l.MaSach
+    //                        join e in theLoai on p.MaTheLoai equals e.ID_TheLoai
     //                        join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
-    //                        join g in tacGia on d.MaTacGia equals g.ID_TacGia
-    //                        join x in nhaxuatban on c.MaNXB equals x.ID_NXB
+    //                        join g in tacGia on l.MaTacGia equals g.ID_TacGia
+
     //                        select new SanPhamChiTiet()
     //                        {
     //                            ID_SanPham = a.ID_SanPham,
@@ -150,23 +156,23 @@ namespace WebNewBook.API.Repository.Service
     //                            TenDanhMuc = f.TenDanhMuc,
     //                            idTacGia = g.ID_TacGia,
     //                            TenTacGia = g.HoVaTen,
-    //                            sotrang=c.SoTrang,
-    //                            taiban=c.TaiBan,
-    //                            TenNhaXuatBan=x.TenXuatBan,
-    //                            Mota= c.MoTa,
+    //                            sotrang = c.SoTrang,
+    //                            taiban = d.TaiBan,
+    //                            TenNhaXuatBan = x.TenXuatBan,
+    //                            Mota = c.MoTa,
 
 
     //                        }).Where(c => c.TrangThai == 1).ToList();
 
 
     //        var lst = products.Where(c => c.ID_SanPham == id).FirstOrDefault();
-              
-            
+
+
     //        return lst;
     //    }
     //    public async Task<List<TheLoai>> GetTheLoais()
     //    {
-            
+
 
     //        return await _dbContext.TheLoais.ToListAsync();
     //    }
@@ -174,7 +180,7 @@ namespace WebNewBook.API.Repository.Service
     //    {
 
 
-    //        return await _dbContext.DanhMucSachs.Include(c=>c.TheLoais).ToListAsync();
+    //        return await _dbContext.DanhMucSachs.Include(c => c.TheLoais).ToListAsync();
     //    }
     //    public async Task<List<TacGia>> GetTacGias()
     //    {
@@ -193,15 +199,20 @@ namespace WebNewBook.API.Repository.Service
     //        var danhMuc = _dbContext.DanhMucSachs;
     //        var tacGia = _dbContext.TacGias;
     //        var nhaxuatban = _dbContext.NhaXuatBans;
+    //        var Sach_Theloai = _dbContext.Sach_TheLoais;
+    //        var Sach_Tacgia = _dbContext.Sach_TacGias;
 
     //        var products = (from a in sanPham
     //                        join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
-    //                        join c in sach on b.MaSach equals c.ID_Sach
-    //                        join d in sachCT on c.ID_Sach equals d.MaSach
-    //                        join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
+
+    //                        join d in sachCT on b.MaSachCT equals d.ID_SachCT
+    //                        join x in nhaxuatban on d.MaNXB equals x.ID_NXB
+    //                        join c in sach on d.MaSach equals c.ID_Sach
+    //                        join p in Sach_Theloai on c.ID_Sach equals p.MaSach
+    //                        join l in Sach_Tacgia on c.ID_Sach equals l.MaSach
+    //                        join e in theLoai on p.MaTheLoai equals e.ID_TheLoai
     //                        join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
-    //                        join g in tacGia on d.MaTacGia equals g.ID_TacGia
-    //                        join x in nhaxuatban on c.MaNXB equals x.ID_NXB
+    //                        join g in tacGia on l.MaTacGia equals g.ID_TacGia
     //                        select new SanPhamChiTiet()
     //                        {
     //                            ID_SanPham = a.ID_SanPham,
@@ -218,17 +229,17 @@ namespace WebNewBook.API.Repository.Service
     //                            idTacGia = g.ID_TacGia,
     //                            TenTacGia = g.HoVaTen,
     //                            sotrang = c.SoTrang,
-    //                            taiban = c.TaiBan,
+    //                            taiban = d.TaiBan,
     //                            TenNhaXuatBan = x.TenXuatBan,
     //                            Mota = c.MoTa,
-    //                            TenSach=c.TenSach
-                                
+    //                            TenSach = c.TenSach
+
 
 
     //                        }).Where(c => c.TrangThai == 1).ToList();
     //        //var listsp=products.Where(c=>c.ID_SanPham==id && c.ID_SanPham==)
-           
-          
+
+
     //        var lst = products.Where(c => c.ID_SanPham == id).ToList();
     //        return lst;
     //    }

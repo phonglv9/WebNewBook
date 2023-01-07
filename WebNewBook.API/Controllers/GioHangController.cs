@@ -33,8 +33,9 @@ namespace WebNewBook.API.Controllers
 
         }
         [HttpGet("GetLitsGH")]
-        public async Task<List<GioHang>> GetGH()
+        public async Task<List<ModelCart>> GetGH()
         {
+
             return await _GioHangService.GetlistGH();
 
         }
