@@ -36,7 +36,7 @@ namespace WebNewBook.API.Controllers
             return await _homeService.GetProductHome();
 
         }
-      
+
         [HttpGet("ProductDetail/{id}")]
         public async Task<SanPhamChiTiet> ProductDetail(string id)
         {

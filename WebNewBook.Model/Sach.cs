@@ -17,6 +17,10 @@ namespace WebNewBook.Model
         public string TenSach { get; set; }
         [Range(1, 1000000)]
         public int SoTrang { get; set; }
+
+        //public int? LoaiBia { get; set; } //1:Bìa cứng - 2: Bìa mềm
+        //public string? NgonNgu { get; set; }
+        //public string? KichThuoc { get; set; } 
         public string MoTa { get; set; }
     }
 }

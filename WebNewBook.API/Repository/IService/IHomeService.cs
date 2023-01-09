@@ -8,7 +8,7 @@ namespace WebNewBook.API.Repository.IService
     {
         Task<IEnumerable<HomeViewModel>> GetHomVM();
         Task<IEnumerable<ProductVM>> GetProductHome();
-     
+
         Task<List<TheLoai>> GetTheLoais();
         Task<List<DanhMucSach>> GetDanhMucNavBar();
         Task<List<TacGia>> GetTacGias();

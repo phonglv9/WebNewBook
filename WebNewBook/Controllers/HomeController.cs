@@ -51,16 +51,16 @@ namespace WebNewBook.Controllers
             };
             //Sách mới
             ViewBag.NewBook = modelHome.OrderByDescending(c => c.NgayTao).Take(10).ToList();
-            //Sách bán chạy
-            List<ProductOderTop10VM> productOderTop10VMs = new List<ProductOderTop10VM>();
-            HttpResponseMessage responseProductTop10= _httpClient.GetAsync(_httpClient.BaseAddress + "/home/HomeProductTop10Oder").Result;
-            if (responseProductTop10.IsSuccessStatusCode)
-            {
-                string jsonData = responseProductTop10.Content.ReadAsStringAsync().Result;
-                productOderTop10VMs = JsonConvert.DeserializeObject<List<ProductOderTop10VM>>(jsonData);
+            ////Sách bán chạy
+            //List<ProductOderTop10VM> productOderTop10VMs = new List<ProductOderTop10VM>();
+            //HttpResponseMessage responseProductTop10= _httpClient.GetAsync(_httpClient.BaseAddress + "/home/HomeProductTop10Oder").Result;
+            //if (responseProductTop10.IsSuccessStatusCode)
+            //{
+            //    string jsonData = responseProductTop10.Content.ReadAsStringAsync().Result;
+            //    productOderTop10VMs = JsonConvert.DeserializeObject<List<ProductOderTop10VM>>(jsonData);
 
-                ViewBag.SachBanChay = productOderTop10VMs;
-            };
+            //    ViewBag.SachBanChay = productOderTop10VMs;
+            //};
 
 
 
