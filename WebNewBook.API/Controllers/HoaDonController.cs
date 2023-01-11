@@ -56,5 +56,12 @@ namespace WebNewBook.API.Controllers
             return await _hoaDonService.GetPriceVoucher(idvoucherCT);
         }
 
+        [HttpPut("UpdateRecipientProfile")]
+        public async Task<ActionResult> UpdateRecipientProfile(HoaDon hoaDon)
+        {
+            _hoaDonService.UpdateThongtinnguoinhan(hoaDon);
+            return Ok();
+        }
+
     }
 }

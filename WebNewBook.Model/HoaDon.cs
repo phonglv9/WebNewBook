@@ -9,7 +9,7 @@ namespace WebNewBook.Model
         [Key]
         public string ID_HoaDon { get; set; }
         [ForeignKey("KhachHang")]
-        public string MaKhachHang { get; set; }
+        public string? MaKhachHang { get; set; }
         [Required]
 
         public string TenNguoiNhan { get; set; }
@@ -18,7 +18,7 @@ namespace WebNewBook.Model
         public string? GhiChu { get; set; }
         public string SDT { get; set; }
         public double PhiGiaoHang { get; set; }
-        public string Email { get; set; }
+        public string? Email { get; set; }
         public string? MaGiamGia { get; set; }
         public DateTime NgayMua { get; set; }
         public double TongTien { get; set; }

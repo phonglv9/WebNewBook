@@ -18,61 +18,84 @@
         color = "danger";
     }
 }
-@section Scripts{
-    <script>
-        $("#selectHD").change(function () {
-
-            var $form = $(this).closest('form');
-            $form.find('button[type=submit]').click();
-
-        });
-        setTimeout(function () {
-            $('#msHD').fadeOut('slow');
-        }, 1500)
-    </script>
-
-}
 
 
-    <div class="container py-1" style="background-color: #f1f1f1;">
-       
-        <div class="container" style="background-color: rgb(255, 255, 255);">
-            <div class="py-3">
-                <h6>
-                    <div>
-                        <form asp-action="Index" class="row">
-                            <div class="col-5 mb-3">
-                                <input type="text" name="timkiem" class="form-control" placeholder="Mời bạn nhập mã hóa đơn để tìm kiếm">
-                            </div>
-                            <div class="col-2">
-                                <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
-                            </div>
-                         
-                            <div class="col-5 mb-3">
-                                <select id="selectHD" name="trangThai" class="form-select" aria-label="Default select example">
-                                    <option selected>Chọn trạng thái</option>
-                                   
-                                    <option value="6">Vô hiệu hóa</option>
-                                    <option value="1">Đặt hàng</option>
-                                    <option value="2">Đã thanh toán</option>
-                                   @* <option value="3">Đơn hàng thanh toán thất bại</option>*@
-                                   @* <option value="4">Trả hàng</option>*@
-                                    <option value="5">Thành công</option>
-                                    <option value="7">Khách không đăng nhập</option>
-                                    <option value="8">Đơn hàng đã xác nhận</option>
-                                    <option value="4">Đơn hàng giao thất bại</option>
-                                </select>
-                            </div>
-                        </form>
 
-                       
-                    </div>
-                </h6>
-            </div>
+<div class="container py-1" style="background-color: #f1f1f1;">
+
+    <div class="container" style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <h6>
+                <div>
+                    <form asp-action="Index" class="row">
+                        <div class="col-5 mb-3">
+                            <input type="text" name="timkiem" class="form-control" placeholder="Mời bạn nhập mã hóa đơn để tìm kiếm">
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                        </div>
+
+                   @*     <div class="col-5 mb-3">
+                            <select id="selectHD" name="trangThai" class="form-select" aria-label="Default select example">
+                                <option selected>Chọn trạng thái</option>
+
+                                <option value="6">Vô hiệu hóa</option>
+                                <option value="1">Đặt hàng</option>
+                                <option value="2">Đã thanh toán</option>
+                                 <option value="3">Đơn hàng thanh toán thất bại</option>
+                               <option value="4">Trả hàng</option>
+                                <option value="5">Thành công</option>
+                                <option value="7">Khách không đăng nhập</option>
+                                <option value="8">Đơn hàng đã xác nhận</option>
+                                <option value="4">Đơn hàng giao thất bại</option>
+                            </select>
+                        </div>*@
+                    </form>
+
+
+                </div>
+            </h6>
         </div>
-        <br>
-        <div class="container" style="background-color: rgb(255, 255, 255);">
-            <div class="py-1">
+    </div>
+    <br>
+    <div>
+        <div class="_0obGFe">
+            <a asp-action="Index" id="choxacnhan" asp-route-trangThai="1" class="vAkdD0 r-S3nG">
+                <span class="_0rjE9m">
+                    Chờ xác nhận
+                </span>
+            </a>
+            <a asp-action="Index" id="cholayhang" onclick="cholayhang" asp-route-trangThai="8" class="vAkdD0 r-S3nG">
+                <span class="_0rjE9m">
+                    Chờ lấy hàng
+                </span>
+            </a>
+            <a asp-action="Index" id="danggiao" asp-route-trangThai="9" class="vAkdD0 r-S3nG">
+                <span class="_0rjE9m">
+                    Đang giao
+                </span>
+            </a>
+            <a asp-action="Index" id="thanhcong" asp-route-trangThai="5" class="vAkdD0 r-S3nG">
+                <span class="_0rjE9m">
+                    Đã giao thành công
+                </span>
+            </a>
+            <a asp-action="Index"  id="trahang" asp-route-trangThai="4" class="vAkdD0 r-S3nG ">
+                <span class="_0rjE9m">
+                    Trả hàng
+                </span>
+            </a>
+            <a asp-action="Index" id="dahhuy" asp-route-trangThai="7" class="vAkdD0 r-S3nG">
+                <span class="_0rjE9m">
+                    Đã hủy
+                </span>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="container" style="background-color: rgb(255, 255, 255);">
+        <div class="py-1">
             @if (mess != "")
             {
                 <div class="alert alert-@color" id="msHD" role="alert">
@@ -82,60 +105,24 @@
             <p>
                 @*@if (ViewBag.NXB != null)
                 {
-                    <span>Trang @(ViewBag.DataHDPageCount < ViewBag.DataHD.PageNumber ? 0 : ViewBag.DataHD.PageNumber) / @ViewBag.DataHD.PageCount</span>
+                <span>Trang @(ViewBag.DataHDPageCount < ViewBag.DataHD.PageNumber ? 0 : ViewBag.DataHD.PageNumber) / @ViewBag.DataHD.PageCount</span>
                 }*@
-                <div>
-                    <div class="_0obGFe">
 
-                        <a href="#" class="vAkdD0 r-S3nG">
-                            <span class="_0rjE9m">
-                                Chờ xác nhận
-                            </span>
-                        </a>
-                        <a href="#" class="vAkdD0 r-S3nG">
-                            <span class="_0rjE9m">
-                                Chờ lấy hàng
-                            </span>
-                        </a>
-                        <a href="#" class="vAkdD0 r-S3nG">
-                            <span class="_0rjE9m">
-                                Đang giao
-                            </span>
-                        </a>
-                        <a href="#" class="vAkdD0 r-S3nG">
-                            <span class="_0rjE9m">
-                                Đã giao thành công
-                            </span>
-                        </a>
-                        <a href="#" class="vAkdD0 r-S3nG ">
-                            <span class="_0rjE9m">
-                                Trả hàng
-                            </span>
-                        </a>
-                        <a href="#" class="vAkdD0 r-S3nG">
-                            <span class="_0rjE9m">
-                                Đã hủy
-                            </span>
-                        </a>
 
-                    </div>
-                </div>
-
-            
                 <table class="table">
-                    <thead class="">
+                    <thead>
                         <tr>
-                            <th>Mã hóa đơn</th>
-                            <th>Tên khách hàng</th>
-                          
-                           
-                            <th>Ngày mua</th>
-                            <th>Tổng tiền </th>
-                            <th>Trạng Thái</th>
-                            <th>Chi Tiết</th>
-                            <th>Chức Năng</th>
-                           
-                           
+                            <td>Mã hóa đơn</td>
+                            <td>Tên khách hàng</td>
+
+
+                            <td>Ngày mua</td>
+                            <td>Tổng tiền </td>
+
+
+
+
+
                         </tr>
                     </thead>
                     <tbody>
@@ -154,102 +141,182 @@
                                     coler = "table-info";
 
                                 }
-                                <tr class="@coler">
-                                    <td >@a.hoaDon.ID_HoaDon</td>
+                                <tr class="">
+                                    <th>@a.hoaDon.ID_HoaDon</th>
                                     <td>@a.KhachHang.HoVaTen</td>
-                                    <td >@a.hoaDon.NgayMua</td>
+                                    <td>@a.hoaDon.NgayMua</td>
                                     <td>@a.hoaDon.TongTien.ToString("#,##0").Replace(',', '.')đ</td>
 
-                                    <td >
-                                        
-                                            @if (@a.hoaDon.TrangThai == 6)
-                                            {
-                                                <p>Vô hiệu hóa</p>
-                                            }
-                                            else if (@a.hoaDon.TrangThai == 1)
-                                            {
-                                                <p>Đặt hàng</p>
-                                            }
-                                            else if (@a.hoaDon.TrangThai == 2)
-                                            {
-                                                <p>Đã thanh toán</p>
-                                            }
-                                            else if (@a.hoaDon.TrangThai == 4)
-                                            {
-                                                <p>Giao hàng thất bại </p>
-                                            }
-                                            
-                                            else if (@a.hoaDon.TrangThai == 5)
-                                            {
-                                                <p>Thành công </p>
-                                            }else if (@a.hoaDon.TrangThai == 7)
-                                            {
-                                                <p>Đơn hàng bị hủy </p>
-                                            }else if (@a.hoaDon.TrangThai == 8)
-                                            {
-                                                <p>Đơn hàng đã xác nhận </p>
-                                            }
-                                            else if (@a.hoaDon.TrangThai == 9)
-                                            {
-                                                <p>Đang giao </p>
-                                            }
-                                        
-                                      
-                                    </td>
-                                    <td ><a asp-controller="HoaDon" asp-action="ChiTiet" asp-route-id="@a.hoaDon.ID_HoaDon">Chi Tiết</a> </td>
-                                    <td>
-                                        <form asp-controller="HoaDon" asp-action="Sua">
+                                    @* <td >
 
-                                            @* <input name="dd" type="hidden" value=" @item.hoaDon.ID_HoaDon">*@
-                                           <div style="display: flex;">
+                            @if (@a.hoaDon.TrangThai == 6)
+                            {
+                            <p>Vô hiệu hóa</p>
+                            }
+                            else if (@a.hoaDon.TrangThai == 1)
+                            {
+                            <p>Đặt hàng</p>
+                            }
+                            else if (@a.hoaDon.TrangThai == 2)
+                            {
+                            <p>Đã thanh toán</p>
+                            }
+                            else if (@a.hoaDon.TrangThai == 4)
+                            {
+                            <p>Giao hàng thất bại </p>
+                            }
 
-                                                <div class="combobox-HD" style="margin-right:10px;">
-                                                    <select class="form-select" name="name" aria-label="Default select example">
-                                                        <option value="">Tất cả</option>
-                                                        @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2){
+                            else if (@a.hoaDon.TrangThai == 5)
+                            {
+                            <p>Thành công </p>
+                            }else if (@a.hoaDon.TrangThai == 7)
+                            {
+                            <p>Đơn hàng bị hủy </p>
+                            }else if (@a.hoaDon.TrangThai == 8)
+                            {
+                            <p>Đơn hàng đã xác nhận </p>
+                            }
+                            else if (@a.hoaDon.TrangThai == 9)
+                            {
+                            <p>Đang giao </p>
+                            }
 
-                                                        <option value="8">Xác nhận đơn hàng</option>
-                                                     
-                                                            
-                                                        }
-                                                        @if (a.hoaDon.TrangThai  ==  9)
+
+                            </td>*@
+                                    <td><a asp-controller="HoaDon" asp-action="ChiTiet" class="text-secondary" asp-route-id="@a.hoaDon.ID_HoaDon"><i class="fa-solid fa-circle-info"></i></a> </td>
+                                    <!-- Button trigger modal -->
+                                    @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2 || a.hoaDon.TrangThai == 8 || a.hoaDon.TrangThai == 9)
+                                    {
+                                        <td><a data-bs-toggle="modal" data-bs-target="#OK_@a.hoaDon.ID_HoaDon" class="text-secondary"><i class="fa-solid fa-check"></i></a> </td>
+
+                                    }
+                                 
+
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="OK_@a.hoaDon.ID_HoaDon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form asp-action="Sua">
+                                                    <div class="modal-body">
+                                                        @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2)
                                                         {
-                                                             <option value="4">Đơn hàng giao thất bại</option>
-                                                            <option value="5">Thành công</option>
-
+                                                            <p>Bạn muốn xác nhận đơn hàng ?</p>
+                                                            <input value="@a.hoaDon.ID_HoaDon" name="id" hidden />
+                                                            <input value="8" name="name" hidden />
                                                         }
                                                         @if (a.hoaDon.TrangThai == 8)
                                                         {
-                                                            <option value="9">Đang giao hàng</option>
-                                                           
+                                                            <p>Bạn muốn chuyển đơn hàng sang bắt đầu giao ?</p>
+                                                            <input value="@a.hoaDon.ID_HoaDon" name="id" hidden />
+                                                            <input value="9" name="name" hidden />
                                                         }
-                                                     
-                                                       
-                                                        
-                                                       
+                                                        @if (a.hoaDon.TrangThai == 9)
+                                                        {
+                                                            <p> Đã giao hàng thành công ?</p>
+                                                            <input value="@a.hoaDon.ID_HoaDon" name="id" hidden />
+                                                            <input value="5" name="name" hidden />
+                                                          
+                                                        }
 
-                                                    </select>
-                                                </div>
-                                                <div>
-                                                    <button type="submit" class="btn btn-primary">Lưu </button>
-
-                                                </div>
-                                           </div>
-                                            <div>
-                                                <input name="id" type="hidden" value="@a.hoaDon.ID_HoaDon">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                        <button type="submit"  class="btn btn-primary">Xác nhận</button>
+                                                    </div>
+                                                 
+                                                </form>
 
                                             </div>
+                                        </div>
+                                    </div>
+                                    @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2 || a.hoaDon.TrangThai == 8 || a.hoaDon.TrangThai == 9)
+                                    {
+                                        <td><a data-bs-toggle="modal" data-bs-target="#NOOK_@a.hoaDon.ID_HoaDon" class="text-secondary"><i class="fa-solid fa-x"></i></a> </td>
+                                    }
+                                    <div class="modal fade" id="NOOK_@a.hoaDon.ID_HoaDon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form asp-action="Sua">
+                                                    <div class="modal-body">
+                                                        @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2 || a.hoaDon.TrangThai == 8)
+                                                        {
+                                                            <p>Bạn muốn hủy đơn hàng ?</p>
+                                                            <input value="7" name="name" hidden />
+                                                            <input value="@a.hoaDon.ID_HoaDon" name="id" hidden />
+                                                        }
+                                                        @if (a.hoaDon.TrangThai == 9)
+                                                        {
+
+                                                            <p> Khách hàng từ chối nhận hàng </p>
+                                                            <input value="4"  name="name" hidden />
+                                                            <input value="@a.hoaDon.ID_HoaDon" name="id" hidden />
+                                                            <p>lý do <input /></p>
+                                                        }
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                     
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                        <button type="submit"  class="btn btn-primary">Xác nhận</button>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<td>
+                            <form asp-controller="HoaDon" asp-action="Sua">
+
+                            <input name="dd" type="hidden" value=" @item.hoaDon.ID_HoaDon">
+                            <div style="display: flex;">
+
+                            <div class="combobox-HD" style="margin-right:10px;">
+                            <select class="form-select" name="name" aria-label="Default select example">
+                            <option value="">Tất cả</option>
+                            @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2){
+
+                            <option value="8">Xác nhận đơn hàng</option>
 
 
+                            }
+                            @if (a.hoaDon.TrangThai  ==  9)
+                            {
+                            <option value="4">Đơn hàng giao thất bại</option>
+                            <option value="5">Thành công</option>
+
+                            }
+                            @if (a.hoaDon.TrangThai == 8)
+                            {
+                            <option value="9">Đang giao hàng</option>
+
+                            }
+                            </select>
+                            </div>
+                            <div>
+                            <button type="submit" class="btn btn-primary">Lưu </button>
+
+                            </div>
+                            </div>
+                            <div>
+                            <input name="id" type="hidden" value="@a.hoaDon.ID_HoaDon">
+
+                            </div>
+                            </form>
+                            </td>*@
 
 
-                                        </form>
-                                    </td>
-
-                                   
                                 </tr>
 
-                               
+
                             }
                         }
 
@@ -263,5 +330,10 @@
         </div>
     </div>
 </div>
+
+<script>
+   
+   
+</script>
 
 

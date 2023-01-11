@@ -1,5 +1,5 @@
 ﻿@using WebNewBook.API.ModelsAPI;
-@model List<ViewHoaDonCT> ;
+@model ViewHoaDonCT ;
 @{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
@@ -8,58 +8,69 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.4/jspdf.min.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"
-integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
-crossorigin="anonymous"
-referrerpolicy="no-referrer">
+        integrity="sha512-BNaRQnYJYiPSqHHDb58B0yaPfCu+Wgds8Gp/gU33kqBtgNS4tSPHuGibyoeqMV/TJlSKda6FXzoEyYGjTe+vXA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer">
 </script>
 
 
 <div class="container py-1">
 
     <div class="row">
-            <div class="col-xl-6 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center">
-                            <div class="d-flex align-items-center">
-                                <img src="https://mdbootstrap.com/img/new/avatars/8.jpg"
-                                     alt=""
-                                     style="width: 45px; height: 45px"
-                                     class="rounded-circle" />
-                                <div class="ms-3">
-                                    <p class="fw-bold mb-1">@if(ViewBag.NameLogin != null) {@ViewBag.NameLogin}</p>
-                                    @if (ViewBag.IDLogin != "KHNOLOGIN")
+        <div class="col-xl-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex align-items-center">
+                            <img src="https://mdbootstrap.com/img/new/avatars/8.jpg"
+                                 alt=""
+                                 style="width: 45px; height: 45px"
+                                 class="rounded-circle" />
+                            <div class="ms-3">
+                                <p class="fw-bold mb-1">@if (ViewBag.NameLogin != null)
                                     {
-                                    <p class="text-muted mb-0">@if (ViewBag.EmailLogin != null) {@ViewBag.EmailLogin}</p>
-                                    <p class="text-muted mb-0">@if (ViewBag.SDTLogin != null) {@ViewBag.SDTLogin}</p>
-                                    }
-                                </div>
+                                        @ViewBag.NameLogin
+                                    }</p>
+                                @if (ViewBag.IDLogin != "KHNOLOGIN")
+                                {
+                                    <p class="text-muted mb-0">@if (ViewBag.EmailLogin != null)
+                                        {
+                                            @ViewBag.EmailLogin
+                                        }</p>
+                                    <p class="text-muted mb-0">@if (ViewBag.SDTLogin != null)
+                                        {
+                                            @ViewBag.SDTLogin
+                                        }</p>
+                                }
                             </div>
-                 
                         </div>
+
                     </div>
-                    <div class="card-footer border-0 bg-light p-2 d-flex justify-content-around">
-               
-                    </div>
+                </div>
+                <div class="card-footer border-0 bg-light p-2 d-flex justify-content-around">
                 </div>
             </div>
         </div>
-    <div class="card "style="width:100%" >
+    </div>
+    <div class="card " style="width:100%">
         <div class="card-body">
             <div class="container mb-5 mt-3">
                 <div class="row d-flex align-items-baseline">
                     <div class="col-xl-9">
-                        <p style="color: #7e8d9f;font-size: 20px;">Hóa đơn  >> <strong>ID: #@if (@ViewBag.IdHoaDon != null) { @ViewBag.IdHoaDon}</strong></p>
+                        <p style="color: #7e8d9f;font-size: 20px;">Hóa đơn  >> <strong>ID: #@if (@ViewBag.IdHoaDon != null)
+                                {
+                                    @ViewBag.IdHoaDon
+                                }</strong></p>
                     </div>
                     <div class="col-xl-3 float-end">
-                     @*   <a class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark" id="btn-print">
-                            <i class="fas fa-print text-primary"></i> 
+                        @*   <a class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark" id="btn-print">
+                        <i class="fas fa-print text-primary"></i>
                         </a>*@
                         <a class="btn btn-light text-capitalize" data-mdb-ripple-color="dark" id="btn-one">
                             <i class="far fa-file-pdf text-danger"></i> Export
                         </a>
                     </div>
-                   
+
                 </div>
 
                 <div class="container" id="hoadonct">
@@ -74,22 +85,86 @@ referrerpolicy="no-referrer">
                     <div class="row">
                         <div class="col-xl-8">
                             <ul class="list-unstyled">
-                                <li class="font-weight-bold">Họ tên người nhận: <span style="color:#0d6efd ;">@if (ViewBag.Namekh != null){@ViewBag.Namekh}</span></li>
-                                <li class="font-weight-bold">Địa chỉ:@if (ViewBag.diachi != null){@ViewBag.diachi}</li>
-                            
-                                <li class="font-weight-bold">Số điện thoại: <i class="fas fa-phone"></i> @if (ViewBag.sdtkh != null){@ViewBag.sdtkh}</li>
-                                <li class="font-weight-bold">Ghi chú: @if (ViewBag.ghichu != null){@ViewBag.ghichu}</li>
+                                <li class="font-weight-bold">
+                                    Họ tên người nhận: <span style="color:#0d6efd ;">@if (ViewBag.Namekh != null)
+                                        {
+                                            @ViewBag.Namekh
+                                        }</span>
+                                    <!-- Button Người nhận -->
+                                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nguoinhan">
+                                        <i class="fa-solid fa-pen"></i>
+                                    </button>
+                                    <!-- Modal người nhận -->
+                                    <form asp-action="UpdateThongtinnguoinhan">
+                                        <input value="@ViewBag.IdHoaDon" asp-for="hoaDon.ID_HoaDon" type="hidden" />
+                                        <div class="modal fade" id="nguoinhan" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin</h1>
+                                                        <button type="button"  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="tennguoinhan" class="form-label">Tên Người nhận</label>
+                                                            <input type="text" asp-for="hoaDon.TenNguoiNhan" value="@ViewBag.Namekh" class="form-control" id="tennguoinhan">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="diachi" class="form-label">Địa chỉ</label>
+                                                            <input type="text" asp-for="hoaDon.DiaChiGiaoHang" value="@ViewBag.diachi" class="form-control" id="diachi">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="sdt" class="form-label">Số điện thoại</label>
+                                                            <input type="text" asp-for="hoaDon.SDT" value="@ViewBag.sdtkh" class="form-control" id="sdt">
+                                                        </div>
+                                                        <div class="mb-3">
+                                                            <label for="ghichu" class="form-label">Ghi Chú</label>
+                                                            <input type="text" asp-for="hoaDon.GhiChu" value="@ViewBag.ghichu" class="form-control" id="ghichu">
+                                                      
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                        <button type="submit" class="btn btn-primary">Sửa thông tin</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    
+                                </li>
+
+                                <li class="font-weight-bold">Địa chỉ:@if (ViewBag.diachi != null)
+                                    {
+                                        @ViewBag.diachi
+                                    }</li>
+
+                                <li class="font-weight-bold">Số điện thoại: <i class="fas fa-phone"></i> @if (ViewBag.sdtkh != null)
+                                    {
+                                        @ViewBag.sdtkh
+                                    }</li>
+                                <li class="font-weight-bold">Ghi chú: @if (ViewBag.ghichu != null)
+                                    {
+                                        @ViewBag.ghichu
+                                    }</li>
                             </ul>
                         </div>
                         <div class="col-xl-4">
-                       
+
                             <ul class="list-unstyled">
                                 <li class="text-dark">
-                                    <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold font-weight-bold">ID: #@if (@ViewBag.IdHoaDon != null) { @ViewBag.IdHoaDon}</span>
+                                    <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold font-weight-bold">ID: #@if (@ViewBag.IdHoaDon != null)
+                                        {
+                                            @ViewBag.IdHoaDon
+                                        }</span>
                                 <li class="text-dark">
-                                    <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold">Ngày mua:  @if (ViewBag.ngaymua != null){@ViewBag.ngaymua} </span> 
+                                    <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold">Ngày mua:  @if (ViewBag.ngaymua != null)
+                                            {
+                                                @ViewBag.ngaymua
+                                            } </span>
                                 </li>
-                          
+
                             </ul>
                         </div>
                     </div>
@@ -98,7 +173,7 @@ referrerpolicy="no-referrer">
                         <table class="table table-striped table-borderless">
                             <thead style="background-color:#2a5da9 ;" class="text-white">
                                 <tr>
-                              
+
                                     <th scope="col">Tên sản phẩm</th>
                                     <th scope="col">Số lượng</th>
                                     <th scope="col">Đơn giá</th>
@@ -106,13 +181,13 @@ referrerpolicy="no-referrer">
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in Model.GroupBy(a => a.sanPham.TenSanPham))
+                                @foreach (var item in ViewBag.HDCT)
                                 {
-                                    @foreach (var n in item.Take(1))
+                                    @foreach (var n in item)
                                     {
                                         var tongtien = @n.hoaDonCT.SoLuong * @n.hoaDonCT.GiaBan;
 
-                           
+
                                         <tr>
 
                                             <td>@n.sanPham.TenSanPham</td>
@@ -128,28 +203,32 @@ referrerpolicy="no-referrer">
                     </div>
                     <div class="row">
                         <div class="col-xl-8">
-                           @if (ViewBag.PriceVoucher != null) { <p class="ms-3">  
-                                
-                                
-                                Giảm giá : @ViewBag.PriceVoucher
+                            @if (ViewBag.PriceVoucher != null)
+                            {
+                                <p class="ms-3">
+
+
+                                    Giảm giá : @ViewBag.PriceVoucher
 
 
 
-</p> }
-
+                                </p>
+                            }
                         </div>
                         <div class="col-xl-3">
-                        
+
                             <p class="text-black float-end">
-                                <span class="text-black me-3 font-weight-bold"> Tổng tiền: </span><span class="font-weight-bold" style="font-size: 25px;"> @if (ViewBag.tongtien != null)
+                                <span class="text-black me-3 font-weight-bold"> Tổng tiền: </span><span class="font-weight-bold" style="font-size: 25px;">
+                                    @if (ViewBag.tongtien != null)
                                     {
                                         @ViewBag.tongtien.ToString("#,##0").Replace(',', '.')
-                                    }đ</span>
+                                    }đ
+                                </span>
                             </p>
                         </div>
                     </div>
                     <hr>
-                
+
 
                 </div>
             </div>
@@ -157,9 +236,9 @@ referrerpolicy="no-referrer">
     </div>
 </div>
 @section scripts
-{
+    {
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             $('#btn-one').click(function () {
                 html2canvas(document.querySelector('#hoadonct')).then((canvas) => {
                     let base64image = canvas.toDataURL('image/png');
@@ -173,123 +252,3 @@ referrerpolicy="no-referrer">
 
     </script>
 }
-
-@*<div class="container">
-    <h1>Chi tiết hóa đơn</h1>
-
-    <hr />
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">Họ và tên Khách hàng</th>
-                <th scope="col">Số điện thoại khách hàng </th>
-                <th scope="col">Ghi chú </th>
-                <th scope="col">Địa chỉ </th>
-                <th scope="col">Ngày mua </th>
-                <th scope="col">Sản phẩm </th>
-                <th scope="col">Tổng tiền </th>
-
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-
-                <td>
-                    @if (ViewBag.Namekh != null)
-                    {
-
-
-                        @ViewBag.Namekh
-
-
-                    }
-                </td>
-                <td>
-                    @if (ViewBag.sdtkh != null)
-                    {
-
-
-                        @ViewBag.sdtkh
-
-
-                    }
-                </td>
-                <td>
-                    @if (ViewBag.ghichu != null)
-                    {
-
-
-                        @ViewBag.ghichu
-
-
-                    }
-                </td>
-                <td>
-                    @if (ViewBag.diachi != null)
-                    {
-
-
-                        @ViewBag.diachi
-
-
-                    }
-                </td>
-                <td>
-                    @if (ViewBag.ngaymua != null)
-                    {
-
-
-                        @ViewBag.ngaymua
-
-
-                    }
-                </td>
-                <td>
-                    @foreach (var item in Model.GroupBy(a => a.sanPham.TenSanPham))
-                    {
-                        @foreach (var n in item.Take(1))
-                        {
-                            <p> @n.sanPham.TenSanPham    số lượng:x @n.hoaDonCT.SoLuong    đơn giá :@n.hoaDonCT.GiaBan </p>
-                        }
-                    }
-                </td>
-                <td>
-                    @if (ViewBag.tongtien != null)
-                    {
-
-
-                        @ViewBag.tongtien
-
-
-                    }
-                </td>
-               
-
-            </tr>
-
-        </tbody>
-    </table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   
-    <div>
-
-        <a asp-action="Index">Quay lại</a>
-    </div>
-</div>*@
