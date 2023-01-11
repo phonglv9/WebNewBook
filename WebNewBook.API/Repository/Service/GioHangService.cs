@@ -18,7 +18,7 @@ namespace WebNewBook.API.Repository.Service
             _dbContext = dbContext;
         }
 
-        public async Task<int> AddGioHangAsync(string HinhAnh, int SoLuongs, string emailKH, string idsp)
+        public async Task<int> AddGioHangAsync( int SoLuongs, string emailKH, string idsp)
         {
             var listsp = _dbContext.SanPhams.ToList();
             var listgh = _dbContext.GioHangs.ToList();
@@ -30,7 +30,7 @@ namespace WebNewBook.API.Repository.Service
 
             GioHang giohangs = new GioHang();
             giohangs.ID_GioHang = "GH" + Guid.NewGuid().ToString();
-            //giohangs.HinhAnh = HinhAnh;
+            
             giohangs.SoLuong = 0;
             giohangs.MaKhachHang = idKhachHang;
             giohangs.MaSanPham = idsp;
@@ -84,14 +84,13 @@ namespace WebNewBook.API.Repository.Service
 
             var products = (from a in GioHang
                             join b in KhachHang on a.MaKhachHang equals b.ID_KhachHang
-                            join c in HoaDon on b.ID_KhachHang equals c.MaKhachHang
-                            join d in HoaDonCT on c.ID_HoaDon equals d.MaHoaDon
-                            join e in SanPham on d.MaSanPham equals e.ID_SanPham
+
+                            join e in SanPham on a.MaSanPham equals e.ID_SanPham
                           
                             select new ModelCart()
                             {
                                 EmailKH = b.Email,
-                                MaSanPham = e.ID_SanPham,
+                                MaSanPham = a.MaSanPham,
                                 SoLuong = a.SoLuong,
                                 GiaBan = e.GiaBan,
                                 HinhAnh = e.HinhAnh,
@@ -106,9 +105,9 @@ namespace WebNewBook.API.Repository.Service
         public async Task<SanPham> GetSanPham(string ID)
         {
 
-            var b = _dbContext.SanPhams.SingleOrDefault(a => a.ID_SanPham == ID);
+            var b =  _dbContext.SanPhams.SingleOrDefault(a => a.ID_SanPham == ID);
 
-            return b;
+            return  b;
         }
 
         public async Task<int> Updatenumber(string id, int soluongmoi, string namekh, string update)

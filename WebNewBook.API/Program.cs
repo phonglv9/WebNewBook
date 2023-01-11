@@ -35,9 +35,9 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-ID1I205\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook_Final1")); 
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LAPTOP-OD9HM4DG\\SQLEXPRESS;Initial Catalog=DATN12;Integrated Security=True")); 
 
-builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=DESKTOP-ID1I205\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook_Final1"));
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-OD9HM4DG\\SQLEXPRESS;Initial Catalog=DATN12;Integrated Security=True"));
 
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddEntityFrameworkStores<LoginContext>().AddDefaultTokenProviders().AddDefaultUI();
@@ -58,7 +58,7 @@ builder.Services.AddScoped<IHomeService, HomeService>();
 //builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<IFpointService, FpointService>();
 builder.Services.AddScoped<IProfileCustomerService, ProfileCustomerService>();
-//builder.Services.AddScoped<IGioHangService, GioHangService>();
+builder.Services.AddScoped<IGioHangService, GioHangService>();
 builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 builder.Services.AddScoped<ITheLoaiService, TheLoaiService>();
 builder.Services.AddScoped<ITacGiaService, TacGiaService>();
