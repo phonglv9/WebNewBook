@@ -23,7 +23,7 @@
                 @for (var i = 0; i < ViewBag.Saches.Count; i++)
                 {
                     string a = i < ViewBag.Saches.Count - 1 ? "-" : string.Empty;
-                    <a asp-action="Update" asp-controller="Sach" asp-route-id=@ViewBag.Saches[i].ID_Sach> @ViewBag.Saches[i].TenSach  @a </a>
+                    <a asp-action="Update" asp-controller="Sach" asp-route-id=@ViewBag.Saches[i].ID_SachCT> @*@ViewBag.Saches[i].TenSach*@  Temp @a </a>
                 }
                 @*@foreach (var item in ViewBag.Saches)
                 {

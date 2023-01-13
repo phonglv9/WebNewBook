@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Transactions;
 using WebNewBook.API.Data;
 using WebNewBook.API.ModelsAPI;
@@ -7,145 +8,249 @@ using WebNewBook.Model;
 
 namespace WebNewBook.API.Repository.Service
 {
-    //public class BookService : IBookSevice
-    //{
-    //    private readonly dbcontext _dbcontext;
-    //    public BookService(dbcontext dbcontext)
-    //    {
-    //        _dbcontext = dbcontext;
-    //    }
+    public class BookService : IBookSevice
+    {
+        private readonly dbcontext _dbcontext;
+        public BookService(dbcontext dbcontext)
+        {
+            _dbcontext = dbcontext;
+        }
 
-    //    public async Task CreateBook(SachAPI input)
-    //    {
-    //        if (_dbcontext.Sachs.ToList().Exists(c => c.TenSach == input.Sach.TenSach && c.NhaXuatBan == input.Sach.NhaXuatBan && c.TaiBan == input.Sach.TaiBan))
-    //        {
-    //            throw new Exception("Đã tồn tại sách!");
-    //        }
-    //        _dbcontext.Add(input.Sach);
+        public class Sach_SachCT
+        {
+            public string TenSach { get; set; }
+            public SachCT SachCT { get; set; }
+            public string NXB { get; set; }
+        }
 
-    //        foreach (var tacGia in input.TacGias)
-    //        {
-    //            foreach (var theLoai in input.TheLoais)
-    //            {
-    //                var id = "SachCT" + Guid.NewGuid().ToString();
-    //                SachCT sachCT = new SachCT { ID_SachCT = id, MaSach = input.Sach.ID_Sach, MaTacGia = tacGia, MaTheLoai = theLoai };
-    //                _dbcontext.Add(sachCT);
-    //            }
-    //        }
+        #region Sach
+        public async Task<IEnumerable<Sach>> GetListSach()
+        {
+            try
+            {
+                return await _dbcontext.Sachs.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-    //        await _dbcontext.SaveChangesAsync();
-    //    }
+        public async Task CreateSach(SachAPI input)
+        {
+            try
+            {
+                _dbcontext.Add(input.Sach);
+                Add(true, input.TacGias.ToList(), input.Sach.ID_Sach);
+                Add(false, input.TheLoais.ToList(), input.Sach.ID_Sach);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Đã tồn tại sách!");
+            }
+        }
 
-    //    public async Task DeteleBook(string ID)
-    //    {
-    //        try
-    //        {
-    //            var Model = _dbcontext.Sachs.FirstOrDefault(c => c.ID_Sach == ID);
-    //            if (Model != null)
-    //            {
-    //                Model.TrangThai = Model.TrangThai == 0 ? 1 : 0;
-    //                _dbcontext.Update(Model);
-    //                await _dbcontext.SaveChangesAsync();
-    //            }
-    //        }
-    //        catch (Exception e)
-    //        {
-    //            throw new Exception("Đổi trạng thái thất bại!");
-    //        }
-    //    }
+        private void Add(bool isTacGia, List<string> lst, string id)
+        {
+            if (isTacGia)
+            {
+                foreach (var item in lst)
+                {
+                    Sach_TacGia sach_TacGia = new Sach_TacGia { ID_SachTacGia = "SachTG" + Guid.NewGuid().ToString(), MaTacGia = item, MaSach = id };
+                    _dbcontext.Add(sach_TacGia);
+                }
+            }
+            else
+            {
+                foreach (var item in lst)
+                {
+                    Sach_TheLoai sach_TacGia = new Sach_TheLoai { ID_SachTheLoai = "SachTG" + Guid.NewGuid().ToString(), MaTheLoai = item, MaSach = id };
+                    _dbcontext.Add(sach_TacGia);
+                }
+            }
+        }
 
-    //    public async Task<IEnumerable<Sach>> GetListBook()
-    //    {
-    //        try
-    //        {
-    //            return await _dbcontext.Sachs.ToListAsync();
-    //        }
-    //        catch (Exception ex)
-    //        {
-    //            throw ex;
-    //        }
-    //    }
+        public async Task UpdateSach(SachAPI input)
+        {
+            try
+            {
+                _dbcontext.Update(input.Sach);
+                Update(true, input.TacGias.ToList(), input.Sach.ID_Sach);
+                Update(false, input.TheLoais.ToList(), input.Sach.ID_Sach);
 
-    //    public async Task UpdateBook(SachAPI input)
-    //    {
-    //        try
-    //        {
-    //            var changePrice = _dbcontext.Sachs.AsNoTracking().FirstOrDefault(c => c.ID_Sach == input.Sach.ID_Sach).GiaBan != input.Sach.GiaBan;
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Cập nhật thất bại!");
+            }
+        }
 
-    //            if (_dbcontext.Sachs.AsNoTracking().ToList().Exists(c => c.ID_Sach != input.Sach.ID_Sach && c.TenSach == input.Sach.TenSach && c.NhaXuatBan == input.Sach.NhaXuatBan && c.TaiBan == input.Sach.TaiBan))
-    //            {
-    //                throw new Exception("Sách đã tồn tại!");
-    //            }
-                
-    //            _dbcontext.Update(input.Sach);
-    //            if (changePrice)
-    //            {
-    //                _dbcontext.SaveChanges();
-    //                var sps = new List<SanPham>();
-    //                var spCTs = _dbcontext.SanPhamCTs.Where(c => c.MaSach == input.Sach.ID_Sach).ToList();
-    //                var spIds = _dbcontext.SanPhamCTs.Where(c => c.MaSach == input.Sach.ID_Sach).Select(c => c.MaSanPham).ToList();
-    //                spIds.ForEach(c =>
-    //                {
-    //                    sps.Add(_dbcontext.SanPhams.FirstOrDefault(x => x.ID_SanPham == c));
-    //                });
+        private void Update(bool isTacGia, List<string> lst, string ID)
+        {
+            if (isTacGia)
+            {
+                foreach (var dbSetItem in _dbcontext.Sach_TacGias)
+                {
+                    if (!lst.Contains(dbSetItem.MaTacGia))
+                    {
+                        _dbcontext.Remove(dbSetItem);
+                    }
+                }
 
-    //                var data = from sp in sps join spCT in _dbcontext.SanPhamCTs.ToList()
-    //                           on sp.ID_SanPham equals spCT.MaSanPham into tempData
-    //                           select new
-    //                           {
-    //                               SPham = sp,
-    //                               SPCT = tempData
-    //                           };
+                foreach (var item in lst)
+                {
+                    if (!_dbcontext.Sach_TacGias.Select(c => c.MaTacGia).Contains(item))
+                    {
+                        var sachTG = new Sach_TacGia { ID_SachTacGia = "SachTG" + Guid.NewGuid().ToString(), MaTacGia = item, MaSach = ID };
+                        _dbcontext.Add(sachTG);
+                    }
+                }
+            }
+            else
+            {
+                foreach (var dbSetItem in _dbcontext.Sach_TheLoais)
+                {
+                    if (!lst.Contains(dbSetItem.MaTheLoai))
+                    {
+                        _dbcontext.Remove(dbSetItem);
+                    }
+                }
 
-    //                data.ToList().ForEach(c =>
-    //                {
-    //                    double price = 0;
-    //                    c.SPCT.ToList().ForEach(spct =>
-    //                    {
-    //                        price += _dbcontext.Sachs.FirstOrDefault(sach => sach.ID_Sach == spct.MaSach).GiaBan;
-    //                    });
+                foreach (var item in lst)
+                {
+                    if (!_dbcontext.Sach_TheLoais.Select(c => c.MaTheLoai).Contains(item))
+                    {
+                        var sachTL = new Sach_TheLoai { ID_SachTheLoai = "SachTL" + Guid.NewGuid().ToString(), MaTheLoai = item, MaSach = ID };
+                        _dbcontext.Add(sachTL);
+                    }
+                }
+            }
+        }
 
-    //                    c.SPham.GiaBan = price;
-    //                    c.SPham.GiaGoc = price;
-    //                    c.SPham.TrangThai = 0;
-    //                    _dbcontext.Update(c.SPham);
-    //                });
-    //            }
+        public Task DeleteSach(string input)
+        {
+            throw new NotImplementedException();
+        }
+        #endregion
 
-    //            var sachCTs = new List<SachCT>();
-    //            sachCTs = await GetSachCT(input.Sach.ID_Sach);
-    //            foreach (var tacGia in input.TacGias)
-    //            {
-    //                foreach (var theLoai in input.TheLoais)
-    //                {
-    //                    if (!sachCTs.Exists(c => c.MaTacGia == tacGia && c.MaTheLoai == theLoai))
-    //                    {
-    //                        SachCT sachCT = new SachCT { ID_SachCT = "SachCT" + Guid.NewGuid().ToString(), MaSach = input.Sach.ID_Sach, MaTacGia = tacGia, MaTheLoai = theLoai };
-    //                        _dbcontext.Add(sachCT);
-    //                    }
-    //                }
-    //            }
+        #region SachCT
+        public async Task CreateBook(SachCT input)
+        {
+            try
+            {
+                _dbcontext.Add(input);
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Đã tồn tại sách!");
+            }
+        }
 
-    //            foreach (var sachCT in sachCTs)
-    //            {
-    //                if (!input.TacGias.Contains(sachCT.MaTacGia) || !input.TheLoais.Contains(sachCT.MaTheLoai))
-    //                {
-    //                    _dbcontext.Remove(sachCT);
-    //                }
-    //            }
+        public async Task DeteleBook(string ID)
+        {
+            try
+            {
+                var Model = _dbcontext.SachCTs.FirstOrDefault(c => c.ID_SachCT == ID);
+                if (Model != null)
+                {
+                    Model.TrangThai = Model.TrangThai == 0 ? 1 : 0;
+                    _dbcontext.Update(Model);
+                    await _dbcontext.SaveChangesAsync();
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Đổi trạng thái thất bại!");
+            }
+        }
 
-    //            await _dbcontext.SaveChangesAsync();
-    //        }
-    //        catch (Exception)
-    //        {
-    //            throw new Exception("Cập nhật thất bại!");
-    //        }
-    //    }
+        public async Task UpdateBook(SachCT input)
+        {
+            try
+            {
+                var changePrice = _dbcontext.SachCTs.AsNoTracking().FirstOrDefault(c => c.ID_SachCT == input.ID_SachCT).GiaBan != input.GiaBan;
 
-    //    public async Task<List<SachCT>> GetSachCT(string id)
-    //    {
-    //        return await _dbcontext.SachCTs.Where(c => c.MaSach == id).ToListAsync();
-    //    }
+                _dbcontext.Update(input);
+                if (changePrice)
+                {
+                    _dbcontext.SaveChanges();
+                    var sps = new List<SanPham>();
+                    var spCTs = _dbcontext.SanPhamCTs.Where(c => c.MaSachCT == input.ID_SachCT).ToList();
+                    var spIds = _dbcontext.SanPhamCTs.Where(c => c.MaSachCT == input.ID_SachCT).Select(c => c.MaSanPham).ToList();
+                    spIds.ForEach(c =>
+                    {
+                        sps.Add(_dbcontext.SanPhams.FirstOrDefault(x => x.ID_SanPham == c));
+                    });
 
-    //}
+                    var data = from sp in sps
+                               join spCT in _dbcontext.SanPhamCTs.ToList()
+                               on sp.ID_SanPham equals spCT.MaSanPham into tempData
+                               select new
+                               {
+                                   SPham = sp,
+                                   SPCT = tempData
+                               };
+
+                    data.ToList().ForEach(c =>
+                    {
+                        double price = 0;
+                        c.SPCT.ToList().ForEach(spct =>
+                        {
+                            price += _dbcontext.SachCTs.FirstOrDefault(sach => sach.ID_SachCT == spct.MaSachCT).GiaBan;
+                        });
+
+                        c.SPham.GiaBan = price;
+                        c.SPham.GiaGoc = price;
+                        c.SPham.TrangThai = 0;
+                        _dbcontext.Update(c.SPham);
+                    });
+                }
+
+                await _dbcontext.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+                throw new Exception("Cập nhật thất bại!");
+            }
+        }
+
+        public async Task<dynamic> GetSachTG_TL<T>(string id)
+        {
+            if (typeof(T) == typeof(Sach_TacGia))
+            {
+                return await _dbcontext.Sach_TacGias.Where(c => c.MaSach == id).ToListAsync();
+            }
+            return await _dbcontext.Sach_TheLoais.Where(c => c.MaSach == id).ToListAsync();
+        }
+
+        public async Task<List<SachCT>> GetSachCT()
+        {
+            return await _dbcontext.SachCTs.ToListAsync();
+        }
+
+        public async Task<SachCT> GetSachCT(string id)
+        {
+            return await _dbcontext.SachCTs.FirstOrDefaultAsync(c => c.ID_SachCT.Equals(id));
+        }
+        #endregion
+
+        public IEnumerable<Sach_SachCT> GetSach_SachCT()
+        {
+            var sachs = _dbcontext.Sachs.ToList();
+            var sachcts = _dbcontext.SachCTs.Where(c => c.TrangThai == 1).ToList();
+            var result = from sach in sachs join sachct in sachcts
+                     on sach.ID_Sach equals sachct.MaSach join nxb in _dbcontext.NhaXuatBans on sachct.MaNXB equals nxb.ID_NXB
+                     select new Sach_SachCT
+                     {
+                         TenSach = sach.TenSach,
+                         SachCT = sachct,
+                         NXB = nxb.TenXuatBan
+                     };
+
+            return result;
+        }
+    }
 }
