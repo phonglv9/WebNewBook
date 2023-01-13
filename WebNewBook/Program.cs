@@ -43,6 +43,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=hoadon}/{action=Index}/{id?}");
+    pattern: "{controller=sach}/{action=Index}/{id?}");
 
 app.Run();

@@ -23,6 +23,7 @@ namespace WebNewBook.Model
         public double GiaBan { get; set; }
         [Range(0, 100)]
         public int TaiBan { get; set; }
+        //public bool BiaMem { get; set; }
         public int TrangThai { get; set; }
         public virtual Sach? Sach { get; set; }
         public virtual NhaXuatBan? NhaXuatBan { get; set; }

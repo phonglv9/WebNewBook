@@ -11,12 +11,12 @@ using WebNewBook.Model;
 namespace WebNewBook.Controllers
 {
     [Authorize(Roles = "Admin,NhanVien")]
-    public class SachController : Controller
+    public class QLSachCTController : Controller
     {
         private readonly HttpClient _httpClient;
         private List<Sach> sachs;
         private IWebHostEnvironment _hostEnviroment;
-        public SachController(IWebHostEnvironment hostEnviroment)
+        public QLSachCTController(IWebHostEnvironment hostEnviroment)
         {
             _hostEnviroment = hostEnviroment;
             _httpClient = new HttpClient();
@@ -32,10 +32,10 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Index(string? timKiem, int? trangThai, int? page, string mess)
         {
-            ViewBag.TitleAdmin = "Sách";
+            ViewBag.TitleAdmin = "Sách CT";
             timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
-            List<Sach>? lstSach = new List<Sach>();
-            lstSach = await GetRequest<Sach>("book");
+            List<SachCT>? lstSach = new List<SachCT>();
+            lstSach = await GetRequest<SachCT>("book/sachct");
             //lstSach = (trangThai == 1 || trangThai == 0) ? lstSach.Where(c => c.TenSach.Contains(timKiem) && c.TrangThai == trangThai).ToList() : lstSach.Where(c => c.TenSach.Contains(timKiem)).ToList();
             ViewBag.TimKiem = timKiem;
             ViewBag.TrangThai = trangThai;
@@ -55,6 +55,20 @@ namespace WebNewBook.Controllers
             };
             return result;
         }
+
+        private async Task<T> GetSingleRequest<T>(string request)
+        {
+            dynamic result = null;
+            HttpResponseMessage responseGet = await _httpClient.GetAsync(request);
+            if (responseGet.IsSuccessStatusCode)
+            {
+                string jsonData = responseGet.Content.ReadAsStringAsync().Result;
+                result = JsonConvert.DeserializeObject<T>(jsonData);
+            };
+            return result;
+        }
+
+        //api/nhaxuatban
 
         #region SelectList
         private async Task<List<SelectListItem>> GetSelectTacGia()
@@ -86,50 +100,36 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Create()
         {
-            ViewBag.TacGias = await GetSelectTacGia();
-            ViewBag.TheLoais = await GetSelectTheLoai();
+            ViewBag.NXBs = new SelectList(await GetRequest<NhaXuatBan>("api/nhaxuatban"), "ID_NXB", "TenXuatBan");
+            ViewBag.Sachs = new SelectList(await GetRequest<Sach>("book"), "ID_Sach", "TenSach");
             return View();
         }
 
         public async Task<IActionResult> Update(string id)
         {
-            List<Sach>? sachs = new List<Sach>();
-            sachs = await GetRequest<Sach>("book");
-            Sach? sach = sachs?.FirstOrDefault(c => c.ID_Sach == id);
-            if (sachs == null)
+            SachCT? sach = await GetSingleRequest<SachCT>("book/sachct/" + id);
+            if (sach == null)
                 return NotFound();
 
-            var sachTG = await GetRequest<Sach_TacGia>("book/sachTG/" + sach.ID_Sach);
-            var TacGias = await GetSelectTacGia();
-            TacGias.ForEach(x =>
-            {
-                x.Selected = sachTG.Exists(c => c.MaTacGia == x.Value);
-            });
-            ViewBag.TacGias = TacGias;
-
-            var sachTL = await GetRequest<Sach_TheLoai>("book/sachTL/" + sach.ID_Sach);
-            var TheLoais = await GetSelectTheLoai();
-            TheLoais.ForEach(x =>
-            {
-                x.Selected = sachTL.Exists(c => c.MaTheLoai == x.Value);
-            });
-            ViewBag.TheLoais = TheLoais;
+            ViewBag.NXBs = new SelectList(await GetRequest<NhaXuatBan>("api/nhaxuatban"), "ID_NXB", "TenXuatBan");
+            ViewBag.Sachs = new SelectList(await GetRequest<Sach>("book"), "ID_Sach", "TenSach");
 
             return View(sach);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(Sach sach, string[] SelectedTacGias, string[] SelectedTheLoais, IFormFile? file)
+        public async Task<IActionResult> Create(SachCT sach, IFormFile file)
         {
             string error = "";
-            sach.ID_Sach = "Sach" + Guid.NewGuid().ToString();
             if (ModelState.IsValid)
             {
-                if (SelectedTacGias.Length > 0 && SelectedTheLoais.Length > 0)
+                if (file != null && sach.GiaBan <= 5000000)
                 {
-                    SachAPI sachAPI = new SachAPI { Sach = sach, TacGias = SelectedTacGias, TheLoais = SelectedTheLoais };
-                    StringContent content = new StringContent(JsonConvert.SerializeObject(sachAPI), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await _httpClient.PostAsync("book", content);
+                    sach.ID_SachCT = "SachCT" + Guid.NewGuid().ToString();
+                    sach.TrangThai = 1;
+                    sach.HinhAnh = await UpLoadFile(file);
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(sach), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await _httpClient.PostAsync("book/sachct", content);
 
                     if (response.IsSuccessStatusCode)
                     {
@@ -140,66 +140,58 @@ namespace WebNewBook.Controllers
                 }
                 else
                 {
-                    error = "Không được để trống tác giả hoặc thể loại!";
+                    if (file == null)
+                    {
+                        error += "Hình ảnh không hợp lệ";
+                    }
+
+                    if (sach.GiaBan > 5000000)
+                    {
+                        error = !String.IsNullOrEmpty(error) ? error + ", Giá bán không hợp lệ" : "Giá bán không hợp lệ";
+                    }
                 }
             }
-            ViewBag.Error = error;
-            ViewBag.TacGias = await GetSelectTacGia();
-            ViewBag.TheLoais = await GetSelectTheLoai();
+            ViewBag.Error = error + "!";
+            ViewBag.NXBs = new SelectList(await GetRequest<NhaXuatBan>("api/nhaxuatban"), "ID_NXB", "TenXuatBan");
+            ViewBag.Sachs = new SelectList(await GetRequest<Sach>("book"), "ID_Sach", "TenSach");
             return View(sach);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(Sach sach, string[] SelectedTacGias, string[] SelectedTheLoais, IFormFile? file)
+        public async Task<IActionResult> Update(SachCT sach, IFormFile? file)
         {
             string error = "";
             if (ModelState.IsValid)
             {
-                if (SelectedTacGias.Length > 0 && SelectedTheLoais.Length > 0)
-                {
-                    SachAPI sachAPI = new SachAPI { Sach = sach, TacGias = SelectedTacGias, TheLoais = SelectedTheLoais };
-                    StringContent content = new StringContent(JsonConvert.SerializeObject(sachAPI), Encoding.UTF8, "application/json");
-                    HttpResponseMessage response = await _httpClient.PutAsync("book", content);
+                sach.HinhAnh = file != null ? await UpLoadFile(file) : sach.HinhAnh;
+                StringContent content = new StringContent(JsonConvert.SerializeObject(sach), Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _httpClient.PutAsync("book/sachct", content);
 
-                    if (response.IsSuccessStatusCode)
-                    {
-                        return RedirectToAction("Index");
-                    }
-                    error = await response.Content.ReadAsStringAsync();
-                    error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
-                }
-                else
+                if (response.IsSuccessStatusCode)
                 {
-                    error = "Không được để trống tác giả hoặc thể loại!";
+                    return RedirectToAction("Index");
                 }
+                error = await response.Content.ReadAsStringAsync();
+                error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
             }
 
-            var sachTL = await GetRequest<Sach_TheLoai>("book/sachTL/" + sach.ID_Sach);
-            var sachTG = await GetRequest<Sach_TacGia>("book/sachTG/" + sach.ID_Sach);
-
-            ViewBag.Error = error;
-            var TacGias = await GetSelectTacGia();
-            TacGias.ForEach(x =>
-            {
-                x.Selected = sachTG.Exists(c => c.MaTacGia == x.Value);
-            });
-            ViewBag.TacGias = TacGias;
-
-            var TheLoais = await GetSelectTheLoai();
-            TheLoais.ForEach(x =>
-            {
-                x.Selected = sachTL.Exists(c => c.MaTheLoai == x.Value);
-            });
-            ViewBag.TheLoais = TheLoais;
+            ViewBag.Error = error + "!";
+            ViewBag.NXBs = new SelectList(await GetRequest<NhaXuatBan>("api/nhaxuatban"), "ID_NXB", "TenXuatBan");
+            ViewBag.Sachs = new SelectList(await GetRequest<Sach>("book"), "ID_Sach", "TenSach");
             return View(sach);
         }
 
         [HttpPost]
         public async Task<IActionResult> Delete(string ID)
         {
+            //List<Sach>? sachs = new List<Sach>();
+            //sachs = await Get();
             string error = "";
+            //Sach? sach = sachs?.FirstOrDefault(c => c.ID_Sach == ID);
             if (true)
             {
+                //sach.TrangThai = sach.TrangThai == 1 ? 0 : 1;
+                //StringContent content = new StringContent(JsonConvert.SerializeObject(sach), Encoding.UTF8, "application/json");
                 HttpResponseMessage response = await _httpClient.PutAsync("book/update_status/" + ID, null);
                 if (response.IsSuccessStatusCode)
                 {
