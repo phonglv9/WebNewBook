@@ -20,6 +20,7 @@
     <Compile Include="Repository\IService\IDanhMucService.cs" />
     <Compile Include="Repository\IService\IFpointService.cs" />
     <Compile Include="Repository\IService\IGioHangService.cs" />
+    <Compile Include="Repository\IService\IHoaDonCTService.cs" />
     <Compile Include="Repository\IService\IHoaDonService.cs" />
     <Compile Include="Repository\IService\IHomeService.cs" />
     <Compile Include="Repository\IService\INhanVienService.cs" />
@@ -37,6 +38,7 @@
     <Compile Include="Repository\Service\DanhMucService.cs" />
     <Compile Include="Repository\Service\FpointService.cs" />
     <Compile Include="Repository\Service\GioHangService.cs" />
+    <Compile Include="Repository\Service\HoaDonCTService.cs" />
     <Compile Include="Repository\Service\HoaDonService.cs" />
     <Compile Include="Repository\Service\HomeService.cs" />
     <Compile Include="Repository\Service\NhanVienService.cs" />

@@ -9,6 +9,7 @@ using WebNewBook.Models;
 using X.PagedList;
 using WebNewBook.API.ModelsAPI;
 using Org.BouncyCastle.Asn1.Ocsp;
+using System.Text;
 
 namespace WebNewBook.Controllers
 {
@@ -21,15 +22,16 @@ namespace WebNewBook.Controllers
         {
             client = new HttpClient();
             client.BaseAddress = link;
-            //ChiTiet("HDCT1");
+          
         }
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
             client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
         }
-        public async Task<IActionResult> Index(string? timkiem, int? trangThai, int? page, string mess)
+        public async Task<IActionResult> Index(string? timkiem, int? page, string mess, int trangThai = 1)
         {
+             
             ViewBag.TitleAdmin = "Hóa Đơn";
             ViewBag.TimKiem = timkiem;
             ViewBag.TrangThai = trangThai;
@@ -41,35 +43,26 @@ namespace WebNewBook.Controllers
             {
                 string data = response.Content.ReadAsStringAsync().Result;
                 lissttl = JsonConvert.DeserializeObject<List<ViewHoaDon>>(data);
+               
             }
             if (!string.IsNullOrEmpty(timkiem))
             {
                 timkiem = timkiem.ToLower();
                 lissttl = lissttl.Where(a => a.hoaDon.ID_HoaDon.ToLower().Contains(timkiem)).ToList();
                 
-            }
-
-            //var checkbox = Request.Form["CheckBoxId"];
-            //if (checkbox.Contains("true"))
-            //{
-            //    lissttl = lissttl.Where(a => a.KhachHang.ID_KhachHang.ToLower().Contains("KHNOLOGIN")).ToList();
-
-            //}
+            }    
             if (trangThai != null)
             {
                 switch (trangThai)
                 {
                     
                     case 1:
-                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 1).ToList();
+                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 1 || c.hoaDon.TrangThai==2).ToList();
                         break;
                     case 2:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 2).ToList();
                         break;
-                    //case 3:
-                    //    lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 3).ToList();
-                    //    break;
-
+            
                     case 4:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 4).ToList();
                         break;
@@ -79,14 +72,15 @@ namespace WebNewBook.Controllers
                     case 6:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 6).ToList();
                         break;
-
                     case 7:
-                        lissttl = lissttl.Where(a => a.KhachHang.ID_KhachHang == "KHNOLOGIN").ToList();
+                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 7).ToList();
                         break;
                     case 8:
                         lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 8).ToList();
                         break;
-
+                    case 9:
+                        lissttl = lissttl.Where(c => c.hoaDon.TrangThai == 9).ToList();
+                        break;
                     default:
                         lissttl = lissttl.ToList();
                         break;
@@ -145,18 +139,36 @@ namespace WebNewBook.Controllers
 
             }
 
-         
-           
 
-            return View("IndexHDCT", lissttlhdct);
+
+            ViewBag.HDCT = lissttlhdct.GroupBy(a => a.sanPham.TenSanPham);
+            return View("IndexHDCT");
         }
+        // sửa trạng thái đơn hàng
         public async Task<IActionResult> Sua(string id, int name) 
         {
             
             HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}").Result;
-           
-
             return Redirect("Index");
+        }
+
+
+        // update thông tin người nhận hàng
+        public async Task<IActionResult> UpdateThongtinnguoinhan(ViewHoaDon viewHoaDon)
+        {
+
+            StringContent content = new StringContent(JsonConvert.SerializeObject(viewHoaDon.hoaDon), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PutAsync(client.BaseAddress + "/Hoadon/UpdateRecipientProfile", content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+         
+                Console.WriteLine($"Status: {response.StatusCode}; Msg: {await response.Content.ReadAsStringAsync()}");
+            }
+            else
+            {
+                Console.WriteLine($"Status: {response.StatusCode}; Msg: {await response.Content.ReadAsStringAsync()}");
+            }
+            return Redirect("ChiTiet/"+viewHoaDon.hoaDon.ID_HoaDon);
         }
     }
 }

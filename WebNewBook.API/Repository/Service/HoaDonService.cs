@@ -159,7 +159,7 @@ namespace WebNewBook.API.Repository.Service
             var listhoadonct = dbcontext.HoaDonCTs.ToList();
             var listsanpham = dbcontext.SanPhams.ToList();
             var listsanphamct = dbcontext.SanPhamCTs.ToList();
-            var listsach = dbcontext.Sachs.ToList();
+           
             var listsachct = dbcontext.SachCTs.ToList();
           
             var listnhaxuatban = dbcontext.NhaXuatBans.ToList();
@@ -271,6 +271,27 @@ namespace WebNewBook.API.Repository.Service
             smtp.Authenticate("phonglvph16158@fpt.edu.vn", "Ph@16158");
             smtp.Send(email);
             smtp.Disconnect(true);
+
+        }
+
+        public async Task UpdateThongtinnguoinhan(HoaDon hoaDon)
+        {
+            try
+            {
+
+                var model = dbcontext.HoaDons.FirstOrDefault(c => c.ID_HoaDon == hoaDon.ID_HoaDon);
+                model.TenNguoiNhan = hoaDon.TenNguoiNhan;
+                model.SDT = hoaDon.SDT;
+                model.DiaChiGiaoHang = hoaDon.DiaChiGiaoHang;
+                model.GhiChu = hoaDon.GhiChu;
+                dbcontext.HoaDons.Update(model);
+                await dbcontext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
 
         }
     }

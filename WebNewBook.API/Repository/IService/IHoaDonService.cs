@@ -17,5 +17,8 @@ namespace WebNewBook.API.Repository.IService
         Task SendMailOder(string idHoaDon);
         //voucher get price
         Task<Voucher> GetPriceVoucher(string idVoucherCT);
+        Task UpdateThongtinnguoinhan(HoaDon hoaDon);
+
+
     }
 }
