@@ -35,9 +35,9 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-ID1I205\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook_Final1"));
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=FinalASM;User ID=hung;Password=hung;"));
 
-builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=DESKTOP-ID1I205\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook_Final1"));
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LAPTOP-IOP6D48P\\SQLEXPRESS;Initial Catalog=LoginFinalASM;User ID=hung;Password=hung;"));
 
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddEntityFrameworkStores<LoginContext>().AddDefaultTokenProviders().AddDefaultUI();
@@ -52,11 +52,10 @@ builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();
 builder.Services.AddScoped<IHoaDonCTService, HoaDonCTService>();
 builder.Services.AddScoped<IVoucherCTServices, VoucherCTServices>();
-//builder.Services.AddScoped<IPhieuNhapService, PhieuNhapService>();
-//builder.Services.AddScoped<ISanPhamService, SanPhamService>();
+builder.Services.AddScoped<IPhieuNhapService, PhieuNhapService>();
+builder.Services.AddScoped<ISanPhamService, SanPhamService>();
 builder.Services.AddScoped<IHomeService, HomeService>();
-//builder.Services.AddScoped<IBookSevice, BookService>();
-//builder.Services.AddScoped<IHomeService, HomeService>();
+builder.Services.AddScoped<IBookSevice, BookService>();
 builder.Services.AddScoped<IFpointService, FpointService>();
 builder.Services.AddScoped<IProfileCustomerService, ProfileCustomerService>();
 builder.Services.AddScoped<IGioHangService, GioHangService>();

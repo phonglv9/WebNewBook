@@ -31,16 +31,6 @@
                       <div class="col-2">
                         <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
                     </div>
-                    <div class="col-5 mb-3">
-                        <select id="selectNXB" name="trangThai" class="form-select" aria-label="Default select example">
-                            
-                            <option selected disabled>Chọn trạng thái</option>
-                            <option value="2">Tất cả</option>
-                            <option value="1">Hoạt động</option>
-                            <option value="0">Vô hiệu hóa</option>
-                          
-                        </select>
-                    </div>
                   </form>
                     <div class="col-3">
                         <!-- Button trigger modal -->
@@ -62,68 +52,18 @@
                             <th scope="col">Tên sách</th>
                             <th scope="col">Số lượng</th>
                             <th scope="col">Số trang</th>
-                            <th scope="col">Giá</th>
-                            <th scope="col">Hình ảnh</th>
-                            <th scope="col">NXB</th>
-                            <th scope="col">Trạng thái</th>
                             <th colspan="2" style="text-align: center ;">Thao tác</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var item in ViewBag.Sach)
                         {
-                            var trangThai = item.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
-                            var img = item.HinhAnh ?? string.Empty;
                             <tr>
                                 <th scope="row">@item.TenSach</th>
-                                <td>@item.SoLuong</td>
+                                <td>10</td>
                                 <td>@item.SoTrang</td>
-                                <td>@item.GiaBan</td>
-                                <td><img src="~/img/@img" style="width:100px;height:100px"/></td>
-                                <td>@item.MaNXB</td>
-                                <td>@trangThai</td>
                                 <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_Sach"><i class="fa-solid fa-pen"></i></a></td>
-                                <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_Sach"><i class="fa-solid fa-trash"></i></button></td>
                             </tr>
-
-                             <!-- Modal Delete-->
-                            <form asp-action="Delete" asp-route-id="@item.ID_Sach" method="post" enctype="multipart/form-data">
-                                <div class="modal fade" id="delete-@item.ID_Sach" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                                    <div class="modal-dialog">
-                                        <div class="modal-content">
-                                            <div class="modal-header">
-                                                <h5 class="modal-title" id="staticBackdropLabel">Đổi trạng thái sản phẩm</h5>
-                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                            </div>
-                                            <div class="modal-body">
-                                                <div class="mb-3 row">
-                                                    <label for="ID_Sach" class="col-sm-2 col-form-label">ID</label>
-                                                    <input for="ID_Sach" class="form-control" name="ID" value="@item.ID_Sach" disabled/>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label for="TenSach" class="control-label">Tên sách</label>
-                                                    <input for="TenSach" class="form-control" name="nhanVien" value="@item.TenSach" disabled/>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label for="SoLuong" class="control-label">Số lượng</label>
-                                                    <input for="SoLuong" class="form-control" name="giaNhap" value="@item.SoLuong" disabled/>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label for="GiaBan" class="control-label">Giá bán</label>
-                                                    <input for="GiaBan" class="form-control" name="soLuongNhap" value="@item.GiaBan" disabled/>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label for="TrangThai" class="control-label">Trạng thái</label>
-                                                    <input for="TrangThai" class="form-control" value="@trangThai" disabled/>
-                                                </div>
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Đổi trạng thái</button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
                         }
                     </tbody>
                 </table>

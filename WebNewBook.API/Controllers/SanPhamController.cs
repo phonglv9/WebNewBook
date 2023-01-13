@@ -31,8 +31,8 @@ namespace WebNewBook.API.Controllers
             return sp;
         }
 
-        [HttpGet("sanpham_sach/{id}")]
-        public async Task<List<Sach>?> GetSachsBySanPhamAsync(string id)
+        [HttpGet("sanpham_sachct/{id}")]
+        public async Task<List<SachCT>?> GetSachsBySanPhamAsync(string id)
         {
             var sachs = await sanPhamService.GetSachsBySanPhamAsync(id);
             return sachs;

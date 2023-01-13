@@ -9,262 +9,282 @@ using System.Net.Http.Headers;
 using Microsoft.AspNetCore.Mvc.Filters;
 using X.PagedList;
 using System.IO;
+using static WebNewBook.API.Repository.Service.BookService;
 
 namespace WebNewBook.Controllers
 {
-    //[Authorize(Roles = "Admin,NhanVien")]
-    //public class QLSanPhamController : Controller
-    //{
-    //    private readonly HttpClient _httpClient;
-    //    private List<SanPham> sanPhams;
-    //    private IWebHostEnvironment _hostEnviroment;
-    //    public QLSanPhamController(IWebHostEnvironment hostEnvironment)
-    //    {
-    //        this._hostEnviroment = hostEnvironment;
-    //        _httpClient = new HttpClient();
-    //        _httpClient.BaseAddress = new Uri("https://localhost:7266/");
-    //        sanPhams = new List<SanPham>();
-    //    }
+    [Authorize(Roles = "Admin,NhanVien")]
+    public class QLSanPhamController : Controller
+    {
+        private readonly HttpClient _httpClient;
+        private List<SanPham> sanPhams;
+        private IWebHostEnvironment _hostEnviroment;
+        public QLSanPhamController(IWebHostEnvironment hostEnvironment)
+        {
+            this._hostEnviroment = hostEnvironment;
+            _httpClient = new HttpClient();
+            _httpClient.BaseAddress = new Uri("https://localhost:7266/");
+            sanPhams = new List<SanPham>();
+        }
 
-    //    public override void OnActionExecuting(ActionExecutingContext context)
-    //    {
-    //        base.OnActionExecuting(context);
-    //        _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
-    //    }
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
+        }
 
-    //    private async Task<List<SanPham>?> Get()
-    //    {
-    //        List<SanPham> sanPhams = new List<SanPham>();
-    //        HttpResponseMessage responseGet = await _httpClient.GetAsync("sanpham");
-    //        if (responseGet.IsSuccessStatusCode)
-    //        {
-    //            string jsonData = responseGet.Content.ReadAsStringAsync().Result;
-    //            sanPhams = JsonConvert.DeserializeObject<List<SanPham>>(jsonData);
-    //        };
-    //        return sanPhams;
-    //    }
+        private async Task<List<T>> GetRequest<T>(string request)
+        {
+            List<T> result = new List<T>();
+            HttpResponseMessage responseGet = await _httpClient.GetAsync(request);
+            if (responseGet.IsSuccessStatusCode)
+            {
+                string jsonData = responseGet.Content.ReadAsStringAsync().Result;
+                result = JsonConvert.DeserializeObject<List<T>>(jsonData);
+            };
+            return result;
+        }
 
-    //    private async Task<List<Sach>> GetSachs()
-    //    {
-    //        List<Sach> sachs = new List<Sach>();
-    //        HttpResponseMessage responseGet = await _httpClient.GetAsync("book");
-    //        if (responseGet.IsSuccessStatusCode)
-    //        {
-    //            string jsonData = responseGet.Content.ReadAsStringAsync().Result;
-    //            sachs = JsonConvert.DeserializeObject<List<Sach>>(jsonData);
-    //        };
-    //        return sachs?.Where(c => c.TrangThai == 1 && c.SoLuong > 0).ToList() ?? new List<Sach>();
-    //    }
+        private async Task<List<SanPham>?> Get()
+        {
+            List<SanPham> sanPhams = new List<SanPham>();
+            HttpResponseMessage responseGet = await _httpClient.GetAsync("sanpham");
+            if (responseGet.IsSuccessStatusCode)
+            {
+                string jsonData = responseGet.Content.ReadAsStringAsync().Result;
+                sanPhams = JsonConvert.DeserializeObject<List<SanPham>>(jsonData);
+            };
+            return sanPhams;
+        }
+
+        //private async Task<List<Sach>> GetSachs()
+        //{
+        //    List<Sach> sachs = new List<Sach>();
+        //    HttpResponseMessage responseGet = await _httpClient.GetAsync("book");
+        //    if (responseGet.IsSuccessStatusCode)
+        //    {
+        //        string jsonData = responseGet.Content.ReadAsStringAsync().Result;
+        //        sachs = JsonConvert.DeserializeObject<List<Sach>>(jsonData);
+        //    };
+        //    return sachs?.Where(c => c.TrangThai == 1 && c.SoLuong > 0).ToList() ?? new List<Sach>();
+        //}
 
 
-    //    private async Task<List<SelectListItem>> GetSelectListItems()
-    //    {
-    //        var sachs = await GetSachs();
-    //        var listItem = new List<SelectListItem>();
-    //        sachs.ForEach(s =>
-    //        {
-    //            listItem.Add(new SelectListItem { Text = s.TenSach + " - " + s.GiaBan, Value = s.ID_Sach + " @ " + s.GiaBan });
-    //        });
-    //        return listItem;
-    //    }
-    //    public async Task<IActionResult> Index(string? timKiem , int? trangThai, int? page, string mess)
-    //    {
-    //        ViewBag.TitleAdmin = "Sản phẩm";
-    //        timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
-    //        List<SanPham>? lstSanPham = new List<SanPham>();
-    //        lstSanPham = await Get();
-    //        lstSanPham = (trangThai == 1 || trangThai == 0) ? lstSanPham.Where(c => c.TenSanPham.Contains(timKiem) && c.TrangThai == trangThai).OrderByDescending(c=>c.NgayTao).ToList() : lstSanPham.Where(c => c.TenSanPham.Contains(timKiem)).OrderByDescending(c => c.NgayTao).ToList();
-    //        ViewBag.SanPham = lstSanPham;
-    //        ViewBag.TimKiem = timKiem;
-    //        ViewBag.TrangThai = trangThai;
-    //        ViewBag.message = mess;
-    //        var pageNumber = page ?? 1;
-    //        ViewBag.NXB = lstSanPham.ToPagedList(pageNumber, 5);
+        private async Task<List<SelectListItem>> GetSelectListItems()
+        {
+            var sachs = await GetRequest<Sach_SachCT>("book/sach_sachct");
+            var listItem = new List<SelectListItem>();
+            sachs.ForEach(s =>
+            {
+                listItem.Add(new SelectListItem { Text = s.TenSach + " - " + "NXB: " + s.NXB + " - " + s.SachCT.GiaBan, Value = s.SachCT.ID_SachCT + " @ " + s.SachCT.GiaBan });
+            });
+            return listItem;
+        }
+        public async Task<IActionResult> Index(string? timKiem, int? trangThai, int? page, string mess)
+        {
+            ViewBag.TitleAdmin = "Sản phẩm";
+            timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
+            List<SanPham>? lstSanPham = new List<SanPham>();
+            lstSanPham = await GetRequest<SanPham>("sanpham");
+            lstSanPham = (trangThai == 1 || trangThai == 0) ? lstSanPham.Where(c => c.TenSanPham.Contains(timKiem) && c.TrangThai == trangThai).OrderByDescending(c => c.NgayTao).ToList() : lstSanPham.Where(c => c.TenSanPham.Contains(timKiem)).OrderByDescending(c => c.NgayTao).ToList();
+            ViewBag.SanPham = lstSanPham;
+            ViewBag.TimKiem = timKiem;
+            ViewBag.TrangThai = trangThai;
+            ViewBag.message = mess;
+            var pageNumber = page ?? 1;
+            ViewBag.NXB = lstSanPham.ToPagedList(pageNumber, 5);
 
-    //        return View();
-    //    }
+            return View();
+        }
 
-    //    public async Task<List<Sach>?> GetSachs(string id)
-    //    {
-    //        List<Sach> sachs = new List<Sach>();
-    //        HttpResponseMessage responseGet = await _httpClient.GetAsync("sanpham/sanpham_sach/"+id);
-    //        if (responseGet.IsSuccessStatusCode)
-    //        {
-    //            string jsonData = responseGet.Content.ReadAsStringAsync().Result;
-    //            sachs = JsonConvert.DeserializeObject<List<Sach>>(jsonData);
-    //        };
-    //        return sachs;
-    //    }
+        public async Task<List<Sach>?> GetSachs(string id)
+        {
+            List<Sach> sachs = new List<Sach>();
+            HttpResponseMessage responseGet = await _httpClient.GetAsync("sanpham/sanpham_sach/" + id);
+            if (responseGet.IsSuccessStatusCode)
+            {
+                string jsonData = responseGet.Content.ReadAsStringAsync().Result;
+                sachs = JsonConvert.DeserializeObject<List<Sach>>(jsonData);
+            };
+            return sachs;
+        }
 
-    //    public async Task<IActionResult> Create()
-    //    {
-    //        ViewBag.Sachs = await GetSelectListItems();
-    //        return View();
-    //    }
+        public async Task<IActionResult> Create()
+        {
+            ViewBag.Sachs = await GetSelectListItems();
+            return View();
+        }
 
-    //    public async Task<IActionResult> Update(string id)
-    //    {
-    //        List<SanPham>? sanPhams = new List<SanPham>();
-    //        sanPhams = await Get();
+        public async Task<IActionResult> Update(string id)
+        {
+            List<SanPham>? sanPhams = new List<SanPham>();
+            sanPhams = await GetRequest<SanPham>("sanpham");
 
-    //        SanPham? sanPham = sanPhams?.FirstOrDefault(c => c.ID_SanPham == id);
-    //        if (sanPhams == null)
-    //            return NotFound();
+            SanPham? sanPham = sanPhams?.FirstOrDefault(c => c.ID_SanPham == id);
+            if (sanPhams == null)
+                return NotFound();
 
-    //        SanPhamAPI sanPhamAPI = new SanPhamAPI();
-    //        sanPhamAPI.SanPham = sanPham;
-    //        var sachs = await GetSachs(sanPham.ID_SanPham);
-            
-    //        ViewBag.Saches = sachs;
+            SanPhamAPI sanPhamAPI = new SanPhamAPI();
+            sanPhamAPI.SanPham = sanPham;
+            var sachs = await GetRequest<SachCT>("sanpham/sanpham_sachct/" + id);
 
-    //        double giaGoc = 0;
-    //        foreach (var item in sachs)
-    //        {
-    //            giaGoc += item.GiaBan;
-    //        }
-    //        sanPhamAPI.GiamGia = 100 - sanPham.GiaBan * 100 / giaGoc;
-    //        sanPhamAPI.SLChuaDoi = sanPham.SoLuong;
-    //        return View(sanPhamAPI);
-    //    }
+            ViewBag.Saches = sachs;
 
-    //    [HttpPost]
-    //    public async Task<IActionResult> Create(SanPhamAPI sanPhamAPI, string[] SelectedSachs, IFormFile file)
-    //    {
-    //        string error = "";
-    //        sanPhamAPI.SanPham.ID_SanPham = "SP" + Guid.NewGuid().ToString();
-    //        sanPhamAPI.Sachs = SelectedSachs;
-    //        sanPhamAPI.SanPham.NgayTao = DateTime.Now;
-    //        if (file == null)
-    //        {
-    //            error = "Hình ảnh không hợp lệ";
-    //            ViewBag.Sachs = await GetSelectListItems();
-    //            ViewBag.Error = error;
-    //            return View(sanPhamAPI);
-    //        }
-    //        sanPhamAPI.SanPham.HinhAnh = await UpLoadFile(file);
-    //        if (SelectedSachs.Length == 0)
-    //        {
-    //            error = "Sách hoặc bộ sách không hợp lệ!";
+            //double giaGoc = 0;
+            //foreach (var item in sachs)
+            //{
+            //    giaGoc += item.GiaBan;
+            //}
+            sanPhamAPI.GiamGia = 100 - sanPham.GiaBan * 100 / sanPham.GiaGoc;
+            sanPhamAPI.SLChuaDoi = sanPham.SoLuong;
+            return View(sanPhamAPI);
+        }
 
-    //            ViewBag.Sachs = await GetSelectListItems();
-    //            ViewBag.Error = error;
-    //            return View(sanPhamAPI);
-    //        }
-    //        if (ModelState.IsValid)
-    //        {
-    //            double giaBan = 0;
-    //            foreach (var item in sanPhamAPI.Sachs)
-    //            {
-    //                var gia = item.Trim().Substring(item.IndexOf("@") + 1);
-    //                giaBan += double.Parse(gia);
-    //            }
+        [HttpPost]
+        public async Task<IActionResult> Create(SanPhamAPI sanPhamAPI, string[] SelectedSachs, IFormFile file)
+        {
+            string error = "";
+            sanPhamAPI.SanPham.ID_SanPham = "SP" + Guid.NewGuid().ToString();
+            sanPhamAPI.Sachs = SelectedSachs;
+            sanPhamAPI.SanPham.NgayTao = DateTime.Now;
+            if (ModelState.IsValid)
+            {
+                if (file != null && SelectedSachs.Length > 0)
+                {
+                    double giaBan = 0;
+                    foreach (var item in sanPhamAPI.Sachs)
+                    {
+                        var gia = item.Trim().Substring(item.IndexOf("@") + 1);
+                        giaBan += double.Parse(gia);
+                    }
 
-    //            sanPhamAPI.SanPham.GiaGoc = giaBan;
-    //            sanPhamAPI.SanPham.GiaBan = giaBan - giaBan*(sanPhamAPI.GiamGia/100);
-    //            sanPhamAPI.SanPham.TrangThai = 1;
+                    sanPhamAPI.SanPham.HinhAnh = await UpLoadFile(file);
+                    sanPhamAPI.SanPham.GiaGoc = giaBan;
+                    sanPhamAPI.SanPham.GiaBan = giaBan - giaBan * (sanPhamAPI.GiamGia / 100);
+                    sanPhamAPI.SanPham.TrangThai = 1;
 
-    //            StringContent content = new StringContent(JsonConvert.SerializeObject(sanPhamAPI), Encoding.UTF8, "application/json");
-    //            HttpResponseMessage response = await _httpClient.PostAsync("sanpham", content);
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(sanPhamAPI), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await _httpClient.PostAsync("sanpham", content);
 
-    //            if (response.IsSuccessStatusCode)
-    //            {
-    //                return RedirectToAction("Index");
-    //            }
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index");
+                    }
 
-    //            error = await response.Content.ReadAsStringAsync();
-    //            error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
-    //        }
+                    error = await response.Content.ReadAsStringAsync();
+                    error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
+                }
+                else
+                {
+                    if (file == null)
+                    {
+                        error += "Hình ảnh không hợp lệ";
+                    }
 
-    //        ViewBag.Sachs = await GetSelectListItems();
-    //        ViewBag.Error = error;
-    //        return View(sanPhamAPI);
-    //    }
+                    if (SelectedSachs.Length == 0)
+                    {
+                        error = !String.IsNullOrEmpty(error) ? error + ", Sách hoặc bộ sách không hợp lệ!" : "Sách hoặc bộ sách không hợp lệ!";
+                    }
+                }
+            }
 
-    //    [HttpPost]
-    //    public async Task<IActionResult> Update(SanPhamAPI sanPhamAPI, IFormFile? file)
-    //    {
-    //        var sachs = await GetSachs(sanPhamAPI.SanPham.ID_SanPham);
-    //        sanPhamAPI.Sachs = sachs.Select(c => c.ID_Sach);
-    //        string error = "";
-    //        if (file == null && sanPhamAPI.SanPham.HinhAnh == string.Empty)
-    //        {
-    //            error = "Hình ảnh không hợp lệ";
-    //            ViewBag.Sachs = sachs;
-    //            ViewBag.Error = error;
-    //            return View(sanPhamAPI);
-    //        }
+            ViewBag.Sachs = await GetSelectListItems();
+            ViewBag.Error = error;
+            return View(sanPhamAPI);
+        }
 
-    //        if (ModelState.IsValid)
-    //        {
-    //            sanPhamAPI.SanPham.HinhAnh = file != null ? await UpLoadFile(file) : sanPhamAPI.SanPham.HinhAnh;
-    //            double giaBan = 0;
-    //            foreach (var item in sachs)
-    //            {
-    //                giaBan += item.GiaBan;
-    //            }
-                
-    //            sanPhamAPI.SanPham.GiaBan = giaBan - giaBan * (sanPhamAPI.GiamGia / 100);
-    //            sanPhamAPI.SanPham.TrangThai = 1;
-    //            StringContent content = new StringContent(JsonConvert.SerializeObject(sanPhamAPI), Encoding.UTF8, "application/json");
-    //            HttpResponseMessage response = await _httpClient.PutAsync("sanpham", content);
+        [HttpPost]
+        public async Task<IActionResult> Update(SanPhamAPI sanPhamAPI, IFormFile? file)
+        {
+            var sachs = await GetRequest<SachCT>("sanpham/sanpham_sachct/" + sanPhamAPI.SanPham.ID_SanPham);
+            sanPhamAPI.Sachs = sachs.Select(c => c.ID_SachCT);
+            string error = "";
+            //if (file == null && sanPhamAPI.SanPham.HinhAnh == string.Empty)
+            //{
+            //    error = "Hình ảnh không hợp lệ";
+            //    ViewBag.Sachs = sachs;
+            //    ViewBag.Error = error;
+            //    return View(sanPhamAPI);
+            //}
 
-    //            if (response.IsSuccessStatusCode)
-    //            {
-    //                return RedirectToAction("Index");
-    //            }
+            if (ModelState.IsValid)
+            {
+                if (sanPhamAPI.SanPham.HinhAnh != string.Empty)
+                {
+                    sanPhamAPI.SanPham.HinhAnh = file != null ? await UpLoadFile(file) : sanPhamAPI.SanPham.HinhAnh;
+                    double giaBan = 0;
+                    foreach (var item in sachs)
+                    {
+                        giaBan += item.GiaBan;
+                    }
 
-    //            error = await response.Content.ReadAsStringAsync();
-    //            error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
-    //        }
+                    sanPhamAPI.SanPham.GiaBan = giaBan - giaBan * (sanPhamAPI.GiamGia / 100);
+                    sanPhamAPI.SanPham.TrangThai = 1;
+                    StringContent content = new StringContent(JsonConvert.SerializeObject(sanPhamAPI), Encoding.UTF8, "application/json");
+                    HttpResponseMessage response = await _httpClient.PutAsync("sanpham", content);
 
-    //        ViewBag.Saches = sachs;
-    //        ViewBag.Error = error;
-    //        return View(sanPhamAPI);
-    //    }
+                    if (response.IsSuccessStatusCode)
+                    {
+                        return RedirectToAction("Index");
+                    }
 
-    //    [HttpPost]
-    //    public async Task<IActionResult> Delete(string ID)
-    //    {
-    //        List<SanPham>? sanPhams = new List<SanPham>();
-    //        sanPhams = await Get();
+                    error = await response.Content.ReadAsStringAsync();
+                    error = error.Substring(error.IndexOf(":") + 1, error.IndexOf("!") - error.IndexOf(":"));
+                }
+                else
+                {
+                    error = "Hình ảnh không hợp lệ";
+                }
+            }
 
-    //        SanPham? sanPham = sanPhams?.FirstOrDefault(c => c.ID_SanPham == ID);
-    //        if (sanPhams != null)
-    //        {
-    //            sanPham.TrangThai = sanPham.TrangThai == 1 ? 0 : 1;
-    //            StringContent content = new StringContent(JsonConvert.SerializeObject(sanPham), Encoding.UTF8, "application/json");
-    //            HttpResponseMessage response = await _httpClient.PutAsync("sanpham/update_status", content);
-    //            if (response.IsSuccessStatusCode)
-    //            {
-    //                return RedirectToAction("Index");
-    //            }
-    //            return BadRequest(response);
-    //        }
+            ViewBag.Saches = sachs;
+            ViewBag.Error = error;
+            return View(sanPhamAPI);
+        }
 
-    //        return BadRequest();
-    //    }
+        [HttpPost]
+        public async Task<IActionResult> Delete(string ID)
+        {
+            List<SanPham>? sanPhams = new List<SanPham>();
+            sanPhams = await Get();
 
-    //    public IActionResult SachDetail(string id)
-    //    {
-    //        return RedirectToAction("Update", "Sach", id);
-    //    }
+            SanPham? sanPham = sanPhams?.FirstOrDefault(c => c.ID_SanPham == ID);
+            if (sanPhams != null)
+            {
+                sanPham.TrangThai = sanPham.TrangThai == 1 ? 0 : 1;
+                StringContent content = new StringContent(JsonConvert.SerializeObject(sanPham), Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await _httpClient.PutAsync("sanpham/update_status", content);
+                if (response.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("Index");
+                }
+                return BadRequest(response);
+            }
 
-    //    private async Task<string> UpLoadFile(IFormFile file)
-    //    {
-    //        string rootPath = _hostEnviroment.WebRootPath;
-    //        string fileName =  Path.GetFileNameWithoutExtension(file.FileName);
-    //        string extension = Path.GetExtension(file.FileName);
-    //        string path = Path.Combine(rootPath + @"\img\", fileName + extension);
+            return BadRequest();
+        }
 
-    //        if (!System.IO.File.Exists(path))
-    //        {
-    //            using (var fileStream = new FileStream(path, FileMode.Create))
-    //            {
-    //                await file.CopyToAsync(fileStream);
-    //            };
-    //        }
+        public IActionResult SachDetail(string id)
+        {
+            return RedirectToAction("Update", "Sach", id);
+        }
 
-    //        return path.Replace(rootPath + @"\img\", string.Empty);
-    //    }
-    //}
+        private async Task<string> UpLoadFile(IFormFile file)
+        {
+            string rootPath = _hostEnviroment.WebRootPath;
+            string fileName = Path.GetFileNameWithoutExtension(file.FileName);
+            string extension = Path.GetExtension(file.FileName);
+            string path = Path.Combine(rootPath + @"\img\", fileName + extension);
+
+            if (!System.IO.File.Exists(path))
+            {
+                using (var fileStream = new FileStream(path, FileMode.Create))
+                {
+                    await file.CopyToAsync(fileStream);
+                };
+            }
+
+            return path.Replace(rootPath + @"\img\", string.Empty);
+        }
+    }
 }
