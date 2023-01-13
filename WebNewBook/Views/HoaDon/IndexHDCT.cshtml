@@ -27,20 +27,26 @@
                                  style="width: 45px; height: 45px"
                                  class="rounded-circle" />
                             <div class="ms-3">
-                                <p class="fw-bold mb-1">@if (ViewBag.NameLogin != null)
+                                <p class="fw-bold mb-1">
+                                    @if (ViewBag.NameLogin != null)
                                     {
                                         @ViewBag.NameLogin
-                                    }</p>
+                                    }
+                                </p>
                                 @if (ViewBag.IDLogin != "KHNOLOGIN")
                                 {
-                                    <p class="text-muted mb-0">@if (ViewBag.EmailLogin != null)
+                                    <p class="text-muted mb-0">
+                                        @if (ViewBag.EmailLogin != null)
                                         {
                                             @ViewBag.EmailLogin
-                                        }</p>
-                                    <p class="text-muted mb-0">@if (ViewBag.SDTLogin != null)
+                                        }
+                                    </p>
+                                    <p class="text-muted mb-0">
+                                        @if (ViewBag.SDTLogin != null)
                                         {
                                             @ViewBag.SDTLogin
-                                        }</p>
+                                        }
+                                    </p>
                                 }
                             </div>
                         </div>
@@ -57,10 +63,14 @@
             <div class="container mb-5 mt-3">
                 <div class="row d-flex align-items-baseline">
                     <div class="col-xl-9">
-                        <p style="color: #7e8d9f;font-size: 20px;">Hóa đơn  >> <strong>ID: #@if (@ViewBag.IdHoaDon != null)
+                        <p style="color: #7e8d9f;font-size: 20px;">
+                            Hóa đơn  >> <strong>
+                                ID: #@if (@ViewBag.IdHoaDon != null)
                                 {
                                     @ViewBag.IdHoaDon
-                                }</strong></p>
+                                }
+                            </strong>
+                        </p>
                     </div>
                     <div class="col-xl-3 float-end">
                         @*   <a class="btn btn-light text-capitalize border-0" data-mdb-ripple-color="dark" id="btn-print">
@@ -86,10 +96,12 @@
                         <div class="col-xl-8">
                             <ul class="list-unstyled">
                                 <li class="font-weight-bold">
-                                    Họ tên người nhận: <span style="color:#0d6efd ;">@if (ViewBag.Namekh != null)
+                                    Họ tên người nhận: <span style="color:#0d6efd ;">
+                                        @if (ViewBag.Namekh != null)
                                         {
                                             @ViewBag.Namekh
-                                        }</span>
+                                        }
+                                    </span>
                                     <!-- Button Người nhận -->
                                     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#nguoinhan">
                                         <i class="fa-solid fa-pen"></i>
@@ -102,7 +114,7 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin</h1>
-                                                        <button type="button"  class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="mb-3">
@@ -120,7 +132,6 @@
                                                         <div class="mb-3">
                                                             <label for="ghichu" class="form-label">Ghi Chú</label>
                                                             <input type="text" asp-for="hoaDon.GhiChu" value="@ViewBag.ghichu" class="form-control" id="ghichu">
-                                                      
                                                         </div>
 
                                                     </div>
@@ -132,37 +143,47 @@
                                             </div>
                                         </div>
                                     </form>
-                                    
+
                                 </li>
 
-                                <li class="font-weight-bold">Địa chỉ:@if (ViewBag.diachi != null)
+                                <li class="font-weight-bold">
+                                    Địa chỉ:@if (ViewBag.diachi != null)
                                     {
                                         @ViewBag.diachi
-                                    }</li>
+                                    }
+                                </li>
 
-                                <li class="font-weight-bold">Số điện thoại: <i class="fas fa-phone"></i> @if (ViewBag.sdtkh != null)
+                                <li class="font-weight-bold">
+                                    Số điện thoại: <i class="fas fa-phone"></i> @if (ViewBag.sdtkh != null)
                                     {
                                         @ViewBag.sdtkh
-                                    }</li>
-                                <li class="font-weight-bold">Ghi chú: @if (ViewBag.ghichu != null)
+                                    }
+                                </li>
+                                <li class="font-weight-bold">
+                                    Ghi chú: @if (ViewBag.ghichu != null)
                                     {
                                         @ViewBag.ghichu
-                                    }</li>
+                                    }
+                                </li>
                             </ul>
                         </div>
                         <div class="col-xl-4">
 
                             <ul class="list-unstyled">
                                 <li class="text-dark">
-                                    <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold font-weight-bold">ID: #@if (@ViewBag.IdHoaDon != null)
+                                    <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold font-weight-bold">
+                                        ID: #@if (@ViewBag.IdHoaDon != null)
                                         {
                                             @ViewBag.IdHoaDon
-                                        }</span>
+                                        }
+                                    </span>
                                 <li class="text-dark">
-                                    <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold">Ngày mua:  @if (ViewBag.ngaymua != null)
+                                    <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold">
+                                        Ngày mua:  @if (ViewBag.ngaymua != null)
                                             {
                                                 @ViewBag.ngaymua
-                                            } </span>
+                                            }
+                                    </span>
                                 </li>
 
                             </ul>
@@ -176,8 +197,10 @@
 
                                     <th scope="col">Tên sản phẩm</th>
                                     <th scope="col">Số lượng</th>
+
                                     <th scope="col">Đơn giá</th>
                                     <th scope="col">Thành tiền</th>
+                                    <th scope="col"><button id="UpdateOrder" onclick="SuaHoaDon()" class="btn btn-light"><i class="fa-solid fa-pen-to-square"></i></button></th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -191,12 +214,35 @@
                                         <tr>
 
                                             <td>@n.sanPham.TenSanPham</td>
-                                            <td>@n.hoaDonCT.SoLuong  </td>
+                                            <td name="sl_thuong" >@n.hoaDonCT.SoLuong  </td>
+                                       
+                                            <td hidden name="sl_input" >
+                                                <div class="row">
+                                                    <div class="col-10">
+                                                        <input type="number" class="form-control " value="@n.hoaDonCT.SoLuong" />
+                                                    </div>
+                                                    <div class="col-auto">
+                                                        <button class="btn btn-light"><i class="fa-solid fa-check"></i></button>
+                                                    </div>
+
+                                                </div>
+                                              
+                                            </td>
+
+                                           
                                             <td>@n.hoaDonCT.GiaBan.ToString("#,##0").Replace(',', '.')đ</td>
                                             <td>@tongtien.ToString("#,##0").Replace(',', '.')đ</td>
+                                            <td><button hidden name="btn_delete" class="btn"><i class="fa-solid fa-square-minus"></i></button></td>
                                         </tr>
                                     }
                                 }
+                                <tr hidden id="btn_add">
+                                    <td><button class="btn"><i class="fa-solid fa-plus"></i></button></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
                             </tbody>
 
                         </table>
@@ -242,7 +288,7 @@
             $('#btn-one').click(function () {
                 html2canvas(document.querySelector('#hoadonct')).then((canvas) => {
                     let base64image = canvas.toDataURL('image/png');
-                    // console.log(base64image);
+
                     let pdf = new jsPDF('p', 'px', [1600, 1131]);
                     pdf.addImage(base64image, 'PNG', 15, 15, 1110, 360);
                     pdf.save('webtylepress-two.pdf');
@@ -250,5 +296,25 @@
             });
         });
 
+
+
+        function SuaHoaDon() {
+
+            var them = document.getElementById("btn_add")
+            var xoa = document.getElementsByName("btn_delete")
+            var sl_Thuong= document.getElementsByName("sl_thuong")
+            var sl_Input=document.getElementsByName("sl_input")
+            them.hidden = false;
+            for (var i = 0; i < xoa.length; i++) {
+                xoa[i].hidden = false;
+            }
+            for (var i = 0; i < sl_Thuong.length; i++) {
+                sl_Input[i].hidden = false;
+                sl_Thuong[i].hidden = true;
+            }
+
+            
+
+        }
     </script>
 }
