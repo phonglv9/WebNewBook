@@ -19,7 +19,7 @@ namespace WebNewBook.API.Data
             //modelbuilder.Entity<KhachHang>().HasIndex(c => c.Email).IsUnique();
             //modelbuilder.Entity<NhanVien>().HasIndex(c => c.Email).IsUnique();
             modelbuilder.Entity<Sach>().HasIndex(c => c.TenSach).IsUnique();
-            modelbuilder.Entity<SachCT>().HasIndex(c => new { c.MaNXB, c.TaiBan, c.MaSach }).IsUnique();
+            modelbuilder.Entity<SachCT>().HasIndex(c => new { c.MaNXB, c.TaiBan, c.MaSach, c.BiaMem }).IsUnique();
         }
         public DbSet<GioHang> GioHangs { get; set; }
         public DbSet<HoaDon> HoaDons { get; set; }
