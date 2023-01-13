@@ -81,12 +81,12 @@ namespace WebNewBook.API.Controllers
                 return 0;
             }
         }
-        [HttpGet("Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}")]
-        public async Task<int> Addgiohang(string HinhAnh,int SoLuongs,string emailKH,string idsp)
+        [HttpGet("Addgiohang/{SoLuongs}/{emailKH}/{idsp}")]
+        public async Task<int> Addgiohang(int SoLuongs,string emailKH,string idsp)
         {
             try
             {
-                return await _GioHangService.AddGioHangAsync(HinhAnh, SoLuongs, emailKH, idsp);
+                return await _GioHangService.AddGioHangAsync( SoLuongs, emailKH, idsp);
             }
             catch (Exception e)
             {

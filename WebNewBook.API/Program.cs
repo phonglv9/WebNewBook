@@ -35,9 +35,9 @@ builder.Services.AddControllers(options =>
 });
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
 
-builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Password=Ph@161589;Initial Catalog=WebNewBook;Integrated Security=True")); 
+builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-ID1I205\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook_Final1"));
 
-builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=LVP-09\\LVP09;User ID=LVP09;Password=Ph@161589;Initial Catalog=WebNewBook;Integrated Security=True"));
+builder.Services.AddDbContext<LoginContext>(option => option.UseSqlServer("Data Source=DESKTOP-ID1I205\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook_Final1"));
 
 builder.Services.AddIdentityCore<IdentityUser>()
     .AddEntityFrameworkStores<LoginContext>().AddDefaultTokenProviders().AddDefaultUI();
@@ -50,6 +50,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<INhanVienService, NhanVienService>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 builder.Services.AddScoped<IVoucherService, VoucherService>();
+builder.Services.AddScoped<IHoaDonCTService, HoaDonCTService>();
 builder.Services.AddScoped<IVoucherCTServices, VoucherCTServices>();
 //builder.Services.AddScoped<IPhieuNhapService, PhieuNhapService>();
 //builder.Services.AddScoped<ISanPhamService, SanPhamService>();
@@ -58,7 +59,7 @@ builder.Services.AddScoped<IHomeService, HomeService>();
 //builder.Services.AddScoped<IHomeService, HomeService>();
 builder.Services.AddScoped<IFpointService, FpointService>();
 builder.Services.AddScoped<IProfileCustomerService, ProfileCustomerService>();
-//builder.Services.AddScoped<IGioHangService, GioHangService>();
+builder.Services.AddScoped<IGioHangService, GioHangService>();
 builder.Services.AddScoped<IHoaDonService, HoaDonService>();
 builder.Services.AddScoped<ITheLoaiService, TheLoaiService>();
 builder.Services.AddScoped<ITacGiaService, TacGiaService>();

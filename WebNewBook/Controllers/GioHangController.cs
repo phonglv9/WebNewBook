@@ -280,7 +280,7 @@ namespace WebNewBook.Controllers
 
                 int mess = 0;
 
-                HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}").Result;
+                HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Addgiohang/{SoLuongs}/{emailKH}/{idsp}").Result;
                 if (response1.IsSuccessStatusCode)
                 {
                     string jsonData = response1.Content.ReadAsStringAsync().Result;
@@ -383,7 +383,7 @@ namespace WebNewBook.Controllers
 
                     };
 
-                    string HinhAnh = modelHome.HinhAnh;
+                   
                     int SoLuongs = SoLuong;
                     string emailKH = User.Identity.Name;
                     string idsp = id;
@@ -391,7 +391,7 @@ namespace WebNewBook.Controllers
 
                     int mess = 0;
 
-                    HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}").Result;
+                    HttpResponseMessage response1 = _httpClient.GetAsync(_httpClient.BaseAddress + $"/GioHang/Addgiohang/{SoLuongs}/{emailKH}/{idsp}").Result;
                     if (response1.IsSuccessStatusCode)
                     {
                         string jsonData = response1.Content.ReadAsStringAsync().Result;
