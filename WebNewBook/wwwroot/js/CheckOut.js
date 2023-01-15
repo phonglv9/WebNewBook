@@ -1,5 +1,127 @@
 ﻿// Document is ready
+var _URL = "https://localhost:7047/";
 $(document).ready(function () {
+    
+    //Chọn tỉnh thành
+    $('#provin').change(function () {
+        var id_provin = this.value;
+        $('#district option').remove();
+        $('#district').append(new Option("-- Chọn quận/huyện --", 0));
+
+        $('#ward option').remove();
+        $('#ward').append(new Option("-- Chọn phường/xã --", 0));
+
+        if (this.value > 1) {
+
+            $.ajax({
+                url: _URL + 'Payment/GetListDistrict',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    idProvin: id_provin
+
+                 },
+                contentType: 'application/json',
+                success: function (result) {
+
+                    $.each(result.data, function (key, val) {
+                        $("#district").append(new Option(val.DistrictName,val.DistrictID));
+                    });
+                  
+                }
+
+            });
+
+
+        }
+
+    });
+    //Chọn quận huyện
+    $('#district').change(function () {
+        var id_ward = this.value;
+        $('#ward option').remove();
+        $('#ward').append(new Option("-- Chọn phường/xã --", 0));
+
+        if (this.value > 1) {
+
+            $.ajax({
+                url: _URL + 'Payment/GetListWard',
+                type: 'GET',
+                dataType: 'json',
+                data: {
+                    idWard: id_ward
+
+                },
+                contentType: 'application/json',
+                success: function (result) {
+
+                    $.each(result.data, function (key, val) {
+                        $("#ward").append(new Option(val.WardName, val.WardCode));
+                    });
+                   
+                }
+
+            });
+
+
+        }
+
+    });
+    //Tính phí ship
+    $('#ward').change(function () {
+        var id_ward = this.value;
+      
+        if (this.value > 1) {
+
+            var obj = {
+                service_id: 53321,
+                insurance_value: 20000,
+                service_type_id: 2,
+                coupon: null,
+                from_district_id: 3440,
+                to_ward_code: id_ward,
+                to_district_id: parseInt($('#district').val()),
+                weight: 1000,
+                length: 15,
+                height: 15,
+                width: 15,  
+
+            }
+            console.log(obj);
+
+            $.ajax({
+                url: _URL + 'Payment/GetTotalShipping',
+                type: 'POST',
+                dataType: 'json',
+                data: JSON.stringify(obj),
+                contentType: 'application/json',
+                success: function (result) {
+
+                    
+                }
+
+            });
+
+
+        }
+
+    });
+
+
+
+
+
+
+
+   
+
+
+
+
+
+
+
+
     var regexEmail = /^\b[A-Z0-9._%-]+@[A-Z0-9.-]+\.[A-Z]{2,4}\b$/i;
     var regexPhoneNumber = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g;
     // Validate fullname
@@ -120,3 +242,5 @@ $(document).ready(function () {
         }
     });
 });
+
+

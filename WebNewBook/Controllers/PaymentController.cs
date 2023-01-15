@@ -1,10 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DocumentFormat.OpenXml.EMMA;
+using DocumentFormat.OpenXml.Office2016.Excel;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
+using Org.BouncyCastle.Asn1.Ocsp;
+using System.Net.Http.Headers;
+using System.Security.Policy;
 using System.Text;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Common;
 using WebNewBook.Model;
 using WebNewBook.Models;
+using WebNewBook.Models.GHNModels;
 using WebNewBook.ViewModel;
 
 namespace WebNewBook.Controllers
@@ -27,6 +34,7 @@ namespace WebNewBook.Controllers
         {
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7266/");
+            _httpClient.DefaultRequestHeaders.Add("token", "71f04310-864d-11ed-b09a-9a2a48e971b0");
         }
         public async Task<KhachHang> GetKhachHang()
         {
@@ -109,8 +117,85 @@ namespace WebNewBook.Controllers
             HttpContext.Session.Remove("amoutVoucher");
             return RedirectToAction("CheckOut");
         }
+       
+
+      
+        //Lấy địa chỉ quận huyện
+        public JsonResult GetListDistrict(int idProvin)
+		{
+          
+            HttpResponseMessage responseDistrict =  _httpClient.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id="+idProvin).Result;
+
+			District lstDistrict = new District();
+           
+			if (responseDistrict.IsSuccessStatusCode)
+			{
+				 string jsonData2 = responseDistrict.Content.ReadAsStringAsync().Result;
+
+                lstDistrict = JsonConvert.DeserializeObject<District>(jsonData2);
+            }
+            return Json(lstDistrict, new System.Text.Json.JsonSerializerOptions());
+		}
+        //Lấy địa chỉ phường xã
+        public JsonResult GetListWard(int idWard)
+        {
+            
+
+            HttpResponseMessage responseWard = _httpClient.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" + idWard).Result;
+
+            Ward lstWard = new Ward();
+
+            if (responseWard.IsSuccessStatusCode)
+            {
+                string jsonData2 = responseWard.Content.ReadAsStringAsync().Result;
+
+                lstWard = JsonConvert.DeserializeObject<Ward>(jsonData2);
+            }
+            return Json(lstWard, new System.Text.Json.JsonSerializerOptions());
+        }
+        //Lấy phí ship ghn
+        public JsonResult GetTotalShipping([FromBody]ShippingOrder shippingOrder)
+        {
+            _httpClient.DefaultRequestHeaders.Add("shop_id", "3630415");
+            //StringContent contentshipping = new StringContent(JsonConvert.SerializeObject(shippingOrder), Encoding.UTF8, "application/json");
+            HttpResponseMessage responseWShipping = _httpClient.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id="+ shippingOrder.service_id+"&insurance_value="+shippingOrder.insurance_value+"&coupon=&from_district_id="+shippingOrder.from_district_id+"&to_district_id="+shippingOrder.to_district_id+"&to_ward_code="+shippingOrder.to_ward_code+"&height="+shippingOrder.height+"&length="+shippingOrder.length+"&weight="+shippingOrder.weight+"&width="+shippingOrder.width+"").Result;
+
+            Shipping shipping = new Shipping();
+            if (responseWShipping.IsSuccessStatusCode)
+            {
+                string jsonData2 = responseWShipping.Content.ReadAsStringAsync().Result;
+
+                shipping = JsonConvert.DeserializeObject<Shipping>(jsonData2);
+            }
+            return Json(shipping, new System.Text.Json.JsonSerializerOptions());
+        }
+
+
         public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, string messageVC)
         {
+
+            //Lấy địa chỉ tỉnh thành
+            HttpResponseMessage responseProvin = _httpClient.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/province").Result;
+
+            Provin lstprovin = new Provin();
+
+            if (responseProvin.IsSuccessStatusCode)
+            {
+                string jsonData2 = responseProvin.Content.ReadAsStringAsync().Result;
+
+
+                lstprovin = JsonConvert.DeserializeObject<Provin>(jsonData2);
+                ViewBag.Provin = new SelectList(lstprovin.data, "ProvinceID", "ProvinceName");
+
+
+
+            }
+
+
+
+
+
+
             if (Giohangs().Count <= 0)
             {
                 return RedirectToAction("Index", "GioHang");

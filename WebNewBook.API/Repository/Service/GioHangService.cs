@@ -23,8 +23,8 @@ namespace WebNewBook.API.Repository.Service
             var listsp = _dbContext.SanPhams.ToList();
             var listgh = _dbContext.GioHangs.ToList();
            
-            var giohang = listgh.SingleOrDefault(c => c.MaSanPham == idsp);
-            var sanpham = listsp.SingleOrDefault(c => c.ID_SanPham == idsp);
+            var giohang = listgh.FirstOrDefault(c => c.MaSanPham == idsp);
+            var sanpham = listsp.FirstOrDefault(c => c.ID_SanPham == idsp);
             var listkh = _dbContext.KhachHangs.ToList();
             var idKhachHang= listkh.Where(o => o.Email == emailKH).Select(c => c.ID_KhachHang).FirstOrDefault();
 
