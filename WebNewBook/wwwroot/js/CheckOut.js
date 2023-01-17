@@ -1,7 +1,11 @@
 ﻿// Document is ready
 var _URL = "https://localhost:7047/";
 $(document).ready(function () {
-    
+
+    //$('#provin').chosen();
+    //$('#district').chosen();
+  /*  $('#ward').chosen();*/
+
     //Chọn tỉnh thành
     $('#provin').change(function () {
         var id_provin = this.value;
@@ -76,7 +80,7 @@ $(document).ready(function () {
             var obj = {
                 service_id: 53321,
                 insurance_value: 20000,
-                service_type_id: 2,
+               /* service_type_id: 2,*/
                 coupon: null,
                 from_district_id: 3440,
                 to_ward_code: id_ward,

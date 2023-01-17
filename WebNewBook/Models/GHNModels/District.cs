@@ -3,13 +3,13 @@
     public class District
     {
         public int code { get; set; }
-        public string message { get; set; }
-        public IEnumerable<Data> data { get; set; }
+        public string ?message { get; set; }
+        public IEnumerable<Data> ?data { get; set; }
         public class Data
         {
             public int DistrictID { get; set; }
             public int ProvinceID { get; set; }           
-            public string DistrictName { get; set; }         
+            public string ?DistrictName { get; set; }         
             //public string Code { get; set; }
             //public int Type { get; set; }
             //public int SupportType { get; set; }

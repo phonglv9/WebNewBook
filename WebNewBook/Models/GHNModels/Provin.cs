@@ -3,12 +3,12 @@
     public class Provin
     {
         public int code { get; set; }
-        public string message { get; set; }
-        public IEnumerable<Data> data { get; set; }
+        public string? message { get; set; }
+        public IEnumerable<Data>? data { get; set; }
         public class Data
         {
             public int ProvinceID { get; set; }
-            public string ProvinceName { get; set; }
+            public string ?ProvinceName { get; set; }
             //public int CountryID { get; set; }
             //public string Code { get; set; }
             //public List<string> NameExtension { get; set; }
