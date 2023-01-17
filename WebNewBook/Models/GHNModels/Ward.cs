@@ -7,7 +7,7 @@
         public IEnumerable<Data> data { get; set; }
         public class Data
         {
-            public int? WardCode { get; set; }
+            public dynamic WardCode { get; set; }
             public int DistrictID { get; set; }
             public string WardName { get; set; }
 

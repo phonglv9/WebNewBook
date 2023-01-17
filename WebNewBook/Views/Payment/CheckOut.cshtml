@@ -68,6 +68,7 @@
                             <input asp-for="DiaChiGiaoHang" class="input" type="text" value="@khachHang.DiaChi" name="DiaChiGiaoHang" id="adress">
                             <label id="adresscheck" class="text-danger"></label>
                         </div>
+                        <label id="adress2check" class="text-danger"></label>
                         <div class="form-group">
                             <label><span style="color:red;"> (*) </span>Tỉnh thành</label>
                             <select id="provin" name="provin" class="form-control" asp-items="@ViewBag.Provin" style="height: 31px !important;padding: 0 !important;">
@@ -173,20 +174,38 @@
                                 <div><strong>@ViewBag.MenhGiaVC.ToString("#,##0").Replace(',', '.') đ </strong></div>
                             </div>
                         }
+                        <div class="order-col" id="phiship">
+                            <div>
+                                Phí vận chuyển (Giao hàng tiêu chuẩn)
+                            </div>
+                            <div><strong id="totalship"></strong></div>
+                        </div>
                         <div class="order-col">
                             <div><strong>Tổng tiền</strong></div>
 
                             <div>
-                                <strong class="order-total">
+                                <strong class="order-total" id="totaloder">
                                     @if (ViewBag.TongTien != 0)
                                     {
                                         @ViewBag.TongTien.ToString("#,##0").Replace(',', '.')
                                     }đ
+
                                 </strong>
                             </div>
                         </div>
                     </div>
+                    <hr />
+                    @*<div class="payment-ship">
+                        <h4>Phương thức vận chuyển</h4>
+                        <div id="shipping">
+                            <label>Quý khách vui lòng điền tên và địa chỉ giao nhận trước.</label>
+                        </div>
+
+                    </div>*@
+                    <hr />
                     <div class="payment-method">
+                        <h4>Phương thức thanh toán</h4>
+                       
                         <div class="input-radio">
                             <input type="radio" checked name="payment" value="1" id="payment-1">
                             <label for="payment-1">

@@ -153,8 +153,24 @@ namespace WebNewBook.Controllers
             }
             return Json(lstWard, new System.Text.Json.JsonSerializerOptions());
         }
-        //Lấy phí ship ghn
-        public JsonResult GetTotalShipping([FromBody]ShippingOrder shippingOrder)
+		////Lấy dịch vụ giao hàng nhanh
+		//public JsonResult GetTotalShipping(int from_district, int to_district)
+		//{
+		//	_httpClient.DefaultRequestHeaders.Add("shop_id", "3630415");
+		//	//StringContent contentshipping = new StringContent(JsonConvert.SerializeObject(shippingOrder), Encoding.UTF8, "application/json");
+		//	HttpResponseMessage responseWShipping = _httpClient.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=" + shippingOrder.service_id + "&insurance_value=" + shippingOrder.insurance_value + "&coupon=&from_district_id=" + shippingOrder.from_district_id + "&to_district_id=" + shippingOrder.to_district_id + "&to_ward_code=" + shippingOrder.to_ward_code + "&height=" + shippingOrder.height + "&length=" + shippingOrder.length + "&weight=" + shippingOrder.weight + "&width=" + shippingOrder.width + "").Result;
+
+		//	Shipping shipping = new Shipping();
+		//	if (responseWShipping.IsSuccessStatusCode)
+		//	{
+		//		string jsonData2 = responseWShipping.Content.ReadAsStringAsync().Result;
+
+		//		shipping = JsonConvert.DeserializeObject<Shipping>(jsonData2);
+		//	}
+		//	return Json(shipping, new System.Text.Json.JsonSerializerOptions());
+		//}
+		//Lấy phí ship ghn
+		public JsonResult GetTotalShipping([FromBody]ShippingOrder shippingOrder)
         {
             _httpClient.DefaultRequestHeaders.Add("shop_id", "3630415");
             //StringContent contentshipping = new StringContent(JsonConvert.SerializeObject(shippingOrder), Encoding.UTF8, "application/json");
@@ -166,8 +182,14 @@ namespace WebNewBook.Controllers
                 string jsonData2 = responseWShipping.Content.ReadAsStringAsync().Result;
 
                 shipping = JsonConvert.DeserializeObject<Shipping>(jsonData2);
+                HttpContext.Session.SetString("shiptotal", shipping.data.total.ToString());
             }
             return Json(shipping, new System.Text.Json.JsonSerializerOptions());
+        }
+        public JsonResult GetTotalOder()
+        {
+            
+            return Json(HttpContext.Session.GetString("amout"), new System.Text.Json.JsonSerializerOptions());
         }
 
 
@@ -293,9 +315,11 @@ namespace WebNewBook.Controllers
         {
 
             var tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout2"));
+            var tienShip = Convert.ToDouble(HttpContext.Session.GetString("shiptotal"));
 
             var idVoucher = HttpContext.Session.GetString("idVoucher");
-            hoaDon.TongTien = tongTien;
+            hoaDon.TongTien = tongTien + tienShip;
+            hoaDon.PhiGiaoHang = tienShip;
             hoaDon.MaGiamGia = idVoucher;
 
             if (hoaDon != null && !string.IsNullOrEmpty(payment) && hoaDon.TongTien != 0)

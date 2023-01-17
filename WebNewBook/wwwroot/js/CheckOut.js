@@ -1,13 +1,18 @@
 ﻿// Document is ready
 var _URL = "https://localhost:7047/";
+const VND = new Intl.NumberFormat('vi-VN', {
+    style: 'currency',
+    currency: 'VND',
+});
 $(document).ready(function () {
 
     //$('#provin').chosen();
     //$('#district').chosen();
-  /*  $('#ward').chosen();*/
-
+    /*  $('#ward').chosen();*/
+    $("#phiship").hide();
     //Chọn tỉnh thành
     $('#provin').change(function () {
+        loadTotal();
         var id_provin = this.value;
         $('#district option').remove();
         $('#district').append(new Option("-- Chọn quận/huyện --", 0));
@@ -42,6 +47,7 @@ $(document).ready(function () {
     });
     //Chọn quận huyện
     $('#district').change(function () {
+        loadTotal();
         var id_ward = this.value;
         $('#ward option').remove();
         $('#ward').append(new Option("-- Chọn phường/xã --", 0));
@@ -66,21 +72,60 @@ $(document).ready(function () {
                 }
 
             });
-
+            
 
         }
 
     });
+   
+    function formatVND(val) {
+
+
+        return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(val);
+
+
+    }
+    function loadTotal() {
+        $("#phiship").hide();
+        $("#totalship").text('');
+        $.ajax({
+            url: _URL + 'Payment/GetTotalOder',
+            type: 'POST',
+            dataType: 'json',
+            contentType: 'application/json',
+            success: function (result) {
+               
+                $("#totaloder").text(formatVND(parseInt(result)));
+            }
+
+        });
+    }
     //Tính phí ship
     $('#ward').change(function () {
         var id_ward = this.value;
-      
+        var totalOder = 0;      
+        sessionStorage.removeItem('shiptotal');
+        $.ajax({
+            url: _URL + 'Payment/GetTotalOder',
+            type: 'POST',
+            dataType: 'json',         
+            contentType: 'application/json',
+            success: function (result) {
+                totalOder = parseInt(result);
+                $("#totaloder").text(totalOder);
+            }
+
+        });
+
+        $("#phiship").hide();
+        $("#totalship").text('');
+       
         if (this.value > 1) {
 
             var obj = {
-                service_id: 53321,
-                insurance_value: 20000,
-               /* service_type_id: 2,*/
+                service_id: 100039,
+                insurance_value: 100000,
+                service_type_id: 3,
                 coupon: null,
                 from_district_id: 3440,
                 to_ward_code: id_ward,
@@ -91,8 +136,6 @@ $(document).ready(function () {
                 width: 15,  
 
             }
-            console.log(obj);
-
             $.ajax({
                 url: _URL + 'Payment/GetTotalShipping',
                 type: 'POST',
@@ -100,8 +143,13 @@ $(document).ready(function () {
                 data: JSON.stringify(obj),
                 contentType: 'application/json',
                 success: function (result) {
+                    $("#phiship").show();
+                    $("#totalship").text(result.data.total);
 
-                    
+                    var temp = result.data.total + totalOder;
+                    $("#totaloder").text(temp);
+
+                    sessionStorage.setItem("shiptotal", result.data.total);
                 }
 
             });
@@ -110,17 +158,6 @@ $(document).ready(function () {
         }
 
     });
-
-
-
-
-
-
-
-   
-
-
-
 
 
 
@@ -204,9 +241,7 @@ $(document).ready(function () {
     // Validate phonenumber
     $("#phonenumbercheck").hide();
     var phonenumberError = true;
-    //$("#phonenumber").keyup(function () {
-    //    validatePhonenumber();
-    //});
+ 
     function validatePhonenumber() {
         var phonenumberValue = $("#phonenumber").val();
         if (phonenumberValue.length == "") {
@@ -225,8 +260,21 @@ $(document).ready(function () {
             $("#phonenumbercheck").hide();
         }
     }
+    var selectError = true;
+    $("#adress2check").hide();
+    function validateSelect() {
 
-
+        var temp = parseInt($("#ward").val());
+        if (temp < 1) {
+            $("#adress2check").show();
+            $("#adress2check").html("*Vui lòng chọn địa chỉ đầy đủ");
+            selectError = false;
+            return false;
+        } else {
+            $("#adress2check").hide();
+            selectError = true;
+        }
+    }
 
     // Submit button
     $("#submitbtn").click(function () {
@@ -234,14 +282,14 @@ $(document).ready(function () {
         validateEmail();
         validatePhonenumber();
         validateAdress();
-       
+        validateSelect();
         
         if (
-            fullnameError == true && emailError == true && phonenumberError == true && adressError == true
+            fullnameError == true && emailError == true && phonenumberError == true && adressError == true && selectError == true
         ){
             return true;
         } else {
-           
+            $('#exampleModal').modal('hide');
             return false;
         }
     });
