@@ -10,6 +10,9 @@ using X.PagedList;
 using WebNewBook.API.ModelsAPI;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Text;
+using DocumentFormat.OpenXml.Office2010.Excel;
+using DocumentFormat.OpenXml.Wordprocessing;
+using System.Xml.Linq;
 
 namespace WebNewBook.Controllers
 {
@@ -134,9 +137,19 @@ namespace WebNewBook.Controllers
                 ViewBag.ghichu = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.GhiChu).FirstOrDefault();
                 ViewBag.diachi = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.DiaChiGiaoHang).FirstOrDefault();
                 ViewBag.ngaymua = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.NgayMua).FirstOrDefault();
-                ViewBag.tongtien= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TongTien).FirstOrDefault();
-                
+                ViewBag.tongtien= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TongTien).FirstOrDefault(); 
+                ViewBag.trangthai= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TrangThai).FirstOrDefault();
 
+                var lstProduct  = new List<SanPham>();
+                HttpResponseMessage respProduct = client.GetAsync("https://localhost:7266/SanPham").Result;
+                if (respProduct.IsSuccessStatusCode)
+                {
+                    string dataProduct = respProduct.Content.ReadAsStringAsync().Result;
+                    lstProduct = JsonConvert.DeserializeObject<List<SanPham>>(dataProduct);
+                    ViewBag.ListProducts = lstProduct;
+
+
+                }
             }
 
 
@@ -170,5 +183,37 @@ namespace WebNewBook.Controllers
             }
             return Redirect("ChiTiet/"+viewHoaDon.hoaDon.ID_HoaDon);
         }
+        [HttpPost]
+        public int AddProduct(string ListIdProduct, string IDHoaDon)
+        {
+            if (ListIdProduct !=null)
+            {
+             
+                string[] arr = ListIdProduct.Split(',');
+               
+                foreach (var x in arr)
+                {
+                    Console.WriteLine($"Lượt 1:Idhoasdon {IDHoaDon} và id sp:{x}");
+                    HttpResponseMessage response = client.PostAsync(client.BaseAddress + $"/HoaDonCT/AddHoaDonCt?mahd={IDHoaDon}&masp={x}",null).Result;
+                    Console.WriteLine($"Status: {response.StatusCode}; Msg: { response.Content.ReadAsStringAsync()}");
+                } 
+            }
+          
+            return 1;
+        }
+
+        public async   Task<IActionResult> UpdateQuantityProduct(string mahdct, string soluong , string mahd)
+        {
+            HttpResponseMessage response = client.PutAsync(client.BaseAddress + $"/HoaDonCT/UpdateHoaDonCT?mahdct={mahdct}&soluong={soluong}",null).Result;
+            return Redirect($"ChiTiet/{mahd}");
+        }
+
+        public async Task<IActionResult> DeleteProductinOrder(string mahdct,string mahd)
+        {
+            HttpResponseMessage response = client.DeleteAsync(client.BaseAddress + $"/HoaDonCT/DeleteHoaDonCT/{mahdct}").Result;
+            return Redirect($"ChiTiet/{mahd}");
+        }
+
+
     }
 }
