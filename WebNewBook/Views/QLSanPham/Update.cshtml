@@ -23,7 +23,7 @@
                 @for (var i = 0; i < ViewBag.Saches.Count; i++)
                 {
                     string a = i < ViewBag.Saches.Count - 1 ? "-" : string.Empty;
-                    <a asp-action="Update" asp-controller="Sach" asp-route-id=@ViewBag.Saches[i].ID_SachCT> @*@ViewBag.Saches[i].TenSach*@  Temp @a </a>
+                    <a asp-action="Update" asp-controller="QLSachCT" asp-route-id=@ViewBag.Saches[i].SachCT.ID_SachCT> @ViewBag.Saches[i].TenSach </a> @a
                 }
                 @*@foreach (var item in ViewBag.Saches)
                 {
@@ -56,7 +56,6 @@
             </div>
             <input asp-for="Sachs" hidden />
             <input asp-for="SanPham.ID_SanPham" value="@Model.SanPham.ID_SanPham" hidden />
-            <input asp-for="SLChuaDoi" hidden />
             <input asp-for="SanPham.GiaGoc" hidden />
             <input asp-for="SanPham.NgayTao" hidden />
             <button type="submit" class="btn btn-primary">Sửa sản phẩm</button>

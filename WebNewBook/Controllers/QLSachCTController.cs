@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
+using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.Controllers
 {
@@ -35,12 +36,13 @@ namespace WebNewBook.Controllers
             ViewBag.TitleAdmin = "Sách CT";
             timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
             List<SachCT>? lstSach = new List<SachCT>();
-            lstSach = await GetRequest<SachCT>("book/sachct");
+            var a = await GetRequest<SachCTViewModel>("book/sachctviewmodel");
+            lstSach = a.Select(c=>c.SachCT).ToList();
             //lstSach = (trangThai == 1 || trangThai == 0) ? lstSach.Where(c => c.TenSach.Contains(timKiem) && c.TrangThai == trangThai).ToList() : lstSach.Where(c => c.TenSach.Contains(timKiem)).ToList();
             ViewBag.TimKiem = timKiem;
             ViewBag.TrangThai = trangThai;
             ViewBag.message = mess;
-            ViewBag.Sach = lstSach;
+            ViewBag.Sach = a;
             return View();
         }
 
@@ -112,7 +114,9 @@ namespace WebNewBook.Controllers
                 return NotFound();
 
             ViewBag.NXBs = new SelectList(await GetRequest<NhaXuatBan>("api/nhaxuatban"), "ID_NXB", "TenXuatBan");
-            ViewBag.Sachs = new SelectList(await GetRequest<Sach>("book"), "ID_Sach", "TenSach");
+            //ViewBag.Sachs = new SelectList(await GetRequest<Sach>("book"), "ID_Sach", "TenSach");
+            var a = await GetRequest<Sach>("book");
+            ViewBag.Sach = a.FirstOrDefault(c => c.ID_Sach == sach.MaSach);
 
             return View(sach);
         }
@@ -177,7 +181,8 @@ namespace WebNewBook.Controllers
 
             ViewBag.Error = error + "!";
             ViewBag.NXBs = new SelectList(await GetRequest<NhaXuatBan>("api/nhaxuatban"), "ID_NXB", "TenXuatBan");
-            ViewBag.Sachs = new SelectList(await GetRequest<Sach>("book"), "ID_Sach", "TenSach");
+            var a = await GetRequest<Sach>("book");
+            ViewBag.Sach = a.FirstOrDefault(c => c.ID_Sach == sach.MaSach);
             return View(sach);
         }
 

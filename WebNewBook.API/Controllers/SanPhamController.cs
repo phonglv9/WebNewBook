@@ -32,10 +32,17 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpGet("sanpham_sachct/{id}")]
-        public async Task<List<SachCT>?> GetSachsBySanPhamAsync(string id)
+        public async Task<List<SachCTViewModel>?> GetSachsBySanPhamAsync(string id)
         {
             var sachs = await sanPhamService.GetSachsBySanPhamAsync(id);
             return sachs;
+        }
+
+        [HttpGet("viewmodel")]
+        public List<SanPhamViewModel> GetSanPhamViewModel()
+        {
+            var result = sanPhamService.GetSanPhamViewModel();
+            return result.ToList();
         }
 
         [HttpPost]
@@ -43,7 +50,7 @@ namespace WebNewBook.API.Controllers
         {
             try
             {
-                await sanPhamService.AddSanPhamAsync(sp.SanPham, sp.Sachs);
+                await sanPhamService.AddSanPhamAsync(sp);
                 return Ok();
             }
             catch (Exception e)

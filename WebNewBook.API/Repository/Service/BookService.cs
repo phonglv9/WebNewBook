@@ -5,6 +5,7 @@ using WebNewBook.API.Data;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
+using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.API.Repository.Service
 {
@@ -91,7 +92,7 @@ namespace WebNewBook.API.Repository.Service
         {
             if (isTacGia)
             {
-                foreach (var dbSetItem in _dbcontext.Sach_TacGias)
+                foreach (var dbSetItem in _dbcontext.Sach_TacGias.Where(c => c.MaSach.Equals(ID)))
                 {
                     if (!lst.Contains(dbSetItem.MaTacGia))
                     {
@@ -101,7 +102,7 @@ namespace WebNewBook.API.Repository.Service
 
                 foreach (var item in lst)
                 {
-                    if (!_dbcontext.Sach_TacGias.Select(c => c.MaTacGia).Contains(item))
+                    if (!_dbcontext.Sach_TacGias.Where(c => c.MaSach.Equals(ID)).Select(c => c.MaTacGia).Contains(item))
                     {
                         var sachTG = new Sach_TacGia { ID_SachTacGia = "SachTG" + Guid.NewGuid().ToString(), MaTacGia = item, MaSach = ID };
                         _dbcontext.Add(sachTG);
@@ -110,7 +111,7 @@ namespace WebNewBook.API.Repository.Service
             }
             else
             {
-                foreach (var dbSetItem in _dbcontext.Sach_TheLoais)
+                foreach (var dbSetItem in _dbcontext.Sach_TheLoais.Where(c => c.MaSach.Equals(ID)))
                 {
                     if (!lst.Contains(dbSetItem.MaTheLoai))
                     {
@@ -120,7 +121,7 @@ namespace WebNewBook.API.Repository.Service
 
                 foreach (var item in lst)
                 {
-                    if (!_dbcontext.Sach_TheLoais.Select(c => c.MaTheLoai).Contains(item))
+                    if (!_dbcontext.Sach_TheLoais.Where(c => c.MaSach.Equals(ID)).Select(c => c.MaTheLoai).Contains(item))
                     {
                         var sachTL = new Sach_TheLoai { ID_SachTheLoai = "SachTL" + Guid.NewGuid().ToString(), MaTheLoai = item, MaSach = ID };
                         _dbcontext.Add(sachTL);
@@ -202,8 +203,8 @@ namespace WebNewBook.API.Repository.Service
                             price += _dbcontext.SachCTs.FirstOrDefault(sach => sach.ID_SachCT == spct.MaSachCT).GiaBan;
                         });
 
-                        c.SPham.GiaBan = price;
-                        c.SPham.GiaGoc = price;
+                        c.SPham.GiaBan = price * c.SPCT.FirstOrDefault().SoLuongSach;
+                        c.SPham.GiaGoc = price * c.SPCT.FirstOrDefault().SoLuongSach;
                         c.SPham.TrangThai = 0;
                         _dbcontext.Update(c.SPham);
                     });
@@ -235,20 +236,29 @@ namespace WebNewBook.API.Repository.Service
         {
             return await _dbcontext.SachCTs.FirstOrDefaultAsync(c => c.ID_SachCT.Equals(id));
         }
+
+        public List<SachCTViewModel> GetSachCTViewModels()
+        {
+            var result = _dbcontext.SachCTs.
+                        Join(_dbcontext.Sachs, sachCT => sachCT.MaSach, sach => sach.ID_Sach, (sachCT, sach) => new { sachCT, sach.TenSach }).
+                        Join(_dbcontext.NhaXuatBans, sachCT => sachCT.sachCT.MaNXB, nxb => nxb.ID_NXB, (sachCT, nxb) => new SachCTViewModel { SachCT = sachCT.sachCT, TenSach = sachCT.TenSach, NXB = nxb.TenXuatBan });
+
+            return result.ToList();
+        }
         #endregion
 
         public IEnumerable<Sach_SachCT> GetSach_SachCT()
         {
             var sachs = _dbcontext.Sachs.ToList();
-            var sachcts = _dbcontext.SachCTs.Where(c => c.TrangThai == 1).ToList();
+            var sachcts = _dbcontext.SachCTs.Where(c => c.TrangThai == 1 && c.SoLuong > 0).ToList();
             var result = from sach in sachs join sachct in sachcts
-                     on sach.ID_Sach equals sachct.MaSach join nxb in _dbcontext.NhaXuatBans on sachct.MaNXB equals nxb.ID_NXB
-                     select new Sach_SachCT
-                     {
-                         TenSach = sach.TenSach,
-                         SachCT = sachct,
-                         NXB = nxb.TenXuatBan
-                     };
+                         on sach.ID_Sach equals sachct.MaSach join nxb in _dbcontext.NhaXuatBans on sachct.MaNXB equals nxb.ID_NXB
+                         select new Sach_SachCT
+                         {
+                            TenSach = sach.TenSach,
+                            SachCT = sachct,
+                            NXB = nxb.TenXuatBan,
+                         };
 
             return result;
         }
