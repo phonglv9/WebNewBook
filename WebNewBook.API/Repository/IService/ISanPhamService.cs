@@ -1,4 +1,5 @@
 ﻿using WebNewBook.Model;
+using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.API.Repository.IService
 {
@@ -6,8 +7,9 @@ namespace WebNewBook.API.Repository.IService
     {
         Task<IEnumerable<SanPham>> GetSanPhamAsync();
         Task<SanPham?> GetSanPhamAsync(string id);
-        Task AddSanPhamAsync(SanPham par, IEnumerable<string> Sachs);
+        Task AddSanPhamAsync(SanPhamAPI par);
         Task UpdateSanPhamAsync(SanPham par);
-        Task<List<SachCT>?> GetSachsBySanPhamAsync(string id);
+        Task<List<SachCTViewModel>?> GetSachsBySanPhamAsync(string id);
+        IEnumerable<SanPhamViewModel> GetSanPhamViewModel();
     }
 }

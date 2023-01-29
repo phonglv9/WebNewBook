@@ -7,13 +7,10 @@ using System.Threading.Tasks;
 
 namespace WebNewBook.Model.APIModels
 {
-    public class SanPhamAPI
+    public class SanPhamViewModel
     {
         public SanPham? SanPham { get; set; }
-        public IEnumerable<string>? Sachs { get; set; }
-        [Range(0, 100)]
-        public double GiamGia { get; set; }
-        [Range(0, 100)]
-        public int SLSachCT { get; set; } = 1;
+        public int TheLoaiSP { get; set; } //1 - Sach | 2 - Bo sach | 3 - Bo sach cung loai
+        public int SoLuongSach { get; set; }
     }
 }
