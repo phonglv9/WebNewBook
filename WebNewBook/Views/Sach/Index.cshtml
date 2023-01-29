@@ -50,7 +50,6 @@
                     <thead class="table-secondary">
                         <tr>
                             <th scope="col">Tên sách</th>
-                            <th scope="col">Số lượng</th>
                             <th scope="col">Số trang</th>
                             <th colspan="2" style="text-align: center ;">Thao tác</th>
                         </tr>
@@ -60,7 +59,6 @@
                         {
                             <tr>
                                 <th scope="row">@item.TenSach</th>
-                                <td>10</td>
                                 <td>@item.SoTrang</td>
                                 <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_Sach"><i class="fa-solid fa-pen"></i></a></td>
                             </tr>

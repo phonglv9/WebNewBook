@@ -1,5 +1,6 @@
 ﻿using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
+using WebNewBook.Model.APIModels;
 using static WebNewBook.API.Repository.Service.BookService;
 
 namespace WebNewBook.API.Repository.IService
@@ -17,6 +18,7 @@ namespace WebNewBook.API.Repository.IService
         Task<dynamic> GetSachTG_TL<T>(string id);
         Task<SachCT> GetSachCT(string id);
         IEnumerable<Sach_SachCT> GetSach_SachCT();
+        List<SachCTViewModel> GetSachCTViewModels();
 
     }
 }

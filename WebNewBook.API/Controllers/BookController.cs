@@ -5,6 +5,7 @@ using WebNewBook.API.ModelsAPI;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.API.Repository.Service;
 using WebNewBook.Model;
+using WebNewBook.Model.APIModels;
 using static WebNewBook.API.Repository.Service.BookService;
 
 namespace WebNewBook.API.Controllers
@@ -39,6 +40,13 @@ namespace WebNewBook.API.Controllers
         public async Task<SachCT> GetSachCT(string id)
         {
             var Model = await _BookService.GetSachCT(id);
+            return Model;
+        }
+
+        [HttpGet("sachctviewmodel")]
+        public List<SachCTViewModel> GetSachCTViewModels()
+        {
+            var Model = _BookService.GetSachCTViewModels();
             return Model;
         }
 

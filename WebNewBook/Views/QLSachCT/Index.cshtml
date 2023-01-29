@@ -1,5 +1,5 @@
-﻿@using WebNewBook.Model
-@model SachCT
+﻿@using WebNewBook.Model.APIModels
+@model SachCTViewModel
 
 @{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -61,10 +61,11 @@
                         <tr>
                             <th scope="col">Loại sách</th>
                             <th scope="col">Số lượng</th>
-                            <th scope="col">Số trang</th>
                             <th scope="col">Giá</th>
                             <th scope="col">Hình ảnh</th>
                             <th scope="col">NXB</th>
+                            <th scope="col">Tái bản</th>
+                            <th scope="col">Loại bìa</th>
                             <th scope="col">Trạng thái</th>
                             <th colspan="2" style="text-align: center ;">Thao tác</th>
                         </tr>
@@ -72,23 +73,25 @@
                     <tbody>
                         @foreach (var item in ViewBag.Sach)
                         {
-                            var trangThai = item.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
-                            var img = item.HinhAnh ?? string.Empty;
+                            var trangThai = item.SachCT.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
+                            var img = item.SachCT.HinhAnh ?? string.Empty;
+                            var loaiBia = item.SachCT.BiaMem ? "Bìa mềm" : "Bìa cứng";
                             <tr>
-                                <th scope="row">Temp</th>
-                                <td>@item.SoLuong</td>
-                                <td>Temp</td>
-                                <td>@item.GiaBan</td>
+                                <th scope="row">@item.TenSach</th>
+                                <td>@item.SachCT.SoLuong</td>
+                                <td>@item.SachCT.GiaBan</td>
                                 <td><img src="~/img/@img" style="width:100px;height:100px"/></td>
-                                <td>@item.MaNXB</td>
+                                <td>@item.NXB</td>
+                                <td>@item.SachCT.TaiBan</td>
+                                <td>@loaiBia</td>
                                 <td>@trangThai</td>
-                                <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_SachCT"><i class="fa-solid fa-pen"></i></a></td>
-                                <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_SachCT"><i class="fa-solid fa-trash"></i></button></td>
+                                <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.SachCT.ID_SachCT"><i class="fa-solid fa-pen"></i></a></td>
+                                <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.SachCT.ID_SachCT"><i class="fa-solid fa-trash"></i></button></td>
                             </tr>
 
                              <!-- Modal Delete-->
-                            <form asp-action="Delete" asp-route-id="@item.ID_SachCT" method="post" enctype="multipart/form-data">
-                                <div class="modal fade" id="delete-@item.ID_SachCT" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <form asp-action="Delete" asp-route-id="@item.SachCT.ID_SachCT" method="post" enctype="multipart/form-data">
+                                <div class="modal fade" id="delete-@item.SachCT.ID_SachCT" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -98,7 +101,7 @@
                                             <div class="modal-body">
                                                 <div class="mb-3 row">
                                                     <label for="ID_SachCT" class="col-sm-2 col-form-label">ID</label>
-                                                    <input for="ID_SachCT" class="form-control" name="ID" value="@item.ID_SachCT" disabled/>
+                                                    <input for="ID_SachCT" class="form-control" name="ID" value="@item.SachCT.ID_SachCT" disabled/>
                                                 @*</div>
                                                 <div class="mb-3 row">
                                                     <label for="TenSach" class="control-label">Tên sách</label>
