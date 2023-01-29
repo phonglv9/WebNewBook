@@ -35,8 +35,8 @@ namespace WebNewBook.API.Repository.Service
 
             foreach (var item in spcts)
             {
-                if ((tsp.SLSachCT == 1 && (item.SanPhamCTs.Select(c => c.MaSachCT).ToArray().Intersect(Sachs).Count() == item.SanPhamCTs.Count() && 
-                    item.SanPhamCTs.Count() == Sachs.Count() && tsp.SLSachCT == 1))
+                if ((tsp.SLSachCT == 1 && (item.SanPhamCTs.Where(c => c.SoLuongSach == 1).Select(c => c.MaSachCT).ToArray().Intersect(Sachs).Count() == item.SanPhamCTs.Count() && 
+                    item.SanPhamCTs.Count() == Sachs.Count()))
                     || (tsp.SLSachCT > 1 && item.SanPhamCTs.Any(c => c.MaSachCT.Equals(Sachs.FirstOrDefault()) && c.SoLuongSach == tsp.SLSachCT)))
                 {
                     throw new Exception("Đã tồn tại sản phẩm!");
