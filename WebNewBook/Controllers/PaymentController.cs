@@ -153,22 +153,8 @@ namespace WebNewBook.Controllers
             }
             return Json(lstWard, new System.Text.Json.JsonSerializerOptions());
         }
-		////Lấy dịch vụ giao hàng nhanh
-		//public JsonResult GetTotalShipping(int from_district, int to_district)
-		//{
-		//	_httpClient.DefaultRequestHeaders.Add("shop_id", "3630415");
-		//	//StringContent contentshipping = new StringContent(JsonConvert.SerializeObject(shippingOrder), Encoding.UTF8, "application/json");
-		//	HttpResponseMessage responseWShipping = _httpClient.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=" + shippingOrder.service_id + "&insurance_value=" + shippingOrder.insurance_value + "&coupon=&from_district_id=" + shippingOrder.from_district_id + "&to_district_id=" + shippingOrder.to_district_id + "&to_ward_code=" + shippingOrder.to_ward_code + "&height=" + shippingOrder.height + "&length=" + shippingOrder.length + "&weight=" + shippingOrder.weight + "&width=" + shippingOrder.width + "").Result;
 
-		//	Shipping shipping = new Shipping();
-		//	if (responseWShipping.IsSuccessStatusCode)
-		//	{
-		//		string jsonData2 = responseWShipping.Content.ReadAsStringAsync().Result;
-
-		//		shipping = JsonConvert.DeserializeObject<Shipping>(jsonData2);
-		//	}
-		//	return Json(shipping, new System.Text.Json.JsonSerializerOptions());
-		//}
+		
 		//Lấy phí ship ghn
 		public JsonResult GetTotalShipping([FromBody]ShippingOrder shippingOrder)
         {
@@ -195,6 +181,11 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, string messageVC)
         {
+            //Check validate nếu giỏ hàng trống không thể thanh toán
+            if (Giohangs().Count < 1)
+            {
+                return RedirectToAction("Index", "GioHang");
+            }
 
             //Lấy địa chỉ tỉnh thành
             HttpResponseMessage responseProvin = _httpClient.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/province").Result;
@@ -213,16 +204,7 @@ namespace WebNewBook.Controllers
 
             }
 
-
-
-
-
-
-            if (Giohangs().Count <= 0)
-            {
-                return RedirectToAction("Index", "GioHang");
-            }
-
+        
             var idVoucher = HttpContext.Session.GetString("idVoucher");
             double tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout"));
             double menhGiaVC = Convert.ToDouble(HttpContext.Session.GetString("amoutVoucher"));
@@ -277,9 +259,6 @@ namespace WebNewBook.Controllers
 
             }
             ViewBag.Cart = Giohangs();
-
-            var x = Giohangs();
-
             //Voucher
             if (menhGiaVC != 0 && menhGiaDK != 0)
             {
@@ -292,7 +271,7 @@ namespace WebNewBook.Controllers
                 }
 
             }
-
+     
             HttpContext.Session.SetString("amout2", tongTien.ToString());
             ViewBag.TongTien = tongTien;
             if (!string.IsNullOrEmpty(idHoaDon))
@@ -547,9 +526,6 @@ namespace WebNewBook.Controllers
             await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{emailCustomer}", null);
             //Gửi mail đơn hàng 
             await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/SendMailOder/{idHoaDon}", null);
-
-
-
             HttpContext.Session.Clear();
             Response.Cookies.Delete("Cart");
             ViewBag.Message = request.message;
@@ -630,12 +606,6 @@ namespace WebNewBook.Controllers
                     ViewBag.MessageVC = "Vui lòng nhập mã giảm giá";
                 }
             }
-
-
-
-
-
-
             return RedirectToAction("CheckOut", new { messageVC = ViewBag.MessageVC });
         }
     }
