@@ -9,7 +9,7 @@ namespace WebNewBook.API.Repository.IService
         Task<SanPham> GetSanPham(string id);
         Task<int> getSP(string id);
         Task<string>XoakhoiGioHang(string id,string namekh);
-       Task XoaGioHangKH(string email);
+        Task XoaGioHangKH(string email);
         Task<int> AddGioHangAsync( int SoLuongs, string emailKH, string idsp);
         Task<List<ModelCart>> GetlistGH();
         Task<int> Updatenumber(string id,int soluongmoi, string namekh, string update);
