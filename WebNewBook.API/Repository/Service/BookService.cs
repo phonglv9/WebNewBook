@@ -37,6 +37,22 @@ namespace WebNewBook.API.Repository.Service
             }
         }
 
+        public List<SachViewModel> GetSachViewModels()
+        {
+            var result = new List<SachViewModel>();
+            _dbcontext.Sachs.ToList().ForEach(s =>
+            {
+                SachViewModel model = new SachViewModel();
+                model.Sach = s;
+                model.TacGia = _dbcontext.Sach_TacGias.Where(c => c.MaSach.Equals(s.ID_Sach)).Join(_dbcontext.TacGias, stg => stg.MaTacGia, tg => tg.ID_TacGia, (stg, tg) =>  tg.HoVaTen ).ToList();
+                model.TacGia = _dbcontext.Sach_TheLoais.Where(c => c.MaSach.Equals(s.ID_Sach)).Join(_dbcontext.TheLoais, stl => stl.MaTheLoai, tl => tl.ID_TheLoai, (stl, tl) =>  tl.TenTL ).ToList();
+
+                result.Add(model);
+            });
+
+            return result;
+        }
+
         public async Task CreateSach(SachAPI input)
         {
             try

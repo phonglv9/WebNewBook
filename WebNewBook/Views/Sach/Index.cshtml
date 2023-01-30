@@ -1,5 +1,5 @@
-﻿@using WebNewBook.Model
-@model Sach
+﻿@using WebNewBook.Model.APIModels
+@model SachViewModel
 
 @{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -58,9 +58,9 @@
                         @foreach (var item in ViewBag.Sach)
                         {
                             <tr>
-                                <th scope="row">@item.TenSach</th>
-                                <td>@item.SoTrang</td>
-                                <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_Sach"><i class="fa-solid fa-pen"></i></a></td>
+                                <th scope="row">@item.Sach.TenSach</th>
+                                <td>@item.Sach.SoTrang</td>
+                                <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.Sach.ID_Sach"><i class="fa-solid fa-pen"></i></a></td>
                             </tr>
                         }
                     </tbody>

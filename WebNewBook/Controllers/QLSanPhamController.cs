@@ -123,9 +123,11 @@ namespace WebNewBook.Controllers
             sanPhamAPI.SanPham.ID_SanPham = "SP" + Guid.NewGuid().ToString();
             sanPhamAPI.Sachs = SelectedSachs.Select(c => c.Substring(0, c.IndexOf("@") - 1));
             sanPhamAPI.SanPham.NgayTao = DateTime.Now;
+            sanPhamAPI.SLSachCT = SelectedSachs.Length > 1 ? 1 : sanPhamAPI.SLSachCT;
+
             if (ModelState.IsValid)
             {
-                if (file != null && SelectedSachs.Length > 0)
+                if (file != null && SelectedSachs.Length > 0 /*&& ((SelectedSachs.Length == 1 && sanPhamAPI.SLSachCT >= 1) || (SelectedSachs.Length > 1 && sanPhamAPI.SLSachCT == 1))*/)
                 {
                     double giaBan = 0;
                     foreach (var item in SelectedSachs)
