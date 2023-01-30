@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
+using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.Controllers
 {
@@ -34,8 +35,8 @@ namespace WebNewBook.Controllers
         {
             ViewBag.TitleAdmin = "Sách";
             timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
-            List<Sach>? lstSach = new List<Sach>();
-            lstSach = await GetRequest<Sach>("book");
+            List<SachViewModel>? lstSach = new List<SachViewModel>();
+            lstSach = await GetRequest<SachViewModel>("book/sachviewmodel");
             //lstSach = (trangThai == 1 || trangThai == 0) ? lstSach.Where(c => c.TenSach.Contains(timKiem) && c.TrangThai == trangThai).ToList() : lstSach.Where(c => c.TenSach.Contains(timKiem)).ToList();
             ViewBag.TimKiem = timKiem;
             ViewBag.TrangThai = trangThai;
