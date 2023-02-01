@@ -29,6 +29,13 @@ namespace WebNewBook.API.Controllers
         }
 
 
+        [HttpGet("sachviewmodel")]
+        public  List<SachViewModel> GetSachViewModel()
+        {
+            var Model =  _BookService.GetSachViewModels();
+            return Model;
+        }
+
         [HttpGet("sachct")]
         public async Task<List<SachCT>> GetSachCT()
         {

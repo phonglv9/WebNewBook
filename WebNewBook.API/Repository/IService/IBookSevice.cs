@@ -19,6 +19,6 @@ namespace WebNewBook.API.Repository.IService
         Task<SachCT> GetSachCT(string id);
         IEnumerable<Sach_SachCT> GetSach_SachCT();
         List<SachCTViewModel> GetSachCTViewModels();
-
+        List<SachViewModel> GetSachViewModels();
     }
 }
