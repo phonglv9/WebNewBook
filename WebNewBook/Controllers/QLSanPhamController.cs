@@ -119,6 +119,8 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(SanPhamAPI sanPhamAPI, string[] SelectedSachs, IFormFile file)
         {
+
+
             string error = "";
             sanPhamAPI.SanPham.ID_SanPham = "SP" + Guid.NewGuid().ToString();
             sanPhamAPI.Sachs = SelectedSachs.Select(c => c.Substring(0, c.IndexOf("@") - 1));
