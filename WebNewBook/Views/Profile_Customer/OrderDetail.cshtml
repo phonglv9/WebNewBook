@@ -61,10 +61,10 @@
                                 <p class="text-danger">Đang Giao hàng</p>
 
                             }
-                            <p>Mã đơn hàng : <span class="fw-bold">  ViewBag.IdHoaDon</span></p>
-                            <p>Ngày mua : <span class="fw-bold"> ViewBag.ngaymua</span></p>
+                            <p>Mã đơn hàng : <span class="fw-bold">  @ViewBag.IdHoaDon</span></p>
+                            <p>Ngày mua : <span class="fw-bold"> @ViewBag.ngaymua</span></p>
                             <p>Tổng tiền : <span class="fw-bold">@String.Format( "{0:#,##0.##}",(ViewBag.tongtien)) đ</span></p>
-                            <p>Ghi chú : <span>ViewBag.ghichu </span></p>
+                            <p>Ghi chú : <span>@ViewBag.ghichu </span></p>
 
                         </div>
 
@@ -162,7 +162,7 @@
                             <td></td>
                             <td></td>
                             <td>Tổng số tiền:</td>
-                            <th> @ViewBag.tongtien.ToString("#,##0").Replace(',', '.') <span>đ</span></th>
+                            <th> @String.Format( "{0:#,##0.##}",(ViewBag.tongtien + ViewBag.Phigiaohang)) <span>đ</span></th>
                             </tfoot>
                             <tfoot>
                             <td></td>
@@ -190,7 +190,15 @@
                                 </th>
                             </tfoot>
 
-
+                            <tfoot>
+                            <td></td>
+                            <td colspan="2"></td>
+                            <td></td>
+                            <td></td>
+                            <td>Phí giao hàng:</td>
+                            <th> @ViewBag.Phigiaohang.ToString("#,##0").Replace(',', '.') <span>đ</span></th>
+                            </tfoot>
+                            <tfoot>
                         </table>
                         @if (ViewBag.trangThai != null)
                         {
