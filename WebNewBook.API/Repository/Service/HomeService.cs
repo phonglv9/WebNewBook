@@ -6,6 +6,7 @@ using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 using System.Data;
 using WebNewBook.API.Common;
+using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.API.Repository.Service
 {
@@ -18,8 +19,27 @@ namespace WebNewBook.API.Repository.Service
         }
         public async Task<IEnumerable<HomeViewModel>> GetHomVM()
         {
+            var spcts = from sp in _dbContext.SanPhams.ToList()
+                        join spct in _dbContext.SanPhamCTs.ToList() on sp.ID_SanPham equals spct.MaSanPham into spgroup
+                        select new
+                        {
+                            SanPham = sp,
+                            SanPhamCTs = spgroup
+                        };
 
-            var sanPham = _dbContext.SanPhams;
+
+            //var sanPham = _dbContext.SanPhams;
+            var sanPham = new List<SanPhamViewModel>();
+            spcts.ToList().ForEach(c =>
+            {
+                var singleType = c.SanPhamCTs.Count() == 1;
+                var sp = new SanPhamViewModel();
+                sp.SanPham = c.SanPham;
+                sp.TheLoaiSP = !singleType ? 2 : c.SanPhamCTs.FirstOrDefault().SoLuongSach == 1 ? 1 : 3;
+                sp.SoLuongSach = c.SanPhamCTs.FirstOrDefault().SoLuongSach;
+                sanPham.Add(sp);
+            });
+
             var sanPhamCT = _dbContext.SanPhamCTs;
             var sachCT = _dbContext.SachCTs;
             var sach = _dbContext.Sachs;
@@ -30,7 +50,7 @@ namespace WebNewBook.API.Repository.Service
             
 
             var homeVMs = (from a in sanPham
-                            join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham                          
+                            join b in sanPhamCT on a.SanPham.ID_SanPham equals b.MaSanPham                          
                             join c in sachCT on b.MaSachCT equals c.ID_SachCT
                            join d in sach on c.MaSach equals d.ID_Sach
                            join e in sachTL on d.ID_Sach equals e.MaSach
@@ -39,17 +59,18 @@ namespace WebNewBook.API.Repository.Service
 
                             select new HomeViewModel
                             {
-                                ID_SanPham = a.ID_SanPham,
-                                TenSanPham = a.TenSanPham,
-                                SoLuong = a.SoLuong,
-                                GiaBan = a.GiaBan,
-                                GiaGoc = a.GiaGoc,
-                                HinhAnh = a.HinhAnh,
+                                ID_SanPham = a.SanPham.ID_SanPham,
+                                TenSanPham = a.SanPham.TenSanPham,
+                                SoLuong = a.SanPham.SoLuong,
+                                GiaBan = a.SanPham.GiaBan,
+                                GiaGoc = a.SanPham.GiaGoc,
+                                HinhAnh = a.SanPham.HinhAnh,
                                 TenDanhMuc = f.TenDanhMuc,
                                 idDanhMuc = f.ID_DanhMuc,
-                                TrangThai = a.TrangThai,
-                                NgayTao = a.NgayTao,
-
+                                TrangThai = a.SanPham.TrangThai,
+                                NgayTao = a.SanPham.NgayTao,
+                                TheLoai = a.TheLoaiSP,
+                                SoLuongSach = a.SoLuongSach
                             }).ToList();
 
             List<HomeViewModel> lst = new List<HomeViewModel>();

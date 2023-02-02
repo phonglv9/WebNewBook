@@ -256,8 +256,8 @@ namespace WebNewBook.API.Repository.Service
         public List<SachCTViewModel> GetSachCTViewModels()
         {
             var result = _dbcontext.SachCTs.
-                        Join(_dbcontext.Sachs, sachCT => sachCT.MaSach, sach => sach.ID_Sach, (sachCT, sach) => new { sachCT, sach.TenSach }).
-                        Join(_dbcontext.NhaXuatBans, sachCT => sachCT.sachCT.MaNXB, nxb => nxb.ID_NXB, (sachCT, nxb) => new SachCTViewModel { SachCT = sachCT.sachCT, TenSach = sachCT.TenSach, NXB = nxb.TenXuatBan });
+                        Join(_dbcontext.Sachs, sachCT => sachCT.MaSach, sach => sach.ID_Sach, (sachCT, sach) => new { sachCT, sach }).
+                        Join(_dbcontext.NhaXuatBans, sachCT => sachCT.sachCT.MaNXB, nxb => nxb.ID_NXB, (sachCT, nxb) => new SachCTViewModel { SachCT = sachCT.sachCT, TenSach = sachCT.sach.TenSach, NXB = nxb.TenXuatBan, MaSach = sachCT.sach.ID_Sach });
 
             return result.ToList();
         }

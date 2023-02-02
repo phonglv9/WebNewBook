@@ -100,23 +100,6 @@ namespace WebNewBook.API.Repository.Service
                 sp.SanPham = c.SanPham;
                 sp.TheLoaiSP = !singleType ? 2 : c.SanPhamCTs.FirstOrDefault().SoLuongSach == 1 ? 1 : 3;
                 sp.SoLuongSach = c.SanPhamCTs.FirstOrDefault().SoLuongSach;
-                //if (c.SanPhamCTs.Count() == 1)
-                //{
-                //    if (c.SanPhamCTs.FirstOrDefault().SoLuongSach == 1)
-                //    {
-                //        sp.TheLoaiSP = 1;
-                //    }
-                //    else
-                //    {
-                //        sp.TheLoaiSP = 3;
-                //    }
-
-                //}
-                //else
-                //{
-                //    sp.TheLoaiSP = 2;
-                //}
-
                 result.Add(sp);
             });
             return result;
