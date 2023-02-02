@@ -114,6 +114,10 @@ namespace WebNewBook.Controllers
             {
                 string data = response.Content.ReadAsStringAsync().Result;
                 lissttlhdct = JsonConvert.DeserializeObject<List<ViewHoaDonCT>>(data);
+
+                //Toi uu cau lenh 
+                //var hoadon = lissttlhdct.Where(c=>c.hoaDon.ID_HoaDon == id).FirstOrDefault().hoaDon;
+                
                 //Thông tin khách hàng
                 ViewBag.IDLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.ID_KhachHang).FirstOrDefault();
                 ViewBag.NameLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.HoVaTen).FirstOrDefault();
@@ -158,7 +162,7 @@ namespace WebNewBook.Controllers
             return View("IndexHDCT");
         }
         // sửa trạng thái đơn hàng
-        public async Task<IActionResult> Sua(string id, int name) 
+        public async Task<IActionResult>Sua(string id, int name) 
         {
             
             HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}").Result;
