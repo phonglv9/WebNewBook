@@ -203,8 +203,6 @@ namespace WebNewBook.Controllers
 
 
             }
-
-        
             var idVoucher = HttpContext.Session.GetString("idVoucher");
             double tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout"));
             double menhGiaVC = Convert.ToDouble(HttpContext.Session.GetString("amoutVoucher"));
@@ -297,7 +295,7 @@ namespace WebNewBook.Controllers
             var tienShip = Convert.ToDouble(HttpContext.Session.GetString("shiptotal"));
 
             var idVoucher = HttpContext.Session.GetString("idVoucher");
-            hoaDon.TongTien = tongTien + tienShip;
+            hoaDon.TongTien = tongTien;
             hoaDon.PhiGiaoHang = tienShip;
             hoaDon.MaGiamGia = idVoucher;
 
