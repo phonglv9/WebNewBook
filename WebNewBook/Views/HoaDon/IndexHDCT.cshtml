@@ -190,6 +190,18 @@
                                             }
                                     </span>
                                 </li>
+                                    @if (ViewBag.trangthai == 4 || ViewBag.trangthai == 7)
+                                    {
+                                    <li class="text-dark">
+                                        <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold">
+                                            Lý do hủy đơn:  @if (ViewBag.lydohuyudon != null)
+                                                {
+                                                    @ViewBag.lydohuyudon
+                                                }
+                                        </span>
+                                    </li>
+                                    }
+                              
 
                             </ul>
                         </div>
@@ -305,12 +317,29 @@
                             }
                         </div>
                         <div class="col-xl-3">
-
+                          
                             <p class="text-black float-end">
-                                <span class="text-black me-3 font-weight-bold"> Tổng tiền: </span><span class="font-weight-bold" style="font-size: 25px;">
+                                <span class="text-black me-3 font-weight-bold"> Thành tiền: </span><span class="font-weight-bold" style="font-size: 15px;">
                                     @if (ViewBag.tongtien != null)
                                     {
                                         @ViewBag.tongtien.ToString("#,##0").Replace(',', '.')
+                                    }đ
+                                </span>
+                            </p>
+                            <p class="text-black float-end">
+                                <span class="text-black me-3 font-weight-bold"> Phí giao hàng: </span><span class="font-weight-bold" style="font-size: 15px;">
+                                    @if (ViewBag.tongtien != null)
+                                    {
+                                        @ViewBag.phigiaohang.ToString("#,##0").Replace(',', '.')
+                                    }đ
+                                </span>
+                            </p>
+                            <p class="text-black float-end">
+                                <span class="text-black me-3 font-weight-bold"> Tổng tiền </span><span class="font-weight-bold" style="font-size: 25px;">
+                                    @if (ViewBag.tongtien != null)
+                                    {
+                                      
+                                                            @String.Format("{0:#,##0.##}", (ViewBag.phigiaohang + ViewBag.tongtien)) 
                                     }đ
                                 </span>
                             </p>

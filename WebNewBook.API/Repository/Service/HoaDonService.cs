@@ -193,14 +193,16 @@ namespace WebNewBook.API.Repository.Service
             return HoaDonChiTiet;
         }
 
-        public async Task UpdatetrangthaiHD(string id, int name)
+        public async Task UpdatetrangthaiHD(string id, int name, string lydohuy)
         {
-
-
             try
             {
                 var a = dbcontext.HoaDons.Where(a => a.ID_HoaDon == id).FirstOrDefault();
                 a.TrangThai = name;
+                if (name ==4 || name == 7)
+                {
+                    a.Lydohuy = lydohuy;
+                }
                 dbcontext.Update(a);
                 await dbcontext.SaveChangesAsync();
             }

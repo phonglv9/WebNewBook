@@ -10,6 +10,7 @@ using X.PagedList;
 using WebNewBook.API.ModelsAPI;
 using Org.BouncyCastle.Asn1.Ocsp;
 using System.Text;
+using System.Text.Json;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Xml.Linq;
@@ -143,6 +144,8 @@ namespace WebNewBook.Controllers
                 ViewBag.ngaymua = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.NgayMua).FirstOrDefault();
                 ViewBag.tongtien= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TongTien).FirstOrDefault(); 
                 ViewBag.trangthai= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TrangThai).FirstOrDefault();
+                ViewBag.lydohuyudon= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.Lydohuy).FirstOrDefault();
+                ViewBag.phigiaohang= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.PhiGiaoHang).FirstOrDefault();
 
                 var lstProduct  = new List<SanPham>();
                 HttpResponseMessage respProduct = client.GetAsync("https://localhost:7266/SanPham").Result;
@@ -162,10 +165,11 @@ namespace WebNewBook.Controllers
             return View("IndexHDCT");
         }
         // sửa trạng thái đơn hàng
-        public async Task<IActionResult>Sua(string id, int name) 
+        public async Task<IActionResult> Sua(string id, int name,string? lyDoHuy) 
         {
-            
-            HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}").Result;
+            Console.WriteLine(lyDoHuy);
+           
+            HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}?lydohuy={lyDoHuy}").Result;
             return Redirect("Index");
         }
 
