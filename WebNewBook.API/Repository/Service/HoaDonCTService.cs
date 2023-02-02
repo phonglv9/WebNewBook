@@ -39,6 +39,8 @@ namespace WebNewBook.API.Repository.Service
                 SoLuong = 1,
                 GiaBan = giabansp
             };
+            var product = _dbcontext.SanPhams.FirstOrDefault(c => c.ID_SanPham == masp);
+
             var checktrungSp = _dbcontext.HoaDonCTs.Any(c => c.MaHoaDon == mhd && c.MaSanPham == masp);
             Console.WriteLine(checktrungSp);
             if (checktrungSp)
@@ -46,17 +48,20 @@ namespace WebNewBook.API.Repository.Service
                 var mahdct = _dbcontext.HoaDonCTs.Where(c => c.MaSanPham == masp && c.MaHoaDon == mhd).Select(c => c.ID_HDCT).FirstOrDefault();
                 var model = _dbcontext.HoaDonCTs.FirstOrDefault(c => c.ID_HDCT == mahdct);
                 model.SoLuong += 1;
-            
+                product.SoLuong -= 1;
                 _dbcontext.HoaDonCTs.Update(model);
+                _dbcontext.SanPhams.Update(product);
              
             }
             else
             {
+                product.SoLuong -= 1;
                 _dbcontext.HoaDonCTs.Add(hoaDonCT);
-             
+                _dbcontext.SanPhams.Update(product);
+
             }
             await _dbcontext.SaveChangesAsync();
-           // tongtien(mhd);
+          
 
 
             double tong = 0;
@@ -77,6 +82,9 @@ namespace WebNewBook.API.Repository.Service
         public async Task DeletaOrderDetail(string mhdct)
         {
             var modal = _dbcontext.HoaDonCTs.FirstOrDefault(c => c.ID_HDCT == mhdct);
+            var product = _dbcontext.SanPhams.FirstOrDefault(c => c.ID_SanPham == modal.MaSanPham);
+            product.SoLuong += modal.SoLuong;
+            _dbcontext.SanPhams.Update(product);
             _dbcontext.HoaDonCTs.Remove(modal);
             await _dbcontext.SaveChangesAsync();
 
@@ -96,7 +104,22 @@ namespace WebNewBook.API.Repository.Service
         public async Task UpdateOrderDetailQuantity(string mhdct, int quantity)
         {
             var modal = _dbcontext.HoaDonCTs.FirstOrDefault(c => c.ID_HDCT == mhdct );
+            var soluongtruoc = modal.SoLuong;
             modal.SoLuong = quantity;
+            var product = _dbcontext.SanPhams.FirstOrDefault(c => c.ID_SanPham == modal.MaSanPham);
+            if (soluongtruoc<quantity)
+            {
+                var soluongcanlay = quantity - soluongtruoc;
+                product.SoLuong -= soluongcanlay;
+                _dbcontext.SanPhams.Update(product);
+            }
+            if (soluongtruoc>quantity)
+            {
+                var soluongcanlay =  soluongtruoc-quantity;
+                product.SoLuong += soluongcanlay;
+                _dbcontext.SanPhams.Update(product);
+            }
+           
             _dbcontext.HoaDonCTs.Update(modal);
              await _dbcontext.SaveChangesAsync();
 

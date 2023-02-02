@@ -32,14 +32,14 @@ namespace WebNewBook.API.Controllers
             return await _hoaDonService.GetHDCT(id);
         }
         [HttpGet("UpdateTT/{id}/{name}")]
-        public async Task<ActionResult> UpdateTT(string id,int name)
+        public async Task<ActionResult> UpdateTT(string id,int name,string? lydohuy)
         {
           
             
 
             try
             {
-                _hoaDonService.UpdatetrangthaiHD(id, name);
+                _hoaDonService.UpdatetrangthaiHD(id, name,lydohuy);
                 return Ok();
             }
             catch (Exception e)

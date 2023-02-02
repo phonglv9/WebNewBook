@@ -202,46 +202,7 @@ namespace WebNewBook.Controllers
         public async Task<IActionResult> OrderDetail(string id)
         {
 
-            //double thanhtien=0;
-         
-            //HttpClient _httpClient = new HttpClient();
-            //List<HoaDonCT> lsthoaDonCTs = new List<HoaDonCT>();
-            //List<ViewHoaDon> lstviewHoaDons= new List<ViewHoaDon>();
-            //HoaDon hoaDon = new HoaDon();
-            //HttpResponseMessage responseOrderbyId = _httpClient.GetAsync("https://localhost:7266/api/ProfileCustomer/GetOrderById/" + id).Result;
-            //HttpResponseMessage responseOrderdetail = _httpClient.GetAsync("https://localhost:7266/api/ProfileCustomer/GetOrderdetail/" + id).Result;
-            //HttpResponseMessage responseListOrderdetail = _httpClient.GetAsync("https://localhost:7266/api/HoaDon/getlistid/" + id).Result;
-            //if (responseOrderdetail.IsSuccessStatusCode)
-            //{
-            //    string jsondata = responseOrderdetail.Content.ReadAsStringAsync().Result;
-            //    lsthoaDonCTs = JsonConvert.DeserializeObject<List<HoaDonCT>>(jsondata);
-            //}
-            //if (responseOrderbyId.IsSuccessStatusCode)
-            //{
-            //    string jsondata = responseOrderbyId.Content.ReadAsStringAsync().Result;
-            //    hoaDon = JsonConvert.DeserializeObject<HoaDon>(jsondata);
-            //}
-            //if (responseListOrderdetail.IsSuccessStatusCode)
-            //{
-            //    string jsondata = responseListOrderdetail.Content.ReadAsStringAsync().Result;
-            //    lstviewHoaDons = JsonConvert.DeserializeObject<List<ViewHoaDon>>(jsondata);
-            //}
-            //ViewBag.lstOrder = lsthoaDonCTs;
-            //ViewBag.hoadonById = hoaDon;
-            //ViewBag.lstviewHoadon = lstviewHoaDons;
-            
-
-
-            //foreach (var x in lstviewHoaDons.Select(c => c.hoaDonCT))
-            //{
-            //    thanhtien += x.GiaBan * x.SoLuong;
-              
-            //}
-            //ViewBag.thanhtien = thanhtien;
-            //ViewBag.tongtien = lstviewHoaDons.FirstOrDefault(c => c.hoaDon.ID_HoaDon == id).hoaDon.TongTien;
-            //ViewBag.chietkhau =( ViewBag.thanhtien) - (ViewBag.tongtien);
-            //return View();
-
+       
             ViewBag.TitleAdmin = "Chi tiết hóa đơn";
             List<ViewHoaDonCT> lissttlhdct = new List<ViewHoaDonCT>();
             HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/getlistid/{id}").Result;
@@ -275,7 +236,8 @@ namespace WebNewBook.Controllers
                 ViewBag.ngaymua = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.NgayMua).FirstOrDefault();
                 ViewBag.tongtien = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TongTien).FirstOrDefault();
                 ViewBag.trangThai = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TrangThai).FirstOrDefault();
-                ViewBag.thanhTien = ViewBag.tongtien + voucher.MenhGia;
+                ViewBag.Phigiaohang = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.PhiGiaoHang).FirstOrDefault();
+                ViewBag.thanhTien = ViewBag.tongtien + voucher.MenhGia ;
             }
 
 
