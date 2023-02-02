@@ -12,5 +12,6 @@ namespace WebNewBook.Model.APIModels
         public SachCT SachCT { get; set; }
         public string TenSach { get; set; }
         public string NXB { get; set; }
+        public string MaSach { get; set; }
     }
 }

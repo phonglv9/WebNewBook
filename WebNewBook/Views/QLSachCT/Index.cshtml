@@ -77,7 +77,7 @@
                             var img = item.SachCT.HinhAnh ?? string.Empty;
                             var loaiBia = item.SachCT.BiaMem ? "Bìa mềm" : "Bìa cứng";
                             <tr>
-                                <th scope="row">@item.TenSach</th>
+                                <th scope="row"><a asp-controller="Sach" asp-action="Update" asp-route-id="@item.MaSach">@item.TenSach</a></th>
                                 <td>@item.SachCT.SoLuong</td>
                                 <td>@item.SachCT.GiaBan</td>
                                 <td><img src="~/img/@img" style="width:100px;height:100px"/></td>
