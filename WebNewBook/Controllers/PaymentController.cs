@@ -54,7 +54,7 @@ namespace WebNewBook.Controllers
 
 
             List<CartItem> data = new List<CartItem>();
-            if (User.Identity.Name == null)
+            if (string.IsNullOrEmpty(User.Identity.Name))
             {
 
 
@@ -78,7 +78,7 @@ namespace WebNewBook.Controllers
             else
             {
                 List<ModelCart> gioHangs = new List<ModelCart>();
-                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/GioHang/GetLitsGH").Result;
+                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "api/GioHang/GetLitsGH").Result;
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonData1 = response.Content.ReadAsStringAsync().Result;
@@ -181,8 +181,9 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, string messageVC)
         {
+            var gioHangs = Giohangs();
             //Check validate nếu giỏ hàng trống không thể thanh toán
-            if (Giohangs().Count < 1)
+            if (gioHangs.Count() < 1)
             {
                 return RedirectToAction("Index", "GioHang");
             }
@@ -256,7 +257,7 @@ namespace WebNewBook.Controllers
 
 
             }
-            ViewBag.Cart = Giohangs();
+            ViewBag.Cart = gioHangs;
             //Voucher
             if (menhGiaVC != 0 && menhGiaDK != 0)
             {
@@ -268,8 +269,7 @@ namespace WebNewBook.Controllers
                     ViewBag.IDVoucher = idVoucher;
                 }
 
-            }
-     
+            }    
             HttpContext.Session.SetString("amout2", tongTien.ToString());
             ViewBag.TongTien = tongTien;
             if (!string.IsNullOrEmpty(idHoaDon))
