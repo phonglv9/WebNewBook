@@ -202,6 +202,22 @@ namespace WebNewBook.API.Repository.Service
                 if (name ==4 || name == 7)
                 {
                     a.Lydohuy = lydohuy;
+                    var lsthdct = dbcontext.HoaDonCTs.Where(c => c.MaHoaDon == id).ToList();
+                    foreach (var x in lsthdct)
+                    {
+                        var masp = x.MaSanPham;
+                        var soluong = x.SoLuong;
+                        var sanpham = dbcontext.SanPhams.FirstOrDefault(c => c.ID_SanPham == masp);
+                        sanpham.SoLuong += soluong;
+                        dbcontext.SanPhams.Update(sanpham);
+                        dbcontext.SaveChanges();
+                    }
+                    var hoadon = dbcontext.HoaDons.FirstOrDefault(c => c.ID_HoaDon == id);
+                    var voucherct = dbcontext.VoucherCTs.FirstOrDefault(c => c.Id == hoadon.MaGiamGia);
+                    voucherct.TrangThai = 1;
+                    dbcontext.VoucherCTs.Update(voucherct);
+
+                   
                 }
                 dbcontext.Update(a);
                 await dbcontext.SaveChangesAsync();

@@ -13,20 +13,7 @@ namespace WebNewBook.API.Repository.Service
             _dbcontext = dbcontext;
         }
 
-       //public  void tongtien(string mhd)
-       // {
-       //     double tong = 0;
-       //     var hoaDON = _dbcontext.HoaDonCTs.Where(c => c.MaHoaDon == mhd).ToList();
-       //     foreach (var x in hoaDON)
-       //     {
-       //         var thanhtien = x.GiaBan * x.SoLuong;
-       //         tong += thanhtien;
-       //     }
-       //     var updatehoadon = _dbcontext.HoaDons.FirstOrDefault(c => c.ID_HoaDon == mhd);
-       //     updatehoadon.TongTien = tong;
-       //     _dbcontext.HoaDons.Update(updatehoadon);
-       //      _dbcontext.SaveChanges();
-       // }
+   
         public async Task AddOrderDetail(string mhd, string masp)
         {
 
@@ -72,7 +59,29 @@ namespace WebNewBook.API.Repository.Service
                 tong += thanhtien;
             }
             var updatehoadon = _dbcontext.HoaDons.FirstOrDefault(c => c.ID_HoaDon == mhd);
+
             updatehoadon.TongTien = tong;
+            if (updatehoadon.MaGiamGia != null)
+            {
+               var voucherct= _dbcontext.VoucherCTs.FirstOrDefault(c => c.Id == updatehoadon.MaGiamGia);
+                if (voucherct!=null)
+                {
+                    var voucher = _dbcontext.Vouchers.FirstOrDefault(v => v.Id == voucherct.MaVoucher);
+                    if (tong>= voucher.MenhGiaDieuKien)
+                    {
+                        updatehoadon.TongTien -= voucher.MenhGia;
+                    }
+                    else
+                    {
+                        voucherct.TrangThai = 1;
+                        _dbcontext.VoucherCTs.Update(voucherct);
+                        updatehoadon.MaGiamGia = null;
+
+                      
+                    }
+                }
+               
+            }
             _dbcontext.HoaDons.Update(updatehoadon);
             _dbcontext.SaveChanges();
 
@@ -97,6 +106,26 @@ namespace WebNewBook.API.Repository.Service
             }
             var updatehoadon = _dbcontext.HoaDons.FirstOrDefault(c => c.ID_HoaDon == modal.MaHoaDon);
             updatehoadon.TongTien = tong;
+            if (updatehoadon.MaGiamGia != null)
+            {
+                var voucherct = _dbcontext.VoucherCTs.FirstOrDefault(c => c.Id == updatehoadon.MaGiamGia);
+                if (voucherct != null)
+                {
+                    var voucher = _dbcontext.Vouchers.FirstOrDefault(v => v.Id == voucherct.MaVoucher);
+                    if (tong >= voucher.MenhGiaDieuKien)
+                    {
+                        updatehoadon.TongTien -= voucher.MenhGia;
+                    }
+                    else
+                    {
+                        voucherct.TrangThai = 1;
+                        _dbcontext.VoucherCTs.Update(voucherct);
+                        updatehoadon.MaGiamGia = null;
+                     
+                    }
+                }
+
+            }
             _dbcontext.HoaDons.Update(updatehoadon);
             _dbcontext.SaveChanges();
         }
@@ -132,6 +161,26 @@ namespace WebNewBook.API.Repository.Service
             }
             var updatehoadon = _dbcontext.HoaDons.FirstOrDefault(c => c.ID_HoaDon == modal.MaHoaDon);
             updatehoadon.TongTien = tong;
+            if (updatehoadon.MaGiamGia != null)
+            {
+                var voucherct = _dbcontext.VoucherCTs.FirstOrDefault(c => c.Id == updatehoadon.MaGiamGia);
+                if (voucherct != null)
+                {
+                    var voucher = _dbcontext.Vouchers.FirstOrDefault(v => v.Id == voucherct.MaVoucher);
+                    if (tong >= voucher.MenhGiaDieuKien)
+                    {
+                        updatehoadon.TongTien -= voucher.MenhGia;
+                    }
+                    else
+                    {
+                        voucherct.TrangThai = 1;
+                        _dbcontext.VoucherCTs.Update(voucherct);
+                        updatehoadon.MaGiamGia = null;
+                 
+                    }
+                }
+
+            }
             _dbcontext.HoaDons.Update(updatehoadon);
             _dbcontext.SaveChanges();
         }

@@ -44,7 +44,7 @@ namespace WebNewBook.Controllers
                 lstOrder = JsonConvert.DeserializeObject<List<HoaDon>>(jsondata);
                 ViewBag.lstOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year);
                 ViewBag.soLuongOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year && c.TrangThai==5).Count();
-                ViewBag.tongTienOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year && c.TrangThai==5).Sum(c=>c.TongTien);
+                ViewBag.tongTienOrder = lstOrder.Where(c => c.NgayMua.Year == DateTime.Now.Year && c.TrangThai==5).Sum(c=>c.TongTien + c.PhiGiaoHang);
             }
           
           
