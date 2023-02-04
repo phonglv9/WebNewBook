@@ -48,20 +48,33 @@
             <div class="bg-light d-flex align-items-center justify-content-between p-4 px-2">
                 <div class="mb-2 row">
                     <div class="row">
-                        <div class="col-5">
-                            <input class="form-control" type="date" id="date_start"  />
+                      
+                        <div class="dropdown">
+                            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Lọc theo 
+                            </button>
+                            <ul class="dropdown-menu p-3" >
+                                <li><input class="form-control mt-2" type="date" id="date_start" /></li>
+                                <li><input class="form-control mt-2" type="date" id="date_end" /></li>
+                                <li><button type="submit" class="btn btn-primary mt-2" onclick=" return GetFillterReprort()">Lọc</button></li>
+                               
+                                    
+                               
+                               
+                                    
+                               
+                               
+                                    
+                                
+                            </ul>
                         </div>
-                        <div class="col-5">
-                            <input class="form-control" type="date" id="date_end" />
-                        </div>
-                        <div class="col-2">
-                            <button type="submit" class="btn btn-primary" onclick=" return GetFillterReprort()">Lọc</button>
-                        </div>
+                      
                     </div>
 
 
 
                 </div>
+              
                 
 
             </div>

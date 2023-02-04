@@ -6,9 +6,7 @@ const VND = new Intl.NumberFormat('vi-VN', {
 });
 $(document).ready(function () {
 
-    //$('#provin').chosen();
-    //$('#district').chosen();
-    /*  $('#ward').chosen();*/
+   
     $("#phiship").hide();
     //Chọn tỉnh thành
     $('#provin').change(function () {
@@ -101,6 +99,7 @@ $(document).ready(function () {
         });
     }
     //Tính phí ship
+    //Get xã
     $('#ward').change(function () {
         var id_ward = this.value;
         var totalOder = 0;      
@@ -120,7 +119,7 @@ $(document).ready(function () {
         $("#phiship").hide();
         $("#totalship").text('');
        
-        if (this.value > 1) {
+        if (this.value != 0) {
 
             var obj = {
                 service_id: 100039,
@@ -144,10 +143,10 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 success: function (result) {
                     $("#phiship").show();
-                    $("#totalship").text(result.data.total);
+                    $("#totalship").text(formatVND(result.data.total));
 
                     var temp = result.data.total + totalOder;
-                    $("#totaloder").text(temp);
+                    $("#totaloder").text(formatVND(temp));
 
                     sessionStorage.setItem("shiptotal", result.data.total);
                 }

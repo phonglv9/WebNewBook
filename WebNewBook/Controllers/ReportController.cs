@@ -73,11 +73,11 @@ namespace WebNewBook.Controllers
         }
         public  IActionResult Index()
         {
-            ViewBag.TitleAdmin = "DashBoard";
+            ViewBag.TitleAdmin = "Thống kê";
             return View();
         }
-        //public async Task< IActionResult> Index(string nxb, string fillterDatetime, DateTime timerangefrom, DateTime rimerangeto)
-        //{   
+        //public async Task<IActionResult> Index(string nxb, string fillterDatetime, DateTime timerangefrom, DateTime rimerangeto)
+        //{
 
         //    //ListReport
         //    List<ReportVM> modelReport = new List<ReportVM>();
@@ -88,7 +88,7 @@ namespace WebNewBook.Controllers
         //        modelReport = JsonConvert.DeserializeObject<List<ReportVM>>(jsonData);
 
 
-        //    }   
+        //    }
         //    if (fillterDatetime == "month")
         //    {
         //        modelReport = await modelReport.Where(c => c.hoaDon.NgayMua.Month == DateTime.Now.Month).ToListAsync();
@@ -124,7 +124,7 @@ namespace WebNewBook.Controllers
         //        .GroupJoin(modelReport, dt => dt, o => o.hoaDon.NgayMua.Date, (dt, orders) => new ReportDTO { DateValue = dt.ToString(), TotalMoney = orders.Sum(c => c.hoaDon.TongTien) }).ToList();
         //        ViewBag.ChartData = dataChart;
         //        ViewBag.MessChart = "FillterX";
-        //        return View(modelReport);                         
+        //        return View(modelReport);
         //    }
         //    return View(modelReport);
 

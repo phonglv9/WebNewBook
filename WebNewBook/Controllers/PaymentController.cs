@@ -381,13 +381,13 @@ namespace WebNewBook.Controllers
                             await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{hoaDon.MaGiamGia}", null);
 
                         }
-                        if (khachHang.ID_KhachHang != "KHNOLOGIN")
-                        {
+                        //if (khachHang.ID_KhachHang != "KHNOLOGIN")
+                        //{
 
-                            //Tích điểm
-                            int fpoint = Convert.ToInt32(hoaDon.TongTien) / 100;
-                            await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{hoaDon.ID_HoaDon}/{fpoint}/{khachHang.ID_KhachHang}", null);
-                        }
+                        //    //Tích điểm
+                        //    int fpoint = Convert.ToInt32(hoaDon.TongTien) / 100;
+                        //    await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{hoaDon.ID_HoaDon}/{fpoint}/{khachHang.ID_KhachHang}", null);
+                        //}
 
                         //Xóa giỏ hàng sau khi mua hàng
                         await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{khachHang.Email}", null);
@@ -508,12 +508,12 @@ namespace WebNewBook.Controllers
 
             }
 
-
-            if (idCustomer != "KHNOLOGIN")
-            {
-                int fpoint = Convert.ToInt32(request.vnp_Amount) / 10000;
-                await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{idHoaDon}/{fpoint}/{idCustomer}", null);
-            }
+            //Tích điểm
+            //if (idCustomer != "KHNOLOGIN")
+            //{
+            //    int fpoint = Convert.ToInt32(request.vnp_Amount) / 10000;
+            //    await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{idHoaDon}/{fpoint}/{idCustomer}", null);
+            //}
             //Thay đổi trạng thái voucher
             if (!string.IsNullOrEmpty(idVoucherVNPAY))
             {
