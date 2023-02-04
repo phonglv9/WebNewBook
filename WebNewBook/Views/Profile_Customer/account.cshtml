@@ -66,7 +66,7 @@
                                             <td>@x.ID_HoaDon</td>
                                             <td>@x.NgayMua.ToString("d/M/yyyy")</td>
                                             <td>@x.TenNguoiNhan</td>
-                                            <td>@String.Format( "{0:#,##0.##}",(x.TongTien)) đ</td>
+                                            <td>@String.Format("{0:#,##0.##}", (x.TongTien + x.PhiGiaoHang)) đ</td>
                                             @if (x.TrangThai == 1)
                                             {
                                                 <td class="text-primary">Đã đặt hàng</td>
