@@ -31,15 +31,14 @@ namespace WebNewBook.API.Controllers
         /// tích điểm poin 
         /// </summary>
         /// <param name="id"></param>
-        /// <param name="diemtichluy"></param>
-        /// <param name="makh"></param>
+      
         /// <returns></returns>
-        [HttpPost("{id}/{diemtichluy}/{makh}")]
-        public async Task<ActionResult> AddFpointAsync(string id , string diemtichluy , string makh)
+        [HttpPost("{id}")]
+        public async Task<ActionResult> AddFpointAsync(string id)
         {
             try
             {
-                await _FpointService.AddFoint(id,diemtichluy,makh);
+                await _FpointService.AddFoint(id);
                 return Ok();
             }
             catch (Exception e)

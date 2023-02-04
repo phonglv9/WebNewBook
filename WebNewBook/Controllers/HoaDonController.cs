@@ -170,6 +170,12 @@ namespace WebNewBook.Controllers
             Console.WriteLine(lyDoHuy);
            
             HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}?lydohuy={lyDoHuy}").Result;
+            if (name==5)
+            {
+                HttpResponseMessage response1 = client.PostAsync(client.BaseAddress + $"/Fpoint/{id}", null).Result;
+            }
+
+
             return Redirect("Index");
         }
 
