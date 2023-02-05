@@ -43,7 +43,9 @@
     </div>
     <br>
     <div>
+       
         <div class="_0obGFe">
+           
             <a asp-action="Index" id="choxacnhan" asp-route-trangThai="1" class="vAkdD0 r-S3nG">
                 <span class="_0rjE9m">
                     Chờ xác nhận
@@ -79,6 +81,52 @@
     </div>
 
     <div class="container" style="background-color: rgb(255, 255, 255);">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Tạo
+        </button>
+
+        <!-- Modal -->
+        <form asp-action="addOrderAdmin">
+           
+            <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="tennguoinhan" class="form-label">Tên Người nhận</label>
+                                <input type="text" asp-for="hoaDon.TenNguoiNhan" class="form-control" id="tennguoinhan">
+                            </div>
+                            <div class="mb-3">
+                                <label for="diachi" class="form-label">Địa chỉ</label>
+                                <input type="text" asp-for="hoaDon.DiaChiGiaoHang"  class="form-control" id="diachi">
+                            </div>
+                            <div class="mb-3">
+                                <label for="sdt" class="form-label">Số điện thoại</label>
+                                <input type="text" asp-for="hoaDon.SDT" class="form-control" id="sdt">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" asp-for="hoaDon.Email"  class="form-control" id="sdt">
+                            </div>
+                            <div class="mb-3">
+                                <label for="ghichu" class="form-label">Ghi Chú</label>
+                                <input type="text" asp-for="hoaDon.GhiChu" class="form-control" id="ghichu">
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Sửa thông tin</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
         <div class="py-1">
             @if (mess != "")
             {

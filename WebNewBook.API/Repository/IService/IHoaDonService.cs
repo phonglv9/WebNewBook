@@ -18,6 +18,7 @@ namespace WebNewBook.API.Repository.IService
         //voucher get price
         Task<Voucher> GetPriceVoucher(string idVoucherCT);
         Task UpdateThongtinnguoinhan(HoaDon hoaDon);
+        string AddOrderAdmin(HoaDon hoaDon);
 
 
     }
