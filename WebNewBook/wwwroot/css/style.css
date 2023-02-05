@@ -698,6 +698,7 @@ header {
         transform: translateX(-100%);
         -webkit-transition: 0.2s all;
         transition: 0.2s all;
+        z-index:1000;
     }
 
         #responsive-nav.active {

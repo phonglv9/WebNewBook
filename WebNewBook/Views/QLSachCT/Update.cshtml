@@ -36,14 +36,18 @@
             </div>
             <div class="form-group">
                 <label asp-for="BiaMem" class="control-label">Loại bìa</label>
-                <input asp-for="BiaMem">
+                <br />
+                <div class="p-2">
+                    <input asp-for="BiaMem" type="radio" value="false" id="biacung" checked /> Bìa cứng
+                    <input asp-for="BiaMem" type="radio" value="true" id="biamem" /> Bìa mềm
+                </div>
             </div>
             <input asp-for="ID_SachCT" hidden />
             <input asp-for="HinhAnh" hidden />
             <input asp-for="TrangThai" hidden />
             <input asp-for="SoLuong" hidden />
             <input asp-for="MaSach" hidden />
-            <button type="submit" class="btn btn-primary">Sửa sách</button>
+            <button type="submit" class="btn btn-warning"><i class="fa-solid fa-pen"></i> Sửa sách</button>
         </form>
     </div>
 </div>
@@ -61,7 +65,21 @@
                     alert("Giá tiền không hợp lệ");
                 }
 
-        })
+        });
+         $('#biacung').change(function(){
+
+                $("#biacung").prop("checked", true);
+               
+                $("#biamem").removeAttr("checked");
+
+        });
+        $('#biamem').change(function(){
+
+                $("#biamem").prop("checked", true);
+
+                $("#biacung").removeAttr("checked");
+
+        });
 
     });
 </script>
