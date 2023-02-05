@@ -288,7 +288,7 @@ namespace WebNewBook.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Pay(HoaDon hoaDon, string payment)
+        public async Task<IActionResult> Pay(HoaDon hoaDon, string payment,string adress_detail)
         {
 
             var tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout2"));
@@ -530,7 +530,7 @@ namespace WebNewBook.Controllers
             return View();
         }
         //[HttpPost]
-        public async Task<IActionResult> ApDungVouCher(string maVoucher)
+        public async Task<IActionResult> ApDungVouCher(string maVoucher )
         {
             var tongTien = Giohangs().Sum(c => c.ThanhTien);
             var ngayHienTai = DateTime.Now;

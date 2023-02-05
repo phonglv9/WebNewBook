@@ -13,12 +13,12 @@ $(document).ready(function () {
         loadTotal();
         var id_provin = this.value;
         $('#district option').remove();
-        $('#district').append(new Option("-- Chọn quận/huyện --", 0));
+        $('#district').append(new Option("-- Chọn quận/huyện --",0));
 
         $('#ward option').remove();
         $('#ward').append(new Option("-- Chọn phường/xã --", 0));
 
-        if (this.value > 1) {
+        if (this.value != 0 ) {
 
             $.ajax({
                 url: _URL + 'Payment/GetListDistrict',
@@ -50,7 +50,7 @@ $(document).ready(function () {
         $('#ward option').remove();
         $('#ward').append(new Option("-- Chọn phường/xã --", 0));
 
-        if (this.value > 1) {
+        if (this.value != 0 ) {
 
             $.ajax({
                 url: _URL + 'Payment/GetListWard',

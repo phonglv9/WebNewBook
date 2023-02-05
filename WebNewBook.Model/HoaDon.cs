@@ -26,6 +26,10 @@ namespace WebNewBook.Model
         [Range(0, 5)]
         public int TrangThai { get; set; }
 
+        public string WardID { get; set; }
+        public string ProvinID { get; set; }
+        public string DistrictID { get; set; }
+
         public virtual KhachHang? KhachHang { get; set; }
         public virtual ICollection<HoaDonCT>? HoaDonCTs { get; set; }
         public virtual ICollection<PhieuTra>? PhieuTras { get; set; }

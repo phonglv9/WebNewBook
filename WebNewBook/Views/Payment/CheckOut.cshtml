@@ -64,7 +64,7 @@
                             <label id="emailcheck" class="text-danger"></label>
                         </div>
                         <div class="form-group">
-                            <label><span style="color:red;"> (*) </span>Địa chỉ giao hàng</label>
+                            <label><span style="color:red;"> (*) </span>Địa chỉ nhận hàng</label>
                             <input asp-for="DiaChiGiaoHang" class="input" type="text" value="@khachHang.DiaChi" name="DiaChiGiaoHang" id="adress">
                             <label id="adresscheck" class="text-danger"></label>
                         </div>
@@ -229,7 +229,7 @@
                         </div>
                         <div class="text-bg-danger" id="radiocheck"></div>
                     </div>
-
+                    <input hidden id="adress_detail" name="adress_detail" />
                     <button type="button" data-toggle="modal" data-target="#exampleModal" class="primary-btn order-submit">Đặt hàng</button>
 
                 </div>
