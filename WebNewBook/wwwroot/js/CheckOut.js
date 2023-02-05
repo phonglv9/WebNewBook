@@ -144,11 +144,18 @@ $(document).ready(function () {
                 success: function (result) {
                     $("#phiship").show();
                     $("#totalship").text(formatVND(result.data.total));
-
                     var temp = result.data.total + totalOder;
                     $("#totaloder").text(formatVND(temp));
-
-                    sessionStorage.setItem("shiptotal", result.data.total);
+                    sessionStorage.setItem("shiptotal", result.data.total);  
+                    let adress = "," + $("#ward option:selected").text() +"," + $("#district option:selected").text() + ","+ $("#provin option:selected").text();
+                   
+                    //add địa chỉ
+                    $("#adress_detail").val(adress); 
+                    
+                    //Id địa chỉ
+                    $("#WardID").val($("#ward option:selected").val()); 
+                    $("#ProvinID").val($("#provin option:selected").val()); 
+                    $("#DistrictID").val($("#district option:selected").val()); 
                 }
 
             });

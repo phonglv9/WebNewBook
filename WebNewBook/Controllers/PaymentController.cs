@@ -298,6 +298,7 @@ namespace WebNewBook.Controllers
             hoaDon.TongTien = tongTien;
             hoaDon.PhiGiaoHang = tienShip;
             hoaDon.MaGiamGia = idVoucher;
+            hoaDon.DiaChiGiaoHang = hoaDon.DiaChiGiaoHang + adress_detail;
 
             if (hoaDon != null && !string.IsNullOrEmpty(payment) && hoaDon.TongTien != 0)
             {

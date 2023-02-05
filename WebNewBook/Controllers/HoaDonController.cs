@@ -14,6 +14,8 @@ using System.Text.Json;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using WebNewBook.Models.GHNModels;
 
 namespace WebNewBook.Controllers
 {
@@ -26,8 +28,63 @@ namespace WebNewBook.Controllers
         {
             client = new HttpClient();
             client.BaseAddress = link;
-          
+            client.DefaultRequestHeaders.Add("token", "71f04310-864d-11ed-b09a-9a2a48e971b0");
+
         }
+        #region GHN 
+        //Lấy địa chỉ quận huyện
+        public JsonResult GetListDistrict(int idProvin)
+        {
+
+            HttpResponseMessage responseDistrict = client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=" + idProvin).Result;
+
+            District lstDistrict = new District();
+
+            if (responseDistrict.IsSuccessStatusCode)
+            {
+                string jsonData2 = responseDistrict.Content.ReadAsStringAsync().Result;
+
+                lstDistrict = JsonConvert.DeserializeObject<District>(jsonData2);
+            }
+            return Json(lstDistrict, new System.Text.Json.JsonSerializerOptions());
+        }
+        //Lấy địa chỉ phường xã
+        public JsonResult GetListWard(int idWard)
+        {
+
+
+            HttpResponseMessage responseWard = client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" + idWard).Result;
+
+            Ward lstWard = new Ward();
+
+            if (responseWard.IsSuccessStatusCode)
+            {
+                string jsonData2 = responseWard.Content.ReadAsStringAsync().Result;
+
+                lstWard = JsonConvert.DeserializeObject<Ward>(jsonData2);
+            }
+            return Json(lstWard, new System.Text.Json.JsonSerializerOptions());
+        }
+
+
+        //Lấy phí ship ghn
+        public JsonResult GetTotalShipping([FromBody] ShippingOrder shippingOrder)
+        {
+            client.DefaultRequestHeaders.Add("shop_id", "3630415");
+            //StringContent contentshipping = new StringContent(JsonConvert.SerializeObject(shippingOrder), Encoding.UTF8, "application/json");
+            HttpResponseMessage responseWShipping = client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=" + shippingOrder.service_id + "&insurance_value=" + shippingOrder.insurance_value + "&coupon=&from_district_id=" + shippingOrder.from_district_id + "&to_district_id=" + shippingOrder.to_district_id + "&to_ward_code=" + shippingOrder.to_ward_code + "&height=" + shippingOrder.height + "&length=" + shippingOrder.length + "&weight=" + shippingOrder.weight + "&width=" + shippingOrder.width + "").Result;
+
+            Shipping shipping = new Shipping();
+            if (responseWShipping.IsSuccessStatusCode)
+            {
+                string jsonData2 = responseWShipping.Content.ReadAsStringAsync().Result;
+
+                shipping = JsonConvert.DeserializeObject<Shipping>(jsonData2);
+                HttpContext.Session.SetString("shiptotal", shipping.data.total.ToString());
+            }
+            return Json(shipping, new System.Text.Json.JsonSerializerOptions());
+        }
+        #endregion
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
@@ -117,35 +174,69 @@ namespace WebNewBook.Controllers
                 lissttlhdct = JsonConvert.DeserializeObject<List<ViewHoaDonCT>>(data);
 
                 //Toi uu cau lenh 
-                //var hoadon = lissttlhdct.Where(c=>c.hoaDon.ID_HoaDon == id).FirstOrDefault().hoaDon;
-                
+                var hoadonCT = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).FirstOrDefault().hoaDon;
+                var thongtinkh = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).FirstOrDefault().KhachHang;
+
                 //Thông tin khách hàng
-                ViewBag.IDLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.ID_KhachHang).FirstOrDefault();
-                ViewBag.NameLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.HoVaTen).FirstOrDefault();
-                ViewBag.SDTLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.SDT).FirstOrDefault();
-                ViewBag.EmailLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.Email).FirstOrDefault();
+                ViewBag.IDLogin = thongtinkh.ID_KhachHang;
+                ViewBag.NameLogin = thongtinkh.HoVaTen;
+                ViewBag.SDTLogin = thongtinkh.SDT;
+                ViewBag.EmailLogin = thongtinkh.Email;
 
                 var hoaDon = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).FirstOrDefault();
                 Voucher voucher = new Voucher(); 
                 HttpResponseMessage responsevc = client.GetAsync(client.BaseAddress + $"/HoaDon/GetPriceVoucher/{hoaDon.hoaDon.MaGiamGia}").Result;
                 if (responsevc.IsSuccessStatusCode)
                 {
-                    string data2 = responsevc.Content.ReadAsStringAsync().Result;
+                    string data2 = responsevc.Content.ReadAsStringAsync().Result;https://localhost:7047/HoaDon
                     voucher = JsonConvert.DeserializeObject<Voucher>(data2);
                     ViewBag.PriceVoucher = voucher.MenhGia;
                 }
 
                 //Thông tin hóa đơn
                 ViewBag.IdHoaDon = id;
-                ViewBag.Namekh = lissttlhdct.Where(c=>c.hoaDon.ID_HoaDon==id).Select(c=>c.hoaDon.TenNguoiNhan).FirstOrDefault();
-                ViewBag.sdtkh = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.SDT).FirstOrDefault();
-                ViewBag.ghichu = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.GhiChu).FirstOrDefault();
-                ViewBag.diachi = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.DiaChiGiaoHang).FirstOrDefault();
-                ViewBag.ngaymua = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.NgayMua).FirstOrDefault();
-                ViewBag.tongtien= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TongTien).FirstOrDefault(); 
-                ViewBag.trangthai= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TrangThai).FirstOrDefault();
-                ViewBag.lydohuyudon= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.Lydohuy).FirstOrDefault();
-                ViewBag.phigiaohang= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.PhiGiaoHang).FirstOrDefault();
+                ViewBag.Namekh = hoadonCT.TenNguoiNhan;
+                ViewBag.sdtkh = hoadonCT.SDT;
+                ViewBag.ghichu = hoadonCT.GhiChu;
+                ViewBag.diachi = hoadonCT.DiaChiGiaoHang;
+                ViewBag.ngaymua = hoadonCT.NgayMua;
+                ViewBag.tongtien= hoadonCT.TongTien; 
+                ViewBag.trangthai= hoadonCT.TrangThai;
+                ViewBag.lydohuyudon= hoadonCT.Lydohuy;
+                ViewBag.phigiaohang= hoadonCT.PhiGiaoHang;
+               
+                
+                //Địa chỉ ghn
+
+                //Lấy địa chỉ tỉnh thành
+                HttpResponseMessage responseProvin = client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/province").Result;
+
+                Provin lstprovin = new Provin();
+
+                if (responseProvin.IsSuccessStatusCode)
+                {
+                    string jsonData2 = responseProvin.Content.ReadAsStringAsync().Result;
+
+
+                    lstprovin = JsonConvert.DeserializeObject<Provin>(jsonData2);
+                    ViewBag.Provin = new SelectList(lstprovin.data, "ProvinceID", "ProvinceName", hoadonCT.ProvinID);
+
+
+
+                }
+                ////Lấy địa chỉ quận / huyện
+                //HttpResponseMessage responseDistrict = client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=" + hoadonCT.ProvinID).Result;
+
+                //District lstDistrict = new District();
+
+                //if (responseDistrict.IsSuccessStatusCode)
+                //{
+                //    string jsonDataDistrict = responseDistrict.Content.ReadAsStringAsync().Result;
+                //    lstDistrict = JsonConvert.DeserializeObject<District>(jsonDataDistrict);
+                //    ViewBag.District = new SelectList(lstDistrict.data, "DistrictID", "DistrictName", hoadonCT.DistrictID);
+                //}
+
+
 
                 var lstProduct  = new List<SanPham>();
                 HttpResponseMessage respProduct = client.GetAsync("https://localhost:7266/SanPham").Result;

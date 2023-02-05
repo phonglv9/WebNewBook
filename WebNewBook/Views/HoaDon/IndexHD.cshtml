@@ -7,7 +7,14 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     var mess = "";
     var color = "";
-    @if (ViewBag.message == "1")
+
+    var choxacnhan = "";
+    var cholayhang = "";
+    var danggiao = "";
+    var giaothanhcong = "";
+    var trahang = "";
+    var dahuy = "";
+    if (ViewBag.message == "1")
     {
         mess = "Thành công";
         color = "success";
@@ -16,6 +23,30 @@
     {
         mess = "Thất bại";
         color = "danger";
+    }
+   
+    switch (ViewBag.TrangThai)
+    {
+        case 1:
+            choxacnhan = "bg-warning";
+            break;
+        case 4:
+            trahang = "bg-warning";
+            break;
+        case 5:
+            giaothanhcong = "bg-warning";
+            break;
+        case 7:
+            dahuy = "bg-warning";
+            break;
+        case 8:
+            cholayhang = "bg-warning";
+            break;
+        case 9:
+            danggiao = "bg-warning";
+            break;
+        default:
+            break;
     }
 }
 
@@ -44,32 +75,32 @@
     <br>
     <div>
         <div class="_0obGFe">
-            <a asp-action="Index" id="choxacnhan" asp-route-trangThai="1" class="vAkdD0 r-S3nG">
+            <a asp-action="Index" id="choxacnhan" asp-route-trangThai="1" class="vAkdD0 r-S3nG @choxacnhan">
                 <span class="_0rjE9m">
                     Chờ xác nhận
                 </span>
             </a>
-            <a asp-action="Index" id="cholayhang" onclick="cholayhang" asp-route-trangThai="8" class="vAkdD0 r-S3nG">
+            <a asp-action="Index" id="cholayhang" onclick="cholayhang" asp-route-trangThai="8" class="vAkdD0 r-S3nG @cholayhang">
                 <span class="_0rjE9m">
                     Chờ lấy hàng
                 </span>
             </a>
-            <a asp-action="Index" id="danggiao" asp-route-trangThai="9" class="vAkdD0 r-S3nG">
+            <a asp-action="Index" id="danggiao" asp-route-trangThai="9" class="vAkdD0 r-S3nG @danggiao">
                 <span class="_0rjE9m">
                     Đang giao
                 </span>
             </a>
-            <a asp-action="Index" id="thanhcong" asp-route-trangThai="5" class="vAkdD0 r-S3nG">
+            <a asp-action="Index" id="thanhcong" asp-route-trangThai="5" class="vAkdD0 r-S3nG @giaothanhcong">
                 <span class="_0rjE9m">
                     Đã giao thành công
                 </span>
             </a>
-            <a asp-action="Index"  id="trahang" asp-route-trangThai="4" class="vAkdD0 r-S3nG ">
+            <a asp-action="Index"  id="trahang" asp-route-trangThai="4" class="vAkdD0 r-S3nG @trahang">
                 <span class="_0rjE9m">
                     Trả hàng
                 </span>
             </a>
-            <a asp-action="Index" id="dahhuy" asp-route-trangThai="7" class="vAkdD0 r-S3nG">
+            <a asp-action="Index" id="dahhuy" asp-route-trangThai="7" class="vAkdD0 r-S3nG @dahuy">
                 <span class="_0rjE9m">
                     Đã hủy
                 </span>

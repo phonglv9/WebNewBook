@@ -125,6 +125,25 @@
                                                         <div class="mb-3">
                                                             <label for="tennguoinhan" class="form-label">Tên Người nhận</label>
                                                             <input type="text" asp-for="hoaDon.TenNguoiNhan" value="@ViewBag.Namekh" class="form-control" id="tennguoinhan">
+                                                        </div>                                  
+                                                        <h3 class="modal-title fs-5" id="exampleModalLabel">Địa chỉ nhận hàng</h3>
+                                                        <div class="form-group">
+                                                            <label><span style="color:red;"> (*) </span>Tỉnh thành</label>
+                                                            <select id="provin" name="provin" class="form-control" asp-items="@ViewBag.Provin" style="height: 31px !important;padding: 0 !important;">
+                                                                <option value="0">--Chọn tỉnh thành--</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label><span style="color:red;"> (*) </span>Quận/Huyện</label>
+                                                            <select id="district" name="district" class="form-control" asp-items="@ViewBag.District" style="height: 31px !important;padding: 0 !important;">
+                                                                <option value="0">--Chọn tỉnh quận/huyện--</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label><span style="color:red;"> (*) </span>Phường/Xã</label>
+                                                            <select id="ward" name="ward" class="form-control" style="height: 31px !important;padding: 0 !important;">
+                                                                <option value="0">--Chọn tỉnh phường/xã--</option>
+                                                            </select>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="diachi" class="form-label">Địa chỉ</label>
@@ -134,6 +153,8 @@
                                                             <label for="sdt" class="form-label">Số điện thoại</label>
                                                             <input type="text" asp-for="hoaDon.SDT" value="@ViewBag.sdtkh" class="form-control" id="sdt">
                                                         </div>
+
+
                                                         <div class="mb-3">
                                                             <label for="ghichu" class="form-label">Ghi Chú</label>
                                                             <input type="text" asp-for="hoaDon.GhiChu" value="@ViewBag.ghichu" class="form-control" id="ghichu">
@@ -356,6 +377,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
     <script>
+        const _URL = "https://localhost:7047/";
         $(document).ready(function () {
             $('#btn-one').click(function () {
                 html2canvas(document.querySelector('#hoadonct')).then((canvas) => {
@@ -366,6 +388,80 @@
                     pdf.save('webtylepress-two.pdf');
                 });
             });
+           //Địa chỉ ghn
+
+        //Chọn tỉnh thành
+        $('#provin').change(function () {
+            alert("xx");
+            var id_provin = this.value;
+            $('#district option').remove();
+            $('#district').append(new Option("-- Chọn quận/huyện --", 0));
+
+            $('#ward option').remove();
+            $('#ward').append(new Option("-- Chọn phường/xã --", 0));
+
+            if (this.value != 0) {
+
+                $.ajax({
+                    url: _URL + "HoaDon/GetListDistrict",
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        idProvin: id_provin
+
+                    },
+                    contentType: 'application/json',
+                    success: function (result) {
+
+                        $.each(result.data, function (key, val) {
+                            $("#district").append(new Option(val.DistrictName, val.DistrictID));
+                        });
+
+                    }
+
+                });
+
+
+            }
+
+        });
+        //Chọn quận huyện
+        $('#district').change(function () {
+           
+            var id_ward = this.value;
+            $('#ward option').remove();
+            $('#ward').append(new Option("-- Chọn phường/xã --", 0));
+
+            if (this.value != 0) {
+
+                $.ajax({
+                    url: _URL + 'HoaDon/GetListWard',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        idWard: id_ward
+
+                    },
+                    contentType: 'application/json',
+                    success: function (result) {
+
+                        $.each(result.data, function (key, val) {
+                            $("#ward").append(new Option(val.WardName, val.WardCode));
+                        });
+
+                    }
+
+                });
+
+
+            }
+
+        });
+
+
+            
+
+
         });
 
 
@@ -391,6 +487,7 @@
 
        
     $(function () {
+       
         var arrItem = [];
         var commaSeparatedIds = "";
         $("#btnAddProduct").click(function () {

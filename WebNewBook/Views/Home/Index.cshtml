@@ -194,7 +194,7 @@
                                     {
                                        
                                         var giamGia = 100 - item.GiaBan * 100 / item.GiaGoc;
-                                        var theloai = item.TheLoai == 2 ? "Bộ sách" : item.TheLoai == 3 ? "Bộ sách cùng loại" : "Sách";
+                                        var theloai = item.TheLoai == 2 ? "Combo sách" : item.TheLoai == 3 ? "Lô sách " : "Sách";
                                         <div class="product">
                                             
                                           <span class="type-product">@theloai</span>
@@ -294,7 +294,7 @@
                                     @foreach (var item in Model)
                                     {
                                         var giamGia = 100 - item.GiaBan * 100 / item.GiaGoc;
-                                        var theloai = item.TheLoai == 2 ? "Bộ sách" : item.TheLoai == 3 ? "Bộ sách cùng loại" : "Sách";
+                                         var theloai = item.TheLoai == 2 ? "Combo sách" : item.TheLoai == 3 ? "Lô sách " : "Sách";
                                         <div class="product">
                                             <span class="type-product">@theloai</span>
                                             <div class="product-img">
@@ -405,7 +405,7 @@
                                         {
                                             var giamGia = 100 - item.GiaBan * 100 / item.GiaGoc;
                                             <!-- product -->
-                                            var theloai = item.TheLoai == 2 ? "Bộ sách":item.TheLoai == 3 ?"Bộ sách cùng loại":"Sách";
+                                            var theloai = item.TheLoai == 2 ? "Combo sách" : item.TheLoai == 3 ? "Lô sách " : "Sách";
                                             <div class="product">
                                                 <span class="type-product">@theloai</span>
                                                 <div class="product-img">
