@@ -304,6 +304,10 @@ namespace WebNewBook.API.Repository.Service
                 model.SDT = hoaDon.SDT;
                 model.DiaChiGiaoHang = hoaDon.DiaChiGiaoHang;
                 model.GhiChu = hoaDon.GhiChu;
+                model.ProvinID = hoaDon.ProvinID;   
+                model.WardID = hoaDon.WardID;   
+                model.DistrictID = hoaDon.DistrictID;   
+                model.PhiGiaoHang = hoaDon.PhiGiaoHang;   
                 dbcontext.HoaDons.Update(model);
                 await dbcontext.SaveChangesAsync();
             }

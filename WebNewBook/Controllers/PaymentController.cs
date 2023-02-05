@@ -137,7 +137,7 @@ namespace WebNewBook.Controllers
             return Json(lstDistrict, new System.Text.Json.JsonSerializerOptions());
 		}
         //Lấy địa chỉ phường xã
-        public JsonResult GetListWard(int idWard)
+        public JsonResult GetListWard(int idWard)//district không phải idWard
         {
             
 
@@ -605,7 +605,8 @@ namespace WebNewBook.Controllers
                     ViewBag.MessageVC = "Vui lòng nhập mã giảm giá";
                 }
             }
-            return RedirectToAction("CheckOut", new { messageVC = ViewBag.MessageVC });
+            //return RedirectToAction("CheckOut", new { messageVC = ViewBag.MessageVC });
+            return Redirect("CheckOut/" + new { messageVC = ViewBag.MessageVC });
         }
     }
 }
