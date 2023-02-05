@@ -63,5 +63,11 @@ namespace WebNewBook.API.Controllers
             return Ok();
         }
 
+        [HttpPost("AddOrderAdmin")]
+        public async Task<ActionResult> AddOrderAdminControll(HoaDon hoaDon)
+        {
+            _hoaDonService.AddOrderAdmin(hoaDon);
+            return Ok();
+        }
     }
 }

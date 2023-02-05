@@ -188,7 +188,7 @@ namespace WebNewBook.Controllers
                 HttpResponseMessage responsevc = client.GetAsync(client.BaseAddress + $"/HoaDon/GetPriceVoucher/{hoaDon.hoaDon.MaGiamGia}").Result;
                 if (responsevc.IsSuccessStatusCode)
                 {
-                    string data2 = responsevc.Content.ReadAsStringAsync().Result;https://localhost:7047/HoaDon
+                    string data2 = responsevc.Content.ReadAsStringAsync().Result;
                     voucher = JsonConvert.DeserializeObject<Voucher>(data2);
                     ViewBag.PriceVoucher = voucher.MenhGia;
                 }
@@ -319,6 +319,30 @@ namespace WebNewBook.Controllers
             return Redirect($"ChiTiet/{mahd}");
         }
 
+        public async Task<IActionResult> addOrderAdmin(ViewHoaDon viewHoaDon)
+        {
+            viewHoaDon.hoaDon.ID_HoaDon= Guid.NewGuid().ToString();
+            viewHoaDon.hoaDon.MaKhachHang = "KHNOLOGIN";
+            viewHoaDon.hoaDon.NgayMua = DateTime.Now;
+            viewHoaDon.hoaDon.TongTien = 0;
+            viewHoaDon.hoaDon.TrangThai = 1;
+            //phóng sẽ sửa code
+            viewHoaDon.hoaDon.WardID = "NO";
+            viewHoaDon.hoaDon.ProvinID = "NO";
+            viewHoaDon.hoaDon.DistrictID = "NO";
+            StringContent content = new StringContent(JsonConvert.SerializeObject(viewHoaDon.hoaDon), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/Hoadon/AddOrderAdmin", content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+
+                Console.WriteLine($"Status: {response.StatusCode}; Msg: {await response.Content.ReadAsStringAsync()}");
+            }
+            else
+            {
+                Console.WriteLine($"Status: {response.StatusCode}; Msg: {await response.Content.ReadAsStringAsync()}");
+            }
+            return Redirect("Index");
+        }
 
     }
 }
