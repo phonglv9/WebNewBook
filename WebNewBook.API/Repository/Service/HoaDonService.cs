@@ -64,6 +64,7 @@ namespace WebNewBook.API.Repository.Service
 
 
         }
+
         public async Task UpdateSLSanPhamVNPay(string id)
         {
             if (!string.IsNullOrEmpty(id))
@@ -312,6 +313,14 @@ namespace WebNewBook.API.Repository.Service
                 throw ex;
             }
 
+        }
+
+        public  string AddOrderAdmin(HoaDon hoaDon)
+        {
+
+            dbcontext.Add(hoaDon);
+             dbcontext.SaveChanges();
+            return "thành công";
         }
     }
 }
