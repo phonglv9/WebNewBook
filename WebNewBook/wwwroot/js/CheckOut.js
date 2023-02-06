@@ -6,7 +6,148 @@ const VND = new Intl.NumberFormat('vi-VN', {
 });
 $(document).ready(function () {
 
+
+    $('#msVoucher').hide();
+
+    $('#btn-voucher').click(function () {
+      
+        let html = '';
+
+        $.ajax({
+            url: _URL + 'Payment/ApDungVouCher',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                maVoucher: $('#idvoucherx').val(),
+
+            },
+            contentType: 'application/json',
+            success: function (result) {
+                if (result.Mess == "OK") {
+
+
+                    html += '   <label>Voucher đang được áp dụng</label>'
+                    html += '   <div class="alert alert-warning"role = "alert">'
+                    html += '     <div class="">'
+                    html += '     <span style="font-size:20px ; color: #d71a00">' + result.MaVoucher + ' </span>'
+                    html += '     <a id="remove_voucher" class="btn btn-danger col-2"><i class="fa fa-times" aria-hidden="true"></i></a>'
+                    html += '    </div>'
+                    html += '   </div>'
+
+
+
+                    $('#bg_apdung').html(html);
+                    $('#total_voucher').html('<div> Mã giảm giá </div> <div><strong> - ' + formatVND(result.MenhGiaVoucher) + ' </strong></div>');
+                    $('#bg_apdung').show();
+                    $('bg_khongapdung').hide();
+                    $("#totaloder").text(formatVND(result.TotalOder + result.TotalShip));
+
+
+                } else {
+                    $('#msVoucher').html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button><strong>' + result.Mess + '</strong > ');
+                    $('#msVoucher').show();
+                    
+                }
+
+
+
+                //Xóa voucher
+                $('#remove_voucher').click(function () {
+                   
+                    $.ajax({
+                        url: _URL + 'Payment/RemoveVoucher',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        success: function (result) {
+                            let totaloder = result.TotalOder + result.TotalShip;
+                            $('#bg_apdung').hide();
+                            $('bg_khongapdung').show();
+
+                            $("#totaloder").text(formatVND(totaloder));
+                            $('#total_voucher').html('');
+                        }
+
+                    });
+                });
+            }
+
+        });
+
+    });
+    //áp dụng voucher
+    $('#submit_voucher').click(function () {
+        let html = '';
+       
+        $.ajax({
+            url: _URL + 'Payment/ApDungVouCher',
+            type: 'GET',
+            dataType: 'json',
+            data: {
+                maVoucher: $('#id_voucherCT').text(),
+
+            },
+            contentType: 'application/json',
+            success: function (result) {
+                if (result.Mess == "OK") {
+
+
+                    html += '   <label>Voucher đang được áp dụng</label>'
+                    html += '   <div class="alert alert-warning"role = "alert">'
+                    html += '     <div class="">'
+                    html += '     <span style="font-size:20px ; color: #d71a00">' + result.MaVoucher + ' </span>'
+                    html += '     <a id="remove_voucher" class="btn btn-danger col-2"><i class="fa fa-times" aria-hidden="true"></i></a>'
+                    html += '    </div>'
+                    html += '   </div>'
+
+                    $('#bg_apdung').html(html);
+                    $('#total_voucher').html('<div> Mã giảm giá </div> <div><strong> - ' + formatVND(result.MenhGiaVoucher) + ' </strong></div>');
+                    $('#bg_apdung').show();
+                    $('bg_khongapdung').hide();
+                    $("#totaloder").text(formatVND(result.TotalOder + result.TotalShip));
+
+
+                } else {
+                    ('#msVoucher').show();
+                    $('#msVoucher').html('<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>< strong>' + result.Mess + '</strong > ');
+                }
+                
+
+
+
+
+                //Xóa voucher
+                $('#remove_voucher').click(function () {
+                 
+                    $.ajax({
+                        url: _URL + 'Payment/RemoveVoucher',
+                        type: 'GET',
+                        dataType: 'json',
+                        contentType: 'application/json',
+                        success: function (result) {
+                            let totaloder = result.TotalOder + result.TotalShip;
+                            $('#bg_apdung').hide();
+                            $('bg_khongapdung').show();
+
+                            $("#totaloder").text(formatVND(totaloder));
+                            $('#total_voucher').html('');
+                        }
+
+                    });
+                });
+            }
+
+        });
+    });
+
    
+    
+   
+
+
+
+
+
     $("#phiship").hide();
     //Chọn tỉnh thành
     $('#provin').change(function () {
@@ -84,6 +225,7 @@ $(document).ready(function () {
 
     }
     function loadTotal() {
+        sessionStorage.removeItem('shiptotal');
         $("#phiship").hide();
         $("#totalship").text('');
         $.ajax({
@@ -101,6 +243,7 @@ $(document).ready(function () {
     //Tính phí ship
     //Get xã
     $('#ward').change(function () {
+
         var id_ward = this.value;
         var totalOder = 0;      
         sessionStorage.removeItem('shiptotal');

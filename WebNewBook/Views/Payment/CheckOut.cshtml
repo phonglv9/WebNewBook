@@ -63,17 +63,16 @@
                             <input asp-for="Email" class="input" type="text" value="@khachHang.Email" name="email" id="email">
                             <label id="emailcheck" class="text-danger"></label>
                         </div>
-                       
+
                         <label id="adress2check" class="text-danger"></label>
                         <div class="form-group">
                             <label><span style="color:red;"> (*) </span>Tỉnh thành</label>
                             <select id="provin" name="provin" class="form-control" asp-items="@ViewBag.Provin" style="height: 31px !important;padding: 0 !important;">
-                           
                             </select>
                         </div>
                         <div class="form-group">
                             <label><span style="color:red;"> (*) </span>Quận/Huyện</label>
-                            <select id="district" name="district" class="form-control"style="height: 31px !important;padding: 0 !important;">
+                            <select id="district" name="district" class="form-control" style="height: 31px !important;padding: 0 !important;">
                                 <option value="0">--Chọn tỉnh quận/huyện--</option>
                             </select>
                         </div>
@@ -95,43 +94,20 @@
                             <label id="phonenumbercheck" class="text-danger"></label>
                         </div>
                         <div class="form-group">
+                            <div id="bg_apdung">
+                            </div>
+                            <div class="input-checkbox" id="bg_khongapdung">
+                                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModalVoucher"><i class="fa fa-gift" aria-hidden="true"></i>Bạn có mã ưu đãi? Ấn vào đây để nhập mã</button>
 
-                            @if (@ViewBag.IDVoucher != null)
-                            {
-
-
-                                <label>Voucher đang được áp dụng</label>
-                                @*<div class="id-voucher row" style="height: 40px;bottom: 20px;padding: 3px 15px;width: 100%;background-color:#FFB3234D;color:#FFB323;width: 156px;">
-                            <span style="font-size:20px" class="col-8">	@ViewBag.IDVoucher </span>
-                            <a href="@Url.Action("RemoveVoucher","Payment")" class="btn btn-danger col-2"><i class="fa fa-times"  aria-hidden="true"></i></a>
-
-                            </div>*@
-                                <div class="alert alert-warning" role="alert">
-                                    <div class="">
-                                        <span style="font-size:20px ; color: #d71a00">	@ViewBag.IDVoucher </span>
-                                        <a href="@Url.Action("RemoveVoucher","Payment")" class="btn btn-danger col-2"><i class="fa fa-times" aria-hidden="true"></i></a>
-                                    </div>
-                                </div>
-
-
-                            }
-                            else
-                            {
-                                <div class="input-checkbox">
-                                    <button type="button" class="btn btn-link" data-toggle="modal" data-target="#exampleModalVoucher"><i class="fa fa-gift" aria-hidden="true"></i>Bạn có mã ưu đãi? Ấn vào đây để nhập mã</button>
-                                    @if (ViewBag.MessageVC != null)
-                                    {
-                                        <label class="text-bg-danger">  </label>
-                                        <div class="alert alert-danger alert-dismissible" role="alert" id="msVoucher">
-                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <strong>@ViewBag.MessageVC</strong>
-                                        </div>
-                                    }
-
-
+                                <div class="alert alert-danger alert-dismissible" role="alert" id="msVoucher">
 
                                 </div>
-                            }
+
+
+
+
+                            </div>
+
                         </div>
                     </div>
                     <!-- /Billing Details -->
@@ -167,13 +143,10 @@
                             </div>
                         }
 
-                        @if (ViewBag.MenhGiaVC != 0 && ViewBag.MenhGiaVC != null)
-                        {
-                            <div class="order-col">
-                                <div>Mã giảm giá </div>
-                                <div><strong>@ViewBag.MenhGiaVC.ToString("#,##0").Replace(',', '.') đ </strong></div>
-                            </div>
-                        }
+                        @*Tổng tiền voucher*@
+                        <div class="order-col" id="total_voucher">
+                        </div>
+
                         <div class="order-col" id="phiship">
                             <div>
                                 Phí vận chuyển (Giao hàng tiêu chuẩn)
@@ -196,16 +169,16 @@
                     </div>
                     <hr />
                     @*<div class="payment-ship">
-                        <h4>Phương thức vận chuyển</h4>
-                        <div id="shipping">
-                            <label>Quý khách vui lòng điền tên và địa chỉ giao nhận trước.</label>
-                        </div>
+                    <h4>Phương thức vận chuyển</h4>
+                    <div id="shipping">
+                    <label>Quý khách vui lòng điền tên và địa chỉ giao nhận trước.</label>
+                    </div>
 
                     </div>*@
                     <hr />
                     <div class="payment-method">
                         <h4>Phương thức thanh toán</h4>
-                       
+
                         <div class="input-radio">
                             <input type="radio" checked name="payment" value="1" id="payment-1">
                             <label for="payment-1">
@@ -230,7 +203,7 @@
                         <div class="text-bg-danger" id="radiocheck"></div>
                     </div>
 
-                    <input hidden id="adress_detail" name="adress_detail" type="text" value=""/>
+                    <input hidden id="adress_detail" name="adress_detail" type="text" value="" />
 
                     <input hidden id="WardID" name="WardID" type="text" value="" />
                     <input hidden id="ProvinID" name="ProvinID" type="text" value="" />
@@ -272,7 +245,7 @@
 </div>
 <!-- /SECTION -->
 
-<form asp-action="ApDungVouCher" method="post" enctype="multipart/form-data">
+
 
     <div class="modal fade" id="exampleModalVoucher" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -288,7 +261,7 @@
 
                             <p>Nếu bạn có mã giảm giá, vui lòng điền vào phía bên dưới</p>
 
-                            <input class="input" type="text" name="maVoucher" placeholder="voucher">
+                            <input class="input" type="text" id="idvoucherx" name="maVoucher" placeholder="voucher">
 
 
 
@@ -312,10 +285,10 @@
                                         @foreach (var item in ViewBag.ListVoucher)
                                         {
 
-                                            <a asp-action="ApDungVoucher" asp-route-maVoucher="@item.ID_Voucher" class="list-group-item list-group-item-action flex-column align-items-start row ">
+                                            <a id="submit_voucher" class="list-group-item list-group-item-action flex-column align-items-start row ">
 
                                                 <span class="col-md-3"> <img src="~/img/voucher.png " style="width: 120px;"></span>
-                                                <span class="col-md-2"><h4>@item.ID_Voucher</h4></span>
+                                                <span class="col-md-2"><h4 id="id_voucherCT">@item.ID_Voucher</h4></span>
                                                 <span class="col-md-2"><b>@item.TenPhatHanh</b></span>
                                                 <span class="col-md-5">
                                                     Mã giảm: @item.MenhGia.ToString("#,##0").Replace(',', '.')đ cho đơn hàng từ @item.MenhGiaDieuKien.ToString("#,##0").Replace(',', '.')đ
@@ -365,5 +338,5 @@
         </div>
     </div>
 
-</form>
+
 

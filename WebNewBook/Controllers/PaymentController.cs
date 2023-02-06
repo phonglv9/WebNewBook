@@ -1,5 +1,6 @@
 ﻿using DocumentFormat.OpenXml.EMMA;
 using DocumentFormat.OpenXml.Office2016.Excel;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
@@ -110,12 +111,23 @@ namespace WebNewBook.Controllers
 
         }
 
-
-        public IActionResult RemoveVoucher()
+        public class RemoveVC
         {
+            public double? TotalShip { get; set; }
+            public double? TotalOder { get; set; }
+        }
+
+        public JsonResult RemoveVoucher()
+        {
+           
             HttpContext.Session.Remove("idVoucher");
-            HttpContext.Session.Remove("amoutVoucher");
-            return RedirectToAction("CheckOut");
+            HttpContext.Session.Remove("amoutVoucher");   
+
+            RemoveVC removeVC = new RemoveVC();
+            removeVC.TotalShip = Convert.ToDouble(HttpContext.Session.GetString("shiptotal"));
+            removeVC.TotalOder = Convert.ToDouble(HttpContext.Session.GetString("amout"));
+          
+            return Json(removeVC, new System.Text.Json.JsonSerializerOptions());
         }
        
 
@@ -174,12 +186,13 @@ namespace WebNewBook.Controllers
         }
         public JsonResult GetTotalOder()
         {
-            
-            return Json(HttpContext.Session.GetString("amout"), new System.Text.Json.JsonSerializerOptions());
+            var total = Convert.ToDouble( HttpContext.Session.GetString("amout")) - Convert.ToDouble(HttpContext.Session.GetString("amoutVoucher"));
+
+            return Json(total, new System.Text.Json.JsonSerializerOptions());
         }
 
 
-        public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, string messageVC)
+        public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon)
         {
             var gioHangs = Giohangs();
             //Check validate nếu giỏ hàng trống không thể thanh toán
@@ -206,9 +219,9 @@ namespace WebNewBook.Controllers
             }
             var idVoucher = HttpContext.Session.GetString("idVoucher");
             double tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout"));
-            double menhGiaVC = Convert.ToDouble(HttpContext.Session.GetString("amoutVoucher"));
-            double menhGiaDK = Convert.ToDouble(HttpContext.Session.GetString("menhgiadk"));
-            ViewBag.MessageVC = messageVC;
+            
+                double menhGiaDK = Convert.ToDouble(HttpContext.Session.GetString("menhgiadk"));
+
 
             var khachHang = await GetKhachHang();
             //Khi khách hàng đã đăng nhập
@@ -245,10 +258,6 @@ namespace WebNewBook.Controllers
                             VoucherPayment.NgayBatDau = VoucherCTs.NgayBatDau;
                             VoucherPayment.NgayHetHan = VoucherCTs.NgayHetHan;
                             voucherPaymentVMs.Add(VoucherPayment);
-
-
-
-
                         }
 
                     }
@@ -258,19 +267,6 @@ namespace WebNewBook.Controllers
 
             }
             ViewBag.Cart = gioHangs;
-            //Voucher
-            if (menhGiaVC != 0 && menhGiaDK != 0)
-            {
-
-                if (tongTien >= menhGiaDK)
-                {
-                    tongTien = tongTien - menhGiaVC;
-                    ViewBag.MenhGiaVC = menhGiaVC;
-                    ViewBag.IDVoucher = idVoucher;
-                }
-
-            }    
-            HttpContext.Session.SetString("amout2", tongTien.ToString());
             ViewBag.TongTien = tongTien;
             if (!string.IsNullOrEmpty(idHoaDon))
             {
@@ -290,12 +286,15 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public async Task<IActionResult> Pay(HoaDon hoaDon, string payment,string adress_detail)
         {
-
-            var tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout2"));
+           
+            var tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout"));
+            double menhGiaVC = Convert.ToDouble(HttpContext.Session.GetString("amoutVoucher"));
+            tongTien = tongTien - menhGiaVC;
             var tienShip = Convert.ToDouble(HttpContext.Session.GetString("shiptotal"));
+            
 
             var idVoucher = HttpContext.Session.GetString("idVoucher");
-            hoaDon.TongTien = tongTien;
+            hoaDon.TongTien = tongTien - menhGiaVC;
             hoaDon.PhiGiaoHang = tienShip;
             hoaDon.MaGiamGia = idVoucher;
             hoaDon.DiaChiGiaoHang = hoaDon.DiaChiGiaoHang + adress_detail;
@@ -531,13 +530,23 @@ namespace WebNewBook.Controllers
             return View();
         }
         //[HttpPost]
-        public async Task<IActionResult> ApDungVouCher(string maVoucher )
+        public class VoucherAjax { 
+        
+            public string? Mess { get; set; }
+            public double? MenhGiaVoucher { get; set; }
+            public string? MaVoucher { get; set; }
+            public double? TotalOder { get; set; }
+            public double? TotalShip { get; set; }
+        
+        }
+
+        public async Task<JsonResult> ApDungVouCher(string maVoucher)
         {
             var tongTien = Giohangs().Sum(c => c.ThanhTien);
             var ngayHienTai = DateTime.Now;
             KhachHang khachHang = new KhachHang();
             khachHang = await GetKhachHang();
-            ViewBag.MessageVC = "";
+            VoucherAjax voucherAjax = new VoucherAjax();
             if (!string.IsNullOrEmpty(khachHang.ID_KhachHang))
             {
                 if (!string.IsNullOrEmpty(maVoucher))
@@ -560,30 +569,39 @@ namespace WebNewBook.Controllers
 
                                 HttpContext.Session.SetString("idVoucher", maVoucher.ToString());
                                 HttpContext.Session.SetString("amoutVoucher", voucher.MenhGia.ToString());
-                                HttpContext.Session.SetString("menhgiadk", voucher.MenhGiaDieuKien.ToString());
+                                HttpContext.Session.SetString("menhgiadk", voucher.MenhGiaDieuKien.ToString());     
+                                
+
+                                tongTien = tongTien - voucher.MenhGia;
+                                voucherAjax.Mess = "OK";
+                                voucherAjax.MenhGiaVoucher = voucher.MenhGia;
+                                voucherAjax.MaVoucher = voucherCT.Id;
+                                voucherAjax.TotalOder = tongTien;
+                                voucherAjax.TotalShip = Convert.ToDouble(HttpContext.Session.GetString("shiptotal"));
+                              
 
 
                             }
                             else if (voucherCT.TrangThai == 2)
                             {
-                                ViewBag.MessageVC = "Voucher đã hết hiệu lực";
+                                voucherAjax.Mess = "Voucher đã hết hiệu lực";
                             }
                             else if (ngayHienTai < voucherCT.NgayBatDau)
                             {
-                                ViewBag.MessageVC = "Voucher chưa phát hàng, bạn có thể sử dụng vào lúc" + voucherCT.NgayBatDau;
+                                voucherAjax.Mess = "Voucher chưa phát hàng, bạn có thể sử dụng vào lúc" + voucherCT.NgayBatDau;
                             }
                             else if (ngayHienTai > voucherCT.NgayHetHan)
                             {
-                                ViewBag.MessageVC = "Voucher đã hết thời hạn sử dụng";
+                                voucherAjax.Mess = "Voucher đã hết thời hạn sử dụng";
                             }
                             else if (tongTien < voucher.MenhGiaDieuKien)
                             {
                                 var dkVoucher = voucher.MenhGiaDieuKien - tongTien;
-                                ViewBag.MessageVC = "Số tiền bạn mua không đủ điều kiện để dùng, bạn cần mua thêm " + dkVoucher + "đ";
+                                voucherAjax.Mess = "Số tiền bạn mua không đủ điều kiện để dùng, bạn cần mua thêm " + dkVoucher + "đ";
                             }
                             else
                             {
-                                ViewBag.MessageVC = "Mã giảm giá không hợp lệ";
+                                voucherAjax.Mess = "Mã giảm giá không hợp lệ";
                             }
                         }
 
@@ -592,7 +610,7 @@ namespace WebNewBook.Controllers
                     }
                     else
                     {
-                        ViewBag.MessageVC = "Mã giảm giá không hợp lệ";
+                        voucherAjax.Mess = "Mã giảm giá không hợp lệ";
                     }
 
 
@@ -602,11 +620,10 @@ namespace WebNewBook.Controllers
                 }
                 else
                 {
-                    ViewBag.MessageVC = "Vui lòng nhập mã giảm giá";
+                    voucherAjax.Mess = "Vui lòng nhập mã giảm giá";
                 }
             }
-            return RedirectToAction("CheckOut", new { messageVC = ViewBag.MessageVC });
-
+            return Json(voucherAjax, new System.Text.Json.JsonSerializerOptions());
         }
     }
 }
