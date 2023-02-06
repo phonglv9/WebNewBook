@@ -605,8 +605,8 @@ namespace WebNewBook.Controllers
                     ViewBag.MessageVC = "Vui lòng nhập mã giảm giá";
                 }
             }
-            //return RedirectToAction("CheckOut", new { messageVC = ViewBag.MessageVC });
-            return Redirect("CheckOut/" + new { messageVC = ViewBag.MessageVC });
+            return RedirectToAction("CheckOut", new { messageVC = ViewBag.MessageVC });
+
         }
     }
 }
