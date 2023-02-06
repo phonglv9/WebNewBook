@@ -187,5 +187,25 @@ namespace WebNewBook.API.Controllers
             
             
         }
+
+        [HttpPut("DoiVoucherAccount")]
+        public async Task<ActionResult> DoiVoucherByCustomer(string maph, string makh)
+        {
+            try
+            {
+                await _voucherCTServices.DoiDiemVoucher(maph, makh);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e);
+            }
+        }
+        [HttpGet("GetOderByIdVoucherCT/{id}")]
+        public async Task<HoaDon?> GetOderByIdVocucherCT(string id)
+        {
+            var order = await _voucherCTServices.GetOderByIdVoucherCT(id);
+            return order;
+        }
     }
 }

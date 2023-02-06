@@ -1,14 +1,14 @@
-﻿
-    <link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
-    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
+﻿@{
+    var lstFpointKH = ViewBag.lstfpoin;
+}
 
-
-    <div style="background-color: #f1f1f1;">
-        <div class="row  p-1">
-            <div class="col-3 mx-2">
-                <div class="list-group">
-                    <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
+<div class="section">
+    <strong>
+    <div class="container" style="background-color: #f1f1f1; padding:20px;">
+    <div class="row  p-1">
+        <div class="col-md-3 mx-2">
+            <div class="list-group">
+                <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
                 <a asp-action="account" class="list-group-item list-group-item-action ">
                     Bảng điều khiển tài khoản
                 </a>
@@ -16,76 +16,66 @@
                 <a asp-action="order" class="list-group-item list-group-item-action">Đơn hàng của tôi</a>
                 <a asp-action="VoucherWallet" class="list-group-item list-group-item-action">Ví Voucher</a>
                 <a asp-action="FpointHistory" class="list-group-item list-group-item-action active">Lịch sử F-point</a>
+            </div>
+        </div>
+            <div class="col-md-8  mx-4 " style="background-color:white ;padding:20px">
+            <div style="background-color:white ;padding-left:20px" class=" mb-2 p-3 my-3">
+                <h5>Tài khoản F-POINT</h5>
+                <br>
+                <div style="display: none;" class="row mb-3">
+                    <label for="colFormLabelSm" class="col-sm-4 col-form-label col-form-label-sm">Nạp điểm F-point / Freeship</label>
+                    <div class="col-sm-4 ">
+                        <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Nhập mã bạn ...">
+                    </div>
+                    <button class="col-sm-2 btn btn-sm btn-success rounded-pill opacity-75">Nạp điểm</button>
+                </div>
+                <div class="row mb-3">
+                    <p class="col-sm-4">Số dư tài khoản:</p>
+                    <span class="col-3 fw-bold" style="color:red">@String.Format( "{0:#,##0.##}",(ViewBag.Diemtichluy)) điểm</span>
                 </div>
             </div>
-            <div class="col-8  mx-4 ">
-                <div class="bg-white mb-2 p-3">
-                    <h5>Tài khoản F-POINT</h5>
-                    <br>
-                    <div style="display: none;" class="row mb-3">
-                        <label for="colFormLabelSm" class="col-sm-4 col-form-label col-form-label-sm">Nạp điểm F-point / Freeship</label>
-                        <div class="col-sm-4 ">
-                            <input type="text" class="form-control form-control-sm" id="colFormLabelSm" placeholder="Nhập mã bạn ...">
-                        </div>
-                        <button class="col-sm-2 btn btn-sm btn-success rounded-pill opacity-75">Nạp điểm</button>
-                    </div>
-                    <div class="row mb-3">
-                        <p class="col-sm-4">số dư tài khoản</p>
-                        <span class="col-3">8000</span>
-                    </div>
-                </div>
-                <div class="bg-white mb-1  p-3">
-                    <div style="font-size: 13px;">
-                        <table class="table table-borderless">
-                            <thead>
-                                <tr>
-                                    <th scope="col">#</th>
-                                    <th scope="col">First</th>
-                                    <th scope="col">Last</th>
-                                    <th scope="col">Handle</th>
-                                    <th scope="col">Handle</th>
-                                    <th scope="col">Handle</th>
+            <div style="background-color:white;padding-left:20px" class="mb-1  p-3">
+                <div style="font-size: 13px;">
+                    <table class="table table-borderless">
+                        <thead>
+                            <tr>
+                                <th scope="col">Mã</th>
+                                <th scope="col">Hành động</th>
+                                <th scope="col">Ngày nhận</th>
+                                <th scope="col">Điểm tích lũy</th>
+                                @*                                    <th scope="col"><a>Chi tiết</a></th>*@
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">1</th>
-                                    <td>Mark</td>
-                                    <td>Otto</td>
-                                    <td>mdo</td>
-                                    <td>mdo</td>
-                                    <td>mdo</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">2</th>
-                                    <td>Jacob</td>
-                                    <td>Thornton</td>
-                                    <td>fat</td>
-                                    <td>fat</td>
-                                    <td>fat</td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">3</th>
-                                    <td colspan="2">Larry the Bird</td>
-                                    <td>twitter</td>
-                                    <td>twitter</td>
-                                    <td>twitter</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (lstFpointKH != null)
+                            {
+                                @foreach (var item in lstFpointKH)
+                                {
+                                    <tr>
+
+                                        <td>@item.Id</td>
+                                        <td>@item.NameHanhDong</td>
+                                        <td>@item.CreatDate.ToString("d-M-yyyy")</td>
+                                        <td>+@String.Format( "{0:#,##0.##}",(item.Diemtichluy))</td>
+                                    </tr>
+                                }
+                            }
+                          
+
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
-
-
     </div>
 
 
+</div>
+</strong>
+</div>
 
 
-    <script src="/bootstrap-5.2.1/dist/js/bootstrap.min.js"></script>
-    <script src="/fontawesome-free-6.2.0-web/js/fontawesome.min.js"></script>
-    <script src="/fontawesome-free-6.2.0-web/js/all.min.js"></script>
+
 

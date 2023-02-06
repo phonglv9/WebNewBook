@@ -11,18 +11,22 @@ namespace WebNewBook.API.Repository.Service
         {
             _dbcontext = dbcontext;
         }
-        public async Task AddFoint(string id, string diemtichluy, string makhachhang)
+        public async Task AddFoint(string id)
         {
             try
             {
-                if (!(string.IsNullOrEmpty(id) && string.IsNullOrEmpty(diemtichluy) && string.IsNullOrEmpty(makhachhang)))
+                if (!(string.IsNullOrEmpty(id) ))
                 {
+                    double tongtien = _dbcontext.HoaDons.Where(c => c.ID_HoaDon == id).Select(c => c.TongTien).FirstOrDefault();
+                    var makhachhang = _dbcontext.HoaDons.Where(c => c.ID_HoaDon == id).Select(c => c.MaKhachHang).FirstOrDefault();
+                    double diemtichluy = tongtien / 100;
                     Fpoint fpoint = new Fpoint();
                     fpoint.Id= id;
                     fpoint.Diemtichluy = Convert.ToDouble(diemtichluy);
                     fpoint.Hanhdong = 1;
                     //hanh động 1 : tích điểm fpoint
                     //hành động 2 : nạp điểm fpoint
+                    //hành động 3 : đổi điểm fpoint
                     if (fpoint.Hanhdong==1)
                     {
                         fpoint.NameHanhDong = "Tích điểm Point";

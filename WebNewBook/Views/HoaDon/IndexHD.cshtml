@@ -7,7 +7,14 @@
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
     var mess = "";
     var color = "";
-    @if (ViewBag.message == "1")
+
+    var choxacnhan = "";
+    var cholayhang = "";
+    var danggiao = "";
+    var giaothanhcong = "";
+    var trahang = "";
+    var dahuy = "";
+    if (ViewBag.message == "1")
     {
         mess = "Thành công";
         color = "success";
@@ -17,58 +24,140 @@
         mess = "Thất bại";
         color = "danger";
     }
+   
+    switch (ViewBag.TrangThai)
+    {
+        case 1:
+            choxacnhan = "bg-warning";
+            break;
+        case 4:
+            trahang = "bg-warning";
+            break;
+        case 5:
+            giaothanhcong = "bg-warning";
+            break;
+        case 7:
+            dahuy = "bg-warning";
+            break;
+        case 8:
+            cholayhang = "bg-warning";
+            break;
+        case 9:
+            danggiao = "bg-warning";
+            break;
+        default:
+            break;
+    }
 }
-@section Scripts{
-    <script>
-        $("#selectHD").change(function () {
-
-            var $form = $(this).closest('form');
-            $form.find('button[type=submit]').click();
-
-        });
-        setTimeout(function () {
-            $('#msHD').fadeOut('slow');
-        }, 1500)
-    </script>
-
-}
 
 
-    <div class="container py-3" style="background-color: #f1f1f1;">
-        <h3 style="font-weight: 700; text-align:center;">Hóa Đơn</h3>
-        <div class="container" style="background-color: rgb(255, 255, 255);">
-            <div class="py-3">
-                <h6>
-                    <div>
-                        <form asp-action="Index" class="row">
-                            <div class="col-5 mb-3">
-                                <input type="text" name="timkiem" class="form-control" placeholder="Mời bạn nhập tên nhà xuất bản để tìm kiếm">
-                            </div>
-                            <div class="col-2">
-                                <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
-                            </div>
-                            <div class="col-5 mb-3">
-                                <select id="selectHD" name="trangThai" class="form-select" aria-label="Default select example">
-                                    <option selected>Chọn trạng thái</option>
-                                    <option value="10">Tất cả</option>
-                                    <option value="6">Không tồn tại</option>
-                                    <option value="1">Đặt hàng</option>
-                                    <option value="2">Đã thanh toán</option>
-                                   @* <option value="3">Đơn hàng thanh toán thất bại</option>*@
-                                    <option value="4">Trả hàng</option>
-                                    <option value="5">Thành công</option>
-                                </select>
-                            </div>
-                        </form>
 
-                       
-                    </div>
-                </h6>
-            </div>
+<div class="container py-1" style="background-color: #f1f1f1;">
+
+    <div class="container" style="background-color: rgb(255, 255, 255);">
+        <div class="py-3">
+            <h6>
+                <div>
+                    <form asp-action="Index" class="row">
+                        <div class="col-5 mb-3">
+                            <input type="text" name="timkiem" class="form-control" placeholder="Mời bạn nhập mã hóa đơn để tìm kiếm">
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                        </div>
+                    </form>
+
+
+                </div>
+            </h6>
         </div>
-        <br>
-        <div class="container" style="background-color: rgb(255, 255, 255);">
-            <div class="py-3">
+    </div>
+    <br>
+    <div>
+       
+        <div class="_0obGFe">
+            <a asp-action="Index" id="choxacnhan" asp-route-trangThai="1" class="vAkdD0 r-S3nG @choxacnhan">
+                <span class="_0rjE9m">
+                    Chờ xác nhận
+                </span>
+            </a>
+            <a asp-action="Index" id="cholayhang" onclick="cholayhang" asp-route-trangThai="8" class="vAkdD0 r-S3nG @cholayhang">
+                <span class="_0rjE9m">
+                    Chờ lấy hàng
+                </span>
+            </a>
+            <a asp-action="Index" id="danggiao" asp-route-trangThai="9" class="vAkdD0 r-S3nG @danggiao">
+                <span class="_0rjE9m">
+                    Đang giao
+                </span>
+            </a>
+            <a asp-action="Index" id="thanhcong" asp-route-trangThai="5" class="vAkdD0 r-S3nG @giaothanhcong">
+                <span class="_0rjE9m">
+                    Đã giao thành công
+                </span>
+            </a>
+            <a asp-action="Index"  id="trahang" asp-route-trangThai="4" class="vAkdD0 r-S3nG @trahang">
+                <span class="_0rjE9m">
+                    Trả hàng
+                </span>
+            </a>
+            <a asp-action="Index" id="dahhuy" asp-route-trangThai="7" class="vAkdD0 r-S3nG @dahuy">
+                <span class="_0rjE9m">
+                    Đã hủy
+                </span>
+            </a>
+
+        </div>
+    </div>
+
+    <div class="container" style="background-color: rgb(255, 255, 255);">
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+        Tạo
+        </button>
+
+        <!-- Modal -->
+        <form asp-action="addOrderAdmin">
+           
+            <div class="modal fade" id="staticBackdrop" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <label for="tennguoinhan" class="form-label">Tên Người nhận</label>
+                                <input type="text" asp-for="hoaDon.TenNguoiNhan" class="form-control" id="tennguoinhan">
+                            </div>
+                            <div class="mb-3">
+                                <label for="diachi" class="form-label">Địa chỉ</label>
+                                <input type="text" asp-for="hoaDon.DiaChiGiaoHang"  class="form-control" id="diachi">
+                            </div>
+                            <div class="mb-3">
+                                <label for="sdt" class="form-label">Số điện thoại</label>
+                                <input type="text" asp-for="hoaDon.SDT" class="form-control" id="sdt">
+                            </div>
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <input type="email" asp-for="hoaDon.Email"  class="form-control" id="sdt">
+                            </div>
+                            <div class="mb-3">
+                                <label for="ghichu" class="form-label">Ghi Chú</label>
+                                <input type="text" asp-for="hoaDon.GhiChu" class="form-control" id="ghichu">
+                            </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                            <button type="submit" class="btn btn-primary">Sửa thông tin</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <div class="py-1">
             @if (mess != "")
             {
                 <div class="alert alert-@color" id="msHD" role="alert">
@@ -76,130 +165,180 @@
                 </div>
             }
             <p>
-                @if (ViewBag.NXB != null)
-                {
-                    <span>Trang @(ViewBag.NXB.PageCount < ViewBag.NXB.PageNumber ? 0 : ViewBag.NXB.PageNumber) / @ViewBag.NXB.PageCount</span>
-                }
+            
                 <table class="table">
-                    <thead class="table-secondary">
+                    <thead>
                         <tr>
-                            <th>Mã hóa đơn</th>
-                            <th>Tên khách hàng</th>
-                          
-                           
-                            <th>Ngày mua</th>
-                            <th>Tổng tiền </th>
-                            <th>Trạng Thái</th>
-                            <th>Chi Tiết</th>
-                            <th>Chức Năng</th>
-                           
-                           
+                            <td>Mã hóa đơn</td>
+                            <td>Tên khách hàng</td>
+
+
+                            <td>Ngày mua</td>
+                            <td>Tổng tiền </td>
+
+
+
+
+
                         </tr>
                     </thead>
                     <tbody>
                         @if (ViewBag.DataHD.Count == 0)
                         {
-                            <tr><th>Không có sản phẩm</th></tr>
+                            <tr><th>Không có hóa đơn</th></tr>
                         }
                         else
                         {
                             @foreach (var a in ViewBag.DataHD)
                             {
-                                var coler = "black";
-                                @if (@a.hoaDon.TrangThai == 1)
+                                var coler = "";
+                                @if (@a.hoaDon.TrangThai == 1 || @a.hoaDon.TrangThai == 2)
                                 {
-                                    coler = "Green2";
+                                 
+                                    coler = "table-info";
 
                                 }
-                                else if (@a.hoaDon.TrangThai == 2)
-                                {
-
-                                    coler = "#00CCFF";
-                                }
-                                else if (@a.hoaDon.TrangThai == 5)
-                                {
-
-                                    coler = "#FF6666";
-                                }
-                                
-                                
-
-                                <tr>
-                                    <td>@a.hoaDon.ID_HoaDon</td>
+                                <tr class="">
+                                    <th>@a.hoaDon.ID_HoaDon</th>
                                     <td>@a.KhachHang.HoVaTen</td>
-                                   
-                                  
                                     <td>@a.hoaDon.NgayMua</td>
-                                    <td>@a.hoaDon.TongTien</td>
-                                  
-                                    <td>
-                                        <font color="@coler">
-                                            @if (@a.hoaDon.TrangThai == 6)
-                                            {
-                                                <p>Không tồn tại</p>
-                                            }
-                                            else if (@a.hoaDon.TrangThai == 1)
-                                            {
-                                                <p>Đặt hàng</p>
-                                            }
-                                            else if (@a.hoaDon.TrangThai == 2)
-                                            {
-                                                <p>Đã thanh toán</p>
-                                            }
-                                            @* else if (@a.hoaDon.TrangThai == 3)
+                                    <td>  @String.Format("{0:#,##0.##}", (a.hoaDon.TongTien + a.hoaDon.PhiGiaoHang))   </td>
+
+                                 
+                                    <td><a asp-controller="HoaDon" asp-action="ChiTiet" class="text-secondary" asp-route-id="@a.hoaDon.ID_HoaDon"><i class="fa-solid fa-circle-info"></i></a> </td>
+                                    <!-- Button trigger modal -->
+                                    @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2 || a.hoaDon.TrangThai == 8 || a.hoaDon.TrangThai == 9)
                                     {
-                                    <h6 >Đơn hàng thanh toán thất bại</h6>
-                                    }*@
-                                            else if (@a.hoaDon.TrangThai == 4)
-                                            {
-                                                <p>Trả hàng</p>
-                                            }
-                                            else if (@a.hoaDon.TrangThai == 5)
-                                            {
-                                                <p>Thành công </p>
-                                            }
-                                         </font>
-                                      
-                                    </td>
-                                    <td><a asp-controller="HoaDon" asp-action="ChiTiet" asp-route-id="@a.hoaDon.ID_HoaDon">Chi Tiết</a> </td>
-                                    <td>
-                                        <form asp-controller="HoaDon" asp-action="Sua" method="post">
+                                        <td><a data-bs-toggle="modal" data-bs-target="#OK_@a.hoaDon.ID_HoaDon" class="text-secondary"><i class="fa-solid fa-check"></i></a> </td>
 
-                                            @* <input name="dd" type="hidden" value=" @item.hoaDon.ID_HoaDon">*@
-                                           <div class="editindex">
-                                              
-                                                <div class="combobox-HD">
-                                                    <select class="form-select" name="name" aria-label="Default select example">
-                                                        <option value="#">Tất cả</option>
-                                                        <option value="6">Không tồn tại</option>
-                                                        <option value="1">Đặt hàng</option>
-                                                        <option value="2">Đã thanh toán</option>
-                                                        @*<option value="3">Đơn hàng thanh toán thất bại</option>*@
-                                                        <option value="4">Trả hàng</option>
-                                                        <option value="5">Thành công</option>
+                                    }
+                                 
 
-                                                    </select>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="OK_@a.hoaDon.ID_HoaDon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                 </div>
-                                                <div>
-                                                    <button type="submit" class="btn btn-primary">Lưu </button>
+                                                <form asp-action="Sua">
+                                                    <div class="modal-body">
+                                                        @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2)
+                                                        {
+                                                            <p>Bạn muốn xác nhận đơn hàng ?</p>
+                                                            <input value="@a.hoaDon.ID_HoaDon" name="id" hidden />
+                                                            <input value="8" name="name" hidden />
+                                                        }
+                                                        @if (a.hoaDon.TrangThai == 8)
+                                                        {
+                                                            <p>Bạn muốn chuyển đơn hàng sang bắt đầu giao ?</p>
+                                                            <input value="@a.hoaDon.ID_HoaDon" name="id" hidden />
+                                                            <input value="9" name="name" hidden />
+                                                        }
+                                                        @if (a.hoaDon.TrangThai == 9)
+                                                        {
+                                                            <p> Đã giao hàng thành công ?</p>
+                                                            <input value="@a.hoaDon.ID_HoaDon" name="id" hidden />
+                                                            <input value="5" name="name" hidden />
+                                                          
+                                                        }
 
-                                                </div>
-                                           </div>
-                                            <div>
-                                                <input name="id" type="hidden" value="@a.hoaDon.ID_HoaDon">
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                        <button type="submit"  class="btn btn-primary">Xác nhận</button>
+                                                    </div>
+                                                 
+                                                </form>
 
                                             </div>
+                                        </div>
+                                    </div>
+                                    @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2 || a.hoaDon.TrangThai == 8 || a.hoaDon.TrangThai == 9)
+                                    {
+                                        <td><a data-bs-toggle="modal" data-bs-target="#NOOK_@a.hoaDon.ID_HoaDon" class="text-secondary"><i class="fa-solid fa-x"></i></a> </td>
+                                    }
+                                    <div class="modal fade" id="NOOK_@a.hoaDon.ID_HoaDon" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Thông báo</h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                </div>
+                                                <form asp-action="Sua">
+                                                    <div class="modal-body">
+                                                        @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2 || a.hoaDon.TrangThai == 8)
+                                                        {
+                                                            <p>Bạn muốn hủy đơn hàng ?</p>
+                                                            <input value="7" name="name" hidden />
+                                                            <input value="@a.hoaDon.ID_HoaDon" name="id" hidden />
+                                                        }
+                                                        @if (a.hoaDon.TrangThai == 9)
+                                                        {
+
+                                                            <p> Khách hàng từ chối nhận hàng </p>
+                                                            <input value="4"  name="name" hidden />
+                                                            <input value="@a.hoaDon.ID_HoaDon" name="id" hidden />
+                                                            <p>lý do <input name="lyDoHuy" /></p>
+                                                        }
+
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                     
+                                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                        <button type="submit"  class="btn btn-primary">Xác nhận</button>
+                                                    </div>
+                                                </form>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @*<td>
+                            <form asp-controller="HoaDon" asp-action="Sua">
+
+                            <input name="dd" type="hidden" value=" @item.hoaDon.ID_HoaDon">
+                            <div style="display: flex;">
+
+                            <div class="combobox-HD" style="margin-right:10px;">
+                            <select class="form-select" name="name" aria-label="Default select example">
+                            <option value="">Tất cả</option>
+                            @if (a.hoaDon.TrangThai == 1 || a.hoaDon.TrangThai == 2){
+
+                            <option value="8">Xác nhận đơn hàng</option>
 
 
+                            }
+                            @if (a.hoaDon.TrangThai  ==  9)
+                            {
+                            <option value="4">Đơn hàng giao thất bại</option>
+                            <option value="5">Thành công</option>
+
+                            }
+                            @if (a.hoaDon.TrangThai == 8)
+                            {
+                            <option value="9">Đang giao hàng</option>
+
+                            }
+                            </select>
+                            </div>
+                            <div>
+                            <button type="submit" class="btn btn-primary">Lưu </button>
+
+                            </div>
+                            </div>
+                            <div>
+                            <input name="id" type="hidden" value="@a.hoaDon.ID_HoaDon">
+
+                            </div>
+                            </form>
+                            </td>*@
 
 
-                                        </form>
-                                    </td>
-
-                                   
                                 </tr>
 
-                               
+
                             }
                         }
 
@@ -213,5 +352,10 @@
         </div>
     </div>
 </div>
+
+<script>
+   
+   
+</script>
 
 

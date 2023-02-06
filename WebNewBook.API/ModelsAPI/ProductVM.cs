@@ -4,13 +4,21 @@ namespace WebNewBook.API.ModelsAPI
 {
     public class ProductVM
     {
-        public SanPham sanPhams { get; set; } = new SanPham();
-        public SanPhamCT SanPhamCT { get; set; } = new SanPhamCT();
-        public SachCT sachCT { get; set; } = new SachCT();
-        public Sach sach { get; set; } = new Sach();
-        public TheLoai theLoai { get; set; } = new TheLoai();
-        public TacGia tacGia { get; set; } = new TacGia();
-        public DanhMucSach danhMucSach { get; set; } = new DanhMucSach();
+        public string ID_SanPham { get; set; }
+        public string TenSanPham { get; set; }
+        public int SoLuong { get; set; }
+        public double GiaBan { get; set; }
+        public double GiaGoc { get; set; }
+        public string HinhAnh { get; set; }
+        public string idDanhMuc { get; set; }
+        public string TenDanhMuc { get; set; }
+        public string idTacGia { get; set; }
+        public string TenTacGia { get; set; }
+        public string idTheLoai { get; set; }
+        public string TenTheLoai { get; set; }
+        public int TrangThai { get; set; }
+
+      
 
 
     }

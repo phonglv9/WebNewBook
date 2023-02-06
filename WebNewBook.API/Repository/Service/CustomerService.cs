@@ -18,14 +18,16 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                if (khachHang.ID_KhachHang == null)
+               var model=  _dbcontext.KhachHangs.ToList();
+                var checkSdt = model.Any(c => c.SDT == khachHang.SDT);
+                var checkEmail = model.Any(c => c.Email == khachHang.Email);
+                if (checkSdt==false && checkEmail ==false)
                 {
                     khachHang.ID_KhachHang = Guid.NewGuid().ToString();
+                    khachHang.TrangThai = 1;
+                    _dbcontext.Add(khachHang);
+                    await _dbcontext.SaveChangesAsync();
                 }
-
-                khachHang.TrangThai = 1;
-                _dbcontext.Add(khachHang);
-                await _dbcontext.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -80,7 +82,7 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
-                var model = await _dbcontext.KhachHangs.Where(c => (status != null ? c.TrangThai == status : true) && ((!string.IsNullOrEmpty(search) ? c.HoVaTen.ToLower().Contains(search) : true) || (!string.IsNullOrEmpty(search) ? c.Email.ToLower().Contains(search) : true) || (!string.IsNullOrEmpty(search) ? c.SDT.ToLower().Contains(search) : true)
+                var model = await _dbcontext.KhachHangs.Where(c =>(c.ID_KhachHang!= "KHNOLOGIN") && (status != null ? c.TrangThai == status : true) && ((!string.IsNullOrEmpty(search) ? c.HoVaTen.ToLower().Contains(search) : true) || (!string.IsNullOrEmpty(search) ? c.Email.ToLower().Contains(search) : true) || (!string.IsNullOrEmpty(search) ? c.SDT.ToLower().Contains(search) : true)
                                                                                     )).ToListAsync();
 
                 return model;

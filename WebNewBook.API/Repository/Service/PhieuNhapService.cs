@@ -18,7 +18,7 @@ namespace WebNewBook.API.Repository.Service
         {
             par.NgayNhap = DateTime.Now;
             dbcontext.Add(par);
-            Sach sach = dbcontext.Sachs.FirstOrDefault(c => c.ID_Sach == par.MaSach);
+            SachCT sach = dbcontext.SachCTs.FirstOrDefault(c => c.ID_SachCT == par.MaSachCT);
             sach.SoLuong += par.SoLuongNhap;
             dbcontext.Update(sach);
             await dbcontext.SaveChangesAsync();

@@ -4,32 +4,49 @@
 @{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
 }
-
-<div class="container py-3" style="background-color: #f1f1f1;">
-    <h3 style="font-weight: 700;">Nhân viên</h3>
+@section Scripts{
+	<script>
+      $("#selectNXB").change(function (){
+       
+          var $form = $(this).closest('form');
+            $form.find('button[type=submit]').click();
+         
+     });
+     setTimeout(function(){
+			$('#msNXB').fadeOut('slow');
+		},1500)
+	</script>
+	
+}
+<div class="container" style="background-color: #f1f1f1;">
+    
     <div class="container " style="background-color: rgb(255, 255, 255);">
         <div class="py-3">
             <h6>
                 <div class="row">
+                    <form asp-action="Index" class="row">
                     <div class="col-5 mb-3">
-                        <input type="email" class="form-control" placeholder="Số điện thoại, Họ và tên,...">
+                        <input type="text" name="timKiem" class="form-control" placeholder="Mời bạn nhập tên nhân viên">
                     </div>
-                    <div class="col-5 mb-3">
-                        <select class="form-select" aria-label="Default select example">
-                            <option selected>Chọn trạng thái</option>
-                            <option value="1">Hoạt động</option>
-                            <option value="0">Không hoạt động</option>
-                        </select>
-                    </div>
-                    <div class="col-2">
+                      <div class="col-2">
                         <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
                     </div>
-                    <p>@*10000 thành viên*@</p>
+                    <div class="col-5 mb-3">
+                        <select id="selectNXB" name="trangThai" class="form-select" aria-label="Default select example">
+                            
+                            <option selected disabled>Chọn trạng thái</option>
+                            <option value="2">Tất cả</option>
+                            <option value="1">Hoạt động</option>
+                            <option value="0">Vô hiệu hóa</option>
+                          
+                        </select>
+                    </div>
+                  </form>
                     <div class="col-3">
                         <!-- Button trigger modal -->
                         <a type="button" class="btn btn-primary"asp-action="Create">
                             <i class="fa-solid fa-address-book"></i> Thêm nhân viên
-                        </a>
+                            </a>
                     </div>
                 </div>
             </h6>
@@ -63,11 +80,14 @@
                                 <td>@item.DiaChi</td>
                                 <td>@chucVu</td>
                                 <td>@trangThai</td>
-                                <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_NhanVien"><i class="fa-solid fa-pen"></i></a></td>
-                                <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_NhanVien"><i class="fa-solid fa-trash"></i></button></td>
+                                @if (!item.Quyen)
+                                {
+                                    <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_NhanVien"><i class="fa-solid fa-pen"></i></a></td>
+                                    <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_NhanVien"><i class="fa-solid fa-trash"></i></button></td>
+                                }
                             </tr>
 
-                             <!-- Modal Delete-->
+                            <!-- Modal Delete-->
                             <form action="/QLNhanVien/Delete?id=@item.ID_NhanVien" method="post" enctype="multipart/form-data">
                                 <div class="modal fade" id="delete-@item.ID_NhanVien" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -79,35 +99,35 @@
                                             <div class="modal-body">
                                                 <div class="mb-3 row">
                                                     <label for="ID_NhanVien" class="col-sm-2 col-form-label">ID</label>
-                                                    <input for="ID_NhanVien" class="form-control" name="ID" value="@item.ID_NhanVien" disabled/>
+                                                    <input for="ID_NhanVien" class="form-control" name="ID" value="@item.ID_NhanVien" disabled />
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="HoVaTen" class="control-label">Họ và tên</label>
-                                                    <input for="HoVaTen" class="form-control" name="nhanVien" value="@item.ID_NhanVien" disabled/>
+                                                    <input for="HoVaTen" class="form-control" name="nhanVien" value="@item.ID_NhanVien" disabled />
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="Email" class="control-label">Email</label>
-                                                    <input for="Email" class="form-control" name="sach" value="@item.Email" disabled/>
+                                                    <input for="Email" class="form-control" name="sach" value="@item.Email" disabled />
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="SDT" class="control-label">SĐT</label>
-                                                    <input for="SDT" class="form-control" name="giaNhap" value="@item.SDT" disabled/>
+                                                    <input for="SDT" class="form-control" name="giaNhap" value="@item.SDT" disabled />
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="DiaChi" class="control-label">Địa chỉ</label>
-                                                    <input for="DiaChi" class="form-control" name="soLuongNhap" value="@item.DiaChi" disabled/>
+                                                    <input for="DiaChi" class="form-control" name="soLuongNhap" value="@item.DiaChi" disabled />
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="NgaySinh" class="control-label">Ngày sinh</label>
-                                                    <input for="NgaySinh" class="form-control" name="soLuongNhap" value="@item.NgaySinh" disabled/>
+                                                    <input for="NgaySinh" class="form-control" name="soLuongNhap" value="@item.NgaySinh" disabled />
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="Quyen" class="control-label">Chức vụ</label>
-                                                    <input for="Quyen" class="form-control" name="soLuongNhap" value="@chucVu" disabled/>
+                                                    <input for="Quyen" class="form-control" name="soLuongNhap" value="@chucVu" disabled />
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="Quyen" class="control-label">Trạng thái</label>
-                                                    <input for="Quyen" class="form-control" name="soLuongNhap" value="@trangThai" disabled/>
+                                                    <input for="Quyen" class="form-control" name="soLuongNhap" value="@trangThai" disabled />
                                                 </div>
                                             </div>
                                             <div class="modal-footer">

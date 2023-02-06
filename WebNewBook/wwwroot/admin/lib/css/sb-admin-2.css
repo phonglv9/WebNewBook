@@ -11279,3 +11279,6 @@ footer.sticky-footer .copyright {
 body.sidebar-toggled footer.sticky-footer {
   width: 100%;
 }
+#bg_newbook {
+    background-image: url('https://huetteplays.de/wp-content/uploads/2021/11/B6334A6D-EC43-458F-8424-8FFA8792474F.png') !important;
+}

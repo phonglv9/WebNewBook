@@ -1,19 +1,20 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System.Net.Http;
+using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.Models;
 using WebNewBook.Services;
 
 namespace WebNewBook.Component
 {
-    
+
     public class HeaderListViewComponent : ViewComponent
     {
         Uri baseAdress = new Uri("https://localhost:7266/api");
         HttpClient _httpClient;
 
-      
+
         private IHeaderService _headerService;
         public HeaderListViewComponent(IHeaderService headerService)
         {
@@ -27,7 +28,7 @@ namespace WebNewBook.Component
             ViewBag.NavBar = headers;
             if (User.Identity.Name == null)
             {
-                
+
                 List<CartItem> data = new List<CartItem>();
                 var jsonData = Request.Cookies["Cart"];
                 if (jsonData != null)
@@ -42,33 +43,34 @@ namespace WebNewBook.Component
                 ViewBag.count = b.Count;
                 ViewBag.giohang = data;
                 HttpContext.Session.SetString("amout", tongTien.ToString());
-               
+
 
             }
             else
             {
-                
-                
+
+
                 HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/GioHang/GetLitsGH").Result;
                 if (response.IsSuccessStatusCode)
                 {
                     List<CartItem> dataGHPoup = new List<CartItem>();
-                    List<GioHang> dataGH = new List<GioHang>();
+                    List<ModelCart> dataGH = new List<ModelCart>();
                     string jsonData1 = response.Content.ReadAsStringAsync().Result;
-                    dataGH = JsonConvert.DeserializeObject<List<GioHang>>(jsonData1);
-                    if (dataGH.Where(c=>c.emailKH == User.Identity.Name).Select(v=>v.emailKH).FirstOrDefault()== User.Identity.Name)
+                    dataGH = JsonConvert.DeserializeObject<List<ModelCart>>(jsonData1);
+                    if (dataGH.Where(c => c.EmailKH == User.Identity.Name).Select(v => v.EmailKH).FirstOrDefault() == User.Identity.Name)
                     {
-                       
+
                         foreach (var a in dataGH)
                         {
                             CartItem c = new CartItem();
-                            if (User.Identity.Name == a.emailKH)
+                            if (User.Identity.Name == a.EmailKH)
                             {
-                                c.DonGia = a.DonGia;
-                                c.Maasp = a.Maasp;
-                                c.Soluong = a.Soluong;
-                                c.Tensp = a.Tensp;
-                                c.ThanhTien = a.Soluong * a.DonGia;
+                                c.DonGia = a.GiaBan;
+                                c.Maasp = a.MaSanPham;
+                                c.Soluong = a.SoLuong;
+                                c.Tensp = a.TenSanPham;
+                                c.hinhanh = a.HinhAnh;
+                                c.ThanhTien = a.SoLuong * a.GiaBan;
                                 dataGHPoup.Add(c);
 
 
@@ -103,7 +105,7 @@ namespace WebNewBook.Component
 
                     }
 
-                   
+
                 };
             }
             return View();

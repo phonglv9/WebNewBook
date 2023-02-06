@@ -18,8 +18,11 @@ namespace WebNewBook.API.Data
             //modelbuilder.Entity<TheLoai>().HasIndex(c => c.TenTL).IsUnique();
             //modelbuilder.Entity<KhachHang>().HasIndex(c => c.Email).IsUnique();
             //modelbuilder.Entity<NhanVien>().HasIndex(c => c.Email).IsUnique();
-            //modelbuilder.Entity<NhaXuatBan>().HasIndex(c => c.TenXuatBan).IsUnique();
-            //modelbuilder.Entity<Sach>().HasIndex(c => new { c.TenSach, c.TaiBan, c.MaNXB }).IsUnique();
+            modelbuilder.Entity<Sach>().HasIndex(c => c.TenSach).IsUnique();
+            modelbuilder.Entity<SanPham>().HasIndex(c => c.TenSanPham).IsUnique();
+            modelbuilder.Entity<SachCT>().HasIndex(c => new { c.MaNXB, c.TaiBan, c.MaSach, c.BiaMem }).IsUnique();
+            modelbuilder.Entity<SanPhamCT>().HasIndex(c => new { c.MaSachCT, c.SoLuongSach }).IsUnique().HasFilter("[SoLuongSach] > 1");
+            //modelbuilder.Entity<SanPhamCT>().HasIndex(c => c.MaSanPham).IsUnique().HasFilter("[SoLuongSach] > 1");
         }
         public DbSet<GioHang> GioHangs { get; set; }
         public DbSet<HoaDon> HoaDons { get; set; }
@@ -33,12 +36,14 @@ namespace WebNewBook.API.Data
         public DbSet<TheLoai> TheLoais { get; set; }
         public DbSet<VoucherCT> VoucherCTs { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
-        public DbSet<PhieuGiamGiaSP> PhieuGiamGiaSPs { get; set; }
+        //public DbSet<PhieuGiamGiaSP> PhieuGiamGiaSPs { get; set; }
         public DbSet<PhieuNhap> PhieuNhaps { get; set; }
         public DbSet<PhieuTra> PhieuTras { get; set; }
         public DbSet<SanPham> SanPhams { get; set; }
         public DbSet<SanPhamCT> SanPhamCTs { get; set; }
         public DbSet<DanhMucSach> DanhMucSachs { get; set; }
         public DbSet<Fpoint> Fpoints { get; set; }
+        public DbSet<Sach_TacGia> Sach_TacGias { get; set; }
+        public DbSet<Sach_TheLoai> Sach_TheLoais { get; set; }
     }
 }

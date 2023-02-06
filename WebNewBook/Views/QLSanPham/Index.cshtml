@@ -1,7 +1,7 @@
-﻿@using WebNewBook.Model
+﻿@using WebNewBook.Model.APIModels
 @using X.PagedList
 @using X.PagedList.Mvc.Core
-@model SanPham
+@model SanPhamViewModel
 
 @{
     Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
@@ -33,8 +33,8 @@
 	
 }
 
-<div class="container py-3" style="background-color: #f1f1f1;">
-    <h3 style="font-weight: 700;">Sản phẩm</h3>
+<div class="container " style="background-color: #f1f1f1;">
+    
     <div class="container " style="background-color: rgb(255, 255, 255);">
         <div class="py-3">
             <h6>
@@ -49,18 +49,18 @@
                     <div class="col-5 mb-3">
                         <select id="selectNXB" name="trangThai" class="form-select" aria-label="Default select example">
                             
-                            <option selected>Chọn trạng thái</option>
+                            <option selected disabled>Chọn trạng thái</option>
                             <option value="2">Tất cả</option>
-                            <option value="0">Hoạt động</option>
-                            <option value="1">Vô hiệu hóa</option>
+                            <option value="1">Hoạt động</option>
+                            <option value="0">Vô hiệu hóa</option>
                           
                         </select>
                     </div>
                   </form>
                     <div class="col-3">
                         <!-- Button trigger modal -->
-                        <a type="button" class="btn btn-primary"asp-action="Create">
-                            <i class="fa-solid fa-address-book"></i> Thêm sản phẩm
+                        <a type="button" class="btn btn-success"asp-action="Create">
+                            <i class="fa-solid fa-plus"></i> Thêm sản phẩm
                         </a>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                             <th scope="col">Số lượng</th>
                             <th scope="col">Giá</th>
                             <th scope="col">Hình ảnh</th>
-                            <th scope="col">Khuyến mại</th>
+                            <th scope="col">Thể loại</th>
                             <th scope="col">Trạng thái</th>
                             <th colspan="2" style="text-align: center ;">Thao tác</th>
                         </tr>
@@ -87,22 +87,23 @@
                         @if(ViewBag.SanPham.Count == 0){<tr><th>Không có sản phẩm</th></tr>}else{
                         @foreach (var item in ViewBag.SanPham)
                         {
-                            var trangThai = item.TrangThai == 0 ? "Hoạt động" : "Vô hiệu hóa";
-                            var img = item.HinhAnh ?? string.Empty;
-                            <tr>
-                                <th scope="row">@item.TenSanPham</th>
-                                <td>@item.SoLuong</td>
-                                <td>@item.GiaBan</td>
+                            var trangThai = item.SanPham.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
+                            var img = item.SanPham.HinhAnh ?? string.Empty;
+                                var theLoai = item.TheLoaiSP == 1 ? "Sách" : item.TheLoaiSP == 2 ? "Combo sách" : "Lô sách" + item.SoLuongSach + " quyển";
+                                <tr>
+                                <th scope="row">@item.SanPham.TenSanPham</th>
+                                <td>@item.SanPham.SoLuong</td>
+                                <td>@item.SanPham.GiaBan</td>
                                 <td><img src="~/img/@img" style="width:100px;height:100px"/></td>
-                                <td>@item.MaPhieuGiamGiaSP</td>
+                                <td>@theLoai</td>
                                 <td>@trangThai</td>
-                                <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.ID_SanPham"><i class="fa-solid fa-pen"></i></a></td>
-                                <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.ID_SanPham"><i class="fa-solid fa-trash"></i></button></td>
+                                <td><a type="button" class="btn border bg-primary" asp-action="Update" asp-route-id="@item.SanPham.ID_SanPham"><i class="fa-solid fa-pen"></i></a></td>
+                                <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.SanPham.ID_SanPham"><i class="fa-solid fa-trash"></i></button></td>
                             </tr>
 
                              <!-- Modal Delete-->
-                            <form action="/QLSanPham/Delete?id=@item.ID_SanPham" method="post" enctype="multipart/form-data">
-                                <div class="modal fade" id="delete-@item.ID_SanPham" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <form action="/QLSanPham/Delete?id=@item.SanPham.ID_SanPham" method="post" enctype="multipart/form-data">
+                                <div class="modal fade" id="delete-@item.SanPham.ID_SanPham" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
                                             <div class="modal-header">
@@ -112,23 +113,19 @@
                                             <div class="modal-body">
                                                 <div class="mb-3 row">
                                                     <label for="ID_SanPham" class="col-sm-2 col-form-label">ID</label>
-                                                    <input for="ID_SanPham" class="form-control" name="ID" value="@item.ID_SanPham" disabled/>
+                                                    <input for="ID_SanPham" class="form-control" name="ID" value="@item..SanPham.ID_SanPham" disabled/>
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="TenSanPham" class="control-label">Tên sản phẩm</label>
-                                                    <input for="TenSanPham" class="form-control" name="nhanVien" value="@item.TenSanPham" disabled/>
+                                                    <input for="TenSanPham" class="form-control" name="nhanVien" value="@item..SanPham.TenSanPham" disabled/>
                                                 </div>
                                                 <div class="mb-3 row">
-                                                    <label for="SoLuong" class="control-label">Số lượng</label>
-                                                    <input for="SoLuong" class="form-control" name="giaNhap" value="@item.SoLuong" disabled/>
+                                                    <label for="SoLuong" class="control-label">Số lượng sản phẩm</label>
+                                                    <input for="SoLuong" class="form-control" name="giaNhap" value="@item..SanPham.SoLuong" disabled/>
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="GiaBan" class="control-label">Giá bán</label>
-                                                    <input for="GiaBan" class="form-control" name="soLuongNhap" value="@item.GiaBan" disabled/>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label for="MaPhieuGiamGiaSP" class="control-label">Khuyến mại</label>
-                                                    <input for="MaPhieuGiamGiaSP" class="form-control" name="soLuongNhap" value="@item.MaPhieuGiamGiaSP" disabled/>
+                                                    <input for="GiaBan" class="form-control" name="soLuongNhap" value="@item..SanPham.GiaBan" disabled/>
                                                 </div>
                                                 <div class="mb-3 row">
                                                     <label for="Quyen" class="control-label">Trạng thái</label>
@@ -146,8 +143,8 @@
                     }
                     </tbody>
                 </table>
-@*                 @Html.PagedListPager((IPagedList)ViewBag.SanPham, page => Url.Action("Index","QLSanPham",new {timKiem = ViewBag.TimKiem, trangThai =ViewBag.TrangThai, page = page}),new X.PagedList.Web.Common.PagedListRenderOptions{LiElementClasses = new string[] { "page-item" },PageClasses = new string[] { "page-link" }})
-*@            </p>
+                @Html.PagedListPager((IPagedList)ViewBag.SanPham, page => Url.Action("Index","QLSanPham",new {timKiem = ViewBag.TimKiem, trangThai =ViewBag.TrangThai, page = page}),new X.PagedList.Web.Common.PagedListRenderOptions{LiElementClasses = new string[] { "page-item" },PageClasses = new string[] { "page-link" }})
+            </p>
         </div>
     </div>
 </div>

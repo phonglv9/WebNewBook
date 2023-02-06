@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using MimeKit;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.Model;
 
@@ -89,6 +90,14 @@ namespace WebNewBook.API.Controllers
                 throw new Exception(e.Message);
             }
         }
-        
+        [HttpPost("SendMailOder/{idHoaDon}")]
+        public async Task<IActionResult> SendMailOder(string idHoaDon)
+        {
+            await _hoaDonService.SendMailOder(idHoaDon);
+
+            return Ok();
+        }
+       
+
     }
 }

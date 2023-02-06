@@ -13,6 +13,7 @@ namespace WebNewBook.Model.APIModels
         public IEnumerable<string>? Sachs { get; set; }
         [Range(0, 100)]
         public double GiamGia { get; set; }
-        public int SLChuaDoi { get; set; }
+        [Range(1, 100)]
+        public int SLSachCT { get; set; } = 1;
     }
 }

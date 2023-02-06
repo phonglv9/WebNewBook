@@ -9,11 +9,11 @@
 @using X.PagedList.Mvc.Core;
 @model Voucher
 
-<div class="container py-3" style="background-color: #f1f1f1;">
+<div class="container " style="background-color: #f1f1f1;">
     <div id="load" style="display : block" class="loading">
         <div class="spinner-border text-primary spinner-center" role="status"></div>
     </div>
-    <h3 style="font-weight: 700;">Phát hành voucher</h3>
+
     <div class="container " style="background-color: rgb(255, 255, 255);">
         <div class="py-3">
             <h6>
@@ -170,11 +170,18 @@
     </div>
     <br>
     <div class="container " style="background-color: rgb(255, 255, 255);">
+
         <div style="padding: 10px;">
+
             @if (lstvoucher != null)
             {
                 <span>Trang @(lstvoucher.PageCount < lstvoucher.PageNumber ? 0 : lstvoucher.PageNumber) / @lstvoucher.PageCount</span>
             }
+            @if (@ViewBag.checkdiemdoi != null)
+            {
+                <p>Thông báo   @ViewBag.checkdiemdoi </p>
+            }
+
             <p>
                 <table class="table ">
                     <thead class="table-secondary ">
@@ -184,7 +191,7 @@
                             <th scope="col">Từ ngày</th>
                             <th scope="col">Đến ngày</th>
                             <th scope="col">Số lượng</th>
-                            <th scope="col">Mệnh Giá</th>
+                            <th scope="col">Điểm đổi</th>
                             <th scope="col">Hình thức</th>
                             <th scope="col" style="text-align: center ;">Thao tác</th>
 
@@ -199,25 +206,25 @@
                                 <td>@x.StartDate.ToString("d/M/yyyy")</td>
                                 <td>@x.EndDate.ToString("d/M/yyyy")</td>
                                 <td>@x.SoLuong</td>
-                                <td>@x.MenhGia</td>
+                                @*         <td>@String.Format( "{0:#,##0.##}",(x.MenhGia))</td>*@
+                                <td>@x.DiemDoi</td>
                                 <td>@(x.HinhThuc == 1 ? "Đổi điểm" : "Tặng")</td>
 
                                 <td>
                                     <button data-bs-toggle="modal" data-bs-target="#@x.Id" name="ModalUpdate" class="btn btn-secondary"><i class="fa-solid fa-circle-info"></i></button>
                                     <a class="btn btn-dark" asp-action="Detail" asp-route-Id="@x.Id"><i class="fa-solid fa-arrow-right"></i></a>
-                                    <a class="btn btn-danger" asp-action="Delete" asp-route-Id="@x.Id"><i class="fa-solid fa-trash"></i></a>
+                                    @*      <a class="btn btn-danger" asp-action="Delete" asp-route-Id="@x.Id"><i class="fa-solid fa-trash"></i></a>*@
                                 </td>
 
                             </tr>
-
                             <div class="modal fade " id="@x.Id" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-xl ">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="staticBackdropLabel">Sửa thông tin khách hàng</h5>
+                                            <h5 class="modal-title" id="staticBackdropLabel">Sửa thông tin đợt phát hành</h5>
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <form>
+                                        <form asp-action="Update">
                                             <div class="row p-3">
                                                 <input type="hidden" value="@x.Id" asp-for="Id" />
                                                 <input type="hidden" asp-for="MaNhanVien" value="@x.MaNhanVien" />
@@ -232,26 +239,54 @@
                                                             <input asp-for="TenPhatHanh" value="@x.TenPhatHanh" type="text" class="form-control">
                                                         </div>
                                                     </div>
-                                                    <div class="mb-3 row">
-                                                        <label for="" class="col-sm-4 col-form-label">
-                                                            Mệnh giá <span class="text-danger">*</span>
-                                                        </label>
-                                                        <div class="col-sm-8">
-                                                            <input asp-for="MenhGia" value="@x.MenhGia" type="number" class="form-control">
-                                                        </div>
-                                                    </div>
+                                                    @if (x.SoLuong <= 0)
+                                                    {
 
+                                                        <div class="mb-3 row">
+                                                            <label for="" class="col-sm-4 col-form-label">
+                                                                Mệnh giá <span class="text-danger">*</span>
+                                                            </label>
+                                                            <div class="col-sm-8">
+                                                                <input asp-for="MenhGia" value="@x.MenhGia" type="number" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="mb-3 row">
+                                                            <label for="" class="col-sm-4 col-form-label">
+                                                                Mệnh giá <span class="text-danger">*</span>
+                                                            </label>
+                                                            <div class="col-sm-8">
+                                                                <input asp-for="MenhGia" value="@x.MenhGia" type="number" class="form-control" disabled>
+                                                            </div>
+                                                        </div>
+                                                    }
                                                 </div>
-                                                <div class="col-6">
 
-                                                    <div class="mb-3 row">
-                                                        <label for="" class="col-sm-3 col-form-label">
-                                                            Tổng tiền hàng<span class="text-danger">*</span>
-                                                        </label>
-                                                        <div class="col-sm-9">
-                                                            <input asp-for="MenhGiaDieuKien" value="@x.MenhGiaDieuKien" type="number" class="form-control">
+                                                <div class="col-6">
+                                                    @if (x.SoLuong <= 0)
+                                                    {
+                                                        <div class="mb-3 row">
+                                                            <label for="" class="col-sm-3 col-form-label">
+                                                                Tổng tiền hàng<span class="text-danger">*</span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <input asp-for="MenhGiaDieuKien" value="@x.MenhGiaDieuKien" type="number" class="form-control">
+                                                            </div>
                                                         </div>
-                                                    </div>
+                                                    }
+                                                    else
+                                                    {
+                                                        <div class="mb-3 row">
+                                                            <label for="" class="col-sm-3 col-form-label">
+                                                                Tổng tiền hàng<span class="text-danger">*</span>
+                                                            </label>
+                                                            <div class="col-sm-9">
+                                                                <input asp-for="MenhGiaDieuKien" value="@x.MenhGiaDieuKien" type="number" class="form-control" disabled>
+                                                            </div>
+                                                        </div>
+                                                    }
                                                     <div class="mb-3 row">
                                                         <label class="col-sm-3 col-form-label">
                                                             Ghi chú
@@ -261,62 +296,165 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-7 row">
-                                                    <label for="" class="col-3 col-form-label">
-                                                        Thời gian <span class="text-danger">*</span>
-                                                    </label>
-                                                    <div class="offset-2 col-sm-8 mx-3 mb-3 row">
-                                                        <div class="col-sm-5">
-                                                            <input asp-for="StartDate" type="date" value="@x.StartDate.ToString("yyyy-MM-dd")" class="form-control">
-
-                                                        </div>
-                                                        -
-                                                        <div class="col-sm-5">
-                                                            <input asp-for="EndDate" value="@x.EndDate.ToString("yyyy-MM-dd")" type="date" class="form-control">
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-6 row">
-                                                    <label for="" class="col-5 col-form-label">
-                                                        Hình thức <span class="text-danger">*</span>
-                                                    </label>
-                                                    <div class="col-sm-7 mb-3 row">
-                                                        <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check">
-                                                            <input class="form-check-input" type="radio" id="chonTang_@x.Id"
-                                                               checked id="Tang">
-                                                            <label class="form-check-label" for="Tang">
-                                                                Tặng
-                                                            </label>
-                                                        </div>
-                                                        <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check ">
-                                                            <input class="form-check-input" type="radio" id="chonDoi_@x.Id">
-                                                            <label class="form-check-label" for="DoiDiem">
-                                                                Đổi điểm
-                                                            </label>
-                                                        </div>
-                                                    </div>
-
-                                                </div>
-
-                                                <div id="Div_diem_@x.Id" hidden class="col-7">
-                                                    <div class="mb-3 row ">
-                                                        <label for="" class="col-sm-3 col-form-label">
-                                                            Điểm <span class="text-danger">*</span>
+                                                @if (x.SoLuong <= 0)
+                                                {
+                                                    <div class="col-7 row">
+                                                        <label for="" class="col-3 col-form-label">
+                                                            Thời gian <span class="text-danger">*</span>
                                                         </label>
-                                                        <div class="mx-4 col-sm-7">
-                                                            <input asp-for="DiemDoi" type="text" class="form-control">
+                                                        <div class="offset-2 col-sm-8 mx-3 mb-3 row">
+                                                            <div class="col-sm-5">
+                                                                <input asp-for="StartDate" type="date" value="@x.StartDate.ToString("yyyy-MM-dd")" class="form-control">
+
+                                                            </div>
+                                                            -
+                                                            <div class="col-sm-5">
+                                                                <input asp-for="EndDate" value="@x.EndDate.ToString("yyyy-MM-dd")" type="date" class="form-control">
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-7 row">
+                                                        <label for="" class="col-3 col-form-label">
+                                                            Thời gian <span class="text-danger">*</span>
+                                                        </label>
+                                                        <div class="offset-2 col-sm-8 mx-3 mb-3 row">
+                                                            <div class="col-sm-5">
+                                                                <input asp-for="StartDate" type="date" value="@x.StartDate.ToString("yyyy-MM-dd")" class="form-control" disabled>
+
+                                                            </div>
+                                                            -
+                                                            <div class="col-sm-5">
+                                                                <input asp-for="EndDate" value="@x.EndDate.ToString("yyyy-MM-dd")" type="date" class="form-control" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                @if (x.SoLuong <= 0)
+                                                {
+                                                    <div class="col-6 row">
+                                                        <label for="" class="col-5 col-form-label">
+                                                            Hình thức <span class="text-danger">*</span>
+                                                        </label>
+                                                        @if (x.HinhThuc == 1)
+                                                        {
+                                                            <div class="col-sm-7 mb-3 row">
+                                                                <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check">
+                                                                    <input id="tang2" value="2" type="radio" asp-for="HinhThuc" class="form-check-input" />
+                                                                    <label class="form-check-label" for="Tang">
+                                                                        Tặng
+                                                                    </label>
+                                                                </div>
+                                                                <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check ">
+                                                                    <input id="doidiem1" class="form-check-input" checked value="1" type="radio" asp-for="HinhThuc" />
+                                                                    <label class="form-check-label" for="DoiDiem">
+                                                                        Đổi điểm
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-7 mb-3 row">
+                                                                <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check">
+                                                                    <input id="tang2" value="2" type="radio" asp-for="HinhThuc " checked class="form-check-input" />
+                                                                    <label class="form-check-label" for="Tang">
+                                                                        Tặng
+                                                                    </label>
+                                                                </div>
+                                                                <div onclick="Thaydoihinhthuc()" class="col-sm-5 form-check ">
+                                                                    <input id="doidiem1" class="form-check-input" value="1" type="radio" asp-for="HinhThuc" />
+                                                                    <label class="form-check-label" for="DoiDiem">
+                                                                        Đổi điểm
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+
+
+                                                    </div>
+                                                    <div id="diemdoiupdate" class="col-7">
+                                                        <div class="mb-3 row ">
+                                                            <label for="" class="col-sm-3 col-form-label">
+                                                                Điểm <span class="text-danger">*</span>
+                                                            </label>
+                                                            <div class="mx-4 col-sm-7">
+                                                                <input asp-for="DiemDoi" value="@x.DiemDoi" type="text" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+                                                else
+                                                {
+                                                    <div class="col-6 row">
+                                                        <label for="" class="col-5 col-form-label">
+                                                            Hình thức <span class="text-danger">*</span>
+                                                        </label>
+                                                        @if (x.HinhThuc == 1)
+                                                        {
+                                                            <div class="col-sm-7 mb-3 row">
+                                                                <div class="col-sm-5 form-check">
+                                                                    <input class="form-check-input" type="radio"
+                                                               id="tang2" disabled>
+                                                                    <label class="form-check-label" for="Tang">
+                                                                        Tặng
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-sm-5 form-check ">
+                                                                    <input class="form-check-input" type="radio" checked id="doidiem1" disabled>
+                                                                    <label class="form-check-label" for="DoiDiem">
+                                                                        Đổi điểm
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <div class="col-sm-7 mb-3 row">
+                                                                <div class="col-sm-5 form-check">
+                                                                    <input class="form-check-input" type="radio"
+                                                               id="tang2" disabled checked>
+                                                                    <label class="form-check-label" for="Tang">
+                                                                        Tặng
+                                                                    </label>
+                                                                </div>
+                                                                <div class="col-sm-5 form-check ">
+                                                                    <input class="form-check-input" type="radio" id="doidiem1" disabled>
+                                                                    <label class="form-check-label" for="DoiDiem">
+                                                                        Đổi điểm
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        }
+
+
+                                                    </div>
+                                                    <div id="Div_diem_@x.Id" hidden class="col-7">
+                                                        <div class="mb-3 row ">
+                                                            <label for="" class="col-sm-3 col-form-label">
+                                                                Điểm <span class="text-danger">*</span>
+                                                            </label>
+                                                            <div class="mx-4 col-sm-7">
+                                                                <input asp-for="DiemDoi" type="text" class="form-control" disabled>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                }
+
+
                                             </div>
                                             <div class="modal-footer">
                                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
-                                                <button type="button" id="btnAddPhatHanh" class="btn btn-primary">Lưu</button>
+                                                <button type="submit" class="btn btn-primary">Lưu</button>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
                             </div>
+
+
 
                         }
                     </tbody>
@@ -352,6 +490,26 @@
 
         }
     }
+    //if (document.getElementById("doidiem1").checked == true) {
+    //    document.getElementById("diemdoiupdate").hidden = false;
+    //    console.log("1")
+    //}
+    //if (document.getElementById("tang2").checked == true) {
+    //    document.getElementById("diemdoiupdate").hidden = true;
+    //    console.log("2")
+    //}
+    //function Thaydoihinhthuc() {
+
+    //    if (document.getElementById("doidiem1").checked == true) {
+    //        document.getElementById("diemdoiupdate").hidden = false;
+    //        console.log("1")
+    //    }
+    //    if (document.getElementById("tang2").checked == true) {
+    //        document.getElementById("diemdoiupdate").hidden = true;
+    //        console.log("2")
+    //    }
+    //}
+
 
     $(function () {
 
@@ -370,9 +528,16 @@
             var hinhthuc = 2;
             var date = new Date();
             var today = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate();
-
-
-
+            if (date.getDate() < 10) {
+                today = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + "0" + date.getDate();
+            }
+             if (date.getMonth() < 10) {
+                today = date.getFullYear() + '-' + "0"+ (date.getMonth() + 1) + '-' + date.getDate();
+            }
+            if(date.getMonth() < 10 && date.getDate() < 10){
+                today = date.getFullYear() + '-' + "0" + (date.getMonth() + 1) + '-'+"0" + date.getDate();
+            }
+            console.log(today)
             if (doiDiem.checked == true) {
                 hinhthuc = 1;
                 diemdoi = $("#DiemDoi").val()
@@ -387,79 +552,85 @@
                         if (menhGia <= 1000000) {
                             if (startDate >= today) {
                                 if (startDate <= enddate) {
-                                    Swal.fire({
-                                        title: 'Bạn có chắc chắn muốn thêm không?',
-                                        showCancelButton: true,
-                                        confirmButtonText: 'Save',
+                                    if (doiDiem.checked == true ? (diemdoi > 0 && diemdoi < 100000 ? true : false) : true) {
+                                        Swal.fire({
+                                            title: 'Bạn có chắc chắn muốn thêm không?',
+                                            showCancelButton: true,
+                                            confirmButtonText: 'Save',
 
-                                    }).then((result) => {
-                                        /* Read more about isConfirmed, isDenied below */
-                                        if (result.isConfirmed) {
-                                            $.ajax({
-                                                type: "POST",
-                                                data: {
-                                                    TenPhatHanh: tenPhatHanh,
-                                                    MenhGia: menhGia,
-                                                    Ghichu: ghiChu,
-                                                    StartDate: startDate,
-                                                    Enddate: enddate,
-                                                    DiemDoi: diemdoi,
-                                                    HinhThuc: hinhthuc
-                                                },
-                                                url: "/Voucher/Add",
-                                                success: function (response) {
-                                                    if (response == 1) {
-                                                        Swal.fire({
-                                                            text: "Thành công !",
-                                                            timer: 1500,
-                                                            timerProgressBar: true,
-                                                            showConfirmButton: false,
-                                                            position: 'bottom-end',
-                                                            width: 300,
+                                        }).then((result) => {
+                                            /* Read more about isConfirmed, isDenied below */
+                                            if (result.isConfirmed) {
+                                                $.ajax({
+                                                    type: "POST",
+                                                    data: {
+                                                        TenPhatHanh: tenPhatHanh,
+                                                        MenhGiaDieuKien: menhGiaDK,
+                                                        MenhGia: menhGia,
+                                                        Ghichu: ghiChu,
+                                                        StartDate: startDate,
+                                                        Enddate: enddate,
+                                                        DiemDoi: diemdoi,
+                                                        HinhThuc: hinhthuc
+                                                    },
+                                                    url: "/Voucher/Add",
+                                                    success: function (response) {
+                                                        if (response == 1) {
+                                                            Swal.fire({
+                                                                text: "Thành công !",
+                                                                timer: 1500,
+                                                                timerProgressBar: true,
+                                                                showConfirmButton: false,
+                                                                position: 'bottom-end',
+                                                                width: 300,
 
-                                                            height: 50,
-                                                            color: '#66a15a',
-                                                            background: '#ffffff',
+                                                                height: 50,
+                                                                color: '#66a15a',
+                                                                background: '#ffffff',
 
-                                                        }).then((result) => {
-                                                            /* Read more about handling dismissals below */
-                                                            if (result.dismiss === Swal.DismissReason.timer) {
-                                                                console.log('I was closed by the timer')
-                                                            }
-                                                        })
+                                                            }).then((result) => {
+                                                                /* Read more about handling dismissals below */
+                                                                if (result.dismiss === Swal.DismissReason.timer) {
+                                                                    console.log('I was closed by the timer')
+                                                                }
+                                                            })
 
-                                                        setTimeout(function () {
-                                                            document.getElementById("load").style.display = 'block';
-                                                            window.location.reload(1);
+                                                            setTimeout(function () {
+                                                                document.getElementById("load").style.display = 'block';
+                                                                window.location.reload(1);
 
 
-                                                        }, 2000);
-                                                    } else {
-                                                        Swal.fire({
-                                                            text: "Thất bại !",
-                                                            timer: 1500,
-                                                            timerProgressBar: true,
-                                                            showConfirmButton: false,
-                                                            position: 'bottom-end',
-                                                            width: 300,
+                                                            }, 2000);
+                                                        } else {
+                                                            Swal.fire({
+                                                                text: "Thất bại !",
+                                                                timer: 1500,
+                                                                timerProgressBar: true,
+                                                                showConfirmButton: false,
+                                                                position: 'bottom-end',
+                                                                width: 300,
 
-                                                            height: 50,
-                                                            color: '#66a15a',
-                                                            background: '#ffffff',
+                                                                height: 50,
+                                                                color: '#66a15a',
+                                                                background: '#ffffff',
 
-                                                        }).then((result) => {
-                                                            /* Read more about handling dismissals below */
-                                                            if (result.dismiss === Swal.DismissReason.timer) {
-                                                                console.log('I was closed by the timer')
-                                                            }
-                                                        })
+                                                            }).then((result) => {
+                                                                /* Read more about handling dismissals below */
+                                                                if (result.dismiss === Swal.DismissReason.timer) {
+                                                                    console.log('I was closed by the timer')
+                                                                }
+                                                            })
+
+                                                        }
 
                                                     }
+                                                });
+                                            }// ngặc hỏi
+                                        })// ngoặc hỏi
+                                    } else {
+                                        alert("Điểm chỉ từ 1 đến 99.999")
+                                    }
 
-                                                }
-                                            });
-                                        }// ngặc hỏi
-                                    })// ngoặc hỏi
                                 } else {
                                     alert("Thời san kết thúc không được trước ngày bắt đầu")
                                 }
@@ -488,13 +659,13 @@
 
         // Cập nhật đợt phát hành
 
-        $(document.getElementsByName("ModalUpdate")).click(function (){
+        $(document.getElementsByName("ModalUpdate")).click(function () {
 
-           
 
-        });
 
         });
+
+    });
 
 
 </script>

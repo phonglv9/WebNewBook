@@ -18,6 +18,5 @@ namespace WebNewBook.Model
         public string TenTL { get; set; }
         public int TrangThai { get; set; }
         public virtual DanhMucSach? DanhMucSach { get; set; }
-        public virtual ICollection<SachCT>? SachCTs { get; set; }
     }
 }

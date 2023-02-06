@@ -20,15 +20,23 @@
                 <span asp-validation-for="SanPham.TenSanPham" class="text-danger"></span>
             </div>
             <div class="form-group">
-                @foreach (var item in ViewBag.Saches)
+                @for (var i = 0; i < ViewBag.Saches.Count; i++)
                 {
-                    <a>@item.TenSach - </a>
+                    string a = i < ViewBag.Saches.Count - 1 ? "|" : string.Empty;
+                    var loaiBia = ViewBag.Saches[i].SachCT.BiaMem ? "BM" : "BC";
+                    <div>
+                    <a asp-action="Update" asp-controller="QLSachCT" asp-route-id=@ViewBag.Saches[i].SachCT.ID_SachCT> @ViewBag.Saches[i].TenSach - @ViewBag.Saches[i].NXB - @loaiBia</a>
+                    </div>
                 }
+                @*@foreach (var item in ViewBag.Saches)
+                {
+                    <a asp-action="Update" asp-controller="Sach" asp-route-id=@item.ID_Sach> @item.TenSach - </a>
+                }*@
             </div>
             <div class="form-group">
                 <label asp-for="SanPham.HinhAnh" class="control-label">Hình ảnh</label>
-                <input type="text" asp-for="SanPham.HinhAnh" hidden/>
-                <input type="file" accept=".jpg, .png, .jpeg, .gif, .jfif, .bmp, .tif, .tiff|image/*" class="form-control" name="file"/>
+                <input type="text" asp-for="SanPham.HinhAnh" hidden />
+                <input type="file" accept=".jpg, .png, .jpeg, .gif, .jfif, .bmp, .tif, .tiff|image/*" class="form-control" name="file" />
                 <span asp-validation-for="SanPham.HinhAnh" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -37,23 +45,23 @@
                 <span asp-validation-for="SanPham.SoLuong" class="text-danger"></span>
             </div>
             <div class="form-group" hidden>
-                <input asp-for="SanPham.GiaBan" class="form-control" value="0"/>
+                <input asp-for="SanPham.GiaBan" class="form-control" value="0" />
             </div>
-            <div class="form-group">
+@*            <div class="form-group">
                 <label asp-for="SanPham.MaPhieuGiamGiaSP" class="control-label">Khuyến mại</label>
                 <input asp-for="SanPham.MaPhieuGiamGiaSP" class="form-control" />
                 <span asp-validation-for="SanPham.MaPhieuGiamGiaSP" class="text-danger"></span>
-            </div>
+            </div>*@
             <div class="form-group">
                 <label asp-for="GiamGia" class="control-label">Giảm %</label>
                 <input asp-for="GiamGia" class="form-control" />
                 <span asp-validation-for="GiamGia" class="text-danger"></span>
             </div>
-                <input asp-for="Sachs" hidden/>
-                <input asp-for="SanPham.ID_SanPham" value="@Model.SanPham.ID_SanPham" hidden />
-                <input asp-for="SLChuaDoi" hidden/>
-                <input asp-for="SanPham.GiaGoc" hidden/>
-            <button type="submit" class="btn btn-primary">Sửa sản phẩm</button>
+            <input asp-for="Sachs" hidden />
+            <input asp-for="SanPham.ID_SanPham" value="@Model.SanPham.ID_SanPham" hidden />
+            <input asp-for="SanPham.GiaGoc" hidden />
+            <input asp-for="SanPham.NgayTao" hidden />
+            <button type="submit" class="btn btn-warning"><i class="fa-solid fa-pen"></i>  Sửa sản phẩm</button>
         </form>
     </div>
 </div>

@@ -1,26 +1,24 @@
 ﻿@{
     var lstorder = ViewBag.lstOrder;
 }
-    <link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
-    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
 
-    <div style="background-color: #f1f1f1;">
+<div class="section">
+    <div class="container" style="background-color: #f1f1f1; padding:20px;">
         <div class="row  p-1">
-            <div class="col-3 mx-2">
+            <div class="col-md-3 mx-2">
                 <div class="list-group">
                     <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
-                <a asp-action="account" class="list-group-item list-group-item-action ">
-                    Bảng điều khiển tài khoản
-                </a>
-                <a asp-action="profile" class="list-group-item list-group-item-action ">Thông tin tài khoản</a>
-                <a asp-action="order" class="list-group-item list-group-item-action active">Đơn hàng của tôi</a>
-                <a asp-action="VoucherWallet" class="list-group-item list-group-item-action">Ví Voucher</a>
-                <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
+                    <a asp-action="account" class="list-group-item list-group-item-action ">
+                        Bảng điều khiển tài khoản
+                    </a>
+                    <a asp-action="profile" class="list-group-item list-group-item-action ">Thông tin tài khoản</a>
+                    <a asp-action="order" class="list-group-item list-group-item-action active">Đơn hàng của tôi</a>
+                    <a asp-action="VoucherWallet" class="list-group-item list-group-item-action">Ví Voucher</a>
+                    <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
                 </div>
             </div>
-            <div class="col-8  mx-4 ">
-                <div class="bg-white mb-2 p-3">
+            <div class="col-md-8  mx-4 " style="background-color:white ;padding:20px">
+                <div style="background-color:white ;padding-left:20px" class=" mb-2 p-3 my-3">
                     <h5>Đơn hàng của tôi</h5>
                     <br>
                     <div style="display: none;" class="row mb-3">
@@ -31,40 +29,76 @@
                         <button class="col-sm-2 btn btn-sm btn-success rounded-pill opacity-75">Nạp điểm</button>
                     </div>
                     <div class="row mb-3">
-                        <p class="col-sm-4">số dư tài khoản</p>
-                        <span class="col-3">8000</span>
                     </div>
                 </div>
-                <div class="bg-white mb-1  p-3">
+                <div style="background-color:white ;padding-left:20px" class=" mb-1  p-3">
                     <div style="font-size: 13px;">
-                    <div>
-                        <table class="table table-borderless">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Đơn Hàng #</th>
-                                    <th scope="col">Ngày</th>
-                                    <th scope="col">Người nhận</th>
-                                    <th scope="col">Tổng tiền</th>
-                                    <th scope="col">Trạng thái</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var x in lstorder)
-                                {
+                        <div>
+                            <table class="table table-borderless">
+                                <thead>
                                     <tr>
-                                        <td>@x.ID_HoaDon</td>
-                                        <td>@x.NgayMua.ToString("d/M/yyyy")</td>
-                                        <td>@x.TenNguoiNhan</td>
-                                        <td>@x.TongTien</td>
-                                        <td>@(x.TrangThai == 1 ? "Hoàn Tất" : "Thất bại")</td>
-                                        <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                        <th scope="col">Đơn Hàng #</th>
+                                        <th scope="col">Ngày</th>
+                                        <th scope="col">Người nhận</th>
+                                        <th scope="col">Tổng tiền</th>
+                                        <th scope="col">Trạng thái</th>
                                     </tr>
-                                }
+                                </thead>
+                                <tbody>
+                                    @foreach (var x in lstorder)
+                                    {
+                                        <tr>
+                                            <td>@x.ID_HoaDon</td>
+                                            <td>@x.NgayMua.ToString("d/M/yyyy")</td>
+                                            <td>@x.TenNguoiNhan</td>
+                                            <td>@String.Format("{0:#,##0.##}", (x.TongTien + x.PhiGiaoHang))  đ</td>
+                                            @if (x.TrangThai == 1)
+                                            {
+                                                <td class="text-primary">Đã đặt hàng</td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            }
+                                            @if (x.TrangThai == 2)
+                                            {
+                                                <td class="text-warning">Đã thanh toán</td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            }
+                                            @if (x.TrangThai == 5)
+                                            {
+                                                <td class="text-success">Thành công</td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            }
+                                            @if (x.TrangThai == 4)
+                                            {
+                                                <td class="">Thất bại</td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            } 
+                                            @if (x.TrangThai == 6)
+                                            {
+                                                <td class="">Không tồn tại</td>
+                                            }
+                                            @if (x.TrangThai == 8)
+                                            {
+                                                <td class="">Đơn hàng đã xác nhận </td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            }
+                                            @if (x.TrangThai == 7)
+                                            {
+                                                <td class="text-danger">Đơn hàng Đã Hủy</td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            }
+                                            @if (x.TrangThai == 9)
+                                            {
+                                                <td class="text-danger">Đang Giao hàng</td>
+                                                <td><a asp-action="OrderDetail" asp-route-id="@x.ID_HoaDon" class="text-warning  text-decoration-none">Xem chi tiết</a></td>
+                                            }
+
+                                        </tr>
+                                    }
 
 
-                            </tbody>
-                        </table>
-                    </div>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -72,10 +106,8 @@
 
 
     </div>
+</div>
 
 
 
 
-    <script src="/bootstrap-5.2.1/dist/js/bootstrap.min.js"></script>
-    <script src="/fontawesome-free-6.2.0-web/js/fontawesome.min.js"></script>
-    <script src="/fontawesome-free-6.2.0-web/js/all.min.js"></script>

@@ -122,16 +122,16 @@
 
 			var value = parseInt($input.val()) + 1;
 
-			if (value > 100) {
-				$('.messErorr').html("số lượng ko được quá 100");
-				$('.add-to-cart-btn').hide();
+			//if (value > 100000000000) {
+	 		//	$('.messErorr').html("số lượng ko được quá 100");
+			//	$('.add-to-cart-btn').hide();
 
-			}
+			//}
 			
-			else {
-				$('.add-to-cart-btn').show();
-				$('.messErorr').hide();
-			}
+			//else {
+			//	$('.add-to-cart-btn').show();
+			//	$('.messErorr').hide();
+			//}
 			$input.val(value);
 			$input.change();
 
@@ -140,30 +140,30 @@
 
 	let priceInputMax = document.getElementById('price-max');
 	let priceInputMin = document.getElementById('price-min');
-	if (priceInputMax != null) {
-		priceInputMax.addEventListener('input', function () {
-			if (priceInputMax.value > 999000) {
+	//if (priceInputMax != null) {
+	//	priceInputMax.addEventListener('input', function () {
+	//		if (priceInputMax.value > 999000) {
 
-				priceInputMax.value = 999000;
-			}
-			if (priceInputMax.value < 1000) {
+	//			priceInputMax.value = 999000;
+	//		}
+	//		if (priceInputMax.value < 1000) {
 				
-				priceInputMax.value = 1000;
-			}
-		})
-	}
-	if (priceInputMin != null) {
-		priceInputMin.addEventListener('input', function () {
-			if (priceInputMin.value > 999000) {
+	//			priceInputMax.value = 1000;
+	//		}
+	//	})
+	//}
+	//if (priceInputMin != null) {
+	//	priceInputMin.addEventListener('input', function () {
+	//		if (priceInputMin.value > 999000) {
 				
-				priceInputMin.value = 999000;
-			}
-			if (priceInputMin.value < 1000) {
+	//			priceInputMin.value = 999000;
+	//		}
+	//		if (priceInputMin.value < 1000) {
 
-				priceInputMin.value = 1000;
-			}
-		});
-	}
+	//			priceInputMin.value = 1000;
+	//		}
+	//	});
+	//}
 	if (priceInputMax != null) {
 		priceInputMax.addEventListener('change', function () {
 			
@@ -234,20 +234,16 @@
 	$("#getvalue").keyup(function () {
 		
 		var valua = $(this).val();
-		if (valua > 100) {
-			$('.add-to-cart-btn').hide();
-			/*$('.messErorr').("số lượng ko được quá 100");*/
-			alert("số lượng ko được quá 100");
-			
-
-		}
-		else if (valua <= 0) {
+		 if (valua <= 0) {
 			$('.add-to-cart-btn').hide();
 			/*$('.messErorr').html("số lượng ko được nhỏ hơn 1");*/
 			alert("số lượng ko được nhỏ hơn 1");
-			
-		}
-		else if (0<= valua <= 100) {
+
+		 } else if (valua > 999) {
+			 $('.add-to-cart-btn').hide();
+			 alert("số lượng không hợp lệ");
+		 }
+		else if (0 <= valua <= 100) {
 			$('.add-to-cart-btn').show();
 			
         }

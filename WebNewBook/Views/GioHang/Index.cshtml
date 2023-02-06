@@ -10,7 +10,7 @@
     var color = "";
     @if (ViewBag.MessUpdateCart == "1")
     {
-        mess = "Số lượng không được quá 100";
+        mess = "Số lượng bạn đặt trong giỏ hàng không còn đủ, số lượng mới đã được cập nhật bên dưới";
         color = "danger";
     }
      if (ViewBag.MessUpdateCart == "3")
@@ -23,33 +23,24 @@
         mess = "Số lượng không có sẵn";
         color = "danger";
     }
+    if (ViewBag.MessUpdateCart == "4")
+    {
+        mess = "Số lượng bạn đặt trong giỏ hàng không còn đủ, đăng nhập để trải nghiệm tốt hơn";
+        color = "danger";
+    }
 }
-<!-- BREADCRUMB -->
-<div id="breadcrumb">
-    <!-- container -->
-    <div class="container">
-        <!-- row -->
-        <div class="row">
-            <div class="col-md-12">
-                <ul class="breadcrumb-tree">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">Book</a></li>
 
-                </ul>
-            </div>
-        </div>
-        <!-- /row -->
-    </div>
-    <!-- /container -->
-</div>
-<!-- /BREADCRUMB -->
 
-<div class="section">
+<div class="section" style="height:100%;">
 
     <div class="container">
         @if (ViewBag.giohang == null || ViewBag.giohang.Count == 0)
-        {
-            <h3 class="text-info text-center">
+        {   @if(ViewBag.MessUpdateCart != null && mess != null)
+              {<div class="alert alert-@color" role="alert">
+                        @mess
+            </div>
+                 }
+            <h3 class="text-info text-center" style="height:500px;">
                 Giỏ hàng của bạn rỗng!
             </h3>
         }else{
@@ -79,7 +70,7 @@
                     <tr>
                         <td class="col-sm-8 col-md-6">
                         <div class="media">
-                            <a class="thumbnail pull-left" href="#"> <img class="media-object" src="~/img/product03.png" style="width: 72px; height: 72px;"> </a>
+                                        <a class="thumbnail pull-left" href="#"> <img class="media-object" src="~/img/@i.hinhanh" style="width: 72px; height: 72px;"> </a>
                             <div  class="media-body">
                                 <h4  class="media-heading"><a  href="#">@i.Tensp</a></h4>
                                
@@ -90,7 +81,7 @@
                                 
                                     <form  asp-action="SuaSoLuong" asp-route-id="@i.Maasp">
                                     <a class="btn" href="@Url.Action("SuaSoLuong",new{id = i.Maasp ,update = "2"})"><i class="fa fa-minus" aria-hidden="true"></i></a>
-                                    <input id="numberCart" type="number"min="1" step="1" name="soluongmoi" max="100" value="@i.Soluong" />
+                                    <input id="numberCart" type="number"min="1" step="1" name="soluongmoi" max="10000" value="@i.Soluong" />
                                      
                                     <a href="@Url.Action("SuaSoLuong",new{id = i.Maasp ,update = "1"})"><i class="fa fa-plus" aria-hidden="true"></i></a>
 
@@ -122,9 +113,10 @@
                         <td>   </td>
                         <td>   </td>
                         <td>
-                        <button type="button" class="btn btn-default">
-                            <span class="fa fa-arrow-left"></span> Tiếp tục mua hàng
-                        </button></td>
+                                    <a type="button" asp-controller="Home" asp-action="Index" class="btn btn-default">
+                                         <span class="fa fa-arrow-left"></span>  Tiếp tục mua hàng 
+                                    </a>
+                      </td>
                         <td>
                         <a type="button" asp-controller="Payment" asp-action="Checkout" class="btn btn-success">
                             Thanh Toán <span class="fa fa-arrow-right"></span>

@@ -8,95 +8,126 @@ using WebNewBook.Model;
 
 namespace WebNewBook.API.Repository.Service
 {
-	public class GioHangService : IGioHangService
-	{
+    public class GioHangService : IGioHangService
+    {
         private readonly dbcontext _dbContext;
         public GioHangService(dbcontext dbContext)
         {
-            
+
 
             _dbContext = dbContext;
         }
 
-        public async Task<int> AddGioHangAsync(string HinhAnh, int SoLuongs, string emailKH, string idsp)
+        public async Task<int> AddGioHangAsync( int SoLuongs, string emailKH, string idsp)
         {
             var listsp = _dbContext.SanPhams.ToList();
             var listgh = _dbContext.GioHangs.ToList();
-            GioHang giohangs = new GioHang();
-            giohangs.ID_GioHang= "GH" + Guid.NewGuid().ToString();
-            giohangs.HinhAnh = HinhAnh;
-            giohangs.Soluong = 0;
-            giohangs.emailKH = emailKH;
-            giohangs.Maasp = idsp;
-            giohangs.Tensp = listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.TenSanPham).FirstOrDefault();
-            giohangs.DonGia= listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.GiaBan).FirstOrDefault();
-              if (listgh.Exists(c => c.Maasp == idsp&&c.emailKH==emailKH))
-            {
-                var giohang = listgh.SingleOrDefault(c => c.Maasp == idsp);
-                var sanpham= listsp.SingleOrDefault(c => c.ID_SanPham == idsp);
-                if (SoLuongs + giohang.Soluong > 100 || SoLuongs > 100)
-                {
-                    return 1;
+           
+            var giohang = listgh.FirstOrDefault(c => c.MaSanPham == idsp);
+            var sanpham = listsp.FirstOrDefault(c => c.ID_SanPham == idsp);
+            var listkh = _dbContext.KhachHangs.ToList();
+            var idKhachHang= listkh.Where(o => o.Email == emailKH).Select(c => c.ID_KhachHang).FirstOrDefault();
 
-                }
-                else if (SoLuongs >= sanpham.SoLuong || giohang.Soluong >= sanpham.SoLuong)
+            GioHang giohangs = new GioHang();
+            giohangs.ID_GioHang = "GH" + Guid.NewGuid().ToString();
+            
+            giohangs.SoLuong = 0;
+            giohangs.MaKhachHang = idKhachHang;
+            giohangs.MaSanPham = idsp;
+            //giohangs.Tensp = listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.TenSanPham).FirstOrDefault();
+            //giohangs.DonGia = listsp.Where(o => o.ID_SanPham == idsp).Select(c => c.GiaBan).FirstOrDefault();
+            if (listgh.Exists(c => c.MaSanPham == idsp && c.MaKhachHang == idKhachHang))
+            {
+
+
+                if (SoLuongs + giohang.SoLuong > sanpham.SoLuong || giohang.SoLuong > sanpham.SoLuong)
                 {
 
                     return 2;
                 }
-               
-                else 
+
+                else
                 {
-                    
-                    giohang.Soluong+= SoLuongs;
+
+                    giohang.SoLuong += SoLuongs;
                     _dbContext.Update(giohang);
 
                     await _dbContext.SaveChangesAsync();
                     return 3;
 
-                    
                 }
 
 
             }
             else
+
             {
-                giohangs.Soluong += SoLuongs;
+                if (SoLuongs > sanpham.SoLuong)
+                {
+
+                    return 2;
+                }
+                giohangs.SoLuong += SoLuongs;
             }
             _dbContext.Add(giohangs);
             await _dbContext.SaveChangesAsync();
             return 3;
         }
 
-        public async Task<List<GioHang>> GetlistGH()
+        public async Task<List<ModelCart>> GetlistGH()
         {
-            var listgh= await _dbContext.GioHangs.ToListAsync();
-           
-            return listgh;
+            var GioHang = _dbContext.GioHangs;
+            var KhachHang = _dbContext.KhachHangs;
+            var HoaDon = _dbContext.HoaDons;
+            var HoaDonCT = _dbContext.HoaDonCTs;
+            var SanPham = _dbContext.SanPhams;
+
+            var products = (from a in GioHang
+                            join b in KhachHang on a.MaKhachHang equals b.ID_KhachHang
+
+                            join e in SanPham on a.MaSanPham equals e.ID_SanPham
+                          
+                            select new ModelCart()
+                            {
+                                EmailKH = b.Email,
+                                MaSanPham = a.MaSanPham,
+                                SoLuong = a.SoLuong,
+                                GiaBan = e.GiaBan,
+                                HinhAnh = e.HinhAnh,
+                                TenSanPham = e.TenSanPham,
+                              
+
+
+                            }).ToList();
+            return products;
         }
 
-        public async Task<SanPham> GetSanPham( string ID)
-        { 
-            
-            var b =  _dbContext.SanPhams.SingleOrDefault(a=>a.ID_SanPham==ID);
+        public async Task<SanPham> GetSanPham(string ID)
+        {
 
-            return  b ;
+            var b =  _dbContext.SanPhams.SingleOrDefault(a => a.ID_SanPham == ID);
+
+            return  b;
         }
 
-        public async Task<int> Updatenumber(string id, int soluongmoi, string namekh,string update)
+        public async Task<int> Updatenumber(string id, int soluongmoi, string namekh, string update)
         {
             var listsp = _dbContext.SanPhams.ToList();
             var listgh = _dbContext.GioHangs.ToList();
-            var giohang = listgh.SingleOrDefault(c => c.Maasp == id && c.emailKH == namekh);
+            var listkh = _dbContext.KhachHangs.ToList();
+            var idKhachHang = listkh.Where(o => o.Email == namekh).Select(c => c.ID_KhachHang).FirstOrDefault();
+
+            var giohang = listgh.SingleOrDefault(c => c.MaSanPham == id && c.MaKhachHang == idKhachHang);
             var Sanpham = listsp.SingleOrDefault(c => c.ID_SanPham == id);
-            if (soluongmoi != 0) {
-               
+            if (soluongmoi != 0)
+            {
+
                 if (soluongmoi != 0)
                 {
                     if (soluongmoi <= Sanpham.SoLuong)
                     {
-                        giohang.Soluong = soluongmoi;
-                        giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
+                        giohang.SoLuong = soluongmoi;
+                        //giohang.ThanhTien = giohang.SoLuong * Sanpham.GiaBan;
                         _dbContext.Update(giohang);
                         await _dbContext.SaveChangesAsync();
                         return 3;
@@ -109,29 +140,27 @@ namespace WebNewBook.API.Repository.Service
             }
             else
             {
-                if (update == "1") {
-                    giohang.Soluong = giohang.Soluong+1;
-                    giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
-                    if (giohang.Soluong > 100)
+                if (update == "1")
+                {
+                    giohang.SoLuong = giohang.SoLuong + 1;
+                    //giohang.ThanhTien = giohang.SoLuong * Sanpham.GiaBan;
+                    if (giohang.SoLuong + soluongmoi > Sanpham.SoLuong)
                     {
-                      
-                        return 1;
-                    }
-                    else if (giohang.Soluong > Sanpham.SoLuong)
-                    {
-                      
+
                         return 2;
                     }
                 }
-                else if(update == "2")
+                else if (update == "2")
                 {
-                    giohang.Soluong = giohang.Soluong - 1;
-                    giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
-                    if (giohang.Soluong <= 0)
+                    giohang.SoLuong = giohang.SoLuong - 1;
+                    //giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
+                    if (giohang.SoLuong <= 0)
                     {
 
-                        giohang.Soluong = 1;
-                        giohang.ThanhTien = giohang.Soluong * giohang.DonGia;
+                        var listghang = _dbContext.GioHangs.ToList();
+                        var xgiohang = listghang.SingleOrDefault(c => c.MaSanPham == id && c.MaKhachHang == idKhachHang);
+                        _dbContext.Remove(xgiohang);
+                        await _dbContext.SaveChangesAsync();
 
                     }
                 }
@@ -140,48 +169,22 @@ namespace WebNewBook.API.Repository.Service
                 return 3;
 
             }
-           
-         
-            
+
+
+
             return 0;
 
         }
 
-       
 
-        public async Task<List<HomeVM>> VM()
-		{
-            var sanPham = await _dbContext.SanPhams.ToListAsync();
-            var sanPhamCT = await _dbContext.SanPhamCTs.ToListAsync();
-            var sachCT = await _dbContext.SachCTs.ToListAsync();
-            var sach = await _dbContext.Sachs.ToListAsync();
-            var theLoai = await _dbContext.TheLoais.ToListAsync();
-            var danhMuc = await _dbContext.DanhMucSachs.ToListAsync();
-            var tacgia = await _dbContext.TacGias.ToListAsync();
-            List<HomeVM> homeVMs = new List<HomeVM>();
-            homeVMs = (from b in sanPhamCT
-                       join c in sach on b.MaSach equals c.ID_Sach
-                       join d in sachCT on c.ID_Sach equals d.MaSach
-                       join e in theLoai on d.MaTheLoai equals e.ID_TheLoai
-                       join f in danhMuc on e.MaDanhMuc equals f.ID_DanhMuc
-                       join g in tacgia on d.MaTacGia equals g.ID_TacGia
-                       select new HomeVM()
-                       {
 
-                           SanPhamCT = b,
-                           sach = c,
-                           sachCT = d,
-                           theLoai = e,
-                           danhMucSach = f,
-                           tacGia = g,
-                       }).ToList();
-            return homeVMs;
-        }
-
-        public async Task<string> XoakhoiGioHang(string id,string namekh)
+        public async Task<string> XoakhoiGioHang(string id, string namekh)
         {
+            var listkh = _dbContext.KhachHangs.ToList();
+            var idKhachHang = listkh.Where(o => o.Email == namekh).Select(c => c.ID_KhachHang).FirstOrDefault();
+
             var listgh = _dbContext.GioHangs.ToList();
-            var giohang = listgh.SingleOrDefault(c => c.Maasp ==id&&c.emailKH==namekh );
+            var giohang = listgh.SingleOrDefault(c => c.MaSanPham == id && c.MaKhachHang == idKhachHang);
             _dbContext.Remove(giohang);
             await _dbContext.SaveChangesAsync();
 
@@ -191,10 +194,46 @@ namespace WebNewBook.API.Repository.Service
         //phóng code
         public async Task XoaGioHangKH(string email)
         {
-            var listgh = _dbContext.GioHangs.Where(c=>c.emailKH == email).ToList();
-   
+            var listkh = _dbContext.KhachHangs.ToList();
+            var idKhachHang = listkh.Where(o => o.Email == email).Select(c => c.ID_KhachHang).FirstOrDefault();
+
+            var listgh = _dbContext.GioHangs.Where(c => c.MaKhachHang == idKhachHang).ToList();
+
             _dbContext.RemoveRange(listgh);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<int> getSP(string id)
+        {
+
+            var listsp = await _dbContext.SanPhams.ToListAsync();
+            var soluong = listsp.Where(c => c.ID_SanPham == id).Select(c => c.SoLuong).FirstOrDefault();
+
+            return soluong;
+        }
+
+        public async Task<int> ChecksoluongCart()
+        {
+            var trangthai = 0;
+            var listgh = await _dbContext.GioHangs.ToListAsync();
+            var listsp = await _dbContext.SanPhams.ToListAsync();
+            foreach (var cm in listgh)
+            {
+                var soluongsp = listsp.Where(b => b.ID_SanPham == cm.MaSanPham).Select(c => c.SoLuong).FirstOrDefault();
+                if (cm.SoLuong > soluongsp)
+                {
+                    cm.SoLuong = soluongsp;
+                    _dbContext.Update(cm);
+
+                    trangthai = 1;
+
+                }
+
+            }
+            _dbContext.SaveChangesAsync();
+            return trangthai;
+        }
+
+
     }
 }

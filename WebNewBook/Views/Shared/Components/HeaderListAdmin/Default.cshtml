@@ -1,26 +1,31 @@
 ﻿<!-- Sidebar -->
-        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
-            <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Admin" asp-action="Index">
-                <div class="sidebar-brand-icon rotate-n-15">
-                   <i class="fa-solid fa-book"></i>
-                </div>
-                <div class="sidebar-brand-text mx-2"> Newbook<sup>UPDM30</sup></div>
-            </a>
-              @if (User.IsInRole("Admin"))
+    <!-- Sidebar - Brand -->
+    <a class="sidebar-brand d-flex align-items-center justify-content-center" asp-controller="Report" asp-action="Index">
+        <div class="sidebar-brand-icon rotate-n-15">
+            <i class="fa-solid fa-book"></i>
+        </div>
+        <div class="sidebar-brand-text mx-2"> Newbook<sup>UPDM30</sup></div>
+    </a>
+    @if (User.IsInRole("Admin") || User.IsInRole("NhanVien"))
     {
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
 
         <!-- Nav Item - Dashboard -->
         <li class="nav-item ">
-            <a class="nav-link" href="index.html">
+            <a class="nav-link" asp-controller="Report" asp-action="Index">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Biểu đồ</span>
+                <span>Tổng quan</span>
             </a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="HoaDon" asp-action="Index">
+                <i class="fa-solid fa-receipt"></i>
+                <span>Hóa đơn</span>
+            </a>
+        </li>
         <!-- Divider -->
         <hr class="sidebar-divider">
 
@@ -32,18 +37,22 @@
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item ">
             <a class="nav-link" asp-controller="Customer" asp-action="Index">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Thông tin người dùng</span>
+                <i class="fa-solid fa-users"></i>
+                <span>Quản lý người dùng</span>
             </a>
-        </li>
-        <li class="nav-item ">
-            <a class="nav-link" href="index.html">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Số lượng truy cập</span>
-            </a>
+
         </li>
 
-
+           @if (User.IsInRole("Admin"))
+        {
+            
+             <li class="nav-item ">
+                <a class="nav-link" asp-controller="QLNhanVien" asp-action="Index">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <span>Nhân viên</span>
+                </a>
+            </li>
+        }
 
         <!-- Divider -->
         <hr class="sidebar-divider">
@@ -63,9 +72,31 @@
                 <span>Sản phẩm</span>
             </a>
         </li>
+        <li class="nav-item ">
+            <a class="nav-link" asp-controller="QLSachCT" asp-action="Index">
+                <i class="fa-solid fa-book"></i>
+                <span>Sách CT</span>
+            </a>
+        </li>
+        <li class="nav-item ">
+            <a class="nav-link" asp-controller="Sach" asp-action="Index">
+                <i class="fa-solid fa-book"></i>
+                <span>Sách</span>
+            </a>
+        </li>
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item ">
+                <a class="nav-link" asp-controller="QLPhieuNhap" asp-action="Index">
+               <i class="fa-solid fa-book"></i>
+                <span>Phiếu nhập </span>
+            </a>
+        </li>
+        }
+     
         <li class="nav-item">
             <a class="nav-link" asp-controller="QLDanhMuc" asp-action="Index">
-                <i class="fa-solid fa-book"></i>
+                <i class="fa-solid fa-bars"></i>
                 <span>Danh mục</span>
             </a>
         </li>
@@ -88,42 +119,20 @@
                 <span>Nhà xuất bản</span>
             </a>
         </li>
-           <li class="nav-item">
-            <a class="nav-link" asp-controller="HoaDon" asp-action="Index">
-                <i class="fa-solid fa-book"></i>
-                <span>Hóa đơn</span>
-            </a>
-        </li>
+      
         <li class="nav-item">
             <a class="nav-link" asp-controller="Voucher" asp-action="Index">
-                <i class="fas fa-fw fa-table"></i>
+                <i class="fa-solid fa-percent"></i>
                 <span>Voucher</span>
             </a>
         </li>
-
-        <li class="nav-item">
-            <a class="nav-link" href="tables.html">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Khuyến mại</span>
-            </a>
-        </li>
-
-        <!-- Divider -->
-        <hr class="sidebar-divider d-none d-md-block">
-        <div class="sidebar-heading">
-            Thống kê
-        </div>
-        <li class="nav-item">
-            <a class="nav-link" href="tables.html">
-                <i class="fas fa-fw fa-table"></i>
-                <span>Thống kê</span>
-            </a>
-        </li>
-        <!-- Sidebar Toggler (Sidebar) -->
         <div class="text-center d-none d-md-inline">
             <button class="rounded-circle border-0" id="sidebarToggle"></button>
-            </div>
-            }
+        </div>
 
-        </ul>
-        <!-- End of Sidebar -->
+
+
+    }
+
+</ul>
+<!-- End of Sidebar -->

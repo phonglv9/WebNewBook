@@ -4,6 +4,7 @@ using WebNewBook.API.ModelsAPI;
 using WebNewBook.API.Repository.IService;
 using WebNewBook.API.Repository.Service;
 using WebNewBook.Model;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace WebNewBook.API.Controllers
 {
@@ -16,16 +17,33 @@ namespace WebNewBook.API.Controllers
         {
             _GioHangService = GioHangService;
         }
-        [HttpGet("GioHangVM")]
-        public async Task<List<HomeVM>> GetHomVMs()
+      
+        [HttpGet("ChecksoluongCart")]
+        public async Task<int> ChecksoluongCart()
         {
-            return await _GioHangService.VM();
+            try
+            {
+                return await _GioHangService.ChecksoluongCart();
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+           
 
         }
         [HttpGet("GetLitsGH")]
-        public async Task<List<GioHang>> GetGH()
+        public async Task<List<ModelCart>> GetGH()
         {
+
             return await _GioHangService.GetlistGH();
+
+        }
+      
+        [HttpGet("GetSanPham/{id}")]
+        public async Task<int> GetSanPham(string id)
+        {
+            return await _GioHangService.getSP(id);
 
         }
         [HttpGet("SanPham/{id}")]
@@ -37,26 +55,44 @@ namespace WebNewBook.API.Controllers
         [HttpGet("Xoakhoigio/{id}/{namekh}")]
         public async Task<string> deleteCart(string id, string namekh)
         {
-             await _GioHangService.XoakhoiGioHang(id, namekh);
-            return "Thành Công";
+            try
+            {
+                await _GioHangService.XoakhoiGioHang(id, namekh);
+                return "Thành Công";
+            }
+            catch (Exception e)
+            {
+                return "lỗi";
+            }
+           
 
         }
         [HttpGet("Updatenumber/{id}/{soluongmoi}/{namekh}/{update}")]
         public async Task<int> Updatenumber(string id,int soluongmoi,string namekh, string update)
         {
 
-            return await _GioHangService.Updatenumber(id, soluongmoi, namekh,update); 
-
-        }
-        [HttpGet("Addgiohang/{HinhAnh}/{SoLuongs}/{emailKH}/{idsp}")]
-        public async Task<int> Addgiohang(string HinhAnh,int SoLuongs,string emailKH,string idsp)
-        {
-            
           
-            
-            
-                
-                return await _GioHangService.AddGioHangAsync(HinhAnh, SoLuongs, emailKH, idsp); 
+            try
+            {
+                return await _GioHangService.Updatenumber(id, soluongmoi, namekh, update);
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+        }
+        [HttpGet("Addgiohang/{SoLuongs}/{emailKH}/{idsp}")]
+        public async Task<int> Addgiohang(int SoLuongs,string emailKH,string idsp)
+        {
+            try
+            {
+                return await _GioHangService.AddGioHangAsync( SoLuongs, emailKH, idsp);
+            }
+            catch (Exception e)
+            {
+                return 0;
+            }
+           
            
         }
         [HttpPost("DeleteCarts/{email}")]

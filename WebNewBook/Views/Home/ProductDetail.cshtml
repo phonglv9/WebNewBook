@@ -3,28 +3,11 @@
 	Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<!-- BREADCRUMB -->
 
-		<div id="breadcrumb">
-			<!-- container -->
-			<div class="container">
-				<!-- row -->
-				<div class="row">
-					<div class="col-md-12">
-						<ul class="breadcrumb-tree">
-							<li><a href="#">Home</a></li>
-							<li><a href="#">Book</a></li>
-							
-						</ul>
-					</div>
-				</div>
-				<!-- /row -->
-			</div>
-			<!-- /container -->
-		</div>
-		<!-- /BREADCRUMB -->
 
 <!-- SECTION -->
+@if (ViewBag.SanphamCT != null)
+{
 	<div class="section">
 		<!-- container -->
 		<div class="container">
@@ -34,14 +17,14 @@
 				<div class="col-md-5 col-md-push-2">
 					<div id="product-main-img">
 						<div class="product-preview">
-							<img src="~/img/product01.png" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.HinhAnh" alt="">
 						</div>
 
 						<div class="product-preview">
-							<img src="~/img/product01.png" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.HinhAnh" alt="">
 						</div>
 
-						
+
 					</div>
 				</div>
 				<!-- /Product main img -->
@@ -49,11 +32,11 @@
 				<div class="col-md-2  col-md-pull-5">
 					<div id="product-imgs">
 						<div class="product-preview">
-							<img src="~/img/product01.png" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.HinhAnh" alt="">
 						</div>
 
 						<div class="product-preview">
-							<img src="~/img/product01.png" alt="">
+							<img src="~/img/@ViewBag.SanphamCT.HinhAnh" alt="">
 						</div>
 
 					</div>
@@ -62,9 +45,9 @@
 				<!-- Product details -->
 				<div class="col-md-5">
 					<div class="product-details">
-					<h2 class="product-name">
-						@if (ViewBag.SanphamCT != null)
-							@ViewBag.SanphamCT.sanPhams.TenSanPham
+						<h2 class="product-name">
+
+							@ViewBag.SanphamCT.TenSanPham
 
 
 
@@ -72,54 +55,69 @@
 
 						<div>
 
-							<h3 class="product-price">  
-							@if (ViewBag.SanphamCT != null)
-							{
-								@ViewBag.SanphamCT.sanPhams.GiaBan
-							}
-							<del class="product-old-price"></del></h3>
+							<h3 class="product-price">
+
+
+								@ViewBag.SanphamCT.GiaBan.ToString("#,##0").Replace(',', '.')đ
+
+								<del class="product-old-price"></del>
+							</h3>
 
 						</div>
-						
-						
+
+
 						<ul class="product-links">
 							<li>Nhà xuất bản:</li>
 							<li><a href="#">Kinh đồng</a></li>
 						</ul>
 						<ul class="product-links">
 							<li>Tác giả:</li>
-						@foreach (var item in ViewBag.TacGia)
-						{
-							<li><a href="#">@item.HoVaTen</a></li>
+							@if (ViewBag.TacGia != null)
+							@foreach (var item in ViewBag.TacGia)
+							{
 
-						}	
+									<li><a href="#">@item</a></li>
+
+
+							}
 						</ul>
 						<br>
-					<form asp-controller="GioHang" asp-action="AddToCartCT" asp-route-id="@ViewBag.SanphamCT.sanPhams.ID_SanPham ">
-						<div class="add-to-cart">
-							<div class="qty-label">
-								Số lượng
-								<div  class="input-number">
-									<input id="getvalue" name="SoLuong" type="number" value="1">
-									
-									<span class="qty-up">+</span>
-									<span class="qty-down">-</span>
+						<form asp-controller="GioHang" asp-action="AddToCartCT" >
+							<div class="add-to-cart">
+								<div class="qty-label">
+									Số lượng
+									<div class="input-number">
+										<input id="getvalue" name="SoLuong" type="number" value="1">
+										<input id="getvalue" name="id" type="hidden" value="@ViewBag.SanphamCT.ID_SanPham">
+
+										<span class="qty-up">+</span>
+										<span class="qty-down">-</span>
+									</div>
 								</div>
+
+								@if (ViewBag.SanphamCT.SoLuong < 1)
+								{
+									<div class="bg-warning" style="width:200px; padding:10px; margin:5px; border-radius:5px;"><strong> Sản phẩm tạm hết hàng</strong></div>
+
+								}else{
+								<button data-toggle="modal" data-target="#exampleModalCart" type="submit"  class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+								}
 							</div>
-							<button data-toggle="modal" data-target="#exampleModalCart" type="submit" @* onclick="addtocart(${@ViewBag.SanphamCT.sanPhams.ID_SanPham})"*@ class="add-to-cart-btn" @*value="@ViewBag.SanphamCT.sanPhams.ID_SanPham"*@><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
-						</div></form>
+						</form>
 
 
 
 						<ul class="product-links">
 							<li>Thể loại:</li>
-							@if(ViewBag.TheLoai != null)
-						@foreach (var item in ViewBag.TheLoai)
-						{
-							<li><a href="#">@item.TenTL</a></li>
+							@if (ViewBag.TheLoai != null)
 
-						}
-							
+								@foreach (var item in ViewBag.TheLoai)
+								{
+									
+									<li><a href="#">@item</a></li>
+
+								}
+
 						</ul>
 
 
@@ -143,11 +141,18 @@
 							<div id="tab1" class="tab-pane fade in active">
 								<div class="row">
 									<div class="col-md-12">
-										<p>
-										@if (ViewBag.SanphamCT != null)
-											@ViewBag.SanphamCT.sach.MoTa
+										
+												
+											
+											
+											@if (ViewBag.Mota !=null)
+											@foreach (var item in ViewBag.Mota){
 
-										</p>
+
+												<h4 class="title"> @item.TenSach</h4>
+												<p> @item.Mota</p>
+												
+											}
 									</div>
 								</div>
 							</div>
@@ -157,39 +162,69 @@
 								<div class="row">
 									<div class="col-md-3">
 									</div>
-								<div class="col-md-6">
-									
-										
-									@if (ViewBag.SanphamCT != null){
-									
-									<table class="table table-hover ">
-										<tbody>
+									<div class="col-md-6">
 
-											<tr>
-												<td>Tên sách :</td>
-											<td class="col-2">@ViewBag.SanphamCT.sach.TenSach</td>
-											</tr>
-											<tr>
-												<td>Số trang :</td>
-												<td> @ViewBag.SanphamCT.sach.SoTrang</td>
-											</tr>
-											<tr>
-												<td>Tái bản :</td>
-												<td> @ViewBag.SanphamCT.sach.TaiBan</td>
-											</tr>
-											<tr>
-												<td>Số lượng : :</td>
-												<td>@ViewBag.SanphamCT.sach.SoLuong</td>
-											</tr>
-												
-										</tbody>
-									</table>
-								}
+
+										@if(ViewBag.CheckBook!=null)
+											@if (ViewBag.CheckBook<=3)
+											{
+												<table class="table table-hover ">
+													<tbody>
+
+														<tr>
+															<td>Tên sách :</td>
+															<td class="col-2">@ViewBag.SanphamCT.TenSanPham</td>
+														</tr>
+														<tr>
+															<td>Số trang :</td>
+															<td> @ViewBag.SanphamCT.sotrang</td>
+														</tr>
+														<tr>
+															<td>Tái bản :</td>
+															<td> @ViewBag.SanphamCT.taiban</td>
+														</tr>
+														<tr>
+															<td>Số lượng : </td>
+															<td>@ViewBag.SanphamCT.SoLuong</td>
+														</tr>
+
+														<tr>
+															<td>Tên nhà xuất bản : </td>
+															<td>@ViewBag.SanphamCT.TenNhaXuatBan</td>
+														</tr>
+
+													</tbody>
+												</table>
+										}
+										else{
+												<table class="table table-hover ">
+													<tbody>
+
+														<tr>
+															<td>Tên sản phẩm :</td>
+															<td class="col-2">@ViewBag.SanphamCT.TenSanPham</td>
+														</tr>
+														<tr>
+															<td>Số lượng : </td>
+															<td>@ViewBag.SanphamCT.SoLuong</td>
+														</tr>
+
+														<tr>
+															<td>Tên nhà xuất bản : </td>
+															<td>@ViewBag.SanphamCT.TenNhaXuatBan</td>
+														</tr>
+
+													</tbody>
+												</table>
+
+										}
+									
+
 
 									</div>
-								<div class="col-md-3">
+									<div class="col-md-3">
+									</div>
 								</div>
-							</div>
 							</div>
 							<!-- /tab2  -->
 
@@ -204,6 +239,8 @@
 		</div>
 		<!-- /container -->
 	</div>
+}
+	
 <div class="section">
 	<!-- container -->
 	<div class="container">
@@ -227,26 +264,26 @@
 							<div class="box-container">
 								<div class="products-slick" data-nav="#slick-nav-2">
 									
-											@if (ViewBag.listDM != null)
+											@*@if (ViewBag.listDM.Count)*@
 										@foreach (var a in ViewBag.listDM)
 											{
 
 												<!-- product -->
 												<div class="product">
 													<div class="product-img">
-														<img src="~/img/product01.png" alt="">
+													<img src="~/img/@a.HinhAnh" alt="">
 													</div>
 													<div class="product-body">
 														
 																<p class="product-category">
 
-																	@a.danhMucSach.TenDanhMuc
+													              @a.TenDanhMuc
 
 
 																</p>
-															
-														<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@a.sanPhams.ID_SanPham"> @a.sanPhams.TenSanPham</a> </h3>
-														<h4 class="product-price"> @a.sanPhams.GiaBan <del class="product-old-price"> </del></h4>
+
+												<h3 class="product-name"><a asp-action="ProductDetaill" asp-route-id="@a.ID_SanPham"> @a.TenSanPham</a> </h3>
+												<h4 class="product-price"> @a.GiaBan.ToString("#,##0").Replace(',', '.')đ <del class="product-old-price"> </del></h4>
 
 
 													</div>

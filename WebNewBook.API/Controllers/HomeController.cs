@@ -19,17 +19,24 @@ namespace WebNewBook.API.Controllers
         }
 
         [HttpGet("HomeVM")]
-        public async Task<List<HomeVM>> GetHomVMs()
+        public async Task<IEnumerable<HomeViewModel>> GetHomVMs()
         {
             return  await _homeService.GetHomVM();
 
         }
+        [HttpGet("HomeProductTop10Oder")]
+        public async Task<List<ProductOderTop10VM>> GetProductTop10Oder()
+        {
+            return await _homeService.GetTopProduct10Oder();
+
+        }
         [HttpGet("Product")]
-        public async Task<List<HomeVM>> GetProuctHomes()
+        public async Task<IEnumerable<ProductVM>> GetPrHomes()
         {
             return await _homeService.GetProductHome();
 
         }
+
         [HttpGet("ProductDetail/{id}")]
         public async Task<SanPhamChiTiet> ProductDetail(string id)
         {
@@ -40,6 +47,12 @@ namespace WebNewBook.API.Controllers
         public async Task<List<TheLoai>> GetTL()
         {
             return await _homeService.GetTheLoais();
+
+        }
+        [HttpGet("TheLoaict/{id}")]
+        public async Task<List<SanPhamChiTiet>> GetTLct(string id)
+        {
+            return await _homeService.GetTheLoaisCT(id);
 
         }
         [HttpGet("DanhMuc")]

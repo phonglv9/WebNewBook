@@ -32,12 +32,42 @@ namespace WebNewBook.API.Controllers
             return await _hoaDonService.GetHDCT(id);
         }
         [HttpGet("UpdateTT/{id}/{name}")]
-        public async Task UpdateTT(string id,int name)
+        public async Task<ActionResult> UpdateTT(string id,int name,string? lydohuy)
         {
           
-             _hoaDonService.UpdatetrangthaiHD(id, name);
             
+
+            try
+            {
+                _hoaDonService.UpdatetrangthaiHD(id, name,lydohuy);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
         }
 
+        //
+        [HttpGet("GetPriceVoucher/{idvoucherCT}")]
+        public async Task<Voucher> GetPriceVoucher( string idvoucherCT)
+        {
+
+            return await _hoaDonService.GetPriceVoucher(idvoucherCT);
+        }
+
+        [HttpPut("UpdateRecipientProfile")]
+        public async Task<ActionResult> UpdateRecipientProfile(HoaDon hoaDon)
+        {
+            _hoaDonService.UpdateThongtinnguoinhan(hoaDon);
+            return Ok();
+        }
+
+        [HttpPost("AddOrderAdmin")]
+        public async Task<ActionResult> AddOrderAdminControll(HoaDon hoaDon)
+        {
+            _hoaDonService.AddOrderAdmin(hoaDon);
+            return Ok();
+        }
     }
 }

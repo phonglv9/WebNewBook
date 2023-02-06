@@ -13,6 +13,13 @@ namespace WebNewBook.API.Repository.IService
         Task UpdateSLSanPhamVNPay(string id);
         Task<List<ViewHoaDon>> GetListHoaDon();
         Task<List<ViewHoaDonCT>> GetHDCT(string id);
-        Task UpdatetrangthaiHD(string id,int name);
+        Task UpdatetrangthaiHD(string id,int name, string lydohuy);
+        Task SendMailOder(string idHoaDon);
+        //voucher get price
+        Task<Voucher> GetPriceVoucher(string idVoucherCT);
+        Task UpdateThongtinnguoinhan(HoaDon hoaDon);
+        string AddOrderAdmin(HoaDon hoaDon);
+
+
     }
 }

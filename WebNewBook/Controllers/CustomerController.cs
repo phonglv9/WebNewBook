@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 using WebNewBook.Model;
 
@@ -17,9 +19,14 @@ namespace WebNewBook.Controllers
 
 
         }
-    
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
+        }
         public async Task<IActionResult> Index(string search, int? status)
         {
+            ViewBag.TitleAdmin = "Khách hàng";
             List<KhachHang> GetKhachHang = new List<KhachHang>();
             HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/Customer?status=" + status + "&search=" + search).Result;
             if (response.IsSuccessStatusCode)
@@ -38,11 +45,7 @@ namespace WebNewBook.Controllers
                 using (var httpClient = new HttpClient())
                 {
                     StringContent content = new StringContent(JsonConvert.SerializeObject(khachang), Encoding.UTF8, "application/json");
-                    using (var response = await httpClient.PostAsync("https://localhost:7266/api/Customer", content))
-                    {
-                        string apiResponse = await response.Content.ReadAsStringAsync();
-                        khachang = JsonConvert.DeserializeObject<KhachHang>(apiResponse);
-                    }
+                    HttpResponseMessage response = _httpClient.PostAsync(_httpClient.BaseAddress + "/Customer", content).Result;
                 }
                 ViewBag.message = 1;
                   return RedirectToAction("Index",ViewBag.message);
@@ -68,8 +71,7 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Delete(string Id)
         {
-            StringContent content = new StringContent(JsonConvert.SerializeObject(Id));
-            List<KhachHang> khachHangs = new List<KhachHang>();
+       
             HttpResponseMessage response = _httpClient.PutAsync(_httpClient.BaseAddress + "/Customer/"+Id,null).Result;
             if (response.IsSuccessStatusCode)
             {

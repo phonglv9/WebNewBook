@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Filters;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Text;
 using WebNewBook.Model;
 
 namespace WebNewBook.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class QLNhanVienController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -15,6 +19,12 @@ namespace WebNewBook.Controllers
             _httpClient = new HttpClient();
             _httpClient.BaseAddress = new Uri("https://localhost:7266/");
             nhanViens = new List<NhanVien>();
+        }
+
+        public override void OnActionExecuting(ActionExecutingContext context)
+        {
+            base.OnActionExecuting(context);
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
         }
 
         public async Task<List<NhanVien>?> Get()
@@ -29,10 +39,16 @@ namespace WebNewBook.Controllers
             return nhanViens;
         }
 
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string? timKiem, int? trangThai, int? page, string mess)
         {
+            ViewBag.TitleAdmin = "Nhân Viên";
+            timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
             List<NhanVien>? lstNhanVien = new List<NhanVien>();
             lstNhanVien = await Get();
+            lstNhanVien = (trangThai == 1 || trangThai == 0) ? lstNhanVien.Where(c => c.HoVaTen.Contains(timKiem) && c.TrangThai == trangThai).ToList() : lstNhanVien.Where(c => c.HoVaTen.Contains(timKiem)).ToList();
+            ViewBag.TimKiem = timKiem;
+            ViewBag.TrangThai = trangThai;
+            ViewBag.message = mess;
             ViewBag.NhanVien = lstNhanVien;
             return View();
         }
@@ -57,9 +73,10 @@ namespace WebNewBook.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(NhanVien nhanVien)
         {
+            string error = "";
             nhanVien.ID_NhanVien = "NV" + Guid.NewGuid().ToString();
-            nhanVien.TrangThai = 0;
-            nhanVien.MatKhau = RandomString(10);
+            nhanVien.TrangThai = 1;
+            nhanVien.MatKhau = "NV@12345" + nhanVien.Email;
             if (ModelState.IsValid)
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(nhanVien), Encoding.UTF8, "application/json");
@@ -69,14 +86,18 @@ namespace WebNewBook.Controllers
                 {
                     return RedirectToAction("Index");
                 }
+
+                error = await response.Content.ReadAsStringAsync();
             }
 
+            ViewBag.Error = error;
             return View(nhanVien);
         }
 
         [HttpPost]
         public async Task<IActionResult> Update(NhanVien nhanVien)
         {
+            string error = "";
             if (ModelState.IsValid)
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(nhanVien), Encoding.UTF8, "application/json");
@@ -86,7 +107,11 @@ namespace WebNewBook.Controllers
                 {
                     return RedirectToAction("Index");
                 }
+
+                error = await response.Content?.ReadAsStringAsync();
             }
+
+            ViewBag.Error = error;
             return View(nhanVien);
         }
 

@@ -1,18 +1,17 @@
 ﻿@{
-    var  Model = ViewBag.KhachHang;
+    var Model = ViewBag.KhachHang;
     var lstorder = ViewBag.lstOrder;
-  
-}
-    <link rel="stylesheet" href="/bootstrap-5.2.1/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/fontawesome.min.css">
-    <link rel="stylesheet" href="/fontawesome-free-6.2.0-web/css/all.min.css">
 
-    <div style="background-color: #f1f1f1;">
-        <div class="row  p-1">
-            <div class="col-3 mx-2">
+}
+
+<div class="section">
+
+    <div class="container" style="background-color: #f1f1f1; padding:20px;">
+        <div class="row">
+            <div class="col-md-3 ">
                 <div class="list-group">
                     <h4 class="list-group-item text-danger">TÀI KHOẢN</h4>
-                <a asp-action="account" class="list-group-item list-group-item-action  active">
+                    <a asp-action="account" class="list-group-item list-group-item-action  active">
                         Bảng điều khiển tài khoản
                     </a>
                     <a asp-action="profile" class="list-group-item list-group-item-action ">Thông tin tài khoản</a>
@@ -21,83 +20,125 @@
                     <a asp-action="FpointHistory" class="list-group-item list-group-item-action ">Lịch sử F-point</a>
                 </div>
             </div>
-            <div class="col-8 bg-white fs-6 ">
-                <h3>Bảng điều khiển khách hàng</h3>
-                <br>
-                <div>
-                <p class="text-danger fw-bold text-center">Điểm tích lũy: <span>@Model.DiemTichLuy</span> Fpoint</p>
-                </div>
-                <br>
-                <div class="p-2 bg-warning bg-opacity-25">
+            <div style="background-color:white;padding:20px;" class="col-md-8 fs-6 ">
+                <h3 class="margin-top-3">Bảng điều khiển khách hàng</h3>
+                <strong>
+                    <br>
                     <div>
-                    <p>Họ và tên : <span class="fw-bold">@Model.HoVaTen</span></p>
-                    <p>Enail : <span class="fw-bold">@Model.Email</span></p>
-                    </div>
-                    <hr>
-                    <div class="fst-italic">
-                    <p>F-point : <a asp-action="FpointHistory">@Model.DiemTichLuy </a>đ</p>
-                        <p>Số đơn hàng thành công năm @DateTime.Now.Year:      <span class="fw-semibold mx-5">@ViewBag.soLuongOrder</span></p>
-                    <p>Số tiền đã thanh toán @DateTime.Now.Year:         <span class="fw-semibold mx-5">@ViewBag.tongTienOrder</span></p>
+
+                        <p class="text-danger fw-bold text-center">Điểm tích lũy: <span>@Model.DiemTichLuy</span> Fpoint</p>
 
                     </div>
-                </div>
-                <br>
-                <div>
-                <h5>NHỮNG ĐƠN HÀNG GẦN ĐÂY <a asp-action="order" style="padding-left: 500px ; font-size: 12px; " class="ms-5">Xem thêm</a></h5>
-                    <hr>
+                    <br>
+                    <div class="p-2 bg-warning bg-opacity-25" style=" border-radius: 14px;padding: 20px;">
+                        <div>
+                            <p>Họ và tên : <span class="fw-bold">@Model.HoVaTen</span></p>
+                            <p>Enail : <span class="fw-bold">@Model.Email</span></p>
+                        </div>
+                        <hr>
+                        <div class="fst-italic">
+                            <p>F-point : <strong> <a asp-action="FpointHistory" style="color:red;">@Model.DiemTichLuy </a></strong>điểm</p>
+
+                            <p>Số đơn hàng thành công năm @DateTime.Now.Year:      <span class="fw-semibold mx-5">@ViewBag.soLuongOrder</span></p>
+                            <p>Số tiền đã thanh toán @DateTime.Now.Year:         <span class="fw-semibold mx-5">@String.Format( "{0:#,##0.##}",(ViewBag.tongTienOrder)) đ</span></p>
+
+                        </div>
+                    </div>
+                    <br>
                     <div>
-                        <table class="table table-borderless">
-                            <thead>
-                                <tr>
-                                    <th scope="col">Đơn Hàng #</th>
-                                    <th scope="col">Ngày</th>
-                                    <th scope="col">Người nhận</th>
-                                    <th scope="col">Tổng tiền</th>
-                                    <th scope="col">Trạng thái</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach (var x in lstorder)
-                                {
-                                <tr>
-                                    <td>@x.ID_HoaDon</td>
-                                    <td>@x.NgayMua.ToString("d/M/yyyy")</td>
-                                    <td>@x.TenNguoiNhan</td>
-                                    <td>@x.TongTien</td>
-                                    <td>@(x.TrangThai==1?"Hoàn Tất":"Thất bại")</td>
-                                    
-                                </tr>
-                            }
-                               
-                         
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-                <br>
-                <div>
-                    <h5 class="text-danger">ĐỊA CHỈ</h5>
-                    <hr>
-                    <div class="fw-light">
-                        <p>ĐỊA CHỈ GIAO HÀNG</p>
-                        <p>@Model.HoVaTen</p>
-                        <p>@Model.DiaChi</p>
-                    <p>Tel: <span>@Model.SDT</span></p>
-                    </div>
+                        <h5>NHỮNG ĐƠN HÀNG GẦN ĐÂY<a asp-action="order" style="padding-left: 20px ; font-size: 12px; color:blue;" class="ms-5 ">Xem thêm</a> </h5>
+                        <hr>
+                        <div>
+                            <table class="table table-borderless">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Đơn Hàng #</th>
+                                        <th scope="col">Ngày</th>
+                                        <th scope="col">Người nhận</th>
+                                        <th scope="col">Tổng tiền</th>
+                                        <th scope="col">Trạng thái</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var x in lstorder)
+                                    {
+                                        <tr>
+                                            <td>@x.ID_HoaDon</td>
+                                            <td>@x.NgayMua.ToString("d/M/yyyy")</td>
+                                            <td>@x.TenNguoiNhan</td>
+                                            <td>@String.Format("{0:#,##0.##}", (x.TongTien + x.PhiGiaoHang)) đ</td>
+                                            @if (x.TrangThai == 1)
+                                            {
+                                                <td class="text-primary">Đã đặt hàng</td>
 
-                </div>
+                                            }
+                                            @if (x.TrangThai == 2)
+                                            {
+                                                <td class="text-warning">Đã thanh toán</td>
 
+                                            }
+                                            @if (x.TrangThai == 5)
+                                            {
+                                                <td class="text-success">Thành công</td>
+
+                                            }
+                                            @if (x.TrangThai == 4)
+                                            {
+                                                <td class="">Trả hàng</td>
+                                            }  @if (x.TrangThai == 6)
+                                            {
+                                                <td class="">Không tồn tại</td>
+                                            }
+                                            @*//Trang thái đơn hàng :
+
+                                        //1.Đặt hàng
+                                        //2.Đã thanh toán
+                                        //3.Đơn hàng thanh toán thất bại
+                                        //4. đơn hàng giao thất bại
+                                        //5.Thành công
+                                        //6.Vô hiệu hóa
+                                        //7. hủy
+                                        //8. đơn hàng đã xác nhận 
+                                        
+                                      
+                                        thàn công
+                                       
+                                      
+                                        // 
+
+                                        *@
+                                        
+                                        </tr>
+                                    }
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <br>
+                    <div>
+                        <h5 class="text-danger">ĐỊA CHỈ</h5>
+                        <hr>
+                        <div class="fw-light">
+                            <p>ĐỊA CHỈ GIAO HÀNG</p>
+                            <p>@Model.HoVaTen</p>
+                            <p>@Model.DiaChi</p>
+                            <p>Tel: <span>@Model.SDT</span></p>
+                        </div>
+
+                    </div>
+                </strong>
             </div>
         </div>
 
 
     </div>
+</div>
 
 
 
 
 
 
-    <script src="/bootstrap-5.2.1/dist/js/bootstrap.min.js"></script>
-    <script src="/fontawesome-free-6.2.0-web/js/fontawesome.min.js"></script>
-    <script src="/fontawesome-free-6.2.0-web/js/all.min.js"></script>
+

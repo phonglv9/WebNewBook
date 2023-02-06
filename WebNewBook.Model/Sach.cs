@@ -14,22 +14,13 @@ namespace WebNewBook.Model
         [Key]
         [Required]
         public string ID_Sach { get; set; }
-        [ForeignKey("NhaXuatBan")]
-        public string MaNXB { get; set; }
         public string TenSach { get; set; }
-        public string HinhAnh { get; set; }
         [Range(1, 1000000)]
         public int SoTrang { get; set; }
-        [Range(0, 100)]
-        public int TaiBan { get; set; }
-        [Range(1, 999999)]
-        public double GiaBan { get; set; }
-        public string? MoTa { get; set; }
-        public int SoLuong { get; set; }
-        //public int SoLuongKho { get; set; }
-        public int TrangThai { get; set; }
-        public virtual NhaXuatBan? NhaXuatBan { get; set; }
-        public virtual ICollection<SachCT>? SachCTs { get; set; }
-        public virtual ICollection<PhieuNhap>? PhieuNhaps { get; set; }
+
+        //public int? LoaiBia { get; set; } //1:Bìa cứng - 2: Bìa mềm
+        //public string? NgonNgu { get; set; }
+        //public string? KichThuoc { get; set; } 
+        public string MoTa { get; set; }
     }
 }

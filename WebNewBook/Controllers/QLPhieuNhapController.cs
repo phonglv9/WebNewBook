@@ -6,11 +6,11 @@ using Newtonsoft.Json;
 using System.Net.Http.Headers;
 using System.Text;
 using WebNewBook.Model;
+using WebNewBook.Model.APIModels;
 
 namespace WebNewBook.Controllers
 {
     [Authorize(Roles = "Admin")]
-    //[Authorize(Roles = "NhanVien")]
     public class QLPhieuNhapController : Controller
     {
         private readonly HttpClient _httpClient;
@@ -32,6 +32,18 @@ namespace WebNewBook.Controllers
         {
             base.OnActionExecuting(context);
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Request.Cookies["token"]);
+        }
+
+        private async Task<List<T>> GetRequest<T>(string request)
+        {
+            List<T> result = new List<T>();
+            HttpResponseMessage responseGet = await _httpClient.GetAsync(request);
+            if (responseGet.IsSuccessStatusCode)
+            {
+                string jsonData = responseGet.Content.ReadAsStringAsync().Result;
+                result = JsonConvert.DeserializeObject<List<T>>(jsonData);
+            };
+            return result;
         }
 
         private async Task<List<Sach>> GetSachs()
@@ -60,14 +72,16 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Index()
         {
+            ViewBag.TitleAdmin = "Phiếu nhập";
             List<PhieuNhap>? lstPhieuNhap = new List<PhieuNhap>();
-            lstPhieuNhap = await Get();
-            var sach = await GetSachs();
+            lstPhieuNhap = await GetRequest<PhieuNhap>("phieunhap");
+            var sach = await GetRequest<SachCTViewModel>("book/sachctviewmodel");
             List<PhieuNhapViewModel> phieuNhapViewModels = new List<PhieuNhapViewModel>();
             lstPhieuNhap.ForEach(c =>
             {
-                var book = sach.FirstOrDefault(x => x.ID_Sach == c.MaSach);
-                PhieuNhapViewModel phieuNhapViewModel = new PhieuNhapViewModel { PhieuNhap = c, Sach = book.TenSach + " - Tái bản: " + book.TaiBan };
+                var book = sach.FirstOrDefault(x => x.SachCT.ID_SachCT == c.MaSachCT);
+                var loaiBia = book.SachCT.BiaMem ? "Bìa mềm" : "Bìa cứng";
+                PhieuNhapViewModel phieuNhapViewModel = new PhieuNhapViewModel { PhieuNhap = c, Sach = book.TenSach + " - Tái bản: " + book.SachCT.TaiBan + " - NXB: " + book.NXB + " - Loại bìa: " + loaiBia};
                 phieuNhapViewModels.Add(phieuNhapViewModel);
             });
             ViewBag.PhieuNhap = phieuNhapViewModels;
@@ -76,30 +90,27 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Create()
         {
-            var sachs = await GetSachs();
+            var sachs = await GetRequest<SachCTViewModel>("book/sachctviewmodel");
             var selectItems = new List<SelectListItem>();
-            selectItems = sachs.Select(s => new SelectListItem { Text = s.TenSach + " - Tai ban: " + s.TaiBan, Value = s.ID_Sach }).ToList();
+            sachs.ForEach(s =>
+            {
+                var loaiBia = s.SachCT.BiaMem ? "Bìa mềm" : "Bìa cứng";
+                var a = new SelectListItem { Text = s.TenSach + " - Tái bản: " + s.SachCT.TaiBan + " - NXB: " + s.NXB + " - Loại bìa: " + loaiBia, Value = s.SachCT.ID_SachCT };
+                selectItems.Add(a);
+            });
+            //selectItems = sachs.Select(s => new SelectListItem { Text = s.TenSach + " - Tái bản: " + s.SachCT.TaiBan + " - NXB: " + s.NXB + " - Loại bìa: " +s.SachCT.BiaMem?"":"", Value = s.SachCT.ID_SachCT }).ToList();
             ViewBag.Sachs = selectItems;
             return View();
-        }
-
-        public async Task<IActionResult> Update(string id)
-        {
-            List<PhieuNhap>? phieuNhaps = new List<PhieuNhap>();
-            phieuNhaps = await Get();
-
-            PhieuNhap? phieuNhap = phieuNhaps?.FirstOrDefault(c => c.ID_PhieuNhap == id);
-            if (phieuNhaps == null)
-                return NotFound();
-
-            return View(phieuNhap);
         }
 
         [HttpPost]
         public async Task<IActionResult> Create(PhieuNhap phieuNhap)
         {
+
             phieuNhap.MaNhanVien = User.Claims.FirstOrDefault(c => c.Type == "Id").Value;
             phieuNhap.ID_PhieuNhap = "PN" + Guid.NewGuid().ToString();
+            string error = "";
+
             if (ModelState.IsValid)
             {
                 StringContent content = new StringContent(JsonConvert.SerializeObject(phieuNhap), Encoding.UTF8, "application/json");
@@ -110,10 +121,14 @@ namespace WebNewBook.Controllers
                     return RedirectToAction("Index");
                 }
             }
-
-            var sachs = await GetSachs();
+            var sachs = await GetRequest<SachCTViewModel>("book/sachctviewmodel");
             var selectItems = new List<SelectListItem>();
-            selectItems = sachs.Select(s => new SelectListItem { Text = s.TenSach, Value = s.ID_Sach }).ToList();
+            sachs.ForEach(s =>
+            {
+                var loaiBia = s.SachCT.BiaMem ? "Bìa mềm" : "Bìa cứng";
+                var a = new SelectListItem { Text = s.TenSach + " - Tái bản: " + s.SachCT.TaiBan + " - NXB: " + s.NXB + " - Loại bìa: " + loaiBia, Value = s.SachCT.ID_SachCT };
+                selectItems.Add(a);
+            });
             ViewBag.Sachs = selectItems;
             return View(phieuNhap);
         }
