@@ -54,7 +54,7 @@ namespace WebNewBook.Controllers
 
 
             List<CartItem> data = new List<CartItem>();
-            if (User.Identity.Name == null)
+            if (string.IsNullOrEmpty(User.Identity.Name))
             {
 
 
@@ -78,7 +78,7 @@ namespace WebNewBook.Controllers
             else
             {
                 List<ModelCart> gioHangs = new List<ModelCart>();
-                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "/GioHang/GetLitsGH").Result;
+                HttpResponseMessage response = _httpClient.GetAsync(_httpClient.BaseAddress + "api/GioHang/GetLitsGH").Result;
                 if (response.IsSuccessStatusCode)
                 {
                     string jsonData1 = response.Content.ReadAsStringAsync().Result;
@@ -137,7 +137,7 @@ namespace WebNewBook.Controllers
             return Json(lstDistrict, new System.Text.Json.JsonSerializerOptions());
 		}
         //Lấy địa chỉ phường xã
-        public JsonResult GetListWard(int idWard)
+        public JsonResult GetListWard(int idWard)//district không phải idWard
         {
             
 
@@ -153,22 +153,8 @@ namespace WebNewBook.Controllers
             }
             return Json(lstWard, new System.Text.Json.JsonSerializerOptions());
         }
-		////Lấy dịch vụ giao hàng nhanh
-		//public JsonResult GetTotalShipping(int from_district, int to_district)
-		//{
-		//	_httpClient.DefaultRequestHeaders.Add("shop_id", "3630415");
-		//	//StringContent contentshipping = new StringContent(JsonConvert.SerializeObject(shippingOrder), Encoding.UTF8, "application/json");
-		//	HttpResponseMessage responseWShipping = _httpClient.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=" + shippingOrder.service_id + "&insurance_value=" + shippingOrder.insurance_value + "&coupon=&from_district_id=" + shippingOrder.from_district_id + "&to_district_id=" + shippingOrder.to_district_id + "&to_ward_code=" + shippingOrder.to_ward_code + "&height=" + shippingOrder.height + "&length=" + shippingOrder.length + "&weight=" + shippingOrder.weight + "&width=" + shippingOrder.width + "").Result;
 
-		//	Shipping shipping = new Shipping();
-		//	if (responseWShipping.IsSuccessStatusCode)
-		//	{
-		//		string jsonData2 = responseWShipping.Content.ReadAsStringAsync().Result;
-
-		//		shipping = JsonConvert.DeserializeObject<Shipping>(jsonData2);
-		//	}
-		//	return Json(shipping, new System.Text.Json.JsonSerializerOptions());
-		//}
+		
 		//Lấy phí ship ghn
 		public JsonResult GetTotalShipping([FromBody]ShippingOrder shippingOrder)
         {
@@ -195,6 +181,12 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> CheckOut(string? messvnpay, string? idHoaDon, string messageVC)
         {
+            var gioHangs = Giohangs();
+            //Check validate nếu giỏ hàng trống không thể thanh toán
+            if (gioHangs.Count() < 1)
+            {
+                return RedirectToAction("Index", "GioHang");
+            }
 
             //Lấy địa chỉ tỉnh thành
             HttpResponseMessage responseProvin = _httpClient.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/province").Result;
@@ -212,17 +204,6 @@ namespace WebNewBook.Controllers
 
 
             }
-
-
-
-
-
-
-            if (Giohangs().Count <= 0)
-            {
-                return RedirectToAction("Index", "GioHang");
-            }
-
             var idVoucher = HttpContext.Session.GetString("idVoucher");
             double tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout"));
             double menhGiaVC = Convert.ToDouble(HttpContext.Session.GetString("amoutVoucher"));
@@ -276,10 +257,7 @@ namespace WebNewBook.Controllers
 
 
             }
-            ViewBag.Cart = Giohangs();
-
-            var x = Giohangs();
-
+            ViewBag.Cart = gioHangs;
             //Voucher
             if (menhGiaVC != 0 && menhGiaDK != 0)
             {
@@ -291,8 +269,7 @@ namespace WebNewBook.Controllers
                     ViewBag.IDVoucher = idVoucher;
                 }
 
-            }
-
+            }    
             HttpContext.Session.SetString("amout2", tongTien.ToString());
             ViewBag.TongTien = tongTien;
             if (!string.IsNullOrEmpty(idHoaDon))
@@ -311,16 +288,17 @@ namespace WebNewBook.Controllers
             return View();
         }
         [HttpPost]
-        public async Task<IActionResult> Pay(HoaDon hoaDon, string payment)
+        public async Task<IActionResult> Pay(HoaDon hoaDon, string payment,string adress_detail)
         {
 
             var tongTien = Convert.ToDouble(HttpContext.Session.GetString("amout2"));
             var tienShip = Convert.ToDouble(HttpContext.Session.GetString("shiptotal"));
 
             var idVoucher = HttpContext.Session.GetString("idVoucher");
-            hoaDon.TongTien = tongTien + tienShip;
+            hoaDon.TongTien = tongTien;
             hoaDon.PhiGiaoHang = tienShip;
             hoaDon.MaGiamGia = idVoucher;
+            hoaDon.DiaChiGiaoHang = hoaDon.DiaChiGiaoHang + adress_detail;
 
             if (hoaDon != null && !string.IsNullOrEmpty(payment) && hoaDon.TongTien != 0)
             {
@@ -404,13 +382,13 @@ namespace WebNewBook.Controllers
                             await _httpClient.PutAsync(_httpClient.BaseAddress + $"api/VoucherCT/UpdateVoucherByPayment/{hoaDon.MaGiamGia}", null);
 
                         }
-                        if (khachHang.ID_KhachHang != "KHNOLOGIN")
-                        {
+                        //if (khachHang.ID_KhachHang != "KHNOLOGIN")
+                        //{
 
-                            //Tích điểm
-                            int fpoint = Convert.ToInt32(hoaDon.TongTien) / 100;
-                            await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{hoaDon.ID_HoaDon}/{fpoint}/{khachHang.ID_KhachHang}", null);
-                        }
+                        //    //Tích điểm
+                        //    int fpoint = Convert.ToInt32(hoaDon.TongTien) / 100;
+                        //    await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{hoaDon.ID_HoaDon}/{fpoint}/{khachHang.ID_KhachHang}", null);
+                        //}
 
                         //Xóa giỏ hàng sau khi mua hàng
                         await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{khachHang.Email}", null);
@@ -531,12 +509,12 @@ namespace WebNewBook.Controllers
 
             }
 
-
-            if (idCustomer != "KHNOLOGIN")
-            {
-                int fpoint = Convert.ToInt32(request.vnp_Amount) / 10000;
-                await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{idHoaDon}/{fpoint}/{idCustomer}", null);
-            }
+            //Tích điểm
+            //if (idCustomer != "KHNOLOGIN")
+            //{
+            //    int fpoint = Convert.ToInt32(request.vnp_Amount) / 10000;
+            //    await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Fpoint/{idHoaDon}/{fpoint}/{idCustomer}", null);
+            //}
             //Thay đổi trạng thái voucher
             if (!string.IsNullOrEmpty(idVoucherVNPAY))
             {
@@ -547,16 +525,13 @@ namespace WebNewBook.Controllers
             await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/GioHang/DeleteCarts/{emailCustomer}", null);
             //Gửi mail đơn hàng 
             await _httpClient.PostAsync(_httpClient.BaseAddress + $"api/Payment/SendMailOder/{idHoaDon}", null);
-
-
-
             HttpContext.Session.Clear();
             Response.Cookies.Delete("Cart");
             ViewBag.Message = request.message;
             return View();
         }
         //[HttpPost]
-        public async Task<IActionResult> ApDungVouCher(string maVoucher)
+        public async Task<IActionResult> ApDungVouCher(string maVoucher )
         {
             var tongTien = Giohangs().Sum(c => c.ThanhTien);
             var ngayHienTai = DateTime.Now;
@@ -630,13 +605,8 @@ namespace WebNewBook.Controllers
                     ViewBag.MessageVC = "Vui lòng nhập mã giảm giá";
                 }
             }
-
-
-
-
-
-
             return RedirectToAction("CheckOut", new { messageVC = ViewBag.MessageVC });
+
         }
     }
 }

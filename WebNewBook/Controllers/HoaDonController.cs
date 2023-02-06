@@ -14,6 +14,8 @@ using System.Text.Json;
 using DocumentFormat.OpenXml.Office2010.Excel;
 using DocumentFormat.OpenXml.Wordprocessing;
 using System.Xml.Linq;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using WebNewBook.Models.GHNModels;
 
 namespace WebNewBook.Controllers
 {
@@ -26,8 +28,64 @@ namespace WebNewBook.Controllers
         {
             client = new HttpClient();
             client.BaseAddress = link;
-          
+            client.DefaultRequestHeaders.Add("token", "71f04310-864d-11ed-b09a-9a2a48e971b0");
+
         }
+        #region GHN 
+        //Lấy địa chỉ quận huyện
+        public JsonResult GetListDistrict(int idProvin)
+        {
+
+            HttpResponseMessage responseDistrict = client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=" + idProvin).Result;
+
+            District lstDistrict = new District();
+
+            if (responseDistrict.IsSuccessStatusCode)
+            {
+                string jsonData2 = responseDistrict.Content.ReadAsStringAsync().Result;
+
+                lstDistrict = JsonConvert.DeserializeObject<District>(jsonData2);
+            }
+            return Json(lstDistrict, new System.Text.Json.JsonSerializerOptions());
+        }
+        //Lấy địa chỉ phường xã
+        public JsonResult GetListWard(int idWard)
+        {
+
+
+            HttpResponseMessage responseWard = client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" + idWard).Result;
+
+            Ward lstWard = new Ward();
+
+            if (responseWard.IsSuccessStatusCode)
+            {
+                string jsonData2 = responseWard.Content.ReadAsStringAsync().Result;
+
+                lstWard = JsonConvert.DeserializeObject<Ward>(jsonData2);
+            }
+            return Json(lstWard, new System.Text.Json.JsonSerializerOptions());
+        }
+
+
+        //Lấy phí ship ghn
+        public JsonResult GetTotalShipping([FromBody] ShippingOrder shippingOrder)
+        {
+            client.DefaultRequestHeaders.Add("shop_id", "3630415");
+            //StringContent contentshipping = new StringContent(JsonConvert.SerializeObject(shippingOrder), Encoding.UTF8, "application/json");
+            HttpResponseMessage responseWShipping = client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/v2/shipping-order/fee?service_id=" + shippingOrder.service_id + "&insurance_value=" + shippingOrder.insurance_value + "&coupon=&from_district_id=" + shippingOrder.from_district_id + "&to_district_id=" + shippingOrder.to_district_id + "&to_ward_code=" + shippingOrder.to_ward_code + "&height=" + shippingOrder.height + "&length=" + shippingOrder.length + "&weight=" + shippingOrder.weight + "&width=" + shippingOrder.width + "").Result;
+
+            Shipping shipping = new Shipping();
+            if (responseWShipping.IsSuccessStatusCode)
+            {
+                string jsonData2 = responseWShipping.Content.ReadAsStringAsync().Result;
+
+                shipping = JsonConvert.DeserializeObject<Shipping>(jsonData2);
+                HttpContext.Session.SetString("shiptotaladmin", shipping.data.total.ToString());
+            }
+            return Json(shipping, new System.Text.Json.JsonSerializerOptions());
+        }
+        
+        #endregion
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             base.OnActionExecuting(context);
@@ -106,6 +164,7 @@ namespace WebNewBook.Controllers
             
 
         }
+
         public async Task<IActionResult> ChiTiet(string id)
         {
             ViewBag.TitleAdmin = "Chi tiết hóa đơn";
@@ -115,11 +174,16 @@ namespace WebNewBook.Controllers
             {
                 string data = response.Content.ReadAsStringAsync().Result;
                 lissttlhdct = JsonConvert.DeserializeObject<List<ViewHoaDonCT>>(data);
+
+                //Toi uu cau lenh 
+                var hoadonCT = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).FirstOrDefault().hoaDon;
+                var thongtinkh = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).FirstOrDefault().KhachHang;
+
                 //Thông tin khách hàng
-                ViewBag.IDLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.ID_KhachHang).FirstOrDefault();
-                ViewBag.NameLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.HoVaTen).FirstOrDefault();
-                ViewBag.SDTLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.SDT).FirstOrDefault();
-                ViewBag.EmailLogin = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.KhachHang.Email).FirstOrDefault();
+                ViewBag.IDLogin = thongtinkh.ID_KhachHang;
+                ViewBag.NameLogin = thongtinkh.HoVaTen;
+                ViewBag.SDTLogin = thongtinkh.SDT;
+                ViewBag.EmailLogin = thongtinkh.Email;
 
                 var hoaDon = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).FirstOrDefault();
                 Voucher voucher = new Voucher(); 
@@ -133,15 +197,60 @@ namespace WebNewBook.Controllers
 
                 //Thông tin hóa đơn
                 ViewBag.IdHoaDon = id;
-                ViewBag.Namekh = lissttlhdct.Where(c=>c.hoaDon.ID_HoaDon==id).Select(c=>c.hoaDon.TenNguoiNhan).FirstOrDefault();
-                ViewBag.sdtkh = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.SDT).FirstOrDefault();
-                ViewBag.ghichu = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.GhiChu).FirstOrDefault();
-                ViewBag.diachi = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.DiaChiGiaoHang).FirstOrDefault();
-                ViewBag.ngaymua = lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.NgayMua).FirstOrDefault();
-                ViewBag.tongtien= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TongTien).FirstOrDefault(); 
-                ViewBag.trangthai= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.TrangThai).FirstOrDefault();
-                ViewBag.lydohuyudon= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.Lydohuy).FirstOrDefault();
-                ViewBag.phigiaohang= lissttlhdct.Where(c => c.hoaDon.ID_HoaDon == id).Select(c => c.hoaDon.PhiGiaoHang).FirstOrDefault();
+                ViewBag.Namekh = hoadonCT.TenNguoiNhan;
+                ViewBag.sdtkh = hoadonCT.SDT;
+                ViewBag.ghichu = hoadonCT.GhiChu;
+                ViewBag.diachi = hoadonCT.DiaChiGiaoHang;
+                ViewBag.ngaymua = hoadonCT.NgayMua;
+                ViewBag.tongtien= hoadonCT.TongTien; 
+                ViewBag.trangthai= hoadonCT.TrangThai;
+                ViewBag.lydohuyudon= hoadonCT.Lydohuy;
+                ViewBag.phigiaohang= hoadonCT.PhiGiaoHang;
+               
+                
+                //Địa chỉ ghn
+
+                //Lấy địa chỉ tỉnh thành
+                HttpResponseMessage responseProvin = client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/province").Result;
+
+                Provin lstprovin = new Provin();
+
+                if (responseProvin.IsSuccessStatusCode)
+                {
+                    string jsonData2 = responseProvin.Content.ReadAsStringAsync().Result;
+
+
+                    lstprovin = JsonConvert.DeserializeObject<Provin>(jsonData2);
+                    ViewBag.Provin = new SelectList(lstprovin.data, "ProvinceID", "ProvinceName", hoadonCT.ProvinID);
+
+
+
+                }
+                //Lấy địa chỉ quận / huyện
+                HttpResponseMessage responseDistrict = client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/district?province_id=" + hoadonCT.ProvinID).Result;
+
+                District lstDistrict = new District();
+
+                if (responseDistrict.IsSuccessStatusCode)
+                {
+                    string jsonDataDistrict = responseDistrict.Content.ReadAsStringAsync().Result;
+                    lstDistrict = JsonConvert.DeserializeObject<District>(jsonDataDistrict);
+                    ViewBag.District = new SelectList(lstDistrict.data, "DistrictID", "DistrictName", hoadonCT.DistrictID);
+                }
+
+                //Lấy phường xã
+                HttpResponseMessage responseWard = client.GetAsync("https://online-gateway.ghn.vn/shiip/public-api/master-data/ward?district_id=" + hoadonCT.DistrictID).Result;
+
+                Ward lstWard = new Ward();
+
+                if (responseWard.IsSuccessStatusCode)
+                {
+                    string jsonData2 = responseWard.Content.ReadAsStringAsync().Result;
+
+                    lstWard = JsonConvert.DeserializeObject<Ward>(jsonData2);
+                    ViewBag.Ward = new SelectList(lstWard.data, "WardCode", "WardName", hoadonCT.WardID);
+                }
+
 
                 var lstProduct  = new List<SanPham>();
                 HttpResponseMessage respProduct = client.GetAsync("https://localhost:7266/SanPham").Result;
@@ -166,14 +275,20 @@ namespace WebNewBook.Controllers
             Console.WriteLine(lyDoHuy);
            
             HttpResponseMessage response = client.GetAsync(client.BaseAddress + $"/HoaDon/UpdateTT/{id}/{name}?lydohuy={lyDoHuy}").Result;
+            if (name==5)
+            {
+                HttpResponseMessage response1 = client.PostAsync(client.BaseAddress + $"/Fpoint/{id}", null).Result;
+            }
+
+
             return Redirect("Index");
         }
 
 
         // update thông tin người nhận hàng
-        public async Task<IActionResult> UpdateThongtinnguoinhan(ViewHoaDon viewHoaDon)
+        public async Task<IActionResult> UpdateThongtinnguoinhan(ViewHoaDon viewHoaDon, string adress_detail)
         {
-
+            viewHoaDon.hoaDon.DiaChiGiaoHang = viewHoaDon.hoaDon.DiaChiGiaoHang + adress_detail;
             StringContent content = new StringContent(JsonConvert.SerializeObject(viewHoaDon.hoaDon), Encoding.UTF8, "application/json");
             HttpResponseMessage response = client.PutAsync(client.BaseAddress + "/Hoadon/UpdateRecipientProfile", content).Result;
             if (response.IsSuccessStatusCode)
@@ -218,6 +333,30 @@ namespace WebNewBook.Controllers
             return Redirect($"ChiTiet/{mahd}");
         }
 
+        public async Task<IActionResult> addOrderAdmin(ViewHoaDon viewHoaDon)
+        {
+            viewHoaDon.hoaDon.ID_HoaDon= Guid.NewGuid().ToString();
+            viewHoaDon.hoaDon.MaKhachHang = "KHNOLOGIN";
+            viewHoaDon.hoaDon.NgayMua = DateTime.Now;
+            viewHoaDon.hoaDon.TongTien = 0;
+            viewHoaDon.hoaDon.TrangThai = 1;
+            //phóng sẽ sửa code
+            viewHoaDon.hoaDon.WardID = "NO";
+            viewHoaDon.hoaDon.ProvinID = "NO";
+            viewHoaDon.hoaDon.DistrictID = "NO";
+            StringContent content = new StringContent(JsonConvert.SerializeObject(viewHoaDon.hoaDon), Encoding.UTF8, "application/json");
+            HttpResponseMessage response = client.PostAsync(client.BaseAddress + "/Hoadon/AddOrderAdmin", content).Result;
+            if (response.IsSuccessStatusCode)
+            {
+
+                Console.WriteLine($"Status: {response.StatusCode}; Msg: {await response.Content.ReadAsStringAsync()}");
+            }
+            else
+            {
+                Console.WriteLine($"Status: {response.StatusCode}; Msg: {await response.Content.ReadAsStringAsync()}");
+            }
+            return Redirect("Index");
+        }
 
     }
 }

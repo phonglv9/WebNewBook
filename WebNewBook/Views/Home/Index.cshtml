@@ -93,11 +93,14 @@
                         @if(ViewBag.SachBanChay != null){
                         @foreach (var item in  ViewBag.SachBanChay)
                         {
+                             
                             <!-- product widget -->
                             <div class="product-widget">
+                                   
                                 <div class="product-img">
                                     <img src="~/img/@item.HinhAnh" alt="">
                                 </div>
+                                 
                                 <div class="product-body">
                                    @* <p class="product-category">@item.TenDanhMuc</p>*@
                                    
@@ -189,19 +192,26 @@
                                     <!-- product -->
                                     @foreach (var item in ViewBag.NewBook)
                                     {
+                                       
                                         var giamGia = 100 - item.GiaBan * 100 / item.GiaGoc;
+                                        var theloai = item.TheLoai == 2 ? "Combo sách" : item.TheLoai == 3 ? "Lô sách " : "Sách";
                                         <div class="product">
+                                            
+                                          <span class="type-product">@theloai</span>
                                             <div class="product-img">
                                                 <img src="~/img/@item.HinhAnh" alt="">
 
 
                                                 <div class="product-label">
+                                                    
                                                     @if (giamGia != 0)
                                                     {
                                                         <span class="sale">@giamGia %</span>
                                                     }
                                                     <span class="new">NEW</span>
+                                                   
                                                 </div>
+                                                
 
                                             </div>
                                             <div class="product-body">
@@ -284,8 +294,9 @@
                                     @foreach (var item in Model)
                                     {
                                         var giamGia = 100 - item.GiaBan * 100 / item.GiaGoc;
-
+                                         var theloai = item.TheLoai == 2 ? "Combo sách" : item.TheLoai == 3 ? "Lô sách " : "Sách";
                                         <div class="product">
+                                            <span class="type-product">@theloai</span>
                                             <div class="product-img">
                                                 <img src="~/img/@item.HinhAnh" alt="">
                                                 @if (giamGia != 0)
@@ -394,8 +405,9 @@
                                         {
                                             var giamGia = 100 - item.GiaBan * 100 / item.GiaGoc;
                                             <!-- product -->
-
+                                            var theloai = item.TheLoai == 2 ? "Combo sách" : item.TheLoai == 3 ? "Lô sách " : "Sách";
                                             <div class="product">
+                                                <span class="type-product">@theloai</span>
                                                 <div class="product-img">
                                                     <img src="~/img/@item.HinhAnh" alt="" style="height: 275px !important;">
 

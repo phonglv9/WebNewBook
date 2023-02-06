@@ -17,10 +17,15 @@
         <li class="nav-item ">
             <a class="nav-link" asp-controller="Report" asp-action="Index">
                 <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>DashBoard</span>
+                <span>Tổng quan</span>
             </a>
         </li>
-
+        <li class="nav-item">
+            <a class="nav-link" asp-controller="HoaDon" asp-action="Index">
+                <i class="fa-solid fa-receipt"></i>
+                <span>Hóa đơn</span>
+            </a>
+        </li>
         <!-- Divider -->
         <hr class="sidebar-divider">
 
@@ -32,12 +37,22 @@
         <!-- Nav Item - Pages Collapse Menu -->
         <li class="nav-item ">
             <a class="nav-link" asp-controller="Customer" asp-action="Index">
-                <i class="fas fa-fw fa-tachometer-alt"></i>
-                <span>Thông tin người dùng</span>
+                <i class="fa-solid fa-users"></i>
+                <span>Quản lý người dùng</span>
             </a>
+
         </li>
 
-
+           @if (User.IsInRole("Admin"))
+        {
+            
+             <li class="nav-item ">
+                <a class="nav-link" asp-controller="QLNhanVien" asp-action="Index">
+                    <i class="fa-solid fa-user-tie"></i>
+                    <span>Nhân viên</span>
+                </a>
+            </li>
+        }
 
         <!-- Divider -->
         <hr class="sidebar-divider">
@@ -73,20 +88,15 @@
         {
             <li class="nav-item ">
                 <a class="nav-link" asp-controller="QLPhieuNhap" asp-action="Index">
-                    <i class="fa-solid fa-book"></i>
-                    <span>Phiếu nhập</span>
-                </a>
-            </li>
-             <li class="nav-item ">
-                <a class="nav-link" asp-controller="QLNhanVien" asp-action="Index">
-                    <i class="fa-solid fa-book"></i>
-                    <span>Nhân viên</span>
-                </a>
-            </li>
+               <i class="fa-solid fa-book"></i>
+                <span>Phiếu nhập </span>
+            </a>
+        </li>
         }
+     
         <li class="nav-item">
             <a class="nav-link" asp-controller="QLDanhMuc" asp-action="Index">
-                <i class="fa-solid fa-book"></i>
+                <i class="fa-solid fa-bars"></i>
                 <span>Danh mục</span>
             </a>
         </li>
@@ -109,15 +119,10 @@
                 <span>Nhà xuất bản</span>
             </a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link" asp-controller="HoaDon" asp-action="Index">
-                <i class="fa-solid fa-book"></i>
-                <span>Hóa đơn</span>
-            </a>
-        </li>
+      
         <li class="nav-item">
             <a class="nav-link" asp-controller="Voucher" asp-action="Index">
-                <i class="fas fa-fw fa-table"></i>
+                <i class="fa-solid fa-percent"></i>
                 <span>Voucher</span>
             </a>
         </li>

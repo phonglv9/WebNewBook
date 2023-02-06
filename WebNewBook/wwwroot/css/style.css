@@ -698,6 +698,7 @@ header {
         transform: translateX(-100%);
         -webkit-transition: 0.2s all;
         transition: 0.2s all;
+        z-index:1000;
     }
 
         #responsive-nav.active {
@@ -2353,4 +2354,11 @@ td {
     width: 171px;
     background-color: rgb(55 47 47 / 87%);
     height: 23px;
+}
+.type-product {
+    background: #ff9c00;
+    border-radius: 15px 50px 30px 14px;
+    color: #fff;
+    height: 30px;
+    padding: 5px;
 }

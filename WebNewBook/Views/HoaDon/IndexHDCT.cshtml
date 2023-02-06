@@ -118,13 +118,33 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin</h1>
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Thông tin hóa đơn</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
                                                         <div class="mb-3">
                                                             <label for="tennguoinhan" class="form-label">Tên Người nhận</label>
                                                             <input type="text" asp-for="hoaDon.TenNguoiNhan" value="@ViewBag.Namekh" class="form-control" id="tennguoinhan">
+                                                        </div>                                  
+                                                        <h3 class="modal-title fs-5" id="exampleModalLabel">Địa chỉ nhận hàng</h3>
+                                                        <hr />
+                                                        <div class="form-group">
+                                                            <label>Tỉnh thành</label>
+                                                            <select id="provin" name="provin" class="form-control" asp-items="@ViewBag.Provin" style="height: 31px !important;padding: 0 !important;">
+                                                                <option value="0">--Chọn tỉnh thành--</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Quận/Huyện</label>
+                                                            <select id="district" name="district" class="form-control" asp-items="@ViewBag.District" style="height: 31px !important;padding: 0 !important;">
+                                                                <option value="0">--Chọn tỉnh quận/huyện--</option>
+                                                            </select>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label>Phường/Xã</label>
+                                                            <select id="ward" name="ward" class="form-control" asp-items="@ViewBag.Ward" style="height: 31px !important;padding: 0 !important;">
+                                                                <option value="0">--Chọn tỉnh phường/xã--</option>
+                                                            </select>
                                                         </div>
                                                         <div class="mb-3">
                                                             <label for="diachi" class="form-label">Địa chỉ</label>
@@ -134,6 +154,8 @@
                                                             <label for="sdt" class="form-label">Số điện thoại</label>
                                                             <input type="text" asp-for="hoaDon.SDT" value="@ViewBag.sdtkh" class="form-control" id="sdt">
                                                         </div>
+
+
                                                         <div class="mb-3">
                                                             <label for="ghichu" class="form-label">Ghi Chú</label>
                                                             <input type="text" asp-for="hoaDon.GhiChu" value="@ViewBag.ghichu" class="form-control" id="ghichu">
@@ -142,6 +164,11 @@
                                                     </div>
                                                     <div class="modal-footer">
                                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Đóng</button>
+                                                        <input type="text" hidden asp-for="hoaDon.ProvinID" value="" class="form-control" id="ProvinID">
+                                                        <input type="text" hidden asp-for="hoaDon.DistrictID" value="" class="form-control" id="DistrictID">
+                                                        <input type="text" hidden asp-for="hoaDon.WardID" value="" class="form-control" id="WardID">
+                                                        <input type="text" hidden asp-for="hoaDon.PhiGiaoHang" value="@ViewBag.phigiaohang" class="form-control" id="PhiGiaoHang">
+                                                        <input type="text" hidden name="adress_detail" value="" class="form-control" id="adress_detail">
                                                         <button type="submit" class="btn btn-primary">Sửa thông tin</button>
                                                     </div>
                                                 </div>
@@ -356,6 +383,7 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
 
     <script>
+        const _URL = "https://localhost:7047/";
         $(document).ready(function () {
             $('#btn-one').click(function () {
                 html2canvas(document.querySelector('#hoadonct')).then((canvas) => {
@@ -366,9 +394,149 @@
                     pdf.save('webtylepress-two.pdf');
                 });
             });
+           //Địa chỉ ghn
+
+        //Chọn tỉnh thành
+        $('#provin').change(function () {
+          
+            var id_provin = this.value;
+            $('#district option').remove();
+            $('#district').append(new Option("-- Chọn quận/huyện --", 0));
+
+            $('#ward option').remove();
+            $('#ward').append(new Option("-- Chọn phường/xã --", 0));
+
+            if (this.value != 0) {
+
+                $.ajax({
+                    url: _URL + "HoaDon/GetListDistrict",
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        idProvin: id_provin
+
+                    },
+                    contentType: 'application/json',
+                    success: function (result) {
+
+                        $.each(result.data, function (key, val) {
+                            $("#district").append(new Option(val.DistrictName, val.DistrictID));
+                        });
+
+                    }
+
+                });
+
+
+            }
+
+        });
+        //Chọn quận huyện
+        $('#district').change(function () {
+           
+            var id_ward = this.value;
+            $('#ward option').remove();
+            $('#ward').append(new Option("-- Chọn phường/xã --", 0));
+
+            if (this.value != 0) {
+
+                $.ajax({
+                    url: _URL + 'HoaDon/GetListWard',
+                    type: 'GET',
+                    dataType: 'json',
+                    data: {
+                        idWard: id_ward
+
+                    },
+                    contentType: 'application/json',
+                    success: function (result) {
+
+                        $.each(result.data, function (key, val) {
+                            $("#ward").append(new Option(val.WardName, val.WardCode));
+                        });
+
+                    }
+
+                });
+
+
+            }
+
+        });
+        //Tính phí ship
+        //Get xã
+        $('#ward').change(function () {
+            var id_ward = this.value;
+            var totalOder = 0;
+            sessionStorage.removeItem('shiptotaladmin');
+            $.ajax({
+                url: _URL + 'HoaDon/GetTotalOder',
+                type: 'POST',
+                dataType: 'json',
+                contentType: 'application/json',
+                success: function (result) {
+                    totalOder = parseInt(result);
+                    $("#totaloder").text(totalOder);
+                }
+
+            });
+
+            //$("#phiship").hide();
+            //$("#totalship").text('');
+
+            if (this.value != 0) {
+
+                var obj = {
+                    service_id: 100039,
+                    insurance_value: 100000,
+                    service_type_id: 3,
+                    coupon: null,
+                    from_district_id: 3440,
+                    to_ward_code: id_ward,
+                    to_district_id: parseInt($('#district').val()),
+                    weight: 1000,
+                    length: 15,
+                    height: 15,
+                    width: 15,
+
+                }
+                $.ajax({
+                    url: _URL + 'HoaDon/GetTotalShipping',
+                    type: 'POST',
+                    dataType: 'json',
+                    data: JSON.stringify(obj),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        //$("#phiship").show();
+                        //$("#totalship").text(formatVND(result.data.total));
+                        //var temp = result.data.total + totalOder;
+                        //$("#totaloder").text(formatVND(temp));
+                        $("#PhiGiaoHang").val(result.data.total);
+                        sessionStorage.setItem("shiptotaladmin", result.data.total);
+                        let adress = "," + $("#ward option:selected").text() + "," + $("#district option:selected").text() + "," + $("#provin option:selected").text();
+
+                        //add địa chỉ
+                        $("#adress_detail").val(adress);
+                        
+                        $("#diachi").val('');
+                        //Id địa chỉ
+                        $("#WardID").val($("#ward option:selected").val());
+                        $("#ProvinID").val($("#provin option:selected").val());
+                        $("#DistrictID").val($("#district option:selected").val());
+                    }
+
+                });
+
+
+            }
+
+
+            
+
+
         });
 
-
+    });
 
         function SuaHoaDon() {
 
@@ -391,6 +559,7 @@
 
        
     $(function () {
+       
         var arrItem = [];
         var commaSeparatedIds = "";
         $("#btnAddProduct").click(function () {

@@ -374,10 +374,7 @@ namespace WebNewBook.API.Repository.Service
                     if (  Voucher != null && Customer!=null)
                     {
                         VoucherCT voucherCT = lstVoucherCT[0];
-                        if (lstVoucherCT.Count==1)
-                        {
-                            Voucher.TrangThai = 3;
-                        }
+                    
                         voucherCT.MaKhachHang = maKh;
                         voucherCT.NgayBatDau = DateTime.Now;
                         voucherCT.TrangThai = 1;

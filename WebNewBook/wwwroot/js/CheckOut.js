@@ -6,21 +6,19 @@ const VND = new Intl.NumberFormat('vi-VN', {
 });
 $(document).ready(function () {
 
-    //$('#provin').chosen();
-    //$('#district').chosen();
-    /*  $('#ward').chosen();*/
+   
     $("#phiship").hide();
     //Chọn tỉnh thành
     $('#provin').change(function () {
         loadTotal();
         var id_provin = this.value;
         $('#district option').remove();
-        $('#district').append(new Option("-- Chọn quận/huyện --", 0));
+        $('#district').append(new Option("-- Chọn quận/huyện --",0));
 
         $('#ward option').remove();
         $('#ward').append(new Option("-- Chọn phường/xã --", 0));
 
-        if (this.value > 1) {
+        if (this.value != 0 ) {
 
             $.ajax({
                 url: _URL + 'Payment/GetListDistrict',
@@ -52,7 +50,7 @@ $(document).ready(function () {
         $('#ward option').remove();
         $('#ward').append(new Option("-- Chọn phường/xã --", 0));
 
-        if (this.value > 1) {
+        if (this.value != 0 ) {
 
             $.ajax({
                 url: _URL + 'Payment/GetListWard',
@@ -101,6 +99,7 @@ $(document).ready(function () {
         });
     }
     //Tính phí ship
+    //Get xã
     $('#ward').change(function () {
         var id_ward = this.value;
         var totalOder = 0;      
@@ -120,7 +119,7 @@ $(document).ready(function () {
         $("#phiship").hide();
         $("#totalship").text('');
        
-        if (this.value > 1) {
+        if (this.value != 0) {
 
             var obj = {
                 service_id: 100039,
@@ -144,12 +143,19 @@ $(document).ready(function () {
                 contentType: 'application/json',
                 success: function (result) {
                     $("#phiship").show();
-                    $("#totalship").text(result.data.total);
-
+                    $("#totalship").text(formatVND(result.data.total));
                     var temp = result.data.total + totalOder;
-                    $("#totaloder").text(temp);
-
-                    sessionStorage.setItem("shiptotal", result.data.total);
+                    $("#totaloder").text(formatVND(temp));
+                    sessionStorage.setItem("shiptotal", result.data.total);  
+                    let adress = "," + $("#ward option:selected").text() +"," + $("#district option:selected").text() + ","+ $("#provin option:selected").text();
+                   
+                    //add địa chỉ
+                    $("#adress_detail").val(adress); 
+                    
+                    //Id địa chỉ
+                    $("#WardID").val($("#ward option:selected").val()); 
+                    $("#ProvinID").val($("#provin option:selected").val()); 
+                    $("#DistrictID").val($("#district option:selected").val()); 
                 }
 
             });
