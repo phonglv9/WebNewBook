@@ -73,15 +73,15 @@ namespace WebNewBook.Controllers
         {
             ViewBag.TitleAdmin = "Sản phẩm";
             timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
+            var pageNumber = page ?? 1;
             List<SanPhamViewModel>? lstSanPham = new List<SanPhamViewModel>();
             lstSanPham = await GetRequest<SanPhamViewModel>("sanpham/viewmodel");
             lstSanPham = (trangThai == 1 || trangThai == 0) ? lstSanPham.Where(c => c.SanPham.TenSanPham.Contains(timKiem) && c.SanPham.TrangThai == trangThai).OrderByDescending(c => c.SanPham.NgayTao).ToList() : lstSanPham.Where(c => c.SanPham.TenSanPham.Contains(timKiem)).OrderByDescending(c => c.SanPham.NgayTao).ToList();
-            ViewBag.SanPham = lstSanPham;
+            ViewBag.SanPham = lstSanPham.ToPagedList(pageNumber, 10);
             ViewBag.TimKiem = timKiem;
             ViewBag.TrangThai = trangThai;
             ViewBag.message = mess;
-            var pageNumber = page ?? 1;
-            ViewBag.NXB = lstSanPham.ToPagedList(pageNumber, 5);
+            ViewBag.NXB = lstSanPham.ToPagedList(pageNumber, 10);
 
             return View();
         }
