@@ -89,7 +89,7 @@
                         {
                             var trangThai = item.SanPham.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
                             var img = item.SanPham.HinhAnh ?? string.Empty;
-                                var theLoai = item.TheLoaiSP == 1 ? "Sách" : item.TheLoaiSP == 2 ? "Bộ sách" : "Bộ sách " + item.SoLuongSach + " quyển";
+                                var theLoai = item.TheLoaiSP == 1 ? "Sách" : item.TheLoaiSP == 2 ? "Combo sách" : "Lô sách" + item.SoLuongSach + " quyển";
                                 <tr>
                                 <th scope="row">@item.SanPham.TenSanPham</th>
                                 <td>@item.SanPham.SoLuong</td>
