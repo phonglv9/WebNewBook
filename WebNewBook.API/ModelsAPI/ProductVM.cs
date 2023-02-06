@@ -18,6 +18,7 @@ namespace WebNewBook.API.ModelsAPI
         public string TenTheLoai { get; set; }
         public int TrangThai { get; set; }
 
+
       
 
 
