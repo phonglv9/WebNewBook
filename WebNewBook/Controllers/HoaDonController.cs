@@ -266,7 +266,8 @@ namespace WebNewBook.Controllers
 
 
 
-            ViewBag.HDCT = lissttlhdct.GroupBy(a => a.sanPham.TenSanPham);
+            ViewBag.HDCT = lissttlhdct.GroupBy(a => a.sanPham.ID_SanPham).Select(c=>c.First());
+            
             return View("IndexHDCT");
         }
         // sửa trạng thái đơn hàng
