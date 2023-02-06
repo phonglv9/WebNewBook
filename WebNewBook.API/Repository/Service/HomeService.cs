@@ -28,7 +28,7 @@ namespace WebNewBook.API.Repository.Service
                         };
 
 
-            //var sanPham = _dbContext.SanPhams;
+           
             var sanPham = new List<SanPhamViewModel>();
             spcts.ToList().ForEach(c =>
             {

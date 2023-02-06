@@ -294,7 +294,7 @@ namespace WebNewBook.Controllers
             
 
             var idVoucher = HttpContext.Session.GetString("idVoucher");
-            hoaDon.TongTien = tongTien - menhGiaVC;
+            hoaDon.TongTien = tongTien;
             hoaDon.PhiGiaoHang = tienShip;
             hoaDon.MaGiamGia = idVoucher;
             hoaDon.DiaChiGiaoHang = hoaDon.DiaChiGiaoHang + adress_detail;
