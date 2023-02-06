@@ -266,7 +266,7 @@ namespace WebNewBook.API.Repository.Service
         public IEnumerable<Sach_SachCT> GetSach_SachCT()
         {
             var sachs = _dbcontext.Sachs.ToList();
-            var sachcts = _dbcontext.SachCTs.Where(c => c.TrangThai == 1 && c.SoLuong > 0).ToList();
+            var sachcts = _dbcontext.SachCTs.Where(c => c.TrangThai == 1).ToList();
             var result = from sach in sachs join sachct in sachcts
                          on sach.ID_Sach equals sachct.MaSach join nxb in _dbcontext.NhaXuatBans on sachct.MaNXB equals nxb.ID_NXB
                          select new Sach_SachCT

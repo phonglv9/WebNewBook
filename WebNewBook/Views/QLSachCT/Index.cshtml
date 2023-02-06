@@ -1,4 +1,6 @@
 ﻿@using WebNewBook.Model.APIModels
+@using X.PagedList
+@using X.PagedList.Mvc.Core
 @model SachCTViewModel
 
 @{
@@ -6,45 +8,45 @@
 }
 
 @section Scripts{
-	<script>
-      $("#selectNXB").change(function (){
-       
-          var $form = $(this).closest('form');
-            $form.find('button[type=submit]').click();
-         
-     });
-     setTimeout(function(){
-			$('#msNXB').fadeOut('slow');
-		},1500)
-	</script>
-	
+<script>
+     $("#selectNXB").change(function (){
+
+         var $form = $(this).closest('form');
+           $form.find('button[type=submit]').click();
+
+    });
+    setTimeout(function(){
+           $('#msNXB').fadeOut('slow');
+       },1500)
+</script>
+
 }
 <div class="container" style="background-color: #f1f1f1;">
     <div class="container " style="background-color: rgb(255, 255, 255);">
         <div class="py-3">
             <h6>
                 <div class="row">
-                   <form asp-action="Index" class="row">
-                    <div class="col-5 mb-3">
-                        <input type="text" name="timKiem" class="form-control" placeholder="Mời bạn nhập tên sách để tìm kiếm">
-                    </div>
-                      <div class="col-2">
-                        <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
-                    </div>
-                    <div class="col-5 mb-3">
-                        <select id="selectNXB" name="trangThai" class="form-select" aria-label="Default select example">
-                            
-                            <option selected disabled>Chọn trạng thái</option>
-                            <option value="2">Tất cả</option>
-                            <option value="1">Hoạt động</option>
-                            <option value="0">Vô hiệu hóa</option>
-                          
-                        </select>
-                    </div>
-                  </form>
+                    <form asp-action="Index" class="row">
+                        <div class="col-5 mb-3">
+                            <input type="text" name="timKiem" class="form-control" placeholder="Mời bạn nhập tên sách để tìm kiếm">
+                        </div>
+                        <div class="col-2">
+                            <button type="submit" class="btn btn-secondary">Tìm kiếm</button>
+                        </div>
+                        <div class="col-5 mb-3">
+                            <select id="selectNXB" name="trangThai" class="form-select" aria-label="Default select example">
+
+                                <option selected disabled>Chọn trạng thái</option>
+                                <option value="2">Tất cả</option>
+                                <option value="1">Hoạt động</option>
+                                <option value="0">Vô hiệu hóa</option>
+
+                            </select>
+                        </div>
+                    </form>
                     <div class="col-3">
                         <!-- Button trigger modal -->
-                        <a type="button" class="btn btn-primary"asp-action="Create">
+                        <a type="button" class="btn btn-primary" asp-action="Create">
                             <i class="fa-solid fa-address-book"></i> Thêm sách
                         </a>
                     </div>
@@ -80,7 +82,7 @@
                                 <th scope="row"><a asp-controller="Sach" asp-action="Update" asp-route-id="@item.MaSach">@item.TenSach</a></th>
                                 <td>@item.SachCT.SoLuong</td>
                                 <td>@item.SachCT.GiaBan</td>
-                                <td><img src="~/img/@img" style="width:100px;height:100px"/></td>
+                                <td><img src="~/img/@img" style="width:100px;height:100px" /></td>
                                 <td>@item.NXB</td>
                                 <td>@item.SachCT.TaiBan</td>
                                 <td>@loaiBia</td>
@@ -89,7 +91,7 @@
                                 <td><button class="btn border bg-danger" data-bs-toggle="modal" data-bs-target="#delete-@item.SachCT.ID_SachCT"><i class="fa-solid fa-trash"></i></button></td>
                             </tr>
 
-                             <!-- Modal Delete-->
+                            <!-- Modal Delete-->
                             <form asp-action="Delete" asp-route-id="@item.SachCT.ID_SachCT" method="post" enctype="multipart/form-data">
                                 <div class="modal fade" id="delete-@item.SachCT.ID_SachCT" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                                     <div class="modal-dialog">
@@ -101,35 +103,36 @@
                                             <div class="modal-body">
                                                 <div class="mb-3 row">
                                                     <label for="ID_SachCT" class="col-sm-2 col-form-label">ID</label>
-                                                    <input for="ID_SachCT" class="form-control" name="ID" value="@item.SachCT.ID_SachCT" disabled/>
-                                                @*</div>
-                                                <div class="mb-3 row">
-                                                    <label for="TenSach" class="control-label">Tên sách</label>
-                                                    <input for="TenSach" class="form-control" name="nhanVien" value="@item.TenSach" disabled/>
+                                                    <input for="ID_SachCT" class="form-control" name="ID" value="@item.SachCT.ID_SachCT" disabled />
+                                                    @*</div>
+                                                        <div class="mb-3 row">
+                                                        <label for="TenSach" class="control-label">Tên sách</label>
+                                                        <input for="TenSach" class="form-control" name="nhanVien" value="@item.TenSach" disabled/>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                        <label for="SoLuong" class="control-label">Số lượng</label>
+                                                        <input for="SoLuong" class="form-control" name="giaNhap" value="@item.SoLuong" disabled/>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                        <label for="GiaBan" class="control-label">Giá bán</label>
+                                                        <input for="GiaBan" class="form-control" name="soLuongNhap" value="@item.GiaBan" disabled/>
+                                                        </div>
+                                                        <div class="mb-3 row">
+                                                        <label for="TrangThai" class="control-label">Trạng thái</label>
+                                                        <input for="TrangThai" class="form-control" value="@trangThai" disabled/>
+                                                        </div>*@
                                                 </div>
-                                                <div class="mb-3 row">
-                                                    <label for="SoLuong" class="control-label">Số lượng</label>
-                                                    <input for="SoLuong" class="form-control" name="giaNhap" value="@item.SoLuong" disabled/>
+                                                <div class="modal-footer">
+                                                    <button type="submit" class="btn btn-primary">Đổi trạng thái</button>
                                                 </div>
-                                                <div class="mb-3 row">
-                                                    <label for="GiaBan" class="control-label">Giá bán</label>
-                                                    <input for="GiaBan" class="form-control" name="soLuongNhap" value="@item.GiaBan" disabled/>
-                                                </div>
-                                                <div class="mb-3 row">
-                                                    <label for="TrangThai" class="control-label">Trạng thái</label>
-                                                    <input for="TrangThai" class="form-control" value="@trangThai" disabled/>
-                                                </div>*@
-                                            </div>
-                                            <div class="modal-footer">
-                                                <button type="submit" class="btn btn-primary">Đổi trạng thái</button>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
                             </form>
                         }
                     </tbody>
                 </table>
+                @Html.PagedListPager((IPagedList)ViewBag.Sach, page => Url.Action("Index","QLSachCT",new {timKiem = ViewBag.TimKiem, trangThai =ViewBag.TrangThai, page = page}),new X.PagedList.Web.Common.PagedListRenderOptions{LiElementClasses = new string[] { "page-item" },PageClasses = new string[] { "page-link" }})
             </p>
         </div>
     </div>

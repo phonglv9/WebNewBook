@@ -8,6 +8,7 @@ using System.Text;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.Model.APIModels;
+using X.PagedList;
 
 namespace WebNewBook.Controllers
 {
@@ -35,14 +36,15 @@ namespace WebNewBook.Controllers
         {
             ViewBag.TitleAdmin = "Sách CT";
             timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
-            List<SachCT>? lstSach = new List<SachCT>();
+            var pageNumber = page ?? 1;
+            List<SachCTViewModel>? lstSach = new List<SachCTViewModel>();
             var a = await GetRequest<SachCTViewModel>("book/sachctviewmodel");
-            lstSach = a.Select(c=>c.SachCT).ToList();
-            //lstSach = (trangThai == 1 || trangThai == 0) ? lstSach.Where(c => c.TenSach.Contains(timKiem) && c.TrangThai == trangThai).ToList() : lstSach.Where(c => c.TenSach.Contains(timKiem)).ToList();
+            //lstSach = a.Select(c => c.SachCT).ToList();
+            lstSach = (trangThai == 1 || trangThai == 0) ? a.Where(c => c.TenSach.ToLower().Contains(timKiem.ToLower()) && c.SachCT.TrangThai == trangThai).ToList() : a.Where(c => c.TenSach.ToLower().Contains(timKiem.ToLower())).ToList();
             ViewBag.TimKiem = timKiem;
             ViewBag.TrangThai = trangThai;
             ViewBag.message = mess;
-            ViewBag.Sach = a;
+            ViewBag.Sach = lstSach.ToPagedList(pageNumber, 10);
             return View();
         }
 

@@ -33,6 +33,11 @@ namespace WebNewBook.API.Repository.Service
                 throw new Exception("Sản phẩm không hợp lệ!");
             }
 
+            if (tsp.SLSachCT > 1 && tsp.SLSachCT < 5)
+            {
+                throw new Exception("Lô sách tối thiểu là 5!");
+            }
+
             foreach (var item in spcts)
             {
                 if ((tsp.SLSachCT == 1 && (item.SanPhamCTs.Where(c => c.SoLuongSach == 1).Select(c => c.MaSachCT).ToArray().Intersect(Sachs).Count() == item.SanPhamCTs.Count() && 
@@ -116,8 +121,8 @@ namespace WebNewBook.API.Repository.Service
             //            };
             //var sachID = spcts.FirstOrDefault(c => c.SanPham.ID_SanPham == id).SanPhamCTs.Select(s => s.MaSachCT).ToList();
             //var sachID = dbcontext.SanPhamCTs.Where(c => c.MaSanPham == id).Select(s => s.MaSachCT).ToList();
-            var result = dbcontext.SanPhams.Join(dbcontext.SanPhamCTs, sp => sp.ID_SanPham, spct => spct.MaSanPham, (sp, spct) => new { spct }).Where(c => c.spct.MaSanPham == id)
-                .Join(dbcontext.SachCTs, sp => sp.spct.MaSachCT, sachCT => sachCT.ID_SachCT, (sp, sachCT) => new { sachCT }).Where(c => c.sachCT.TrangThai == 1).
+            var result = dbcontext.SanPhamCTs.Where(c => c.MaSanPham.Equals(id))
+                .Join(dbcontext.SachCTs, sp => sp.MaSachCT, sachCT => sachCT.ID_SachCT, (sp, sachCT) => new { sachCT }).
                 Join(dbcontext.Sachs, sachCT => sachCT.sachCT.MaSach, sach => sach.ID_Sach, (sachCT, sach) => new { sachCT.sachCT, sach.TenSach }).
                 Join(dbcontext.NhaXuatBans, sachCT => sachCT.sachCT.MaNXB, nxb => nxb.ID_NXB, (sachCT, nxb) => new SachCTViewModel { SachCT = sachCT.sachCT, TenSach = sachCT.TenSach, NXB = nxb.TenXuatBan });
             //List<SachCT> sachs = new List<SachCT>();
