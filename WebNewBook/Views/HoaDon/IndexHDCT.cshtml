@@ -252,17 +252,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach (var item in ViewBag.HDCT)
+                                @foreach (var n in ViewBag.HDCT)
                                 {
-                                    @foreach (var n in item)
-                                    {
-                                        var tongtien = @n.hoaDonCT.SoLuong * @n.hoaDonCT.GiaBan;
+                                 
+                                        var tongtien = n.hoaDonCT.SoLuong * n.hoaDonCT.GiaBan;
 
                                         <form>
                                         <tr>
 
                                             <td>@n.sanPham.TenSanPham</td>
-                                            <td name="sl_thuong">@n.hoaDonCT.SoLuong  </td>
+                                            <td name="sl_thuong">@n.hoaDonCT.SoLuong</td>
 
                                             <td hidden name="sl_input">
                                                 <div class="row">
@@ -285,7 +284,7 @@
                                         </form>
                              
                                     }
-                                }
+                                
                                 <tr hidden id="btn_add">
                                     <td> <button class="btn" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"><i class="fa-solid fa-plus"></i></button></td>
                                     <td></td>
@@ -345,14 +344,14 @@
                         </div>
                         <div class="col-xl-3">
                           
-                            <p class="text-black float-end">
+                          @*  <p class="text-black float-end">
                                 <span class="text-black me-3 font-weight-bold"> Thành tiền: </span><span class="font-weight-bold" style="font-size: 15px;">
                                     @if (ViewBag.tongtien != null)
                                     {
                                         @ViewBag.tongtien.ToString("#,##0").Replace(',', '.')
                                     }đ
                                 </span>
-                            </p>
+                            </p>*@
                             <p class="text-black float-end">
                                 <span class="text-black me-3 font-weight-bold"> Phí giao hàng: </span><span class="font-weight-bold" style="font-size: 15px;">
                                     @if (ViewBag.tongtien != null)
@@ -385,6 +384,7 @@
     <script>
         const _URL = "https://localhost:7047/";
         $(document).ready(function () {
+     
             $('#btn-one').click(function () {
                 html2canvas(document.querySelector('#hoadonct')).then((canvas) => {
                     let base64image = canvas.toDataURL('image/png');

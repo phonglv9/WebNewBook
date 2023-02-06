@@ -22,8 +22,11 @@
             <div class="form-group">
                 @for (var i = 0; i < ViewBag.Saches.Count; i++)
                 {
-                    string a = i < ViewBag.Saches.Count - 1 ? "-" : string.Empty;
-                    <a asp-action="Update" asp-controller="QLSachCT" asp-route-id=@ViewBag.Saches[i].SachCT.ID_SachCT> @ViewBag.Saches[i].TenSach </a> @a
+                    string a = i < ViewBag.Saches.Count - 1 ? "|" : string.Empty;
+                    var loaiBia = ViewBag.Saches[i].SachCT.BiaMem ? "BM" : "BC";
+                    <div>
+                    <a asp-action="Update" asp-controller="QLSachCT" asp-route-id=@ViewBag.Saches[i].SachCT.ID_SachCT> @ViewBag.Saches[i].TenSach - @ViewBag.Saches[i].NXB - @loaiBia</a>
+                    </div>
                 }
                 @*@foreach (var item in ViewBag.Saches)
                 {
