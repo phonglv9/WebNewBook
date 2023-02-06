@@ -424,7 +424,7 @@ namespace WebNewBook.Controllers
                     //Hóa đơn VNpay
                     OrderInfo order = new OrderInfo();
                     order.OrderId = hoaDon.ID_HoaDon; // Giả lập mã giao dịch hệ thống merchant gửi sang VNPAY
-                    order.Amount = tongTien; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
+                    order.Amount = tongTien + tienShip; // Giả lập số tiền thanh toán hệ thống merchant gửi sang VNPAY 100,000 VND
                     order.Status = "0"; //0: Trạng thái thanh toán "chờ thanh toán" hoặc "Pending"                   
                     order.CreatedDate = hoaDon.NgayMua;
 
