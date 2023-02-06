@@ -8,6 +8,7 @@ using System.Text;
 using WebNewBook.API.ModelsAPI;
 using WebNewBook.Model;
 using WebNewBook.Model.APIModels;
+using X.PagedList;
 
 namespace WebNewBook.Controllers
 {
@@ -35,13 +36,14 @@ namespace WebNewBook.Controllers
         {
             ViewBag.TitleAdmin = "Sách";
             timKiem = string.IsNullOrEmpty(timKiem) ? "" : timKiem;
+            var pageNumber = page ?? 1;
             List<SachViewModel>? lstSach = new List<SachViewModel>();
             lstSach = await GetRequest<SachViewModel>("book/sachviewmodel");
-            //lstSach = (trangThai == 1 || trangThai == 0) ? lstSach.Where(c => c.TenSach.Contains(timKiem) && c.TrangThai == trangThai).ToList() : lstSach.Where(c => c.TenSach.Contains(timKiem)).ToList();
+            lstSach = lstSach.Where(c => c.Sach.TenSach.ToLower().Contains(timKiem.ToLower())).ToList();
             ViewBag.TimKiem = timKiem;
             ViewBag.TrangThai = trangThai;
             ViewBag.message = mess;
-            ViewBag.Sach = lstSach;
+            ViewBag.Sach = lstSach.ToPagedList(pageNumber, 10);
             return View();
         }
 
