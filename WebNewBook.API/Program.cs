@@ -34,6 +34,7 @@ builder.Services.AddControllers(options =>
     }));
 });
 builder.Services.AddControllers(x => x.AllowEmptyInputInBodyModelBinding = true);
+
 builder.Services.AddDbContext<dbcontext>(option => option.UseSqlServer("Data Source=DESKTOP-ID1I205\\SQLEXPRESS;Integrated Security=True;Database=WebNewBook_Final1"));
 
 

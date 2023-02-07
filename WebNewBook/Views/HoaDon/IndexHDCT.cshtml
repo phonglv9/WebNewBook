@@ -217,6 +217,17 @@
                                             }
                                     </span>
                                 </li>
+                                    @if (ViewBag.magiamgia!=null)
+                                    {
+                                    <li class="text-dark">
+                                        <i class="fas fa-circle" style="color:#0d6efd ;"></i> <span class="fw-bold">
+                                            Mã giảm giá:  @if (ViewBag.magiamgia != null)
+                                                {
+                                                    @ViewBag.magiamgia
+                                                }
+                                        </span>
+                                    </li>
+                                    }
                                     @if (ViewBag.trangthai == 4 || ViewBag.trangthai == 7)
                                     {
                                     <li class="text-dark">
@@ -268,7 +279,7 @@
                                                     <div class="col-10">
                                                         <input hidden value="@n.hoaDonCT.ID_HDCT" name="mahdct" />
                                                         <input hidden value="@n.hoaDonCT.MaHoaDon" name="mahd" />
-                                                        <input type="number" class="form-control" name="soluong"  value="@n.hoaDonCT.SoLuong" />
+                                                        <input min="1" max="50" type="number" class="form-control" name="soluong"  value="@n.hoaDonCT.SoLuong" />
                                                     </div>
                                                     <div class="col-auto">
                                                         <button asp-action="UpdateQuantityProduct" type="submit" class="btn btn-light"><i class="fa-solid fa-check"></i></button>
@@ -330,17 +341,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xl-8">
-                            @if (ViewBag.PriceVoucher != null)
-                            {
-                                <p class="ms-3">
-
-
-                                    Giảm giá : @ViewBag.PriceVoucher
-
-
-
-                                </p>
-                            }
+                            
                         </div>
                         <div class="col-xl-3">
                           
@@ -352,9 +353,21 @@
                                     }đ
                                 </span>
                             </p>*@
+                            @if(ViewBag.PriceVoucher!=null){
+                                <p class="text-black float-end">
+                                    <span class="text-black me-3 font-weight-bold"> Giảm giá: </span><span class="font-weight-bold" style="font-size: 15px;">
+                                        @if (ViewBag.PriceVoucher != null)
+                                        {
+
+                                            @ViewBag.PriceVoucher.ToString("#,##0").Replace(',', '.')
+                                        }đ
+                                    </span>
+                                </p>
+                            }
+                            
                             <p class="text-black float-end">
                                 <span class="text-black me-3 font-weight-bold"> Phí giao hàng: </span><span class="font-weight-bold" style="font-size: 15px;">
-                                    @if (ViewBag.tongtien != null)
+                                    @if (ViewBag.phigiaohang != null)
                                     {
                                         @ViewBag.phigiaohang.ToString("#,##0").Replace(',', '.')
                                     }đ
