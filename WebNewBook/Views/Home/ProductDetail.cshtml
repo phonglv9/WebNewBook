@@ -69,12 +69,12 @@
 							@{
 								var a = ViewBag.TheLoaiSP == 2 ? "Combo sách" : ViewBag.TheLoaiSP == 3 ? "Lô sách " + ViewBag.SoLuongSach.ToString() + " quyển" : "Sách";
 							}
-							<li>Thể loại Sản Phẩm: @a</li>
+							<li>Loại Sản Phẩm: @a</li>
 						</ul>
 
 						<ul class="product-links">
 							<li>Nhà xuất bản:</li>
-							<li><a href="#">Kinh đồng</a></li>
+							<li><a href="#"></a></li>
 						</ul>
 						<ul class="product-links">
 							<li>Tác giả:</li>
@@ -302,8 +302,11 @@
 
 
 													</div>
-													<div class="add-to-cart">
-														<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+													 <div class="add-to-cart">
+
+
+														<button class="add-to-cart-btn" type="button" data-toggle="modal" data-target="#exampleModalCart" value="@a.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+
 													</div>
 												</div>
 											}
