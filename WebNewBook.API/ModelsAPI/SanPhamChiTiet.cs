@@ -22,7 +22,8 @@ namespace WebNewBook.API.ModelsAPI
         public int sotrang { get; set; }
         public int taiban { get; set; }
         public int TrangThai { get; set; }
-
+        public int TheLoaiSP { get; set; } //1 - Sach | 2 - Bo sach | 3 - Bo sach cung loai
+        public int SoLuongSach { get; set; }
 
     }
 }

@@ -65,6 +65,12 @@
 
 						</div>
 
+						<ul class="product-links">
+							@{
+								var a = ViewBag.TheLoaiSP == 2 ? "Combo sách" : ViewBag.TheLoaiSP == 3 ? "Lô sách " + ViewBag.SoLuongSach.ToString() + " quyển" : "Sách";
+							}
+							<li>Thể loại Sản Phẩm: @a</li>
+						</ul>
 
 						<ul class="product-links">
 							<li>Nhà xuất bản:</li>

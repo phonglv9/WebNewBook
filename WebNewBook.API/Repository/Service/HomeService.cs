@@ -168,9 +168,28 @@ namespace WebNewBook.API.Repository.Service
 
         public async Task<SanPhamChiTiet> GetProductDetail(string id)
         {
+            var spcts = from sp in _dbContext.SanPhams.ToList()
+                        join spct in _dbContext.SanPhamCTs.ToList() on sp.ID_SanPham equals spct.MaSanPham into spgroup
+                        select new
+                        {
+                            SanPham = sp,
+                            SanPhamCTs = spgroup
+                        };
 
 
-            var sanPham = _dbContext.SanPhams;
+
+            var sanPham = new List<SanPhamViewModel>();
+            spcts.ToList().ForEach(c =>
+            {
+                var singleType = c.SanPhamCTs.Count() == 1;
+                var sp = new SanPhamViewModel();
+                sp.SanPham = c.SanPham;
+                sp.TheLoaiSP = !singleType ? 2 : c.SanPhamCTs.FirstOrDefault().SoLuongSach == 1 ? 1 : 3;
+                sp.SoLuongSach = c.SanPhamCTs.FirstOrDefault().SoLuongSach;
+                sanPham.Add(sp);
+            });
+
+            //var sanPham = _dbContext.SanPhams;
             var sanPhamCT = _dbContext.SanPhamCTs;
             var sachCT = _dbContext.SachCTs;
             var sach = _dbContext.Sachs;
@@ -182,7 +201,7 @@ namespace WebNewBook.API.Repository.Service
             var Sach_Tacgia = _dbContext.Sach_TacGias;
 
             var products = (from a in sanPham
-                            join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
+                            join b in sanPhamCT on a.SanPham.ID_SanPham equals b.MaSanPham
 
                             join d in sachCT on b.MaSachCT equals d.ID_SachCT
                             join x in nhaxuatban on d.MaNXB equals x.ID_NXB
@@ -195,13 +214,13 @@ namespace WebNewBook.API.Repository.Service
 
                             select new SanPhamChiTiet()
                             {
-                                ID_SanPham = a.ID_SanPham,
-                                TenSanPham = a.TenSanPham,
-                                SoLuong = a.SoLuong,
-                                GiaBan = a.GiaBan,
-                                GiaGoc = a.GiaGoc,
-                                TrangThai = a.TrangThai,
-                                HinhAnh = a.HinhAnh,
+                                ID_SanPham = a.SanPham.ID_SanPham,
+                                TenSanPham = a.SanPham.TenSanPham,
+                                SoLuong = a.SanPham.SoLuong,
+                                GiaBan = a.SanPham.GiaBan,
+                                GiaGoc = a.SanPham.GiaGoc,
+                                TrangThai = a.SanPham.TrangThai,
+                                HinhAnh = a.SanPham.HinhAnh,
                                 idTheLoai = e.ID_TheLoai,
                                 TenTheLoai = e.TenTL,
                                 idDanhMuc = f.ID_DanhMuc,
@@ -213,7 +232,8 @@ namespace WebNewBook.API.Repository.Service
                                 TenNhaXuatBan = x.TenXuatBan,
                                 TenSach = c.TenSach,
                                 Mota = c.MoTa,
-
+                                TheLoaiSP = a.TheLoaiSP,
+                                SoLuongSach = a.SoLuongSach
 
                             }).Where(c => c.TrangThai == 1).ToList();
 
@@ -221,6 +241,7 @@ namespace WebNewBook.API.Repository.Service
 
 
 
+            
             return products.Where(c => c.ID_SanPham == id).FirstOrDefault();
         }
         
