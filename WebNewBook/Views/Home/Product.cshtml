@@ -283,9 +283,10 @@
 							{
 
 							 var giamGia = 100 - item.GiaBan * 100 / item.GiaGoc;
-						
-							<div class="col-md-3 col-xs-6">
+							var theloai = item.TheLoai == 2 ? "Combo sách" : item.TheLoai == 3 ? "Lô sách " + item.SoLuongSach.ToString() +" Quyển": "Sách";
+							<div class="col-md-4 col-xs-6">
 								<div class="product">
+								<span class="type-product">@theloai</span>
 									<div class="product-img">
 										 <img src="~/img/@item.HinhAnh" alt="">
 										<div class="product-label">

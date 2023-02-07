@@ -96,7 +96,28 @@ namespace WebNewBook.API.Repository.Service
         }
         public async Task<IEnumerable<ProductVM>> GetProductHome()
         {
-            var sanPham = _dbContext.SanPhams;
+			var spcts = from sp in _dbContext.SanPhams.ToList()
+						join spct in _dbContext.SanPhamCTs.ToList() on sp.ID_SanPham equals spct.MaSanPham into spgroup
+						select new
+						{
+							SanPham = sp,
+							SanPhamCTs = spgroup
+						};
+
+
+
+			var sanPham = new List<SanPhamViewModel>();
+			spcts.ToList().ForEach(c =>
+			{
+				var singleType = c.SanPhamCTs.Count() == 1;
+				var sp = new SanPhamViewModel();
+				sp.SanPham = c.SanPham;
+				sp.TheLoaiSP = !singleType ? 2 : c.SanPhamCTs.FirstOrDefault().SoLuongSach == 1 ? 1 : 3;
+				sp.SoLuongSach = c.SanPhamCTs.FirstOrDefault().SoLuongSach;
+				sanPham.Add(sp);
+			});
+
+			//var sanPham = _dbContext.SanPhams;
             var sanPhamCT = _dbContext.SanPhamCTs;
             var sachCT = _dbContext.SachCTs;
             var sach = _dbContext.Sachs;
@@ -107,7 +128,7 @@ namespace WebNewBook.API.Repository.Service
             var sachTL = _dbContext.Sach_TheLoais;
 
             var products = (from a in sanPham
-                            join b in sanPhamCT on a.ID_SanPham equals b.MaSanPham
+                            join b in sanPhamCT on a.SanPham.ID_SanPham equals b.MaSanPham
                             join c in sachCT on b.MaSachCT equals c.ID_SachCT
                             join d in sach on c.MaSach equals d.ID_Sach
                             join e in sachTL on d.ID_Sach equals e.MaSach
@@ -119,22 +140,23 @@ namespace WebNewBook.API.Repository.Service
 
                             select new ProductVM()
                             {
-                                ID_SanPham = a.ID_SanPham,
-                                TenSanPham = a.TenSanPham,
-                                SoLuong = a.SoLuong,
-                                GiaBan = a.GiaBan,
-                                GiaGoc = a.GiaGoc,
-                                TrangThai = a.TrangThai,
-                                HinhAnh = a.HinhAnh,
+                                ID_SanPham = a.SanPham.ID_SanPham,
+                                TenSanPham = a.SanPham.TenSanPham,
+                                SoLuong = a.SanPham.SoLuong,
+                                GiaBan = a.SanPham.GiaBan,
+                                GiaGoc = a.SanPham.GiaGoc,
+                                TrangThai = a.SanPham.TrangThai,
+                                HinhAnh = a.SanPham.HinhAnh,
                                 idTheLoai = g.ID_TheLoai,
                                 TenTheLoai = g.TenTL,
                                 idDanhMuc = f.ID_DanhMuc,
                                 TenDanhMuc = f.TenDanhMuc,
                                 idTacGia = tt.ID_TacGia,
                                 TenTacGia = tt.HoVaTen,
+								TheLoai = a.TheLoaiSP,
+								SoLuongSach = a.SoLuongSach
 
-
-                            }).Where(c => c.TrangThai == 1).ToList();
+							}).Where(c => c.TrangThai == 1).ToList();
 
             List<ProductVM> lst = new List<ProductVM>();
             foreach (var item in products.DistinctBy(c => c.ID_SanPham).Where(c => c.TrangThai == 1).ToList())

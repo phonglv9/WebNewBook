@@ -267,12 +267,21 @@
 											@*@if (ViewBag.listDM.Count)*@
 										@foreach (var a in ViewBag.listDM)
 											{
-
+												var giamGia = 100 - a.GiaBan * 100 / a.GiaGoc;
 												<!-- product -->
 												<div class="product">
 													<div class="product-img">
 													<img src="~/img/@a.HinhAnh" alt="">
+												@if (giamGia != 0)
+												{
+													<div class="product-label">
+
+														<span class="sale">@giamGia %</span>
+
 													</div>
+												}
+													</div>
+
 													<div class="product-body">
 														
 																<p class="product-category">
