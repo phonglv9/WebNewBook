@@ -1,1 +1,1 @@
-Data Source=LVP-09\\LVP09;User ID=LVP09;Password=Ph@161589;Initial Catalog=WebNewBook;Integrated Security=True
+Data Source=LVP-09\\LVP09;Initial Catalog=DATN12;User ID=LVP09;Password=Ph@16158;Integrated Security=True

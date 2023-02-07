@@ -65,10 +65,16 @@
 
 						</div>
 
+						<ul class="product-links">
+							@{
+								var a = ViewBag.TheLoaiSP == 2 ? "Combo sách" : ViewBag.TheLoaiSP == 3 ? "Lô sách " + ViewBag.SoLuongSach.ToString() + " quyển" : "Sách";
+							}
+							<li>Loại Sản Phẩm: @a</li>
+						</ul>
 
 						<ul class="product-links">
 							<li>Nhà xuất bản:</li>
-							<li><a href="#">Kinh đồng</a></li>
+							<li><a href="#"></a></li>
 						</ul>
 						<ul class="product-links">
 							<li>Tác giả:</li>
@@ -267,12 +273,21 @@
 											@*@if (ViewBag.listDM.Count)*@
 										@foreach (var a in ViewBag.listDM)
 											{
-
+												var giamGia = 100 - a.GiaBan * 100 / a.GiaGoc;
 												<!-- product -->
 												<div class="product">
 													<div class="product-img">
 													<img src="~/img/@a.HinhAnh" alt="">
+												@if (giamGia != 0)
+												{
+													<div class="product-label">
+
+														<span class="sale">@giamGia %</span>
+
 													</div>
+												}
+													</div>
+
 													<div class="product-body">
 														
 																<p class="product-category">
@@ -287,8 +302,11 @@
 
 
 													</div>
-													<div class="add-to-cart">
-														<button class="add-to-cart-btn"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+													 <div class="add-to-cart">
+
+
+														<button class="add-to-cart-btn" type="button" data-toggle="modal" data-target="#exampleModalCart" value="@a.ID_SanPham"><i class="fa fa-shopping-cart"></i> Thêm vào giỏ</button>
+
 													</div>
 												</div>
 											}

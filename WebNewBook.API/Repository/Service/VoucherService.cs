@@ -71,6 +71,20 @@ namespace WebNewBook.API.Repository.Service
         {
             try
             {
+                List<string> mavc = new List<string>();
+                foreach (var x in _dbcontext.Vouchers.Where(c=>c.TrangThai==1).ToList())
+                {
+                    mavc.Add(x.Id);
+                }
+                for (int i = 0; i < mavc.Count; i++)
+                {
+                    var soluong = _dbcontext.VoucherCTs.Where(c => c.MaVoucher == mavc[i] && (c.TrangThai == 0 || c.TrangThai == 1)).Count();
+                    var voucher = _dbcontext.Vouchers.FirstOrDefault(c => c.Id == mavc[i]);
+                    voucher.SoLuong = soluong;
+                    _dbcontext.Vouchers.Update(voucher);
+                    _dbcontext.SaveChanges();
+                }
+              
                 var dateNow = DateTime.Now;
                 return await _dbcontext.Vouchers.Where(c => c.TrangThai == 1 &&   dateNow <= c.EndDate.AddDays(1)).ToListAsync();
             }
