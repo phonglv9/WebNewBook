@@ -293,7 +293,8 @@ namespace WebNewBook.Controllers
 
             };
             ViewBag.SanphamCT = Product;
-
+            ViewBag.TheLoaiSP = Product.TheLoaiSP;
+            ViewBag.SoLuongSach = Product.SoLuongSach;
             //Thể loại
             List<SanPhamChiTiet> lstchitetsp = new List<SanPhamChiTiet>();
             HttpResponseMessage responseTL = _httpClient.GetAsync(_httpClient.BaseAddress + $"/home/TheLoaict/{id}").Result;
