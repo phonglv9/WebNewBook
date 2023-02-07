@@ -206,8 +206,9 @@ namespace WebNewBook.Controllers
                 ViewBag.trangthai= hoadonCT.TrangThai;
                 ViewBag.lydohuyudon= hoadonCT.Lydohuy;
                 ViewBag.phigiaohang= hoadonCT.PhiGiaoHang;
-               
-                
+                ViewBag.magiamgia = hoaDon.hoaDon.MaGiamGia;
+
+
                 //Địa chỉ ghn
 
                 //Lấy địa chỉ tỉnh thành
