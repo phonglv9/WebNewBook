@@ -249,19 +249,19 @@ namespace WebNewBook.API.Repository.Service
         {
 
 
-            return await _dbContext.TheLoais.ToListAsync();
+            return await _dbContext.TheLoais.Where(c=>c.TrangThai == 1).ToListAsync();
         }
         public async Task<List<DanhMucSach>> GetDanhMucNavBar()
         {
 
 
-            return await _dbContext.DanhMucSachs.Include(c => c.TheLoais).ToListAsync();
+            return await _dbContext.DanhMucSachs.Include(c => c.TheLoais).Where(C=>C.TrangThai == 1).ToListAsync();
         }
         public async Task<List<TacGia>> GetTacGias()
         {
 
 
-            return await _dbContext.TacGias.ToListAsync();
+            return await _dbContext.TacGias.Where(c=>c.TrangThai == 1).ToListAsync();
         }
 
         public async Task<List<SanPhamChiTiet>> GetTheLoaisCT(string id)

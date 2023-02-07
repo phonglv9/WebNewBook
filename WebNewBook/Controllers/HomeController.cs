@@ -338,10 +338,25 @@ namespace WebNewBook.Controllers
             }
            
             ViewBag.Mota = MT;
-            
 
-            //DanhMuc
-            List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
+			//Nhà xuất bản
+			var goupNxb = lstchitetsp.GroupBy(c => c.TenNhaXuatBan).ToList();
+			List<string> nxb = new List<string>();
+			if (goupNxb != null)
+			{
+				foreach (var b in goupNxb)
+				{
+					foreach (var c in b.Take(1))
+					{
+						nxb.Add(c.TenNhaXuatBan);
+
+					}
+				}
+			}
+			ViewBag.NXB = nxb;
+
+			//DanhMuc
+			List<DanhMucSach> danhMucSaches = new List<DanhMucSach>();
             HttpResponseMessage responseDMm = _httpClient.GetAsync(_httpClient.BaseAddress + "/home/DanhMuc").Result;
             if (responseDMm.IsSuccessStatusCode)
             {

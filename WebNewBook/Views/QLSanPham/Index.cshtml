@@ -78,7 +78,7 @@
                             <th scope="col">Số lượng</th>
                             <th scope="col">Giá</th>
                             <th scope="col">Hình ảnh</th>
-                            <th scope="col">Thể loại</th>
+                            <th scope="col"> Loại sản phẩm</th>
                             <th scope="col">Trạng thái</th>
                             <th colspan="2" style="text-align: center ;">Thao tác</th>
                         </tr>
@@ -89,7 +89,7 @@
                         {
                             var trangThai = item.SanPham.TrangThai == 1 ? "Hoạt động" : "Vô hiệu hóa";
                             var img = item.SanPham.HinhAnh ?? string.Empty;
-                                var theLoai = item.TheLoaiSP == 1 ? "Sách" : item.TheLoaiSP == 2 ? "Combo sách" : "Lô sách" + item.SoLuongSach + " quyển";
+                                var theLoai = item.TheLoaiSP == 1 ? "Sách" : item.TheLoaiSP == 2 ? "Combo sách" : "Lô sách " + item.SoLuongSach + " quyển";
                                 <tr>
                                 <th scope="row">@item.SanPham.TenSanPham</th>
                                 <td>@item.SanPham.SoLuong</td>

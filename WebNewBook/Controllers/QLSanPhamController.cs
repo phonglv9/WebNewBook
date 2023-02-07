@@ -62,7 +62,7 @@ namespace WebNewBook.Controllers
         {
             var sachs = await GetRequest<Sach_SachCT>("book/sach_sachct");
             var listItem = new List<SelectListItem>();
-            sachs.ForEach(s =>
+            sachs.Where(c => c.SachCT.TrangThai == 1).ToList().ForEach(s =>
             {
                 var loaiBia = s.SachCT.BiaMem ? "Bìa mềm" : "Bìa cứng";
                 listItem.Add(new SelectListItem { Text = s.TenSach + " - " + "NXB: " + s.NXB + " - " + "Tái bản " + s.SachCT.TaiBan + " - " + loaiBia + " - " + s.SachCT.GiaBan, Value = s.SachCT.ID_SachCT + " @ " + s.SachCT.GiaBan });

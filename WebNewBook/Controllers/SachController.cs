@@ -64,7 +64,7 @@ namespace WebNewBook.Controllers
         {
             var lstTacGia = await GetRequest<TacGia>("api/tacgia");
             var lstItem = new List<SelectListItem>();
-            lstTacGia.ForEach(x =>
+            lstTacGia.Where(c => c.TrangThai == 1).ToList().ForEach(x =>
             {
                 var item = new SelectListItem { Text = x.HoVaTen, Value = x.ID_TacGia };
                 lstItem.Add(item);
@@ -77,7 +77,7 @@ namespace WebNewBook.Controllers
         {
             var lstTheLoai = await GetRequest<TheLoai>("api/theloai");
             var lstItem = new List<SelectListItem>();
-            lstTheLoai.ForEach(x =>
+            lstTheLoai.Where(c => c.TrangThai == 1).ToList().ForEach(x =>
             {
                 var item = new SelectListItem { Text = x.TenTL, Value = x.ID_TheLoai };
                 lstItem.Add(item);

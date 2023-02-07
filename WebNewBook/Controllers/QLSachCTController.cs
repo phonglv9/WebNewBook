@@ -104,8 +104,11 @@ namespace WebNewBook.Controllers
 
         public async Task<IActionResult> Create()
         {
-            ViewBag.NXBs = new SelectList(await GetRequest<NhaXuatBan>("api/nhaxuatban"), "ID_NXB", "TenXuatBan");
-            ViewBag.Sachs = new SelectList(await GetRequest<Sach>("book"), "ID_Sach", "TenSach");
+            var nxb = await GetRequest<NhaXuatBan>("api/nhaxuatban");
+            var sachs = await GetRequest<Sach>("book");
+
+			ViewBag.NXBs = new SelectList(nxb.Where(c => c.TrangThai == 1).ToList(), "ID_NXB", "TenXuatBan");
+            ViewBag.Sachs = new SelectList(sachs, "ID_Sach", "TenSach");
             return View();
         }
 

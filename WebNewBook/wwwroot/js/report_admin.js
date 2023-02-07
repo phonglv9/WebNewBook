@@ -58,7 +58,7 @@ function GetFillterReprort() {
                     html += '   <td> ' + val.DateValue + ' </td>'
                     html += '   <td> ' + formatVND(val.TotalMoney) + '</td>'
                     html += '   <td> ' + val.DonHang + '</td>'
-                    html += '   <td> ' + val.SLSanPham + ' </td>'
+                   /* html += '   <td> ' + val.SLSanPham + ' </td>'*/
                     html += '  </tr >'
 
 
@@ -107,7 +107,7 @@ function GetReport() {
                     html += '   <td> ' + val.DateValue + ' </td>'
                     html += '   <td> ' + formatVND(val.TotalMoney) + '</td>'
                     html += '   <td> ' + val.DonHang + '</td>'
-                    html += '   <td> ' + val.SLSanPham + ' </td>'                 
+                   /* html += '   <td> ' + val.SLSanPham + ' </td>' */                
                     html += '  </tr >'
                       
                             

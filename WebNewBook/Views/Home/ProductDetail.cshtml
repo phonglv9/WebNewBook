@@ -72,9 +72,17 @@
 							<li>Loại Sản Phẩm: @a</li>
 						</ul>
 
+						
 						<ul class="product-links">
 							<li>Nhà xuất bản:</li>
-							<li><a href="#"></a></li>
+							@if (ViewBag.NXB != null)
+								@foreach (var item in ViewBag.NXB)
+								{
+										<br />
+									  <li><a href="#">@item</a></li> 
+
+
+								}
 						</ul>
 						<ul class="product-links">
 							<li>Tác giả:</li>
@@ -148,9 +156,7 @@
 								<div class="row">
 									<div class="col-md-12">
 										
-												
-											
-											
+					
 											@if (ViewBag.Mota !=null)
 											@foreach (var item in ViewBag.Mota){
 
@@ -273,9 +279,11 @@
 											@*@if (ViewBag.listDM.Count)*@
 										@foreach (var a in ViewBag.listDM)
 											{
+										var theLoai = a.TheLoai == 1 ? "Sách" : a.TheLoai == 2 ? "Combo sách" : "Lô sách " + a.SoLuongSach + " quyển";
 												var giamGia = 100 - a.GiaBan * 100 / a.GiaGoc;
 												<!-- product -->
 												<div class="product">
+											<span class="type-product">@theLoai</span>
 													<div class="product-img">
 													<img src="~/img/@a.HinhAnh" alt="">
 												@if (giamGia != 0)
